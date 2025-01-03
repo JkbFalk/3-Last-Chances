@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3295115353877302526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 636789670605589172}
+  - component: {fileID: 1736659215958890650}
+  - component: {fileID: 3848850754381328749}
+  - component: {fileID: 3384867678338096629}
+  - component: {fileID: 4680283342489356877}
+  m_Layer: 0
+  m_Name: AreaOfEffect_Generic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &636789670605589172
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295115353877302526}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.48680347, y: -0.118473954, z: -0.00339718}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1736659215958890650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295115353877302526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4488cbf9ca03484408da9783702bed46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 0}
+  BodyPartName: Upper Body
+  AttachToBone: 1
+  WorldPositionStays: 0
+--- !u!58 &3848850754381328749
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295115353877302526}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.8
+--- !u!114 &3384867678338096629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295115353877302526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79c6ed24d91efc4f88cd23c3cecb6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SourceOfHitName: 
+  DestroyChildrenNSecondsAfterDisappearing: 0
+  DeactivateNSecondsAfterStart: 0
+  DeactivateTimer: 0
+  AlwaysSameSimulationSpeed: 0
+  ParticleSystemRenderer: {fileID: 0}
+  IsDisappearing: 0
+  DisappearTimeInSeconds: 0.25
+  WeaponSpriteRenderer: {fileID: 0}
+  Owner: {fileID: 0}
+  CanBeRiposted: 0
+  DealingDamage: 1
+  WasStopped: 0
+  DestroyAfterSourceAbilityEnds: 0
+--- !u!114 &4680283342489356877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3295115353877302526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbda1d0f4b696b4f816ba24b177d0f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyAfterSeconds: 1
+  DetachIfParentDestroyed: 1
+  ScaleWithAttackSpeed: 1
+  ScaleWithCombatSpeed: 1
