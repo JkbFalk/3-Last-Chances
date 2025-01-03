@@ -1,0 +1,20 @@
+using System;
+using TMPro;
+
+public class Control : Stat {
+
+    public Control(Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
+        if(stat_owner is Player) {
+            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find("Control/Value").GetComponent<TextMeshProUGUI>();
+        }
+        Owner = stat_owner;
+        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedControlLevel(stat_owner.Level) : base_amount;
+        Maximum = base_amount;
+        Current = base_amount;
+    }
+
+    public override void UpdateMenuStatDisplayValue()
+    {
+        MenuStatDisplay.text = (Current < 1 ? "" : "+") + Math.Round((Current - 1) * 100, 0).ToString() + "%";
+    }
+}

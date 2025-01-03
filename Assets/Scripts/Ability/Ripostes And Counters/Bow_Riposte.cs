@@ -1,0 +1,20 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Bow_Riposte : Riposte
+{
+
+    public Bow_Riposte(Unit ability_user) : base(ability_user) {
+        DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
+        DamageSources.Add(new DamageSource(Constants.INJURY_PERCENTAGE_FROM_RIPOSTE, 0, Constants.DamageType.Ranged, "BowBasicAttack"));
+        DamageSources.Add(new DamageSource(Constants.INJURY_PERCENTAGE_FROM_PROJECTILE_RIPOSTE, Constants.STAGGER_PERCENTAGE_FROM_PROJECTILE_RIPOSTE, Constants.DamageType.Ranged, "Projectile Redirect"));
+    }
+
+    public override void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile)
+    {
+        base.AdditionalAbilitySpecificActionsOnShootingProjectile(projectile);
+        projectile.OnlyDestroyOnTargetHit = true;
+        projectile.Target = Target;
+        Utils.PlaySoundEffect(User.AudioSource, "Bow/Bow_Release" + Utils.GetRandomSoundNumber("Bow_Release"), 0.6f);
+    }
+}

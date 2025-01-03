@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+
+public class Effect_AncientGauntlets : Effect { 
+
+    public Effect_ChangeStat EnergyGainBuff;
+    public float BuffAmount = 0;
+
+    public Effect_AncientGauntlets(SourceOfEffect source_of_effect) : base(source_of_effect)
+    {
+        Type = EffectType.Buff;
+        Listeners.Add(EventManager.ItemEquipped);
+    }
+
+    public override void OnEffectValueChanged()
+    {
+        BuffAmount = 0.125f * NonLinearEffectValue;
+        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(BuffAmount) };
+    }
+
+    public override void OnStart() {
+        base.OnStart();
+        if(SaveFile.Instance.EquippedBoots is Boots_Ancient && SaveFile.Instance.EquippedGloves is Gloves_Ancient) {
+            AddBuffs();
+        }
+    }
+
+    public override void OnInvokeItemEquipped(Item item1, Item item2)
+    {
+        if (EnergyGainBuff != null && (item1 is Boots_Ancient || item1 is Gloves_Ancient))
+        {
+            EnergyGainBuff.EndThisEffect();
+        }
+        else if ((item2 is Gloves_Ancient && SaveFile.Instance.EquippedBoots is Boots_Ancient) || (item2 is Boots_Ancient && SaveFile.Instance.EquippedGloves is Gloves_Ancient))
+        {
+            AddBuffs();
+        }
+    }
+
+    public void AddBuffs() {
+        EnergyGainBuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageAmount = BuffAmount};
+        Player.Instance.AddEffect(EnergyGainBuff);
+    }
+}

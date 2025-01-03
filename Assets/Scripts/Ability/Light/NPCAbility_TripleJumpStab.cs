@@ -1,0 +1,29 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class NPCAbility_TripleJumpStab : Ability {
+
+    public static float Cooldown = 6;
+    public NPCAbility_TripleJumpStab(Unit ability_user) : base(ability_user) {
+        DamageSources.Add(new DamageSource(0, 250, Constants.DamageType.Light) {Knockback = 70});
+        DamageSources.Add(new DamageSource(200, 0, Constants.DamageType.Light, "2") {Knockback = 200});
+        WaitTimeBeforeNextAction = 0.5f;
+        AddCustomSound("Swing1", "Blade/Blade_Swing1", 0.6f);
+        AddCustomSound("Swing2", "Blade/Blade_Swing2", 0.8f);
+    }
+
+    public override void CallAbilityEvent1()
+    {
+        ChaseCurrentTargetAtGivenDegreeAngle(270, 60, 25);
+    }
+
+    public override void CallAbilityEvent2()
+    {
+        ResetPotentialTargets();
+    }
+
+    public override void CallAbilityEvent3()
+    {
+        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+    }
+}

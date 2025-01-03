@@ -1,0 +1,170 @@
+using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class Ability_WindRush : Technique
+{
+    public static float EnergyCost = 20;
+    public static float Cooldown = 30;
+    public static float InjuryScaling = 300;
+    public static float UltimateInjuryScaling = 1000;
+    public static float StaggerScaling = 300;
+    public static float UltimateStaggerScaling = 300;
+    public static float UpgradeABarrierInjuryScaling = 350;
+    public static float UpgradeABarrierStaggerScaling = 350;
+    public static float UpgradeBStunDuration = 3;
+    public static float UpgradeBSleepDuration = 12;
+    public static float UltimateStaggerAoEScalingPerSecond = 100;
+    public static float UltimateWallDurationInSeconds = 20;
+    private Unit _intendedTarget;
+    private bool _intendedTargetWasHit = false;
+    private AreaOfEffect _ultimateAoe;
+    private bool _dealingAoEDamage = false;
+    private Unit _targetOfDamage = null;
+
+    public static AbilityFamily Family = AbilityFamily.Anima;
+    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.CurrentWeapon;
+
+    public Ability_WindRush(Unit ability_user) : base(ability_user)
+    {
+        if(User.CurrentWeaponDamageCategory == Constants.DamageType.Light) {
+            DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
+            DamageSources.Add(new DamageSource(IsUltimate ? UltimateInjuryScaling / 2 : InjuryScaling / 2, IsUltimate ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageCategory));
+        }
+        else {
+            DamageSources.Add(new DamageSource(IsUltimate ? UltimateInjuryScaling : InjuryScaling, IsUltimate ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageCategory));
+        }
+        DamageSources.Add(new DamageSource(0, UltimateStaggerAoEScalingPerSecond / 2, User.CurrentWeaponDamageCategory, "WindRush_AoE"));
+        AddCustomSound("Start", "Ability/Ability_WindBlast_Use", 0.4f);
+        AddCustomSound("WindBlast", "Ability/Ability_WindBlast_Dash", 0.5f);
+        NameOfAnimationToAutoPlay = "WindRush_" + User.CurrentWeaponClass;
+        _intendedTarget = Player.Instance.CurrentTarget;
+    }
+
+    public override void CallAbilityEvent1()
+    {
+        User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        GameObject vfx = Utils.CreateVisualEffect(new(this), "WindRush");
+        vfx.GetComponent<AttachObjectToBodyPart>().Initialize(User);
+        vfx.transform.eulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? -90 : 90);
+        if(Player.Instance.CurrentTarget != null) {
+            ChaseCurrentTargetAtGivenDegreeAngle(300, 60, 40);
+        }
+        else if(GameController.Instance.PlayerInput.currentControlScheme == "Gamepad") {
+            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60) * 3000, this);
+        }
+        else {
+            float distance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
+            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60) * 300 * (distance > 10 ? 10 : distance), this);
+        }
+        if(UpgradeAUnlocked) {
+            User.AddEffect(new Effect_Barrier(User.CurrentWeaponInjury.Current * UpgradeABarrierInjuryScaling / 100 + User.CurrentWeaponStagger.Current * UpgradeABarrierInjuryScaling / 100, new(this)));
+        }
+    }
+
+    public override void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile)
+    {
+        base.AdditionalAbilitySpecificActionsOnShootingProjectile(projectile);
+        if(_intendedTarget != null) {
+            projectile.HomingOntoUnit = _intendedTarget;
+        }
+    }
+
+    public override void CallAbilityEvent2()
+    {
+        if(_intendedTarget == null && Player.Instance.CurrentTarget == null) {
+            _intendedTarget = Player.Instance.GetClosestValidTarget(true);
+        }
+    }
+
+    public static List<string> GetDescriptionValues()
+    {
+        return new List<string> {(Player.Instance.CurrentWeaponInjury.Current * InjuryScaling / 100).ToString(), InjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * StaggerScaling / 100).ToString(), StaggerScaling.ToString() };
+    }
+
+    public static List<string> GetMasteryADescriptionValues()
+    {
+        return new List<string> {(Player.Instance.CurrentWeaponInjury.Current * UpgradeABarrierInjuryScaling / 100 + Player.Instance.CurrentWeaponStagger.Current * UpgradeABarrierStaggerScaling / 100).ToString(), UpgradeABarrierInjuryScaling.ToString(), UpgradeABarrierStaggerScaling.ToString() };
+    }
+
+    public static List<string> GetMasteryBDescriptionValues()
+    {
+        return new List<string> {UpgradeBStunDuration.ToString(), UpgradeBSleepDuration.ToString() };
+    }
+
+    public static List<string> GetUltimateDescriptionValues()
+    {
+        return new List<string> {(Player.Instance.CurrentWeaponInjury.Current * UltimateInjuryScaling / 100).ToString(), UltimateInjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * UltimateStaggerScaling / 100).ToString(), UltimateStaggerScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * UltimateStaggerAoEScalingPerSecond / 100).ToString(), UltimateStaggerAoEScalingPerSecond.ToString(), UltimateWallDurationInSeconds.ToString() };
+    }
+
+    public override void ExtraBehaviourOnHit(Damage damage)
+    {
+        if(damage.TargetOfDamage == _intendedTarget && _intendedTargetWasHit == false) {
+            AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Knockback");
+            aoe.transform.position = damage.TargetOfDamage.transform.position;
+            aoe.GetComponent<PushOrPullUnits>().Force = IsUltimate ? 4000 : 1500;
+            aoe.GetComponent<PushOrPullUnits>().AffectedUnits.AddRange(new List<Unit> { damage.SourceOfDamage.User, damage.TargetOfDamage });
+            if(UpgradeBUnlocked) {
+                User.AddEffect(new Effect_Stun(new(this)), UpgradeBStunDuration);
+            }
+            _intendedTargetWasHit = true;
+            PlayCustomSound("WindBlast");
+            if(IsUltimate) {
+                _ultimateAoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Ultimate");
+                _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(false);
+                GameController.Instance.WaitAndRunMethod(1f, ActivateUltimateWall);
+                _targetOfDamage = damage.TargetOfDamage;
+            }
+        }
+        else if(damage.TargetOfDamage != _intendedTarget && UpgradeBUnlocked) {
+            User.AddEffect(new Effect_Sleep(new(this)), UpgradeBSleepDuration);
+        }
+    }
+
+    public void ActivateUltimateWall() {
+        _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(true);
+        _ultimateAoe.transform.parent.position = _targetOfDamage.transform.position;
+        _dealingAoEDamage = true;
+        EventManager.EnemyDefeated.AddListener(CheckIfDestroyWall);
+        PerformActionAfterIntervals(40, 0.5f);
+        GameController.Instance.WaitAndRunMethod(UltimateWallDurationInSeconds, TurnOffUltimateWall);
+    }
+
+    public void CheckIfDestroyWall(Damage damage) {
+        if(damage.TargetOfDamage == _targetOfDamage && _ultimateAoe != null && _ultimateAoe.IsDestroyed() == false && _ultimateAoe.gameObject.IsDestroyed() == false) {
+            MonoBehaviour.Destroy(_ultimateAoe.gameObject);
+        }
+    }
+
+    public void TurnOffUltimateWall() {
+        if(_ultimateAoe != null && _ultimateAoe.IsDestroyed() == false && _ultimateAoe.gameObject.IsDestroyed() == false) {
+            MonoBehaviour.Destroy(_ultimateAoe.gameObject);
+        }
+        EventManager.EnemyDefeated.RemoveListener(CheckIfDestroyWall);
+    }
+
+    public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
+    {
+        if(object_hitting is AreaOfEffect && object_hitting.gameObject.name.Contains("WindRush_AoE") == false) {
+            if(unit_getting_attacked != _intendedTarget && UpgradeBUnlocked) {
+                User.AddEffect(new Effect_Sleep(new(this)), UpgradeBSleepDuration);
+            }
+            return;
+        }
+        base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
+    }
+
+    public override void ActionToPerformAfterIntervals()
+    {
+        ResetPotentialTargets();
+        Utils.PushUnitIntoPosition(_targetOfDamage, _ultimateAoe.transform.parent.position, this, 50);
+    }
+
+    public override bool CheckIfDamageTriggerIsValid(Unit unit_getting_attacked, DamagingObject source_of_hit) {
+        if(_dealingAoEDamage == false) {
+            return base.CheckIfDamageTriggerIsValid(unit_getting_attacked, source_of_hit);
+        }
+        return AffectedEnemies.ContainsKey(unit_getting_attacked) == false;
+    }
+}

@@ -1,0 +1,1474 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sharp Triangle Mesh
+  m_TargetType:
+    m_NativeTypeID: 43
+    m_ManagedTypePPtr: {fileID: 0}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].firstByte
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].indexCount
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].topology
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].baseVertex
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].firstVertex
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].vertexCount
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].localAABB.m_Center.x
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].localAABB.m_Center.y
+    value: 0.88761187
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].localAABB.m_Center.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].localAABB.m_Extent.x
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].localAABB.m_Extent.y
+    value: 0.88761187
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_SubMeshes.Array.data[0].localAABB.m_Extent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_Shapes.vertices.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_Shapes.shapes.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_Shapes.channels.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_Shapes.fullWeights.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_BindPose.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_BoneNameHashes.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_RootBoneNameHash
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_BonesAABB.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VariableBoneCountWeights.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_MeshCompression
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IsReadable
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_KeepVertices
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_KeepIndices
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexFormat
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.size
+    value: 6
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.data[2]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.data[3]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.data[4]
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_IndexBuffer.Array.data[5]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_VertexCount
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.size
+    value: 14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[0].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[0].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[0].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[0].dimension
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[1].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[1].offset
+    value: 12
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[1].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[1].dimension
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[2].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[2].offset
+    value: 24
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[2].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[2].dimension
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[3].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[3].offset
+    value: 40
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[3].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[3].dimension
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[4].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[4].offset
+    value: 56
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[4].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[4].dimension
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[5].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[5].offset
+    value: 64
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[5].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[5].dimension
+    value: 2
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[6].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[6].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[6].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[6].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[7].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[7].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[7].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[7].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[8].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[8].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[8].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[8].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[9].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[9].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[9].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[9].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[10].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[10].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[10].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[10].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[11].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[11].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[11].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[11].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[12].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[12].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[12].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[12].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[13].stream
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[13].offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[13].format
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_Channels.Array.data[13].dimension
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.size
+    value: 216
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[0]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[1]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[2]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[3]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[4]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[5]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[6]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[7]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[8]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[9]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[10]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[11]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[12]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[13]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[14]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[15]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[16]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[17]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[18]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[19]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[20]
+    value: 255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[21]
+    value: 255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[22]
+    value: 127
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[23]
+    value: 191
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[24]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[25]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[26]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[27]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[28]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[29]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[30]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[31]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[32]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[33]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[34]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[35]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[36]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[37]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[38]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[39]
+    value: 191
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[40]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[41]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[42]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[43]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[44]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[45]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[46]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[47]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[48]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[49]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[50]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[51]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[52]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[53]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[54]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[55]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[56]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[57]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[58]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[59]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[60]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[61]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[62]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[63]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[64]
+    value: 111
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[65]
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[66]
+    value: 131
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[67]
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[68]
+    value: 111
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[69]
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[70]
+    value: 131
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[71]
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[72]
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[73]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[74]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[75]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[76]
+    value: 136
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[77]
+    value: 58
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[78]
+    value: 227
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[79]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[80]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[81]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[82]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[83]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[84]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[85]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[86]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[87]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[88]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[89]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[90]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[91]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[92]
+    value: 255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[93]
+    value: 255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[94]
+    value: 127
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[95]
+    value: 191
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[96]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[97]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[98]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[99]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[100]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[101]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[102]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[103]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[104]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[105]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[106]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[107]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[108]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[109]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[110]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[111]
+    value: 191
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[112]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[113]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[114]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[115]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[116]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[117]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[118]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[119]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[120]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[121]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[122]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[123]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[124]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[125]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[126]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[127]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[128]
+    value: 30
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[129]
+    value: 19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[130]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[131]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[132]
+    value: 136
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[133]
+    value: 58
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[134]
+    value: 227
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[135]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[136]
+    value: 4
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[137]
+    value: 254
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[138]
+    value: 126
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[139]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[140]
+    value: 179
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[141]
+    value: 49
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[142]
+    value: 145
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[143]
+    value: 62
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[144]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[145]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[146]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[147]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[148]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[149]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[150]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[151]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[152]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[153]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[154]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[155]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[156]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[157]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[158]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[159]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[160]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[161]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[162]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[163]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[164]
+    value: 255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[165]
+    value: 255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[166]
+    value: 127
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[167]
+    value: 191
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[168]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[169]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[170]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[171]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[172]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[173]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[174]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[175]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[176]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[177]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[178]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[179]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[180]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[181]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[182]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[183]
+    value: 191
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[184]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[185]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[186]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[187]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[188]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[189]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[190]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[191]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[192]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[193]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[194]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[195]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[196]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[197]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[198]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[199]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[200]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[201]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[202]
+    value: 128
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[203]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[204]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[205]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[206]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[207]
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[208]
+    value: 111
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[209]
+    value: 18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[210]
+    value: 131
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[211]
+    value: 59
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[212]
+    value: 48
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[213]
+    value: 22
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[214]
+    value: 16
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_VertexData.m_DataSize.data[215]
+    value: 63
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Vertices.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Vertices.m_Range
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Vertices.m_Start
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Vertices.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Vertices.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_UV.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_UV.m_Range
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_UV.m_Start
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_UV.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_UV.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Normals.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Normals.m_Range
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Normals.m_Start
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Normals.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Normals.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Tangents.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Tangents.m_Range
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Tangents.m_Start
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Tangents.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Tangents.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Weights.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Weights.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Weights.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_NormalSigns.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_NormalSigns.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_NormalSigns.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_TangentSigns.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_TangentSigns.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_TangentSigns.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_FloatColors.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_FloatColors.m_Range
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_FloatColors.m_Start
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_FloatColors.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_FloatColors.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_BoneIndices.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_BoneIndices.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_BoneIndices.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Triangles.m_NumItems
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Triangles.m_Data.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_Triangles.m_BitSize
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_CompressedMesh.m_UVInfo
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_LocalAABB.m_Center.x
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_LocalAABB.m_Center.y
+    value: 0.88761187
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_LocalAABB.m_Center.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_LocalAABB.m_Extent.x
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_LocalAABB.m_Extent.y
+    value: 0.88761187
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_LocalAABB.m_Extent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_MeshUsageFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_BakedConvexCollisionMesh.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_BakedTriangleCollisionMesh.Array.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_MeshMetrics[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_MeshMetrics[1]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_MeshOptimizationFlags
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_StreamData.offset
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_StreamData.size
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_StreamData.path
+    value: 
+    objectReference: {fileID: 0}

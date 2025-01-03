@@ -1,0 +1,39 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class NPCAbility_DelayedJumpSlam : Ability {
+
+    public static float Cooldown = 20;
+
+    public NPCAbility_DelayedJumpSlam(Unit ability_user) : base(ability_user) {
+        DamageSources.Add(new DamageSource(0, 100, Constants.DamageType.Light) {Knockback = 250});
+        DamageSources.Add(new DamageSource(50, 500, Constants.DamageType.Light, "AoE"));
+        AddCustomSound("Crack", "Earth/Earth_Crack3", 0.8f);
+        AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByRiposte });
+        WaitTimeBeforeNextAction = 0.2f;
+        DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
+        CanBeInterruptedByFlinching = false;
+    }
+
+    public override void CallAbilityEvent1()
+    {
+        User.ApplyForce(new Vector2(0.2f * (User.Actions.IsFlipped ? -1 : 1), 1).normalized * 500, this);
+    }
+
+    public override void CallAbilityEvent2()
+    {
+        ChaseCurrentTargetAtGivenDegreeAngle(250, 45, 7);
+    }
+
+    public override void CallAbilityEvent3()
+    {
+        Utils.CreateAreaOfEffect(new(this), "Ryker_JumpAssault" + (User.Actions.IsFlipped ? " Flipped" : ""));
+    }
+
+    public override void CallAbilityEvent4()
+    {
+        if(UnityEngine.Random.Range(0, 100) < 40 && User.gameObject.name != "Unit_TutorialRyker") {
+            User.PlayAnimation("DelayedJumpSlam", 0, 0.47f);
+        }
+    }
+}
