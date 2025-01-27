@@ -55,7 +55,7 @@ public abstract class Ability {
     public bool IsTechnique = false;
     public bool IsRiposte = false;
     public bool IsCounter = false;
-    public bool IsStealthAttack = false;
+    public bool IsBackstab = false;
     public bool IsUltimate = false;
     public bool AbilityEnded = false;
     

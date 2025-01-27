@@ -23,6 +23,12 @@ public class DebugTools : EditorWindow {
         if (GUILayout.Button("Search For Untranslated Labels")) {
             Label.SearchForUntranslatedLabels();
         }
+        if (GUILayout.Button("Check Dialogue Word Count (ENG)")) {
+            Debug.Log("ENG word count: " + Label.CheckWordCount("ENG"));
+        }
+        if (GUILayout.Button("Check Dialogue Word Count (PL)")) {
+            Debug.Log("PL word count: " + Label.CheckWordCount("PL"));
+        }
         /*if (GUILayout.Button("Equip Item On Player")) {
             Utils.CopyItemAppearanceForPlayer()
         }*/

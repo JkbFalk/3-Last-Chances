@@ -619,6 +619,11 @@ public class PlayerControls : WorldObject {
     }
 
     public void OnF2() {
+
+    }
+
+    public void OnF3() {
+
     }
 
     public void OnF4() {

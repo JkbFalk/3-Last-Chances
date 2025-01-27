@@ -554,10 +554,10 @@ public class Actions : MonoBehaviour {
     }
 
     public void PerformBasicAttack() {
-        if (Player.Instance.UnitsInRangeForStealthAttack.Count > 0 && Player.Instance.UnitsInRangeForStealthAttack[0] != null && Player.Instance.UnitsInRangeForStealthAttack[0].KnockedOut == false && ((Player.Instance.transform.position.x > Player.Instance.UnitsInRangeForStealthAttack[0].transform.position.x && Player.Instance.Actions.IsFlipped && Player.Instance.UnitsInRangeForStealthAttack[0].Actions.IsFlipped) ||
-            (Player.Instance.transform.position.x < Player.Instance.UnitsInRangeForStealthAttack[0].transform.position.x && !Player.Instance.Actions.IsFlipped && !Player.Instance.UnitsInRangeForStealthAttack[0].Actions.IsFlipped)))
+        if (Player.Instance.UnitsInRangeForBackstab.Count > 0 && Player.Instance.UnitsInRangeForBackstab[0] != null && Player.Instance.UnitsInRangeForBackstab[0].KnockedOut == false && ((Player.Instance.transform.position.x > Player.Instance.UnitsInRangeForBackstab[0].transform.position.x && Player.Instance.Actions.IsFlipped && Player.Instance.UnitsInRangeForBackstab[0].Actions.IsFlipped) ||
+            (Player.Instance.transform.position.x < Player.Instance.UnitsInRangeForBackstab[0].transform.position.x && !Player.Instance.Actions.IsFlipped && !Player.Instance.UnitsInRangeForBackstab[0].Actions.IsFlipped)))
         {
-            PerformStealthAttack();
+            PerformBackstab();
         }
         else {
             PerformRegularBasicAttack();
@@ -565,30 +565,30 @@ public class Actions : MonoBehaviour {
     }
 
 
-    public void PerformStealthAttack()
+    public void PerformBackstab()
     {
-        Unit closest_unit = Player.Instance.UnitsInRangeForStealthAttack[0];
-        foreach (Unit unit in Player.Instance.UnitsInRangeForStealthAttack)
+        Unit closest_unit = Player.Instance.UnitsInRangeForBackstab[0];
+        foreach (Unit unit in Player.Instance.UnitsInRangeForBackstab)
         {
             if (closest_unit != null && unit != null && !unit.KnockedOut && Vector2.Distance(Player.Instance.transform.position, unit.transform.position) < Vector2.Distance(Player.Instance.transform.position, closest_unit.transform.position))
             {
                 closest_unit = unit;
             }
         }
-        if (closest_unit == null || closest_unit.CheckIfUnderEffect(typeof(Effect_ImmunityToStealthAttack)))
+        if (closest_unit == null || closest_unit.CheckIfUnderEffect(typeof(Effect_ImmunityToBackstabs)))
         {
             PerformRegularBasicAttack();
         }
         else
         {
-            Type attackType = Type.GetType("BA_" + Unit.CurrentWeaponClass + "_StealthAttack");
-            Ability stealthAttack = (StealthAttack)Activator.CreateInstance(attackType, new object[] { Unit });
+            Type attackType = Type.GetType("BA_" + Unit.CurrentWeaponClass + "_Backstab");
+            Ability backstab = (Backstab)Activator.CreateInstance(attackType, new object[] { Unit });
             if (Ability.CheckIfCanPerformAbility(Player.Instance, attackType) && (CurrentAbilityBeingPerformed == null && Utils.CheckIfUnitCanPerformActions(Unit)) || (CurrentAbilityBeingPerformed != null && CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(Ability.AbilityInterruptType.BasicAttack)))
             {
-                Unit.Actions.CurrentAbilityBeingPerformed = stealthAttack;
-                stealthAttack.Target = closest_unit;
-                closest_unit.AddEffect(new Effect_StealthAttacked(new(stealthAttack)), 3.5f);
-                closest_unit.AddEffect(new Effect_ImmunityToStealthAttack(new(stealthAttack)), Player.Instance.StealthAttackCooldown);
+                Unit.Actions.CurrentAbilityBeingPerformed = backstab;
+                backstab.Target = closest_unit;
+                closest_unit.AddEffect(new Effect_Backstabbed(new(backstab)), 3.5f);
+                closest_unit.AddEffect(new Effect_ImmunityToBackstabs(new(backstab)), Player.Instance.BackstabCooldown);
             }
         }
     }

@@ -60,4 +60,15 @@ public class Label {
             }
         }
     }
+
+    public static int CheckWordCount(string lang) {
+        LoadDictionary();
+        int count = 0;
+        foreach (string key in _labels.Keys) {
+            if(_labels[key].Category == "Dialogue" && (lang == "ENG" ? _labels[key].ENG.Length > 0 : lang == "PL" ? _labels[key].PL.Length > 0 : false)) {
+                count += lang == "ENG" ? _labels[key].ENG.Count(w => w == ' ') : lang == "PL" ? _labels[key].PL.Count(w => w == ' ') : 0;
+            }
+        }
+        return count;
+    }
 }

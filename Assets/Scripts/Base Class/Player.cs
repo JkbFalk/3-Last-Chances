@@ -48,7 +48,7 @@ public class Player : Unit {
     }
 
     public string CurrentArea;
-    public List<Unit> UnitsInRangeForStealthAttack = new List<Unit>();
+    public List<Unit> UnitsInRangeForBackstab = new List<Unit>();
     public Dictionary<Type, int> CurrentTechniqueStacks = new() {
         {typeof(Ability_TempestStrikes), 1},
         {typeof(Ability_Flamethrower), 1}
@@ -59,16 +59,16 @@ public class Player : Unit {
         {typeof(Ability_Flamethrower), 1}
     };
 
-    private float _stealthAttackCooldown = 20;
-    public float StealthAttackCooldown
+    private float _backstabCooldown = 20;
+    public float BackstabCooldown
     {
         get
         {
-            return _stealthAttackCooldown < 5 ? 5 : _stealthAttackCooldown;
+            return _backstabCooldown < 5 ? 5 : _backstabCooldown;
         }
         set
         {
-            _stealthAttackCooldown = value;
+            _backstabCooldown = value;
         }
     }
 

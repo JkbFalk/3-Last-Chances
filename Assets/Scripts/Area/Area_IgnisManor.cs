@@ -783,7 +783,7 @@ public class Area_IgnisManor
     }
 
     public static void PlayPlayerAttackedAnimation() {
-        Player.Instance.PlayAnimation("StealthAttacked", 0.1f, 0.1f);
+        Player.Instance.PlayAnimation("Backstabbed", 0.1f, 0.1f);
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Blade/Blade_BloodStab1");
     }
 

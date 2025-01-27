@@ -34,6 +34,7 @@ public class Damage {
     public bool StaggerWasHigherThan0  = false;
     public bool IsCriticalInjury = false;
     public bool IsCriticalStagger = false;
+    public float ExtraDamageReduction = 0;
 
     public float OverkillInjury {get; set;} = 0;
     public float Injury {get; set;} = 0;
@@ -142,7 +143,7 @@ public class Damage {
 
         InjuryWasHigherThan0 = Injury > 0;
         StaggerWasHigherThan0 = Stagger > 0;
-        float damageReduction = (TargetOfDamage.DamageReduction.Current - SourceOfDamage.User.Penetration.Current) < 0 ? 1 : (1/(TargetOfDamage.DamageReduction.Current - SourceOfDamage.User.Penetration.Current + 1));
+        float damageReduction = (TargetOfDamage.DamageReduction.Current + ExtraDamageReduction - SourceOfDamage.User.Penetration.Current) < 0 ? 1 : (1/(TargetOfDamage.DamageReduction.Current + ExtraDamageReduction - SourceOfDamage.User.Penetration.Current + 1));
 
         Injury += GetCalculatedEffectiveWeaponDamage();
 

@@ -193,7 +193,7 @@ public class Effect {
         }
         else {
             bool decayDisabled = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect.GetType() == typeof(Effect_DisableEffectDecay) && ((Effect_DisableEffectDecay)effect).AffectedEffectType == GetType()) != null;
-            DecayingAmount = decayDisabled ? DecayingAmount : DecayingAmount - (DecayingAmount * DefaultDecaySpeed * EffectDecaySpeedModifier / 5);
+            DecayingAmount = decayDisabled ? DecayingAmount : EffectDecaySpeedModifier > 0 ? (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5)) : (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + Math.Abs(EffectDecaySpeedModifier)) / 5));
             ExtraBehaviourOnDecayingAmountChange();
         }
     }
@@ -220,11 +220,10 @@ public class Effect {
             if(_effectModifiers == null) {
                 _effectModifiers = GetEffectModifiers();
             }
-            float modifier = 1;
+            float modifier = 0;
             foreach(Effect e in _effectModifiers.ToArray()) {
                 if(((Effect_ChangeEffectPower)e).ChangeType == Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed) {
-                    Debug.Log("CHANGING DECAY MOD: " + modifier + " -> " + (modifier + ((Effect_ChangeEffectPower)e).PercentageChange / 100));
-                    modifier += ((Effect_ChangeEffectPower)e).PercentageChange / 100;
+                    modifier += -((Effect_ChangeEffectPower)e).PercentageChange / 100;
                 }
             }
             return modifier;

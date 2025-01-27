@@ -41,9 +41,9 @@ public abstract class Item
     public Ability ItemUseAbility;
     [NonSerialized]
     public String CustomAnimation;
-    public ItemSetEnum Set = ItemSetEnum.NotPartOfASet;
+    public ItemSetEnum Set = ItemSetEnum.Unique;
     public ItemSetEnum ItemSet;
-    public enum ItemSetEnum {WeaponMaster, Duelist, Jailer, Knight, BattleBorn, Ancient, Arbiter, Gunslinger, Void, PureIron, Mercenary, InnerForce, Assassin, Executioner, Survivor, Artisan, Alacrity, Brawler, Sage, Adept, ShadowGifted, NotPartOfASet};
+    public enum ItemSetEnum {WeaponMaster, Duelist, Jailer, Knight, BattleBorn, Ancient, Judge, Gunslinger, Arbiter, IronBlooded, Unbreakable, Mercenary, Assassin, Executioner, Survivor, Artisan, Alacrity, Enforcer, Sage, RoyalGuard, ShadowGifted, Unique};
     protected int _amount = 1;
     [NonSerialized]
     public List<Ability.DamageSource> DamageSources;

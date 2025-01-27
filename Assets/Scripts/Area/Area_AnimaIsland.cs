@@ -135,18 +135,27 @@ public class Area_AnimaIsland
         return new Dialogue ("Area_AnimaIsland", "IrisFirstEncounter", new List<DialogueLine>{
         new ("AnimaIsland_IrisFirstEncounter_0") {Animation="Appear", Speaker = "Player", WaitTimeBeforeAllowingToProceed = 2.5f},
         new ("AnimaIsland_IrisFirstEncounter_10") {Animation="Thinking", Speaker = "Maginhart1"},
-        new ("AnimaIsland_IrisFirstEncounter_20") {Animation="ShoulderShrug", Speaker = "Player", WaitTimeBeforeAllowingToProceed = 2},
-        new ("AnimaIsland_IrisFirstEncounter_30") {Animation="Accusing", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisFirstEncounter_31") {Animation="TryingToRemember", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisFirstEncounter_40") {Animation="Thinking", Speaker = "Player"},
-        new ("AnimaIsland_IrisFirstEncounter_50") {Animation="Realization", Speaker = "Maginhart1"},
-        new ("AnimaIsland_IrisFirstEncounter_60") {Animation="Irritated", Speaker = "Player"},
+        new ("AnimaIsland_IrisFirstEncounter_20") {Animation="ShoulderShrug", Speaker = "Player", WaitTimeBeforeAllowingToProceed = 3.5f},
+        new ("AnimaIsland_IrisFirstEncounter_30") {Animation="Realization", Speaker = "Iris1", TurnSpeakersToFaceEachOther=false},
+        new ("AnimaIsland_IrisFirstEncounter_40") {Animation="Surprised", Speaker = "Player", TurnSpeakersToFaceEachOther=false},
+        new ("AnimaIsland_IrisFirstEncounter_50") {Animation="ThreatenWithLight", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisFirstEncounter_60") {Animation="Intrigued", Speaker = "Player", TurnSpeakersToFaceEachOther=false},
         new ("AnimaIsland_IrisFirstEncounter_70") {Animation="Stoic", Speaker = "Maginhart1"},
-        new ("AnimaIsland_IrisFirstEncounter_80") {Animation="SternNo", Speaker = "Player"},
-        new ("AnimaIsland_IrisFirstEncounter_90") {Animation="Stoic", Speaker = "Maginhart1"},
-        new ("AnimaIsland_IrisFirstEncounter_100") {Animation="Surprised", Speaker = "Player"},
-        new ("AnimaIsland_IrisFirstEncounter_110") {Animation="Deflated", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisFirstEncounter_120") {Animation="PreparingForBattle", Speaker = "Player"}
+        new ("AnimaIsland_IrisFirstEncounter_80") {Animation="SternNo", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisFirstEncounter_90") {Animation="HandWave", Speaker = "Maginhart1"},
+        new ("AnimaIsland_IrisFirstEncounter_100") {Animation="SternNo", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisFirstEncounter_110") {Animation="Thinking", Speaker = "Player", TurnSpeakersToFaceEachOther=false},
+        new ("AnimaIsland_IrisFirstEncounter_Choices") {Animation="Thinking", Speaker = "Player", Choices= new List<DialogueChoice> {
+            new ("AnimaIsland_IrisFirstEncounterHelpIris_0"),
+            new ("AnimaIsland_IrisFirstEncounterHelpMaginhart_0")
+        }},
+        new ("AnimaIsland_IrisFirstEncounterHelpIris_10") {Animation="FinallyDecided", Speaker = "Player"},
+        new ("AnimaIsland_IrisFirstEncounterHelpIris_20") {Animation="ThreatenWithLight", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisFirstEncounterHelpIris_30") {Animation="Disapprove", Speaker = "Maginhart1"},
+        new ("AnimaIsland_IrisFirstEncounterHelpMaginhart_10") {Animation="Sigh", Speaker = "Player"},
+        new ("AnimaIsland_IrisFirstEncounterHelpMaginhart_20") {Animation="ThreatenWithLight", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisFirstEncounterHelpMaginhart_30") {Animation="Surprised", Speaker = "Player"},
+        new ("AnimaIsland_IrisFirstEncounterHelpMaginhart_40") {Animation="HandWave", Speaker = "Maginhart1"},
     }){PlayerStartingPosition = new Vector2(-85f, -5f), PlayerStartingFlipped = false, PlayerEndingFlipped=false, ReturnUnitsToOriginalPositions = false, AutoSaveOnDialogueEnd=false};}
 
     public static void OnStart_IrisFirstEncounter() {
@@ -157,10 +166,16 @@ public class Area_AnimaIsland
     public static void AnimaIsland_IrisFirstEncounter_0() {
         Area.Instance.transform.Find("Cycle1/IrisHunt").gameObject.SetActive(true);
         GameController.Instance.WaitAndRunMethod(1.5f, AnimaIsland_IrisFirstEncounter_0v2);
+        Utils.GetUnit("Maginhart1").Actions.IsFlipped = true;
+        Utils.GetUnit("Unit_AnimaHound_1").Actions.IsFlipped = true;
+        Utils.GetUnit("Unit_AnimaHound_2").Actions.IsFlipped = true;
+        Utils.GetUnit("Unit_AnimaHound_3").Actions.IsFlipped = true;
+        Utils.GetUnit("Unit_AnimaHound_4").Actions.IsFlipped = true;
     }
 
     public static void AnimaIsland_IrisFirstEncounter_0v2() {
         CameraController.Instance.CenteredOnObject = Utils.GetUnit("Iris1").gameObject;
+        Utils.GetUnit("Iris1").PlayAnimation("ThreatenWithLight");
     }
 
     public static void AnimaIsland_IrisFirstEncounter_20() {
@@ -168,28 +183,39 @@ public class Area_AnimaIsland
     }
 
     public static void AnimaIsland_IrisFirstEncounter_20v2() {
+        GameController.Instance.WaitAndRunMethod(2.0f, AnimaIsland_IrisFirstEncounter_20v3);
         Player.Instance.CurrentTarget = Area.Instance.transform.Find("Cycle1/IrisHunt/FakeTarget").GetComponent<Unit>();
         Player.Instance.Actions.UseAbility(typeof(NPCAbility_ThunderStep), false, Area.Instance.transform.Find("Cycle1/IrisHunt/FakeTarget").GetComponent<Unit>());
     }
 
-    public static void AnimaIsland_IrisFirstEncounter_90() {
-        Area.Instance.transform.Find("Cycle1/IrisHunt/FakeTarget").gameObject.SetActive(false);
-        foreach(Unit u in new List<Unit> {Utils.GetUnit("Unit_AnimaHound_1"), Utils.GetUnit("Unit_AnimaHound_2"), Utils.GetUnit("Unit_AnimaHound_3"), Utils.GetUnit("Unit_AnimaHound_4")}) {
-            u.AttackPlayer();
-            u.PlayAnimation("PreparingForBattle");
-        }
+    public static void AnimaIsland_IrisFirstEncounter_20v3() {
+        Player.Instance.PlayAnimation("ThreatenWithHeavy");
     }
 
-    public static void OnEnd_IrisFirstEncounter() {
+    public static void OnEnd_AnimaIsland_IrisFirstEncounterHelpIris_30() {
         Quest_Anima quest = (Quest_Anima)SaveFile.Instance.GetQuest("Anima");
         quest.StartQuest(true);
         quest.GetObjective(0).UpdateStatusWithoutNotifying(QuestObjective.ObjectiveStatus.Current);
         quest.GetObjective(0).ShowAsMissionObjective();
-        GameController.Instance.SaveMidMissionInformation(new List<string> {"Area_AnimaIsland.PrepareDuel"});
-        PrepareDuel();
+        GameController.Instance.SaveMidMissionInformation(new List<string> {"Area_AnimaIsland.PrepareDuelAgainstMaginhart"});
+        PrepareDuelAgainstMaginhart();
+    }
+    
+    public static void OnEnd_AnimaIsland_IrisFirstEncounterHelpMaginhart_40() {
+        Quest_Anima quest = (Quest_Anima)SaveFile.Instance.GetQuest("Anima");
+        quest.StartQuest(true);
+        quest.GetObjective(0).UpdateStatusWithoutNotifying(QuestObjective.ObjectiveStatus.Current);
+        quest.GetObjective(0).ShowAsMissionObjective();
+        GameController.Instance.SaveMidMissionInformation(new List<string> {"Area_AnimaIsland.PrepareDuelAgainstIris"});
+        PrepareDuelAgainstIris();
     }
 
-    public static void PrepareDuel() {
+    public static void PrepareDuelAgainstIris() {
+        Utils.GetUnit("Maginhart1").transform.position = new Vector2(-50f, -4.5f);
+        Utils.GetUnit("Iris1").AttackPlayer();
+    }
+
+    public static void PrepareDuelAgainstMaginhart() {
         Utils.GetUnit("Maginhart1").transform.position = new Vector2(-50f, -4.5f);
         Utils.GetUnit("Iris1").CurrentTarget = Utils.GetUnit("Unit_AnimaHound_1");
         Utils.GetUnit("Unit_AnimaHound_1").AttackPlayer();
@@ -202,62 +228,45 @@ public class Area_AnimaIsland
 
     public static Dialogue AfterFirstFight() {
         return new Dialogue ("Area_AnimaIsland", "AfterFirstFight", new List<DialogueLine>{
-        new ("AnimaIsland_AfterFirstFight_0") {Animation="Sigh", Speaker = "Maginhart1"},
-        new ("AnimaIsland_AfterFirstFight_10") {Animation="Mocking", Speaker = "Player"},
+        new ("AnimaIsland_AfterFirstFight_0") {Animation="ShakeHead", Speaker = "Maginhart1"},
+        new ("AnimaIsland_AfterFirstFight_10") {Animation="SternNo", Speaker = "Iris1"},
         new ("AnimaIsland_AfterFirstFight_20") {Animation="Stoic", Speaker = "Maginhart1"},
-        new ("AnimaIsland_AfterFirstFight_30") {Animation="Irritated", Speaker = "Player"},
-        new ("AnimaIsland_AfterFirstFight_40") {Animation="YesYou", Speaker = "Maginhart1"},
+        new ("AnimaIsland_AfterFirstFight_30") {Animation="ThreatenWithLight", Speaker = "Iris1"},
+        new ("AnimaIsland_AfterFirstFight_40") {Animation="Deflated", Speaker = "Maginhart1"},
         new ("AnimaIsland_AfterFirstFight_50") {Animation="Surprised", Speaker = "Iris1"},
-        new ("AnimaIsland_AfterFirstFight_60") {Animation="Stoic", Speaker = "Maginhart1"},
-        new ("AnimaIsland_AfterFirstFight_70") {Animation="TryToStop", Speaker = "Player", WaitTimeBeforeAllowingToProceed=1.5f},
-        new ("AnimaIsland_AfterFirstFight_80") {Animation="Stoic", Speaker = "Maginhart1", TurnSpeakersToFaceEachOther=false, WaitTimeBeforeAllowingToProceed=3.5f},
-        new ("AnimaIsland_AfterFirstFight_90") {Animation="GracefulBow", Speaker = "Iris1", WaitTimeBeforeAllowingToProceed=3},
-        new ("AnimaIsland_AfterFirstFight_100") {Animation="HandshakeOpposite", Speaker = "Player"},
-        new ("AnimaIsland_AfterFirstFight_110") {Animation="Sigh", Speaker = "Iris1"},
-        new ("AnimaIsland_AfterFirstFight_120") {Animation="Encourage", Speaker = "Player"},
-        new ("AnimaIsland_AfterFirstFight_130") {Animation="Determined", Speaker = "Iris1"},
+        new ("AnimaIsland_AfterFirstFight_60") {Animation="Accusing", Speaker = "Maginhart1"},
+        new ("AnimaIsland_AfterFirstFight_70") {Animation="ThreatenWithLightNoLonger", Speaker = "Iris1"},
+        new ("AnimaIsland_AfterFirstFight_80") {Animation="FinallyDecided", Speaker = "Maginhart1"},
+        new ("AnimaIsland_AfterFirstFight_90") {Animation="Frustrated", Speaker = "Iris1"},
+        new ("AnimaIsland_AfterFirstFight_100") {Animation="Flabbergasted", Speaker = "Player"},
+        new ("AnimaIsland_AfterFirstFight_110") {Animation="HandwaveTheIssue", Speaker = "Iris1", WaitTimeBeforeAllowingToProceed=2},
+        new ("AnimaIsland_AfterFirstFight_120") {Speaker = "Player", TurnSpeakersToFaceEachOther = false},
+        new ("AnimaIsland_AfterFirstFight_130") {Animation="Laugh", Speaker = "Iris1", TurnSpeakersToFaceEachOther = false},
+        new ("AnimaIsland_AfterFirstFight_140") {Animation="HereWeGo", Speaker = "Player", TurnSpeakersToFaceEachOther = false},
+        new ("AnimaIsland_AfterFirstFight_150") {Animation="PointDown", Speaker = "Iris1", TurnSpeakersToFaceEachOther = false},
+        new ("AnimaIsland_AfterFirstFight_160") {Animation="Determined", Speaker = "Player", TurnSpeakersToFaceEachOther = false},
     }){PlayerStartingPosition = new Vector2(-57.5f, -5f), PlayerStartingFlipped = false, ReturnUnitsToOriginalPositions=false};}
 
     public static void OnStart_AfterFirstFight() {
+        Area.Instance.transform.Find("Cycle1/WindBarrier").gameObject.SetActive(false);
         Utils.GetUnit("Maginhart1").transform.position = new Vector2(-55f, -4.5f);
         Utils.GetUnit("Iris1").transform.position = new Vector2(-59.5f, -5);
         Utils.GetUnit("Iris1").Actions.IsFlipped = false;
     }
 
-    public static void AnimaIsland_AfterFirstFight_70() {
-        Utils.GetUnit("Maginhart1").CanRun = false;
-        Utils.GetUnit("Maginhart1").Actions.MoveToPoint(-52f, -4.5f);
+    public static void AnimaIsland_AfterFirstFight_110() {
+        Utils.GetUnit("Iris1").Actions.IsFlipped = false;
+        Utils.GetUnit("Iris1").PlayAnimation("FollowAfterMe");
     }
 
-    public static void AnimaIsland_AfterFirstFight_80() {
-        GameController.Instance.WaitAndRunMethod(1.5f, AnimaIsland_AfterFirstFight_80v2);
-    }
-
-    public static void AnimaIsland_AfterFirstFight_80v2() {
-        Utils.GetUnit("Maginhart1").Actions.MoveToPoint(-40.5f, 0f);
-        UIManager.Instance.ShowBlackScreen(2);
-    }
-
-    public static void AnimaIsland_AfterFirstFight_90() {
-        Utils.GetUnit("Maginhart1").gameObject.SetActive(false);
-        Player.Instance.Actions.IsFlipped = true;
-        Player.Instance.transform.position = new Vector2(-57.5f, -5f);
-        UIManager.Instance.HideBlackScreen(1.5f);
-        GameController.Instance.WaitAndRunMethod(3f, AnimaIsland_AfterFirstFight_90v2);
-    }
-
-    public static void AnimaIsland_AfterFirstFight_90v2() {
-        Utils.GetUnit("Iris1").PlayAnimation("ProposeHandshake");
-    }
-
-    public static void AnimaIsland_AfterFirstFight_100() {
-        Utils.GetUnit("Iris1").PlayAnimation("Handshake");
+    public static void AnimaIsland_AfterFirstFight_120() {
+        Utils.GetUnit("Iris1").Actions.MoveToPoint(-52f, -4.5f);
+        Player.Instance.Actions.MoveToPoint(-54f, -6.5f);
     }
 
     public static void OnEnd_AfterFirstFight() {
         SaveFile.Instance.GetQuest("Anima").AdvanceObjective(10, new() {SaveFile.Instance.AnimaAbilitiesCountered.Count.ToString()});
         Utils.GetUnit("Iris1").GetComponent<FollowPlayer>().enabled = true;
-        Area.Instance.transform.Find("Cycle1/WindBarrier").gameObject.SetActive(false);
         Area.Instance.transform.Find("Cycle1/Units").gameObject.SetActive(true);
         StartAllDuels();
     }
@@ -275,15 +284,11 @@ public class Area_AnimaIsland
         new ("AnimaIsland_MaginhartInfoEnergy_10") {Animation="Intrigued", Speaker = "Player"},
         new ("AnimaIsland_MaginhartInfoEnergy_20") {Animation="PointDown", Speaker = "Maginhart2"},
         new ("AnimaIsland_MaginhartInfoEnergy_30") {Animation="Irritated", Speaker = "Player", IdOfNextDialogueLine="AnimaIsland_MaginhartInfo_Choices"},
-        new ("AnimaIsland_MaginhartInfoIris_10") {Animation="Accusing", Speaker = "Player"},
+        new ("AnimaIsland_MaginhartInfoIris_10") {Animation="Intrigued", Speaker = "Player"},
         new ("AnimaIsland_MaginhartInfoIris_20") {Animation="Stoic", Speaker = "Maginhart2"},
-        new ("AnimaIsland_MaginhartInfoIris_30") {Animation="YesYou", Speaker = "Player"},
-        new ("AnimaIsland_MaginhartInfoIris_40") {Animation="NotQuite", Speaker = "Maginhart2"},
-        new ("AnimaIsland_MaginhartInfoIris_41") {Animation="Stoic", Speaker = "Maginhart2"},
-        new ("AnimaIsland_MaginhartInfoIris_50") {Animation="Deflated", Speaker = "Iris1"},
-        new ("AnimaIsland_MaginhartInfoIris_60") {Animation="Stoic", Speaker = "Maginhart2"},
-        new ("AnimaIsland_MaginhartInfoIris_70") {Animation="SternNo", Speaker = "Player"},
-        new ("AnimaIsland_MaginhartInfoIris_80") {Animation="Stoic", Speaker = "Maginhart2", IdOfNextDialogueLine="AnimaIsland_MaginhartInfo_Choices"},
+        new ("AnimaIsland_MaginhartInfoIris_30") {Animation="Listening", Speaker = "Player"},
+        new ("AnimaIsland_MaginhartInfoIris_40") {Animation="Frustrated", Speaker = "Maginhart2"},
+        new ("AnimaIsland_MaginhartInfoIris_50") {Animation="Flabbergasted", Speaker = "Player", IdOfNextDialogueLine="AnimaIsland_MaginhartInfo_Choices"},
         new ("AnimaIsland_MaginhartInfoFamily_10") {Animation="TryingToRemember", Speaker = "Player"},
         new ("AnimaIsland_MaginhartInfoFamily_20") {Animation="Thinking", Speaker = "Maginhart2"},
         new ("AnimaIsland_MaginhartInfoFamily_30") {Animation="Surprised", Speaker = "Player"},
@@ -307,12 +312,9 @@ public class Area_AnimaIsland
     }){PlayerStartingPosition = new Vector2(-20f, 55f), PlayerStartingFlipped = false, SpeakerStartingFlipped=true, ReturnUnitsToOriginalPositions=false};}
 
     public static void OnStart_MaginhartInfo() {
-        Debug.Log("MOVING IRIS1: " + Utils.GetUnit("Iris1").transform.position);
         Utils.GetUnit("Iris1").transform.position = new Vector2(-22f, 53f);
         Utils.GetUnit("Iris1").Actions.IsFlipped = false;
-        Debug.Log("MOVING IRIS2: " + Utils.GetUnit("Iris1").transform.position);
     }
-    
 
     public static void AnimaIsland_MaginhartInfoIris_50() {
         Player.Instance.PlayAnimation("Surprised");
@@ -411,12 +413,10 @@ public class Area_AnimaIsland
     public static Dialogue IrisTalk1() {
         return new Dialogue ("Area_AnimaIsland", "IrisTalk1", new List<DialogueLine>{
         new ("AnimaIsland_IrisTalk1_0") {Animation="Approving", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk1_10") {Animation="HereWeGo", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk1_10") {Animation="Sigh", Speaker = "Player"},
         new ("AnimaIsland_IrisTalk1_20") {Animation="Intrigued", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk1_30") {Animation="PreparingForBattle", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk1_40") {Animation="WobblyGetUp", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk1_50") {Animation="StopRunning", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk1_60") {Animation="WobblyGetUp", Speaker = "Iris1"}
+        new ("AnimaIsland_IrisTalk1_30") {Animation="HereWeGo", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk1_40") {Animation="Bashful", Speaker = "Iris1"},
     }){PlayerStartingPosition = MostRecentDuelistDefeated.Contains("AnimaBlademaster") ? new Vector2(-35f, 45f) : MostRecentDuelistDefeated.Contains("AnimaSpearmaster") ? new Vector2(21f, 57f) : new Vector2(-4f, -18f), PlayerStartingFlipped = true, DialogueSpeaker=Utils.GetUnit("Iris1"), SpeakerStartingPosition = MostRecentDuelistDefeated.Contains("AnimaBlademaster") ? new Vector2(-37f, 45f) : MostRecentDuelistDefeated.Contains("AnimaSpearmaster") ? new Vector2(19f, 57f) : new Vector2(-6f, -18f), SpeakerStartingFlipped = false};}
 
     public static void AnimaIsland_IrisTalk1_0() {
@@ -437,20 +437,13 @@ public class Area_AnimaIsland
 
     public static Dialogue IrisTalk2() {
         return new Dialogue ("Area_AnimaIsland", "IrisTalk2", new List<DialogueLine>{
-        new ("AnimaIsland_IrisTalk2_0") {Animation="PreparingForBattle", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk2_10") {Animation="Sigh", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk2_20") {Animation="Thinking", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk2_30") {Animation="TryingToRemember", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk2_40") {Animation="Realization", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk2_50") {Animation="YesMe", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk2_60") {Animation="Thinking", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk2_70") {Animation="Sigh", Speaker = "Iris1"}
+        new ("AnimaIsland_IrisTalk2_0") {Animation="Sigh", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk2_10") {Animation="DontThinkSo", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk2_20") {Animation="Deflated", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk2_30") {Animation="Intrigued", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk2_40") {Animation="Sigh", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk2_50") {Animation="FollowAfterMe", Speaker = "Player"},
     }){PlayerStartingPosition = MostRecentDuelistDefeated.Contains("AnimaBlademaster") ? new Vector2(-35f, 45f) : MostRecentDuelistDefeated.Contains("AnimaSpearmaster") ? new Vector2(21f, 57f) : new Vector2(-4f, -18f), PlayerStartingFlipped = true, DialogueSpeaker=Utils.GetUnit("Iris1"), SpeakerStartingPosition = MostRecentDuelistDefeated.Contains("AnimaBlademaster") ? new Vector2(-39f, 45f) : MostRecentDuelistDefeated.Contains("AnimaSpearmaster") ? new Vector2(17f, 57f) : new Vector2(-8f, -18f), SpeakerStartingFlipped = true};}
-
-    public static void AnimaIsland_IrisTalk2_0() {
-        //Utils.GetUnit("Iris1").PlayAnimation("GazingAtTheHorizon");
-        Utils.GetUnit("Iris1").PlayAnimation("Sigh");
-    }
 
     public static void OnEnd_IrisTalk2() {
         Utils.GetUnit("Iris1").GetComponent<FollowPlayer>().enabled = true;
@@ -462,13 +455,13 @@ public class Area_AnimaIsland
 
     public static Dialogue IrisTalk3() {
         return new Dialogue ("Area_AnimaIsland", "IrisTalk3", new List<DialogueLine>{
-        new ("AnimaIsland_IrisTalk3_0") {Animation="Stoic", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk3_10") {Animation="Frustrated", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk3_20") {Animation="GracefulBow", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk3_30") {Animation="Listening", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk3_40") {Animation="SmileThroughPain", Speaker = "Iris1"},
-        new ("AnimaIsland_IrisTalk3_50") {Animation="Sigh", Speaker = "Player"},
-        new ("AnimaIsland_IrisTalk3_60") {Animation="FinallyDecided", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk3_0") {Animation="Intrigued", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk3_10") {Animation="Exhausted", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk3_20") {Animation="ShoulderShrug", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk3_30") {Animation="YesYou", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk3_40") {Animation="Irritated", Speaker = "Iris1"},
+        new ("AnimaIsland_IrisTalk3_50") {Animation="Thinking", Speaker = "Player"},
+        new ("AnimaIsland_IrisTalk3_60") {Animation="Surprised", Speaker = "Iris1"},
         new ("AnimaIsland_IrisTalk3_70") {Animation="Frustrated", Speaker = "Player"}
     }){PlayerStartingPosition = MostRecentDuelistDefeated.Contains("AnimaBlademaster") ? new Vector2(-35f, 45f) : MostRecentDuelistDefeated.Contains("AnimaSpearmaster") ? new Vector2(21f, 57f) : new Vector2(-4f, -18f), PlayerStartingFlipped = true, DialogueSpeaker=Utils.GetUnit("Iris1"), SpeakerStartingPosition = MostRecentDuelistDefeated.Contains("AnimaBlademaster") ? new Vector2(-37f, 45f) : MostRecentDuelistDefeated.Contains("AnimaSpearmaster") ? new Vector2(19f, 57f) : new Vector2(-6f, -18f), SpeakerStartingFlipped = false};}
 
@@ -482,90 +475,19 @@ public class Area_AnimaIsland
 
     public static Dialogue Cycle1Finale() {
         return new Dialogue ("Area_AnimaIsland", "Cycle1Finale", new List<DialogueLine>{
-        new ("AnimaIsland_Cycle1Finale_0") {Animation="Stoic", Speaker = "Maginhart2"},
-        new ("AnimaIsland_Cycle1Finale_Choices") {Animation="Thinking", Speaker = "Player", Choices= new List<DialogueChoice> {
-            new ("AnimaIsland_Cycle1FinaleGiveUp_0"),
-            new ("AnimaIsland_Cycle1FinalePersist_0")
-        }},
-        new ("AnimaIsland_Cycle1FinaleGiveUp_10") {Animation="Deflated", Speaker = "Player", WaitTimeBeforeAllowingToProceed=3},
-        new ("AnimaIsland_Cycle1FinaleGiveUp_20") {Animation="SmileThroughPain", Speaker = "Iris1"},
-        new ("AnimaIsland_Cycle1FinaleGiveUp_30") {Animation="Frustrated", Speaker = "Player", IdOfNextDialogueLine="AnimaIsland_Cycle1Finale_10"},
-        new ("AnimaIsland_Cycle1FinalePersist_10") {Animation="ShoulderShrug", Speaker = "Player", IdOfNextDialogueLine="END", WaitTimeBeforeAllowingToProceed=3.0f},
-        new ("AnimaIsland_Cycle1Finale_10"),
-        new ("AnimaIsland_Cycle1Finale_20"){IdOfNextDialogueLine="END"},
+        new ("AnimaIsland_Cycle1Finale_0") {Animation="Approving", Speaker = "Maginhart2"},
+        new ("AnimaIsland_Cycle1Finale_10") {Animation="LookingAround", Speaker = "Player"},
+        new ("AnimaIsland_Cycle1Finale_20") {Animation="GracefulBow", Speaker = "Maginhart2"},
+        new ("AnimaIsland_Cycle1Finale_30") {Animation="Sigh", Speaker = "Iris2"},
+        new ("AnimaIsland_Cycle1Finale_40") {Animation="ShoulderShrug", Speaker = "Maginhart2"},
+        new ("AnimaIsland_Cycle1Finale_50"){IdOfNextDialogueLine="END"},
     }){PlayerStartingPosition = new Vector2(-20f, 55f), PlayerStartingFlipped = false, DialogueSpeaker=Utils.GetUnit("Maginhart2"), SpeakerStartingPosition = new Vector2(-17f, 55f), SpeakerStartingFlipped=true};}
 
-    public static void AnimaIsland_Cycle1Finale_10() {
-        UIManager.Instance.ShowBlackScreen(3);
-        Utils.GetUnit("Iris1").Actions.MoveToPoint(-18f, 55f, true);
+    public static void AnimaIsland_Cycle1Finale_40() {
+        UIManager.Instance.ShowBlackScreen(5);
     }
 
-    public static void OnStart_Cycle1Finale() {
-        Utils.GetUnit("Iris1").transform.position = new Vector2(-24f, 53f);
-        Utils.GetUnit("Iris1").Actions.IsFlipped = false;
-    }
-
-    public static void AnimaIsland_Cycle1FinaleGiveUp_10() {
-        GameController.Instance.WaitAndRunMethod(1.5f, AnimaIsland_Cycle1FinaleGiveUp_10v2);
-    }
-
-    public static void AnimaIsland_Cycle1FinaleGiveUp_10v2() {
-        Player.Instance.Actions.IsFlipped = true;
-        Player.Instance.Actions.MoveToPoint(-22f, 51f, true);
-    }
-
-    public static void AnimaIsland_Cycle1FinalePersist_10() {
-        GameController.Instance.WaitAndRunMethod(1.5f, AnimaIsland_Cycle1FinalePersist_10v2);
-    }
-
-    public static void AnimaIsland_Cycle1FinalePersist_10v2() {
-        Player.Instance.PlayAnimation("SwordSweep", 0.05f, 0.33f);
-        Utils.GetUnit("Maginhart2").PlayAnimation("PushedBack");
-        UIManager.Instance.ShowBlackScreen(1.5f);
-    }
-
-    public static void OnEnd_AnimaIsland_Cycle1FinalePersist_10() {
-        Player.Instance.AddEffect(new Effect_CannotBeDefeated(false, new(Player.Instance)));
-        Utils.GetUnit("Maginhart2").AddEffect(new Effect_CannotBeDefeated(true, new(Utils.GetUnit("Maginhart2"))));
-        Utils.GetUnit("Maginhart2").AttackPlayer();
-        EventManager.UnitWouldBeDefeated.AddListener(CheckTheFinaleDuelVictor);
-    }
-
-    public static bool DefeatedMaginhartCycle1 = false;
-
-    public static void CheckTheFinaleDuelVictor(Damage damage) {
-        if(damage.TargetOfDamage.gameObject.name.Contains("Maginhart")) {
-            DefeatedMaginhartCycle1 = true;
-            UIManager.Instance.StartDialogue(Cycle1FinaleContinued());
-        }
-        else if(damage.TargetOfDamage == Player.Instance) {
-            UIManager.Instance.StartDialogue(Cycle1FinaleContinued());
-        }
-    }
-
-    public static Dialogue Cycle1FinaleContinued() {
-        return new Dialogue ("Area_AnimaIsland", "Cycle1FinaleContinued", new List<DialogueLine>{
-        new (DefeatedMaginhartCycle1 ? "AnimaIsland_Cycle1FinalePersist_20b" : "AnimaIsland_Cycle1FinalePersist_20a") {Animation="HeavilyWounded", Speaker = "Player"},
-        new ("AnimaIsland_Cycle1FinalePersist_30") {Animation="Stoic", Speaker = "Maginhart2"},
-        new ("AnimaIsland_Cycle1FinalePersist_40") {Animation="TryToStop", Speaker = "Iris1"},
-        new ("AnimaIsland_Cycle1FinalePersist_50") {Animation="SternNo", Speaker = "Player"},
-        new ("AnimaIsland_Cycle1FinalePersist_60") {Animation="SmileThroughPain", Speaker = "Iris1"},
-        new ("AnimaIsland_Cycle1FinalePersist_70") {Animation="Frustrated", Speaker = "Player"},
-        new ("AnimaIsland_Cycle1FinalePersist_80") {Animation="YesYou", Speaker = "Maginhart2"},
-        new ("AnimaIsland_Cycle1Finale_10"),
-        new ("AnimaIsland_Cycle1Finale_20"){IdOfNextDialogueLine="END"},
-    }){PlayerStartingPosition = new Vector2(-20f, 55f), PlayerStartingFlipped = false, DialogueSpeaker=Utils.GetUnit("Maginhart2"), SpeakerStartingPosition = new Vector2(-17f, 55f), SpeakerStartingFlipped=true};}
-
-    public static void OnStart_Cycle1FinaleContinued() {
-        Utils.GetUnit("Iris1").transform.position = new Vector2(-22f, 53f);
-        Utils.GetUnit("Iris1").Actions.IsFlipped = false;
-    }
-
-    public static void OnEnd_AnimaIsland_Cycle1Finale_20() {
-        SaveFile.Instance.CurrentMission.Finish(true);
-    }
-
-    public static void OnEnd_Cycle1FinaleContinued() {
+    public static void OnEnd_Cycle1Finale() {
         SaveFile.Instance.CurrentMission.Finish(true);
     }
 

@@ -95,6 +95,6 @@ public class Effect_CuttingWind : Effect {
     }
 
     public bool CheckIfAbilityIsValidForSuperCharge(Ability used_ability) {
-        return used_ability != null && (used_ability.IsBasicAttack || used_ability.IsRiposte || used_ability.IsCounter || used_ability.IsStealthAttack) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == EffectCategory;
+        return used_ability != null && (used_ability.IsBasicAttack || used_ability.IsRiposte || used_ability.IsCounter || used_ability.IsBackstab) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == EffectCategory;
     }
 }

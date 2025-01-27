@@ -85,6 +85,6 @@ public class Effect_CuttingWind_Ultimate : Effect {
     }
 
     public bool CheckIfAbilityIsValidForSuperCharge(Ability used_ability) {
-        return TargetOfEffect.Actions.CurrentAbilityBeingPerformed != null && (TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsBasicAttack || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsRiposte || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsCounter || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsStealthAttack) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == DamageCategory;
+        return TargetOfEffect.Actions.CurrentAbilityBeingPerformed != null && (TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsBasicAttack || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsRiposte || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsCounter || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsBackstab) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == DamageCategory;
     }
 }

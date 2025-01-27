@@ -130,13 +130,13 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerEnterHandler, ISelectHa
 
     public static List<Effect> GetPassivePowerUpEffects(string power_up_name, float percentage_value = 0, float flat_value = 0) {
         List<Effect> PowerUpEffects = new List<Effect>();
-        if (power_up_name != "DamageReduction" && Utils.GetPlayerStatForGivenName(power_up_name) != null)
+        if (Utils.GetPlayerStatForGivenName(power_up_name) != null)
         {
             PowerUpEffects.Add(new Effect_ChangeStat(Utils.GetPlayerStatForGivenName(power_up_name), new(power_up_name)) {PercentageAmount = percentage_value, FlatAmount = flat_value}  );
         }
-        else if (power_up_name == "StealthAttackDamage")
+        else if (power_up_name == "BackstabDamage")
         {
-            PowerUpEffects.Add(new Effect_IncreaseDamageFromGivenAbilityType(percentage_value, new(power_up_name)) { AbilityType = typeof(StealthAttack)});
+            PowerUpEffects.Add(new Effect_IncreaseDamageFromGivenAbilityType(percentage_value, new(power_up_name)) { AbilityType = typeof(Backstab)});
         }
         else if (power_up_name == "BasicAttackDamage")
         {
@@ -273,25 +273,17 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerEnterHandler, ISelectHa
                         if(Player.Instance.CurrentEffects.FirstOrDefault(e => e.ExtraInfo == "ReducedDamageAfterCounter") != null) {
                             Player.Instance.CurrentEffects.FirstOrDefault(e => e.ExtraInfo == "ReducedDamageAfterCounter").EndThisEffect();
                         }
-                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(power_up_name)) {PercentageAmount=percentage_value * 2, ExtraInfo = "ReducedDamageAfterRiposte"}, 10);
+                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(power_up_name)) {PercentageAmount=percentage_value * 2, ExtraInfo = "ReducedDamageAfterCounter"}, 10);
                     }
             })});
         }
         else if(power_up_name == "ReducedDamageDuringBasicAttacks") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { MultiplierChange = -percentage_value / 100, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                     (damage.TargetOfDamage == Player.Instance && Player.Instance.Actions.CurrentAbilityBeingPerformed != null && Player.Instance.Actions.CurrentAbilityBeingPerformed.IsBasicAttack))});
         }
         else if(power_up_name == "DamageToStaggered") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { InjuryPercentageChange = percentage_value, StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                     (damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Staggered))))});
-        }
-        else if(power_up_name == "BurnDamageToStaggered") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { InjuryPercentageChange = percentage_value, StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                    (damage.SourceOfDamage.User == Player.Instance && damage.Properites.Contains(Damage.DamageProperty.Burn) && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Staggered))))});
-        }
-        else if(power_up_name == "BurnDamageToNonStaggered") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { InjuryPercentageChange = percentage_value, StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                    (damage.SourceOfDamage.User == Player.Instance && damage.Properites.Contains(Damage.DamageProperty.Burn) && !damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Staggered))))});
         }
         else if(power_up_name == "BurnAlsoAddsOnslaught") {
             PowerUpEffects.Add(new Effect_CustomizableEffectOnEvent(new(power_up_name)) { PercentageAmount = percentage_value, ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
@@ -312,27 +304,6 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerEnterHandler, ISelectHa
                     (effect2.SourceOfEffect?.User == Player.Instance && effect2.GetType() == typeof(Effect_Burn))), ActionOnEffectEmpowered = new Action<Effect, Effect, Effect_CustomizableEffectOnEvent> ((effect1, effect2, effect) =>  {
                         effect2.TargetOfEffect.AddEffect(new Effect_Freeze(effect2.DecayingAmount * effect.PercentageAmount / 100, effect2.SourceOfEffect));
             })});
-        }
-        else if(power_up_name == "BurnAlsoPenetrates") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { PenetrationChange = percentage_value / 100, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                    (damage.SourceOfDamage.User == Player.Instance && damage.Properites.Contains(Damage.DamageProperty.Burn)))});
-        }
-        else if(power_up_name == "SlowPower") {
-
-        }
-        else if(power_up_name == "FreezeDuration") {
-            PowerUpEffects.Add(new Effect_CustomizableEffectOnEvent(new(power_up_name)) { PercentageAmount = percentage_value, ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
-                    (effect?.SourceOfEffect?.User == Player.Instance && (effect is Effect_Freeze || effect is Effect_FreezeInPlace))), 
-                ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((triggeringEffect, customizableEffect) =>  {
-                    triggeringEffect.BaseDuration *= (1 + customizableEffect.PercentageAmount / 100);
-                })});
-        }
-        else if(power_up_name == "SlowDuration") {
-            PowerUpEffects.Add(new Effect_CustomizableEffectOnEvent(new(power_up_name)) { PercentageAmount = percentage_value, ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
-                    (effect?.SourceOfEffect?.User == Player.Instance && effect is Effect_Slow)), 
-                ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((triggeringEffect, customizableEffect) =>  {
-                    triggeringEffect.BaseDuration *= (1 + customizableEffect.PercentageAmount / 100);
-                })});
         }
         else if(power_up_name == "DamageToFarEnemies") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { InjuryPercentageChange = percentage_value, StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
@@ -360,51 +331,31 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerEnterHandler, ISelectHa
                     stat.ChangeCurrentValueWithoutInvoking(amount + amount * effect.PercentageAmount / 100);
                 })});
         }
-        else if(power_up_name == "PronePower") {
-            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Prone), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, percentage_value, new(power_up_name)));
-        }
-        else if(power_up_name == "ProneDecay") {
-            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Prone), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, -percentage_value, new(power_up_name)));
-        }
-        else if(power_up_name == "ReducedDamageFromProne") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { MultiplierChange = -percentage_value / 100, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                    (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Prone))))});
-        }
         else if(power_up_name == "ReducedDamageFromMissedCounters") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { MultiplierChange = -percentage_value / 100, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                     (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.IsCounterable))});
         }
         else if(power_up_name == "ReducedDamageFromUncounterable") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { MultiplierChange = -percentage_value / 100, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                     (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.IsUncounterable))});
         }
-        else if(power_up_name == "ProneAlsoEmpowersStealthAttacks") {
+        else if(power_up_name == "SharpAlsoEmpowersBackstabs") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                (damage.SourceOfDamage.GetType().IsSubclassOf(typeof(StealthAttack)) && damage.SourceOfDamage?.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Prone)))),
+                (damage.SourceOfDamage.GetType().IsSubclassOf(typeof(Backstab)) && damage.SourceOfDamage?.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Sharp)))),
             Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                float empowerAmount = ((Effect_Prone)damage.TargetOfDamage.GetEffect(typeof(Effect_Prone))).DecayingAmount;
+                float empowerAmount = ((Effect_Sharp)damage.TargetOfDamage.GetEffect(typeof(Effect_Sharp))).DecayingAmount;
                 damage.ExtraInjuryDealtPercentage += empowerAmount;
                 damage.ExtraStaggerDealtPercentage += empowerAmount;
             })});
         }
-        else if(power_up_name == "ProneAlsoEmpowersBasicAttacks") {
+        else if(power_up_name == "SharpAlsoEmpowersBasicAttacks") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { CustomParam = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                (damage.SourceOfDamage.IsBasicAttack && damage.SourceOfDamage?.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Prone)))),
+                (damage.SourceOfDamage.IsBasicAttack && damage.SourceOfDamage?.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Sharp)))),
             Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                float empowerAmount = ((Effect_Prone)damage.TargetOfDamage.GetEffect(typeof(Effect_Prone))).DecayingAmount;
+                float empowerAmount = ((Effect_Sharp)damage.TargetOfDamage.GetEffect(typeof(Effect_Sharp))).DecayingAmount;
                 damage.ExtraInjuryDealtPercentage += empowerAmount * effect.CustomParam / 100;
                 damage.ExtraStaggerDealtPercentage += empowerAmount * effect.CustomParam / 100;
             })});
-        }
-        else if(power_up_name == "BurnPower") {
-            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, percentage_value, new(power_up_name)));
-        }
-        else if(power_up_name == "BurnDecay") {
-            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, -percentage_value, new(power_up_name)));
-        }
-        else if(power_up_name == "ReducedDamageFromBurning") {
-            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { MultiplierChange = -percentage_value / 100, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                    (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Burn))))});
         }
         else if(power_up_name == "DamageToIsolated") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { InjuryPercentageChange = percentage_value, StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
@@ -421,8 +372,8 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerEnterHandler, ISelectHa
                     damage.Stagger *= effect.StaggerPercentageChange == 0 ? 1 : (1 - effect.StaggerPercentageChange / 100);
                 })});
         }
-        else if(power_up_name == "StealthAttackCooldown") {
-            PowerUpEffects.Add(new Effect_LowerStealthAttackImmunity(new(power_up_name)) { ImmunityDurationReductionInSeconds = 5f });
+        else if(power_up_name == "BackstabCooldown") {
+            PowerUpEffects.Add(new Effect_LowerBackstabImmunity(new(power_up_name)) { ImmunityDurationReductionInSeconds = 5f });
         }
         else if(power_up_name == "DamageToLowHealth") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { InjuryPercentageChange = percentage_value, StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
@@ -518,13 +469,90 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerEnterHandler, ISelectHa
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { StaggerPercentageChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                     (damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Stun))))});
         }
+        else if(power_up_name == "SharpAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Sharp), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "SharpDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Sharp), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "SharpDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))))});
+        }
+        else if(power_up_name == "BurnAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "BurnDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "BurnDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Burn))))});
+        }
+        else if(power_up_name == "FreezeAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Freeze), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "FreezeDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Freeze), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "FreezeDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Freeze))))});
+        }
+        else if(power_up_name == "BarrierAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Barrier), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "BarrierDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Barrier), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "BarrierDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Barrier))))});
+        }
+        else if(power_up_name == "BleedAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Bleed), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "BleedDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Bleed), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "BleedDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Bleed))))});
+        }
+        else if(power_up_name == "SuperchargeAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Supercharge), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "SuperchargeDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Supercharge), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "SuperchargeDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Supercharge))))});
+        }
+        else if(power_up_name == "AnalysisAmount") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Analysis), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "AnalysisDecay") {
+            PowerUpEffects.Add(new Effect_ChangeEffectPower(typeof(Effect_Analysis), Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, -percentage_value, new(power_up_name)));
+        }
+        else if(power_up_name == "AnalysisDamageReduction") {
+            PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { DamageReductionChange = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                (damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis))))});
+        }
+
+
+
+
+
+
+
         else if(power_up_name == "IgnisManor_WeaponTraining") {
             PowerUpEffects.Add(new Effect_ChangeStat(Player.Instance.HeavyInjury, new(power_up_name)) {PercentageAmount = 10 });
             PowerUpEffects.Add(new Effect_ChangeStat(Player.Instance.HeavyStagger, new(power_up_name)) {PercentageAmount = 10 });
         }
         else if(power_up_name == "IgnisManor_BackstabPowerUp") {
             PowerUpEffects.Add(new Effect_CustomizableDamageChange(new(power_up_name)) { CustomParam = percentage_value, ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                damage.SourceOfDamage.IsStealthAttack && damage.SourceOfDamage?.User == Player.Instance && damage.IsDamageOverTime == false),
+                damage.SourceOfDamage.IsBackstab && damage.SourceOfDamage?.User == Player.Instance && damage.IsDamageOverTime == false),
             Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                 damage.TargetOfDamage.AddEffect(new Effect_Burn(Player.Instance.HeavyStagger.Current * 0.05f, new(damage.SourceOfDamage)));
             })});

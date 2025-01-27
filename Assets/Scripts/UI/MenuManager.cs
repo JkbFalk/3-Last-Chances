@@ -637,7 +637,7 @@ public class MenuManager : MonoBehaviour {
         InventoryDetailsWindowOpen = true;
         transform.Find("Inventory Window/Details").gameObject.SetActive(true);
         transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.Category == Constants.ItemCategory.Quest ? " " : item.GetDescription() + GetModifierDescriptions(item));
-        transform.Find("Inventory Window/Details/Flavor Text/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.GetFlavorText() + (item.Set != Item.ItemSetEnum.NotPartOfASet ? String.Format(Label.Get("ItemSet_Introduction"), new object[] {Label.Get("ItemSet_" + item.Set.ToString() + "_Name")}) + "\n" : ""));
+        transform.Find("Inventory Window/Details/Flavor Text/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.GetFlavorText());
         transform.Find("Inventory Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "_Name}");
         if(item.Category == Constants.ItemCategory.Heavy || item.Category == Constants.ItemCategory.Light || item.Category == Constants.ItemCategory.Ranged)
         {

@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_LeoWindmill.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Bow_BackstepCounter.cs" />
+    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_RoyalGuard.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_ProtectFromFlinchingOnce.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_PlundererGlacies.cs" />
     <Compile Include="Assets\Scripts\Base Class\CenterScrollRectOnItemWhenSelected.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="Assets\Scripts\Effect\Effect_RedirectingProjectiles.cs" />
     <Compile Include="Assets\Scripts\UI\UIFloatController.cs" />
     <Compile Include="Assets\Scripts\UI\GameController.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\UI\EquipmentTile.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_Volcano.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Ignis3.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Polearm_Riposte.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_EliminateBoss.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_HeavyRush.cs" />
+    <Compile Include="Assets\Scripts\Item\Armor\Armor_RoyalGuard.cs" />
     <Compile Include="Assets\Scripts\Unused Scripts\Effect_StaggeredImmunity.cs" />
     <Compile Include="Assets\Scripts\Ability\Basic\Ability_BackStep.cs" />
     <Compile Include="Assets\Scripts\Base Class\FlagBehaviour.cs" />
@@ -102,11 +103,12 @@
     <Compile Include="Assets\Scripts\Effect\Effect_ShieldedByAlly.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_ExtraVoid.cs" />
+    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Judge.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_Headbutt.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Arbiter.cs" />
+    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Judge.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_StrongBAsDealStaggerBasedOnEnemyStaggerBar.cs" />
-    <Compile Include="Assets\Scripts\Item\Armor\Armor_Adept.cs" />
     <Compile Include="Assets\Scripts\ColliderDetector.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Bow_F.cs" />
     <Compile Include="Assets\Scripts\Item\Polearm\Polearm_ChargeLance.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_TectonicPull.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_BulletTime.cs" />
     <Compile Include="Assets\Scripts\UI\HideOrShowOverTime.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Gun_Backstab.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_CapitalExploration.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_GroundEruption.cs" />
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Alacrity.cs" />
@@ -157,7 +160,6 @@
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Daggers_RollCounter.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Greatsword_S.cs" />
     <Compile Include="Assets\Scripts\Item\Twin Blades\TwinBlades_WhiteWings.cs" />
-    <Compile Include="Assets\Scripts\Item\Boots\Boots_Void.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Bow_RiposteCounter.cs" />
     <Compile Include="Assets\Scripts\Item\Bow\Bow_Ebony.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Daggers_FFF.cs" />
@@ -170,14 +172,15 @@
     <Compile Include="Assets\Scripts\UI\MissionSelectController.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_FirstMission.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Enforcer.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_PlundererInfuse.cs" />
     <Compile Include="Assets\Scripts\Area\Area_MolisTown.cs" />
-    <Compile Include="Assets\Scripts\Item\Boots\Boots_Brawler.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_AncientGreaves.cs" />
+    <Compile Include="Assets\Scripts\Item\Armor\Armor_Unbreakable.cs" />
     <Compile Include="Assets\Scripts\UI\CanvasElements.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Greatsword_Backstab.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_FireShot.cs" />
     <Compile Include="Assets\Scripts\Ability\Basic\Ability_StanceSwitchRight.cs" />
-    <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_StealthAttacked.cs" />
     <Compile Include="Assets\Scripts\Base Class\Effect.cs" />
     <Compile Include="Assets\Scripts\Base Class\InteractableObject.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_RykerPayback.cs" />
@@ -186,13 +189,13 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\Quest\Quest_EliminateAllEnemies.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
-    <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_Slowdraw.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Magic_Backstab.cs" />
     <Compile Include="Assets\Scripts\Item\Tool\Tool_Caltrops.cs" />
+    <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_Slowdraw.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_ShieldGuard.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Executioner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\Ability\AI\AI_TryToFlank.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Bow_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\Quest\Quest_DestroyDestructibles.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_BackstepFanThrow.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_FF.cs" />
@@ -202,9 +205,9 @@
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_HandbowShot.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Gun_BackstepCounter.cs" />
     <Compile Include="Assets\Scripts\Stat\Stagger.cs" />
+    <Compile Include="Assets\Scripts\Item\Armor\Armor_IronBlooded.cs" />
     <Compile Include="Assets\Scripts\UI\DialogueLineItem.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Arbiter.cs" />
-    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Adept.cs" />
     <Compile Include="Assets\Scripts\UI\DebugController.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Greatsword_RiposteCounter.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_DisableEffectDecay.cs" />
@@ -218,7 +221,6 @@
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_ChargedPunch.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_BlackflameBackstab.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_FlyingSwordImpale.cs" />
-    <Compile Include="Assets\Scripts\Item\Armor\Armor_Void.cs" />
     <Compile Include="Assets\Scripts\UI\PassivePowerUpTile.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_WindRush.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_EquipTwoHeavyWeapons.cs" />
@@ -232,13 +234,10 @@
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_FlyingSwordBarrage.cs" />
     <Compile Include="Assets\Scripts\Ability\AI\AI_Escape.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_IncreaseDamageFromGivenAbilityType.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Greatsword_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_BlockAndSlash.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Magic_Riposte.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_ImmunityToAreaOfEffect.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Daggers_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_DrawSlash.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Polearm_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\Base Class\SetChildActiveAfterNSeconds.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_RainOfArrows.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_FlyingSwordThrust.cs" />
@@ -253,6 +252,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Anima3.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Daggers_S.cs" />
+    <Compile Include="Assets\Scripts\Item\Armor\Armor_Judge.cs" />
     <Compile Include="Assets\Scripts\Base Class\ItemGenerator.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_BerserkerRage.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_FirstReturn.cs" />
@@ -274,6 +274,7 @@
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Survivor.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_PlundererSalutis.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_CuttingWind.cs" />
+    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Unbreakable.cs" />
     <Compile Include="Assets\Scripts\Quest\Quest_MemoryEater.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Stance.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Knight.cs" />
@@ -283,6 +284,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_TechniquesRestoreDamageAsHealth.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_BladeSlash.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_BattleBorn.cs" />
+    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_RoyalGuard.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Greatsword_FF.cs" />
     <Compile Include="Assets\Scripts\Base Class\ParticleTriggerBehavior.cs" />
     <Compile Include="Assets\Scripts\UI\SliderValueUpdater.cs" />
@@ -290,7 +292,6 @@
     <Compile Include="Assets\Scripts\Mission\Mission_Glacies3.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_Staggered.cs" />
     <Compile Include="Assets\Scripts\Stat\ToolPower.cs" />
-    <Compile Include="Assets\Scripts\Item\Armor\Armor_InnerForce.cs" />
     <Compile Include="Assets\Scripts\Base Class\DestroyGameObjectAfterGivenTime.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_IncreaseRiposteDamage.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -321,6 +322,7 @@
     <Compile Include="Assets\Scripts\Base Class\EnemyGroup.cs" />
     <Compile Include="Assets\Scripts\UI\LoadingScreenClock.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Lethargy.cs" />
+    <Compile Include="Assets\Scripts\Base Class\BackstabController.cs" />
     <Compile Include="Assets\Scripts\Area\Area_IgnisManorOnFire.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_RollForward.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_FlameExplosion.cs" />
@@ -331,10 +333,10 @@
     <Compile Include="Assets\Scripts\Base Class\PlayerTargetDetection.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_ExecuteEnemiesBelowHealth.cs" />
     <Compile Include="Assets\Scripts\Effect\Stances\Stance_None.cs" />
+    <Compile Include="Assets\Scripts\Item\Boots\Boots_Judge.cs" />
     <Compile Include="Assets\Scripts\Stat\Health.cs" />
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Gunslinger.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_DrinkTool_Drop.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Magic_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Onslaught.cs" />
     <Compile Include="Assets\Scripts\Ability\AI\AI_RangedCombatReposition.cs" />
     <Compile Include="Assets\Scripts\Unused Scripts\MoveTest.cs" />
@@ -348,7 +350,7 @@
     <Compile Include="Assets\Scripts\Base Class\PassiveSelectItem.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Empowered.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_ThunderStep.cs" />
-    <Compile Include="Assets\Scripts\Item\Boots\Boots_PureIron.cs" />
+    <Compile Include="Assets\Scripts\Ability\Basic\Ability_Backstab.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_FlameSmash.cs" />
     <Compile Include="Assets\Scripts\Base Class\Quest.cs" />
     <Compile Include="Assets\Scripts\Base Class\DestroyOnUnitKnockedOut.cs" />
@@ -366,7 +368,6 @@
     <Compile Include="Assets\Scripts\Area\Area_FirstReturn.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_BackstepCountered.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Scripts\Item\Armor\Armor_PureIron.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_ScissorSlash.cs" />
     <Compile Include="Assets\Scripts\Area\Area_PropriusMountains.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_MultipleStabs.cs" />
@@ -380,7 +381,6 @@
     <Compile Include="Assets\Scripts\Base Class\UnitColorChange.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_GainExtraAmmoOnFinishingOffEnemies.cs" />
     <Compile Include="Assets\Scripts\Area\Area_SalutisStage.cs" />
-    <Compile Include="Assets\Scripts\Base Class\StealthAttackController.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_CannonShots.cs" />
     <Compile Include="Assets\Scripts\Item\Greatsword\Greatsword_DragonsMaw.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_ShadowGifted.cs" />
@@ -397,6 +397,7 @@
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_ThreefoldDance.cs" />
     <Compile Include="Assets\Scripts\UI\CameraController.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_IceBullets.cs" />
+    <Compile Include="Assets\Scripts\Item\Boots\Boots_RoyalGuard.cs" />
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Duelist.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_BattleBorn.cs" />
     <Compile Include="Assets\Scripts\UnitAIEditor.cs" />
@@ -405,11 +406,9 @@
     <Compile Include="Assets\Scripts\Ability\Basic\Ability_SourcelessDamage.cs" />
     <Compile Include="Assets\Scripts\Item\Gun\Gun_DesertEagle.cs" />
     <Compile Include="Assets\Scripts\Effect\Stances\Stance_HeatOfBattle.cs" />
-    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_InnerForce.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Daggers_Riposte.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_FireWave.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Burn.cs" />
-    <Compile Include="Assets\Scripts\Item\Armor\Armor_Brawler.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Molis2.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Gun_RiposteCounter.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_WildFireSerpents.cs" />
@@ -458,14 +457,13 @@
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_StandingStab.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Knight.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_CustomizableEffectOnEvent.cs" />
-    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_PureIron.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_Backstab.cs" />
     <Compile Include="Assets\Scripts\Item\Gauntlets\Gauntlets_Shatterers.cs" />
     <Compile Include="Assets\Scripts\Base Class\AbilityUnlockedItem.cs" />
     <Compile Include="Assets\Scripts\Base Class\TemporaryObject.cs" />
     <Compile Include="Assets\Scripts\Base Class\ChangeActiveStatusBasedOnInCombat.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_RootedInPlace.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_ClariseAssassination.cs" />
-    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Brawler.cs" />
     <Compile Include="Assets\Scripts\UI\StartScreen.cs" />
     <Compile Include="Assets\Scripts\UI\QuestTile.cs" />
     <Compile Include="Assets\Scripts\Ability\Item\Ability_ExpertBadge.cs" />
@@ -480,6 +478,7 @@
     <Compile Include="Assets\Scripts\Ability\Item\Ability_DrinkItem.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_CombatTraining.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Gun_FS.cs" />
+    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Unbreakable.cs" />
     <Compile Include="Assets\Scripts\Base Class\EnemyDetection.cs" />
     <Compile Include="Assets\Scripts\Ability\Basic\Ability_StanceSwitchLeft.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_InflictBleedOnBAs.cs" />
@@ -495,6 +494,7 @@
     <Compile Include="Assets\Scripts\Item\Gun\Gun_AncientFirearms.cs" />
     <Compile Include="Assets\Scripts\Base Class\MakeParentMatchHeight.cs" />
     <Compile Include="Assets\Scripts\Base Class\ToggleActiveElementOnHover.cs" />
+    <Compile Include="Assets\Scripts\Item\Boots\Boots_Unbreakable.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_TakeDecreasedDamage.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Mercenary.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Greatsword_BackstepCounter.cs" />
@@ -506,7 +506,6 @@
     <Compile Include="Assets\Scripts\Ability\AI\AI_RoamAround.cs" />
     <Compile Include="Assets\Scripts\Effect\Stances\Stance_SingularPursuit.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_FlameLance.cs" />
-    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Void.cs" />
     <Compile Include="Assets\Scripts\Base Class\ConsoleToGUI.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_SoftCrowdControl.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Analysis.cs" />
@@ -533,6 +532,7 @@
     <Compile Include="Assets\Scripts\UI\Colors.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_SwitchWeapon.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Exhaust.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Bow_Backstab.cs" />
     <Compile Include="Assets\Scripts\Item\Tool\Tool_CrimsonFeather.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_MarketResearch.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_DodgeAndShootArrow.cs" />
@@ -540,6 +540,7 @@
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_FlameShove.cs" />
     <Compile Include="Assets\Scripts\UI\ButtonDropdown.cs" />
     <Compile Include="Assets\Scripts\Base Class\SandboxArenaController.cs" />
+    <Compile Include="Assets\Scripts\Item\Armor\Armor_Enforcer.cs" />
     <Compile Include="Assets\Scripts\Base Class\SaveState.cs" />
     <Compile Include="Assets\Scripts\Unused Scripts\Effect_SoftStaggeredImmunity.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_RedirectProjectilesDuringBasicAttacks.cs" />
@@ -555,13 +556,12 @@
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_FlameWhip.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Magic_BackstepCounter.cs" />
     <Compile Include="Assets\Scripts\Item\Tool\Tool_SerenityNeedle.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_ImmunityToBackstabs.cs" />
     <Compile Include="Assets\Scripts\Base Class\Unit.cs" />
-    <Compile Include="Assets\Scripts\Item\Boots\Boots_Adept.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_FireDance.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_Flamethrower.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Mercenary.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_PlundererAbilityAmplify.cs" />
-    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Adept.cs" />
     <Compile Include="Assets\Scripts\Environment\Chest.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_CloseEnemiesTakeExtraDamage.cs" />
     <Compile Include="Assets\Scripts\Base Class\UnitWeapon.cs" />
@@ -569,8 +569,8 @@
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_WindmillStab.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_SpearThrow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
-    <Compile Include="Assets\Scripts\Effect\Effect_LowerStealthAttackImmunity.cs" />
     <Compile Include="Assets\Scripts\UI\SetActiveOnSelect.cs" />
+    <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_Backstabbed.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_PlundererAnima.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_HardCrowdControl.cs" />
     <Compile Include="Assets\Scripts\Stat\ItemPower.cs" />
@@ -586,6 +586,7 @@
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Artisan.cs" />
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Jailer.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Greatsword_RollCounter.cs" />
+    <Compile Include="Assets\Scripts\Item\Boots\Boots_Enforcer.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Ignis2.cs" />
     <Compile Include="Assets\Scripts\Base Class\ChangeSelectOnInput.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_SwordSlam.cs" />
@@ -596,7 +597,6 @@
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Greatsword_F.cs" />
     <Compile Include="Assets\Scripts\Item\Boots\Boots_ShadowGifted.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
-    <Compile Include="Assets\Scripts\Item\Boots\Boots_InnerForce.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Duelist.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Anima1.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Blackfire.cs" />
@@ -617,6 +617,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_Poison.cs" />
     <Compile Include="Assets\Scripts\Item\Quest\Quest_TrimvineKeyToLaurasLab.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
+    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_IronBlooded.cs" />
     <Compile Include="Assets\Scripts\Environment\Tree.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_GainTemporaryStatAfterHittingEnemy.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_TripleHeavySlash.cs" />
@@ -638,12 +639,12 @@
     <Compile Include="Assets\Scripts\Item\Gun\Gun_Lament.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_WindupUpperCut.cs" />
     <Compile Include="Assets\Scripts\Area\Area_TheVault.cs" />
-    <Compile Include="Assets\Scripts\Ability\Basic\Ability_StealthAttack.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_FS.cs" />
     <Compile Include="Assets\Scripts\Ability\Basic\Ability_Roll.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Sharp.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_FlameBackstab.cs" />
+    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Enforcer.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_MeetingWithLaura.cs" />
     <Compile Include="Assets\Scripts\Base Class\SelectOnStart.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_ArrowShot.cs" />
@@ -658,6 +659,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_ExtraChained.cs" />
     <Compile Include="Assets\Scripts\Base Class\PermanentObject.cs" />
     <Compile Include="Assets\Scripts\Area\Area_AnimaIsland.cs" />
+    <Compile Include="Assets\Scripts\Item\Boots\Boots_IronBlooded.cs" />
     <Compile Include="Assets\Scripts\Base Class\AreaOfEffect.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Daggers_FFFF.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_SuperCharge.cs" />
@@ -673,8 +675,6 @@
     <Compile Include="Assets\Scripts\Effect\Effect_Plunderer.cs" />
     <Compile Include="Assets\Scripts\UI\MissionSelectItem.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Jailer.cs" />
-    <Compile Include="Assets\Scripts\Item\Gloves\Gloves_PureIron.cs" />
-    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Void.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_RefundCooldownForDamageCategory.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Arbiter.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Skip10Weeks.cs" />
@@ -716,10 +716,10 @@
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_Fireball.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_MagicRanged_F.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_IncreaseDamageDealt.cs" />
+    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_IronBlooded.cs" />
     <Compile Include="Assets\Scripts\Base Class\NotificationController.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_SoftStaggered.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Ryker_Payback.cs" />
-    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Brawler.cs" />
     <Compile Include="Assets\Scripts\Item\Quest\Quest_UpgradeMaterials.cs" />
     <Compile Include="Assets\Scripts\Item\Gun\Gun_Defender.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Polearm_RiposteCounter.cs" />
@@ -747,6 +747,7 @@
     <Compile Include="Assets\Scripts\Base Class\ClickableDialogueWindow.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\TwinBlades_RollCounter.cs" />
     <Compile Include="Assets\Scripts\Item\Bow\Bow_Impetus.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_LowerBackstabImmunity.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_ShadowGifted.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_Flinching.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
@@ -786,7 +787,7 @@
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_BoulderPunch.cs" />
     <Compile Include="Assets\Scripts\Item\Twin Blades\TwinBlades_Ambience.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_CompleteSurvival.cs" />
-    <Compile Include="Assets\Scripts\Effect\Effect_ImmunityToStealthAttack.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Polearm_Backstab.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_Artisan.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_HealMissingHealth.cs" />
     <Compile Include="Assets\Scripts\UI\OverviewStatDescription.cs" />
@@ -800,10 +801,8 @@
     <Compile Include="Assets\Scripts\Item\Boots\Boots_Knight.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_Freeze.cs" />
     <Compile Include="Assets\Scripts\Base Class\Environment.cs" />
-    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Gun_StealthAttack.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_DownAndUp.cs" />
     <Compile Include="Assets\Scripts\Base Class\WorldObject.cs" />
-    <Compile Include="Assets\Scripts\Item\Helmet\Helmet_InnerForce.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Salutis2.cs" />
     <Compile Include="Assets\Scripts\Effect\Stances\Stance_OmniMastery.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_S.cs" />
@@ -833,6 +832,7 @@
     <Compile Include="Assets\Scripts\Base Class\Stance.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_TripleEruption.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Sage.cs" />
+    <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Daggers_Backstab.cs" />
     <Compile Include="Assets\Scripts\Base Class\DestructibleEnvironment.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_Eruption.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_FlameWall.cs" />

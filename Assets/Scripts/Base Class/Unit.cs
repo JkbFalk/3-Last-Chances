@@ -236,7 +236,7 @@ public class Unit : PermanentObject {
                 if (this is Player)
                 {
                     Player.Instance.UpdateAllStacksWhileNotInCombat();
-                    Player.Instance.UnitsInRangeForStealthAttack.Clear();
+                    Player.Instance.UnitsInRangeForBackstab.Clear();
                     Utils.StopIntermissionMusic();
                     foreach(InteractableObject inter in Area.Instance.GetComponentsInChildren<InteractableObject>(true)) {
                         inter.UpdateIndicatorVisiblity();

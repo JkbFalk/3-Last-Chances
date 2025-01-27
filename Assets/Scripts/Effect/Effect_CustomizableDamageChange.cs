@@ -8,6 +8,7 @@ public class Effect_CustomizableDamageChange : Effect
 {
     public float CustomParam = 0;
     public float CustomParam2 = 0;
+    public float DamageReductionChange = 0;
     public float PenetrationChange = 0;
     public float MultiplierChange = 0;
     public float InjuryPercentageChange = 0;
@@ -24,6 +25,9 @@ public class Effect_CustomizableDamageChange : Effect
             }
             if(effect.MultiplierChange != 0) {
                 damage.DamageDealtMultiplier += effect.MultiplierChange;
+            }
+            if(effect.DamageReductionChange != 0) {
+                damage.ExtraDamageReduction += effect.DamageReductionChange;
             }
         });
 

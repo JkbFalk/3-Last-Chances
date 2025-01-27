@@ -437,7 +437,7 @@ public class Area_IgnisVolcano
         Utils.GetUnit("Colten2").transform.position = new Vector2(Utils.GetUnit("Blaine3").transform.position.x - 1, Utils.GetUnit("Blaine3").transform.position.y);
         Utils.CreateVisualEffect(new(Utils.GetUnit("Colten2")), "BlackflameBackstab", Utils.GetUnit("Colten2").transform.position.x, Utils.GetUnit("Colten2").transform.position.y - 0.5f);
         CameraController.Instance.CenteredOnObject = Utils.GetUnit("Colten2").gameObject;
-        Utils.GetUnit("Blaine3").PlayAnimation("StealthAttacked", 0.1f, 0.1f);
+        Utils.GetUnit("Blaine3").PlayAnimation("Backstabbed", 0.1f, 0.1f);
         GameController.Instance.WaitAndRunMethod(1.5f, BlaineWounded);
     }
 
@@ -694,7 +694,7 @@ public class Area_IgnisVolcano
         Utils.GetUnit("Colten").PlayAnimation("BlackflameBackstab", 0, 0.33f);
         Utils.CreateVisualEffect(new(Utils.GetUnit("Colten")), "BlackflameBackstab", Utils.GetUnit("Colten").transform.position.x, Utils.GetUnit("Colten").transform.position.y - 0.5f);
         CameraController.Instance.CenteredOnObject = Utils.GetUnit("Colten").gameObject;
-        Utils.GetUnit("Blaine").PlayAnimation("StealthAttacked", 0.1f, 0.1f);
+        Utils.GetUnit("Blaine").PlayAnimation("Backstabbed", 0.1f, 0.1f);
         Utils.GetUnit("SentientArmor").gameObject.SetActive(true);
         Utils.GetUnit("SentientArmor").PlayAnimation("AppearAndDefend", 0, 0);
         GameController.Instance.WaitAndRunMethod(1.5f, BlaineWounded2);

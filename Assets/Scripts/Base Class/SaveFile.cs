@@ -273,7 +273,7 @@ public class SaveFile
         return !Flags.Contains(Utils.GetFormattedFlag(flag));
     }
 
-    public int Cycle = 2;
+    public int Cycle = 1;
     [SerializeField]
     private int _week = 1;
     public int Week {

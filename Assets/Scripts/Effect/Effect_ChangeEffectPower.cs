@@ -7,34 +7,37 @@ using static Constants;
 
 public class Effect_ChangeEffectPower : Effect
 {
-    
-    public override string ToString()
-    {
-        if (ChangeType == ChangeTypeEnum.AffectAmountAdded && AffectedUnitsType == AffectedUnitsTypeEnum.Enemies && PercentageChange > 0)
+    public static string GetDescription(ChangeTypeEnum change_type, AffectedUnitsTypeEnum affected_units_type, float percentage_change) {
+        if (change_type == ChangeTypeEnum.AffectAmountAdded && affected_units_type == AffectedUnitsTypeEnum.Enemies && percentage_change > 0)
         {
-            return String.Format(Label.Get("Effect_ChangeEffectPowerIncreaseAmountOnEnemy_DescriptionSimple"), new object[] {Label.Get(AffectedEffectType.ToString()), Utils.GetFormattedFloat(Math.Abs(PercentageChange))});
+            return String.Format(Label.Get("Effect_ChangeEffectPowerIncreaseAmountOnEnemy_DescriptionSimple"), new object[] {Label.Get(affected_units_type.ToString()), Utils.GetFormattedFloat(Math.Abs(percentage_change))});
         }
-        else if (ChangeType == ChangeTypeEnum.AffectAmountAdded && AffectedUnitsType == AffectedUnitsTypeEnum.Player && PercentageChange < 0)
+        else if (change_type == ChangeTypeEnum.AffectAmountAdded && affected_units_type == AffectedUnitsTypeEnum.Player && percentage_change < 0)
         {
-            return String.Format(Label.Get("Effect_ChangeEffectPowerDecreaseAmountOnPlayer_DescriptionSimple"), new object[] {Label.Get(AffectedEffectType.ToString()), Utils.GetFormattedFloat(Math.Abs(PercentageChange))});
+            return String.Format(Label.Get("Effect_ChangeEffectPowerDecreaseAmountOnPlayer_DescriptionSimple"), new object[] {Label.Get(affected_units_type.ToString()), Utils.GetFormattedFloat(Math.Abs(percentage_change))});
         }
-        else if (ChangeType == ChangeTypeEnum.AffectAmountAdded && AffectedUnitsType == AffectedUnitsTypeEnum.Player && PercentageChange > 0)
+        else if (change_type == ChangeTypeEnum.AffectAmountAdded && affected_units_type == AffectedUnitsTypeEnum.Player && percentage_change > 0)
         {
-            return String.Format(Label.Get("Effect_ChangeEffectPowerIncreaseAmountOnPlayer_DescriptionSimple"), new object[] {Label.Get(AffectedEffectType.ToString()), Utils.GetFormattedFloat(Math.Abs(PercentageChange))});
+            return String.Format(Label.Get("Effect_ChangeEffectPowerIncreaseAmountOnPlayer_DescriptionSimple"), new object[] {Label.Get(affected_units_type.ToString()), Utils.GetFormattedFloat(Math.Abs(percentage_change))});
         }
-        else if (ChangeType == ChangeTypeEnum.AffectDecaySpeed && AffectedUnitsType == AffectedUnitsTypeEnum.Enemies && PercentageChange < 0)
+        else if (change_type == ChangeTypeEnum.AffectDecaySpeed && affected_units_type == AffectedUnitsTypeEnum.Enemies && percentage_change < 0)
         {
-            return String.Format(Label.Get("Effect_ChangeEffectPowerDecreaseDecayOnEnemy_DescriptionSimple"), new object[] {Label.Get(AffectedEffectType.ToString()), Utils.GetFormattedFloat(Math.Abs(PercentageChange))});
+            return String.Format(Label.Get("Effect_ChangeEffectPowerDecreaseDecayOnEnemy_DescriptionSimple"), new object[] {Label.Get(affected_units_type.ToString()), Utils.GetFormattedFloat(Math.Abs(percentage_change))});
         }
-        else if (ChangeType == ChangeTypeEnum.AffectDecaySpeed && AffectedUnitsType == AffectedUnitsTypeEnum.Player && PercentageChange > 0)
+        else if (change_type == ChangeTypeEnum.AffectDecaySpeed && affected_units_type == AffectedUnitsTypeEnum.Player && percentage_change > 0)
         {
-            return String.Format(Label.Get("Effect_ChangeEffectPowerIncreaseDecayOnPlayer_DescriptionSimple"), new object[] {Label.Get(AffectedEffectType.ToString()), Utils.GetFormattedFloat(Math.Abs(PercentageChange))});
+            return String.Format(Label.Get("Effect_ChangeEffectPowerIncreaseDecayOnPlayer_DescriptionSimple"), new object[] {Label.Get(affected_units_type.ToString()), Utils.GetFormattedFloat(Math.Abs(percentage_change))});
         }
-        else if (ChangeType == ChangeTypeEnum.AffectDecaySpeed && AffectedUnitsType == AffectedUnitsTypeEnum.Player && PercentageChange < 0)
+        else if (change_type == ChangeTypeEnum.AffectDecaySpeed && affected_units_type == AffectedUnitsTypeEnum.Player && percentage_change < 0)
         {
-            return String.Format(Label.Get("Effect_ChangeEffectPowerDecreaseDecayOnPlayer_DescriptionSimple"), new object[] {Label.Get(AffectedEffectType.ToString()), Utils.GetFormattedFloat(Math.Abs(PercentageChange))});
+            return String.Format(Label.Get("Effect_ChangeEffectPowerDecreaseDecayOnPlayer_DescriptionSimple"), new object[] {Label.Get(affected_units_type.ToString()), Utils.GetFormattedFloat(Math.Abs(percentage_change))});
         }
         else return Label.Get("MissingLabel");
+    }   
+
+    public override string ToString()
+    {
+        return GetDescription(ChangeType, AffectedUnitsType, PercentageChange);
     }
 
     public Type AffectedEffectType;
