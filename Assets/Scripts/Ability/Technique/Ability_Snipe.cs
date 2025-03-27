@@ -27,7 +27,7 @@ public class Ability_Snipe : Technique
     public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Ranged;
 
     public Ability_Snipe(Unit ability_user) : base(ability_user) {
-        IsChargeAbility = true;
+        Properties.Add(AbilityProperty.Charged);
         AddCustomSound("Shoot", "Ice/Ice_Shot1", 0.9f);
         AddCustomSound("Charge", "Ability/Ability_Snipe_Charge", 0.5f);
         DamageSources.Add(new DamageSource(0, 0, Constants.DamageType.Ranged));

@@ -14,19 +14,19 @@ public class Effect_ChangeStat : Effect {
         }
         else if (FlatAmount != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("Effect_RemainsActiveInOtherStances") + "\n": "") + (FlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(FlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (FlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(FlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
         else if (PercentageAmount != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("Effect_RemainsActiveInOtherStances") + "\n": "") + (PercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(PercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (PercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(PercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
         else if (RegenerationFlatAmount != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("Effect_RemainsActiveInOtherStances") + "\n": "") + (RegenerationFlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(RegenerationFlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (RegenerationFlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(RegenerationFlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
         else if (RegenerationPercentageAmount != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("Effect_RemainsActiveInOtherStances") + "\n": "") + (RegenerationPercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(RegenerationPercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (RegenerationPercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(RegenerationPercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
         else return Label.Get("MissingLabel");
     }
@@ -198,6 +198,7 @@ public class Effect_ChangeStat : Effect {
 
     public Effect_ChangeStat(Stat stat_affected, SourceOfEffect source_of_effect) : base(source_of_effect) {
         StatAffected = stat_affected;
+        PathToEffectGraphic = "UI/" + stat_affected.ToString();
         if(StatAffected?.Owner is Player) {
             EventManager.PlayerObjectReinitialized.AddListener(UpdateAffectedStat);
         }

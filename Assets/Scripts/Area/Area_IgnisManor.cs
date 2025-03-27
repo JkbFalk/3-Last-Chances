@@ -671,9 +671,9 @@ public class Area_IgnisManor
     public static void OnEnd_Colten2() {
         int sabotageLevel = SaveFile.Instance.HasFlag("IgnisManor_ColtenSabotage4") ? 4 : SaveFile.Instance.HasFlag("IgnisManor_ColtenSabotage3") ? 3 : SaveFile.Instance.HasFlag("IgnisManor_ColtenSabotage2") ? 2 : SaveFile.Instance.HasFlag("IgnisManor_ColtenSabotage1") ? 1 : 0;
         Player.Instance.AddEffect(new Effect_Poison(10f - 2f * sabotageLevel, new(Utils.GetUnit("Colten2"))));
-        Player.Instance.AddEffect(new Effect_Feeble(50f - 10f * sabotageLevel, new(Utils.GetUnit("Colten2"))));
+        Player.Instance.AddEffect(new Effect_Enfeebled(50f - 10f * sabotageLevel, new(Utils.GetUnit("Colten2"))));
         Utils.GetUnit("Colten2").AttackPlayer();
-        EventManager.EnemyDefeated.AddListener(CheckIfColten2Defeated);
+        EventManager.UnitKnockedOut.AddListener(CheckIfColten2Defeated);
     }
 
     public static void CheckIfColten2Defeated(Damage damage) {
@@ -793,7 +793,7 @@ public class Area_IgnisManor
 
     public static void OnEnd_IgnisManor_InviteAssassinToDuelBackstabbed_60() {
         Player.Instance.AddEffect(new Effect_Poison(2f, new(Utils.GetUnit("Unit_IgnisAssassin"))));
-        Player.Instance.AddEffect(new Effect_Feeble(35, new(Utils.GetUnit("Unit_IgnisAssassin"))));
+        Player.Instance.AddEffect(new Effect_Enfeebled(35, new(Utils.GetUnit("Unit_IgnisAssassin"))));
         StartDuel("IgnisAssassin");
     }
 

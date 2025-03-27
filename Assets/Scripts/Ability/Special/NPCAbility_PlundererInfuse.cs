@@ -10,7 +10,7 @@ public class NPCAbility_PlundererInfuse : Ability {
     private Ability.AbilityFamily _blockedFamily;
     public NPCAbility_PlundererInfuse(Unit ability_user) : base(ability_user) {
         TransitionOutOfAnimationDuration = 0;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()
@@ -54,7 +54,7 @@ public class NPCAbility_PlundererInfuse : Ability {
     {
         EndThisAbility();
         User.Actions.UseAbility(Type.GetType("NPCAbility_Plunderer" + (_isOmni ? "Omni" : _blockedFamily)));
-        User.Actions.CurrentAbilityBeingPerformed.IsUncounterable = true;
+        User.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.Unstoppable);
     }
 
     public Ability.AbilityFamily GetValidFamilyToBlock() {

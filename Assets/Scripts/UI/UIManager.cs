@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Constants;
+using UnityEngine.AI;
 
 public class UIManager : MonoBehaviour {
     private static UIManager _instance = null;
@@ -243,7 +244,7 @@ public class UIManager : MonoBehaviour {
         }
         foreach (Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
             bool isStacksBased = ability.Type?.GetField("IsStacksBasedTechnique") != null;
-            Cooldown abilityCooldown = Player.Instance.AbilityCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability.Type && cooldown.ExtraInfo == (Player.Instance.PreparingForUltimate ? "IsUltimate" : ""));
+            Cooldown abilityCooldown = Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability.Type && cooldown.ExtraInfo == (Player.Instance.PreparingForUltimate ? "IsUltimate" : ""));
             if (abilityCooldown != null && abilityCooldown.RemainingDuration > 0) {
                 float fillAmount = abilityCooldown.RemainingDuration / abilityCooldown.TotalDuration;
                 ability.CooldownDisplay.fillAmount = fillAmount;
@@ -273,9 +274,9 @@ public class UIManager : MonoBehaviour {
             Item item = i == 1 ? SaveFile.Instance.EquippedItem1 : SaveFile.Instance.EquippedItem2;
             if(item != null)
             {
-                if (Player.Instance.ItemsCooldown != null && Player.Instance.ItemsCooldown.RemainingDuration > 0)
+                if (Player.Instance.ToolCooldown != null && Player.Instance.ToolCooldown.RemainingDuration > 0)
                 {
-                    float fillAmount = Player.Instance.ItemsCooldown.RemainingDuration / Player.Instance.ItemsCooldown.TotalDuration;
+                    float fillAmount = Player.Instance.ToolCooldown.RemainingDuration / Player.Instance.ToolCooldown.TotalDuration;
                     CanvasElements.UICanvas.Items.transform.Find(i.ToString() + "/Cooldown").GetComponent<Image>().fillAmount = fillAmount;
                 }
                 else
@@ -299,7 +300,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShakeScreen(float duration = 0.1f, float magnitude = 0.05f, float damping = 1) {
-        Player.Instance.transform.root.GetComponentInChildren<CameraController>().ShakeScreen(duration, magnitude, damping);
+        CameraController.Instance.ShakeScreen(duration, magnitude, damping);
     }
 
     public void DisplayNotEnoughEnergyWarningForGivenAbilityType(Type ability_type) {
@@ -473,6 +474,9 @@ public class UIManager : MonoBehaviour {
         }
         CanvasElements.TransitionScreen.AreaName.GetComponent<HideOrShowOverTime>().HideOverTime(0.05f);
         ShowBlackScreen(0);
+        foreach(Unit u in Utils.GetAllUnits(false, true)) {
+            u.GetComponent<NavMeshAgent>().enabled = false;
+        }
         HideBlackScreen(0.5f);
         CurrentDialogue = dialogue;
         CurrentDialogueLine = dialogue.Lines[0];
@@ -493,17 +497,18 @@ public class UIManager : MonoBehaviour {
         if(dialogue.DialogueSpeaker != null && dialogue.SpeakerStartingFlipped.HasValue) {
             dialogue.DialogueSpeaker.Actions.IsFlipped = dialogue.SpeakerStartingFlipped.Value;
         }
+        Debug.Log("MISC1 Player.Instance.transform.position: " + dialogue.PlayerStartingPosition);
         if(dialogue.PlayerStartingPosition != Vector2.zero) {
-            Debug.Log("MISC1 Player.Instance.transform.position: " + Player.Instance.transform.position);
+            Debug.Log("MISC2 Player.Instance.transform.position: " + Player.Instance.transform.position);
             Player.Instance.transform.position = dialogue.PlayerStartingPosition;
         }
         if(dialogue.PlayerStartingFlipped.HasValue) {
             Player.Instance.Actions.IsFlipped = dialogue.PlayerStartingFlipped.Value;
         }
-        GameController.Instance.WaitAndRunMethodRealtime(0.01f, UpdateDialoguePositions);
+        //GameController.Instance.WaitAndRunMethodRealtime(0.01f, UpdateDialoguePositions);
     }
 
-    public void UpdateDialoguePositions() {
+    /*public void UpdateDialoguePositions() {
         if(CurrentDialogue == null) {
             return;
         }
@@ -514,6 +519,7 @@ public class UIManager : MonoBehaviour {
         if(dialogue.DialogueSpeaker != null && dialogue.SpeakerStartingFlipped.HasValue) {
             dialogue.DialogueSpeaker.Actions.IsFlipped = dialogue.SpeakerStartingFlipped.Value;
         }
+        Debug.Log("MISC1 Player.Instance.transform.position: " + dialogue.PlayerStartingPosition);
         if(dialogue.PlayerStartingPosition != Vector2.zero) {
             Debug.Log("MISC2 Player.Instance.transform.position: " + Player.Instance.transform.position);
             Player.Instance.transform.position = dialogue.PlayerStartingPosition;
@@ -521,7 +527,7 @@ public class UIManager : MonoBehaviour {
         if(dialogue.PlayerStartingFlipped.HasValue) {
             Player.Instance.Actions.IsFlipped = dialogue.PlayerStartingFlipped.Value;
         }
-    }
+    }*/
 
     public void EndDialogue() {
         GameController.Instance.GameplayMode = Constants.GameplayMode.Regular;
@@ -559,6 +565,10 @@ public class UIManager : MonoBehaviour {
             Type.GetType(CurrentDialogue.NameOfParentClass).GetMethod("OnEnd_" + CurrentDialogue.NameOfDialogue).Invoke(null, null);
         }
         ShowBlackScreen(0);
+        foreach(Unit u in Utils.GetAllUnits(false, true)) {
+            u.GetComponent<NavMeshAgent>().enabled = true;
+        }
+        Player.Instance.GetComponent<NavMeshAgent>().enabled = false;
         bool should_autosave = CurrentDialogue.AutoSaveOnDialogueEnd;
         CurrentDialogue = null;
         if(DialogueInteractIndicator != null) {
@@ -582,11 +592,12 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ProgressToNextDialogueLine(DialogueLine dialogue_line) { 
-        if(CurrentDialogue == null || CanGoToNextDialogueLine == false) {
+        if(CurrentDialogue != null && CurrentDialogueLine != null && CurrentDialogueLineItem != null && CurrentDialogueLine.Choices.Count == 0 && CurrentDialogueLineItem.TextMeshPro != null && CurrentDialogueLineItem.TextMeshPro.maxVisibleCharacters < CurrentDialogueLineItem.TextMeshPro.text.Length) {
+            CurrentDialogueLineItem.TextMeshPro.maxVisibleCharacters = CurrentDialogueLineItem.TextMeshPro.text.Length;
             return;
         }
-        else if(CurrentDialogueLine != null && CurrentDialogueLineItem != null && CurrentDialogueLineItem.TextMeshPro != null && CurrentDialogueLineItem.TextMeshPro.maxVisibleCharacters < CurrentDialogueLineItem.TextMeshPro.text.Length) {
-            CurrentDialogueLineItem.TextMeshPro.maxVisibleCharacters = CurrentDialogueLineItem.TextMeshPro.text.Length;
+        if(CanGoToNextDialogueLine == false) {
+            return;
         }
         else if(dialogue_line != null) {
             CurrentDialogueLine = dialogue_line;

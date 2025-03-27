@@ -11,7 +11,7 @@ public class Boots_Gunslinger : Item
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_FarEnemiesTakeExtraDamage(4, 4, 3, new(this)) };
+        return new List<Effect> {};
     }
     public override List<Effect> GetSecondModifier() {
         return new List<Effect> { new Effect_ChangeStat(Player.Instance.CooldownReduction, new(this)) { PercentageAmount = 0.5f } };

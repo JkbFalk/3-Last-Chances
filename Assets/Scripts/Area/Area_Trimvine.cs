@@ -367,7 +367,7 @@ public class Area_Trimvine
         Area.Instance.transform.Find("Environment/Rock Pillar").GetComponent<DestructibleEnvironment>().DestroyObject();
         Area.Instance.transform.Find("Environment/Rock Pillar_2").GetComponent<DestructibleEnvironment>().DestroyObject();
         SaveFile.Instance.AddFlag("Trimvine_TookExcalibur_[Cycle]");
-        SaveFile.Instance.AddItem(typeof(Greatsword_RockSplitter), Item.ItemGrade.Excellent);
+        SaveFile.Instance.AddItem(typeof(Greatsword_Reckoning), Item.ItemGrade.Excellent);
         SaveFile.Instance.ExperiencePoints += 400;
         MonoBehaviour.Destroy(Area.Instance.transform.Find("Interactables/Excalibur").gameObject);
         Player.Instance.PlayAnimation("PickUpItemFromTheGround");
@@ -396,7 +396,7 @@ public class Area_Trimvine
         if(SaveFile.Instance.Inventory.FirstOrDefault(item => item.GetType() == typeof(Quest_HalfStiletto)) != null) {
             NotificationController.ShowCustomizedDialogueNotification(new() {Id="Trimvine_Inter_110"});
             SaveFile.Instance.RemoveItem(SaveFile.Instance.Inventory.FirstOrDefault(item => item.GetType() == typeof(Quest_HalfStiletto)));
-            SaveFile.Instance.AddItem(typeof(Daggers_Stiletto), Item.ItemGrade.Excellent);
+            SaveFile.Instance.AddItem(typeof(Daggers_StilettoSeriesMark3), Item.ItemGrade.Excellent);
             SaveFile.Instance.ExperiencePoints += 1500;
         }
         else {
@@ -409,7 +409,7 @@ public class Area_Trimvine
         if(SaveFile.Instance.Inventory.FirstOrDefault(item => item.GetType() == typeof(Quest_HalfStiletto)) != null) {
             NotificationController.ShowCustomizedDialogueNotification(new() {Id="Trimvine_Inter_110"});
             SaveFile.Instance.RemoveItem(SaveFile.Instance.Inventory.FirstOrDefault(item => item.GetType() == typeof(Quest_HalfStiletto)));
-            SaveFile.Instance.AddItem(typeof(Daggers_Stiletto), Item.ItemGrade.Excellent);
+            SaveFile.Instance.AddItem(typeof(Daggers_StilettoSeriesMark3), Item.ItemGrade.Excellent);
             SaveFile.Instance.ExperiencePoints += 1500;
         }
         else {

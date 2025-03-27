@@ -13,7 +13,7 @@ public class Boots_Enforcer : Item
 
     public override List<Effect> GetFirstModifier() {
         return new List<Effect> { new Effect_CustomizableDamageChange(new(this)) { EffectTypeName="BasicAttackDamage", DescriptionParameters = new() {Utils.GetFormattedFloat(GetFirstModifierEffectValue())}, InjuryPercentageChange = GetFirstModifierEffectValue(), StaggerPercentageChange = GetFirstModifierEffectValue(), ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                    (damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.IsBasicAttack))} };
+                    (damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)))} };
     }
     public override List<Effect> GetSecondModifier() {
         return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};

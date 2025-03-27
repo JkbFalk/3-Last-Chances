@@ -9,7 +9,7 @@ public class NPCAbility_Assassination : Ability {
     public NPCAbility_Assassination(Unit ability_user) : base(ability_user) {
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
         DamageSources.Add(new DamageSource(350 / 2, 0, Constants.DamageType.Light));
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBlock);
+        Properties.Add(AbilityProperty.CounteredByBlock);
         WaitTimeBeforeNextAction = 0.1f;
     }
 

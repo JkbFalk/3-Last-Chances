@@ -12,7 +12,7 @@ public class Longblade_Severance : Item
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ApplyBleedWithCooldown(0.15625f, new(this)) {UsesTheFollowingEffects=new() {typeof(Effect_Bleed)},Grade = GradeIndex}};
+        return new List<Effect> {};
     }
     public override List<Effect> GetSecondModifier() {
         return new List<Effect> { new Effect_ChangeStat(Player.Instance.HeavyInjury, new(this)) {PercentageAmount = 1.25f, RemainsActiveInOtherStances = true}};

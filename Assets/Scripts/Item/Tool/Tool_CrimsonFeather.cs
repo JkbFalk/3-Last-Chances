@@ -22,7 +22,7 @@ public class Tool_CrimsonFeather : Item
 
     public override string GetDescription(bool detailed = false)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_DescriptionSimple"), new object[] { Utils.GetFormattedFloat(5 * GetMultiplierForGrade())}) + (detailed ? "" : " <sprite name=\"Detailed\">") + "\n\n<sprite name=\"Cooldown\"> " + CooldownPerGrade[GradeIndex].ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description"), new object[] { Utils.GetFormattedFloat(5 * GetMultiplierForGrade())}) + (detailed ? "" : " [Detailed]") + "\n\n[CD] " + CooldownPerGrade[GradeIndex].ToString();
     }
 
     public override void ExtraBehaviourOnEquip() {
@@ -34,7 +34,7 @@ public class Tool_CrimsonFeather : Item
     }
 
     public void Activate(Damage damage) {
-        if(damage.TargetOfDamage is Player && damage.OverkillInjury > 0 && Player.Instance.ItemsCooldown == null && SaveFile.Instance.ToolRemainingAmounts[typeof(Tool_CrimsonFeather)] > 0) {
+        if(damage.TargetOfDamage is Player && damage.OverkillInjury > 0 && Player.Instance.ToolCooldown == null && SaveFile.Instance.ToolRemainingAmounts[typeof(Tool_CrimsonFeather)] > 0) {
             Player.Instance.Health.Current += 5 * GetMultiplierForGrade();
             Player.Instance.AddEffect(new Effect_Stun(new(this)), 1);
             Player.Instance.AddEffect(new Effect_Invincible(new(this)), 2);

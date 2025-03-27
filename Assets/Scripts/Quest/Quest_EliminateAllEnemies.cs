@@ -11,7 +11,7 @@ public class Quest_EliminateAllEnemies : Quest {
     public override void AdditionalActionsOnQuestStart()
     {
         base.AdditionalActionsOnQuestStart();
-        EventManager.EnemyDefeated.AddListener(UpdateDefeatedEnemiesCount);
+        EventManager.UnitKnockedOut.AddListener(UpdateDefeatedEnemiesCount);
         UpdateDefeatedEnemiesCount(null);
         Utils.PlaySoundEffect(null, "UI/QuestStarted", 0.8f);
     }
@@ -19,7 +19,7 @@ public class Quest_EliminateAllEnemies : Quest {
     public override void AdditionalActionsOnQuestComplete()
     {
         base.AdditionalActionsOnQuestComplete();
-        EventManager.EnemyDefeated.RemoveListener(UpdateDefeatedEnemiesCount);
+        EventManager.UnitKnockedOut.RemoveListener(UpdateDefeatedEnemiesCount);
         SaveFile.Instance.CurrentMission.Finish();
         Utils.PlaySoundEffect(null, "UI/QuestCompleted", 0.8f);
     }

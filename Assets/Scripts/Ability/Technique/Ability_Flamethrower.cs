@@ -113,7 +113,7 @@ public class Ability_Flamethrower : Technique
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
-        if(IsUltimate && object_hitting.gameObject.name == "SmallCircleAoE" && (unit_getting_attacked != Target || _ultimateHitATarget)) {
+        if(Is(AbilityProperty.Ultimate) && object_hitting.gameObject.name == "SmallCircleAoE" && (unit_getting_attacked != Target || _ultimateHitATarget)) {
             return;
         }
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
@@ -121,12 +121,12 @@ public class Ability_Flamethrower : Technique
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             if((damage.AbilityDamageSource.ColliderName != "SmallCircleAoE" || !_ultimateHitATarget) && !UltimateEnemiesAndBurn.ContainsKey(damage.TargetOfDamage)) {
                 _ultimateHitATarget = true;
                 Effect_Burn appliedBurn = (Effect_Burn)damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
                 if(appliedBurn != null) {
-                    appliedBurn.AddDecayingAmount(appliedBurn.DecayingAmount * Player.Instance.CurrentUltimateTechniqueStacks[typeof(Ability_Flamethrower)] / 100 + appliedBurn.DecayingAmount * Player.Instance.Energy.Current / 100);
+                    appliedBurn.ChangeDecayingAmount(appliedBurn.DecayingAmount * Player.Instance.CurrentUltimateTechniqueStacks[typeof(Ability_Flamethrower)] / 100 + appliedBurn.DecayingAmount * Player.Instance.Energy.Current / 100);
                     UltimateEnemiesAndBurn.Add(damage.TargetOfDamage, appliedBurn.DecayingAmount);
                     appliedBurn.EndThisEffect();
                     GameObject vfx = Utils.CreateVisualEffect(new(this), "Flamethrower_Ultimate_Marker", damage.TargetOfDamage.transform.position.x, damage.TargetOfDamage.transform.position.y);
@@ -199,7 +199,7 @@ public class Ability_Flamethrower : Technique
         _aoe.transform.SetParent(User.SpriteRenderers["Lower Body"].Bone);
         _aoe.transform.eulerAngles = new Vector3(0, 0, 90 * (User.Actions.IsFlipped ? 1 : -1));
         _cyclesStarted = true;
-        if(!IsUltimate) {
+        if(IsNot(AbilityProperty.Ultimate)) {
             AdvanceCycle();
         }
     }

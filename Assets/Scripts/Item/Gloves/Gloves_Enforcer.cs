@@ -11,7 +11,7 @@ public class Gloves_Enforcer : Item
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_BasicAttacksReduceCooldowns(new(this)) {CooldownReductionAmount = 0.015625f}};
+        return new List<Effect> {};
     }
     public override List<Effect> GetSecondModifier() {
         return new List<Effect> {new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new(this)) { PercentageAmount = 0.5f }  };

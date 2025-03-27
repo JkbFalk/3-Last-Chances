@@ -4,7 +4,6 @@ public class CameraController : MonoBehaviour {
     private float _duration;
     private float _magnitude;
     private float _damping;
-    private Vector3 _defaultCameraPosition = new Vector3(0, 0, -100);
     public bool CurrentlyScouting = false;
     public Camera Camera;
 
@@ -18,7 +17,7 @@ public class CameraController : MonoBehaviour {
         {
             if (_instance == null)
             {
-                _instance = Player.Instance.GetComponentInChildren<CameraController>();
+                _instance = GameController.Instance.GetComponentInChildren<CameraController>();
                 _instance.Camera = _instance.GetComponent<Camera>();
             }
             return _instance;
@@ -34,15 +33,18 @@ public class CameraController : MonoBehaviour {
             CameraController.Instance.Camera.orthographicSize = CameraController.Instance.Camera.orthographicSize - Constants.SCOUT_RETURN_SPEED < expectedFoV ? expectedFoV : CameraController.Instance.Camera.orthographicSize - Constants.SCOUT_RETURN_SPEED;
         }
         if(CenteredOnObject != null && Vector2.Distance(transform.position, CenteredOnObject.transform.position) > 0.1f) {
-            transform.position += (CenteredOnObject.transform.position - transform.position) * 0.1f;
-            transform.position = new Vector3(transform.position.x, transform.position.y, -100);
+            Vector2 newPosition = transform.parent.position + (CenteredOnObject.transform.position - transform.parent.position) * 0.15f;
+            transform.parent.position = new Vector3(newPosition.x, newPosition.y, -100);
+        }
+        else if(CenteredOnObject == null) {
+            transform.parent.position = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, -100);
         }
         if (CenteredOnObject == null && _duration > 0) {
-            transform.localPosition = new Vector3(Random.insideUnitCircle.x * _magnitude, Random.insideUnitCircle.y * _magnitude, -100);
+            transform.localPosition = new Vector3(Random.insideUnitCircle.x * _magnitude, Random.insideUnitCircle.y * _magnitude, 0);
             _duration -= Time.deltaTime * _damping;
         }
-        else if (CenteredOnObject == null && transform.localPosition != _defaultCameraPosition) {
-            transform.localPosition = _defaultCameraPosition;
+        else if (_duration <= 0) {
+            transform.localPosition = Vector3.zero;
         }
     }
 

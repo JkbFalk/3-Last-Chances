@@ -156,7 +156,7 @@ MonoBehaviour:
   Grey: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0}
   GreyBorder1: 8
   GreyBorder2: 8
-  Brown: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 0}
+  Brown: {r: 0.735849, g: 0, b: 0, a: 0}
   BrownBorder1: 2
   BrownBorder2: 5
   Red: {r: 0.7075472, g: 0.010012442, b: 0.045222588, a: 0}
@@ -241,6 +241,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &1824688281185761987
 BoxCollider2D:
   m_ObjectHideFlags: 0

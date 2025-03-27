@@ -68,7 +68,7 @@ public class Ability_HeavySlash : Technique
 
     public override void OnAbilityStart() {
         base.OnAbilityStart();
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             return;
         }
         ShowChargeBar();
@@ -83,7 +83,7 @@ public class Ability_HeavySlash : Technique
 
     public override void OnAbilityEnd() {
         base.OnAbilityEnd();
-        if(IsUltimate && _ultimateAoE != null && _ultimateAoE.IsDestroyed() == false) {
+        if(Is(AbilityProperty.Ultimate) && _ultimateAoE != null && _ultimateAoE.IsDestroyed() == false) {
             _ultimateAoE.MakeObjectDisappear();
         }
         StopCountingTime();
@@ -91,7 +91,7 @@ public class Ability_HeavySlash : Technique
 
     public override void CallAbilityEvent1()
     {
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             _ultimateAoE = Utils.CreateAreaOfEffect(new(this), "HeavySlash_Ultimate");
             _ultimateAoE.GetComponent<AttachObjectToBodyPart>().Initialize(User);
             _ultimateAoE.transform.localEulerAngles = new Vector3(0, 0, 90);
@@ -120,7 +120,7 @@ public class Ability_HeavySlash : Technique
 
     public override void CallAbilityEvent2()
     {
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             if(_buttonWasReleased) {
                 FinishChargingUltimate();
             }
@@ -134,7 +134,7 @@ public class Ability_HeavySlash : Technique
 
     public override void CallAbilityEvent3()
     {
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             FinishChargingUltimate();
         }
         else {
@@ -215,7 +215,7 @@ public class Ability_HeavySlash : Technique
     public override void OnAbilityButtonRelease()
     {
         _buttonWasReleased = true;
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             if(_canFinishAbility && _transitionedAnimation == false) {
                 FinishChargingUltimate();
             }

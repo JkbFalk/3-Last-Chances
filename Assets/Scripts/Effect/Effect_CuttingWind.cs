@@ -9,7 +9,7 @@ public class Effect_CuttingWind : Effect {
     public Constants.DamageType EffectCategory;
     public Effect_ChangeStat AttackSpeedBuff;
     public Effect_ChangeStat DamageReductionEffect;
-    public Effect_Unstoppable CcImmunityEffect;
+    public Effect_Unstunnable CcImmunityEffect;
     public float AttackSpeedBuffAmount = 0;
 
 
@@ -22,7 +22,7 @@ public class Effect_CuttingWind : Effect {
         EffectCategory = weapon_category;
         Type = EffectType.Buff;
         PathToEffectGraphic = "Effect/CuttingWind";
-        DisplayEffectIndicator = true;
+        ShowsInUI = true;
         Listeners.Add(EventManager.AfterHitDamageCalculation);
         Listeners.Add(EventManager.DamageDealt);
     }
@@ -59,7 +59,7 @@ public class Effect_CuttingWind : Effect {
         }
         if(MasteryB) {
             DamageReductionEffect = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = 200};
-            CcImmunityEffect = new Effect_Unstoppable(SourceOfEffect);
+            CcImmunityEffect = new Effect_Unstunnable(SourceOfEffect);
             Player.Instance.AddEffect(DamageReductionEffect, 3);
             Player.Instance.AddEffect(CcImmunityEffect, 3);
         }
@@ -95,6 +95,6 @@ public class Effect_CuttingWind : Effect {
     }
 
     public bool CheckIfAbilityIsValidForSuperCharge(Ability used_ability) {
-        return used_ability != null && (used_ability.IsBasicAttack || used_ability.IsRiposte || used_ability.IsCounter || used_ability.IsBackstab) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == EffectCategory;
+        return used_ability != null && (used_ability.Is(Ability.AbilityProperty.BasicAttack) || used_ability.Is(Ability.AbilityProperty.Riposte) || used_ability.Is(Ability.AbilityProperty.Counter) || used_ability.Is(Ability.AbilityProperty.Backstab)) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == EffectCategory;
     }
 }

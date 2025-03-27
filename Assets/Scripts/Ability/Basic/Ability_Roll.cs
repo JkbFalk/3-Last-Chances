@@ -20,7 +20,15 @@ public class Ability_Roll : Ability_Dodge {
     {
         Effect burn = User.GetEffect(typeof(Effect_Burn));
         if(burn != null) {
-            burn.AddDecayingAmount(-burn.DecayingAmount / 2);
+            burn.ChangeDecayingAmount(-burn.DecayingAmount / 3);
+        }
+        Effect freeze = User.GetEffect(typeof(Effect_Freeze));
+        if(freeze != null) {
+            freeze.ChangeDecayingAmount(-freeze.DecayingAmount / 5);
+        }
+        Effect incision = User.GetEffect(typeof(Effect_Incision));
+        if(incision != null) {
+            incision.ChangeDecayingAmount(incision.DecayingAmount / 10);
         }
         if (Direction == Vector2.right || Direction == Vector2.left) {
             Player.Instance.AddEffect(new Effect_RollForward(new(this)), UntargetabilityDurationInSeconds);

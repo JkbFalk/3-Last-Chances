@@ -9,7 +9,6 @@ public class Ability_StanceSwitchLeft : Ability_StanceSwitch {
 
     public override void OnAbilityStart()
     {
-        base.OnAbilityStart();
         Stance current_stance = Player.Instance.CurrentStance;
         List<Stance> stances = SaveFile.Instance.Stances;
         if (current_stance == stances[0])
@@ -25,5 +24,6 @@ public class Ability_StanceSwitchLeft : Ability_StanceSwitch {
             Player.Instance.CurrentStance = stances[1];
         }
         UIManager.Instance.ShowStanceRotateLeft();
+        base.OnAbilityStart();
     }
 }

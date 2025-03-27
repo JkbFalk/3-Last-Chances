@@ -11,7 +11,7 @@ public class NPCAbility_ShieldCharge : Ability {
         PlaySoundOnlyOnce = true;
         HitSoundVolume = 0.7f;
         AddCustomSound("Charge", "Criminal/Criminal_Shield_Charge", 0.4f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1() {

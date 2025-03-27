@@ -23,7 +23,7 @@ public class Ability_EnergyBarrage : Technique
     public Ability_EnergyBarrage(Unit ability_user) : base(ability_user)
     {
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstoppable(new(this)), new Effect_Immovable(new(this))};
+        EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstunnable(new(this)), new Effect_Immovable(new(this))};
         AddCustomSound("Spawn", "Ability/Ability_EnergyBarrageSpawn", 0.5f);
         CustomHitSound = "Ability/Ability_EnergyBarrageHit";
         HitSoundVolume = 0.5f;

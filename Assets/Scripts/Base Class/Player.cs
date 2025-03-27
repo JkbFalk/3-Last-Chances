@@ -105,7 +105,7 @@ public class Player : Unit {
         else {
             CurrentTechniqueStacks[technique] = stacks > maxStacks ? maxStacks : stacks;
         }
-        Cooldown cooldown = AbilityCooldowns.FirstOrDefault(cd => cd.Type == technique && cd.ExtraInfo == (is_ultimate ? "IsUltimate" : ""));
+        Cooldown cooldown = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == technique && cd.ExtraInfo == (is_ultimate ? "IsUltimate" : ""));
         if(cooldown != null && ((is_ultimate && CurrentUltimateTechniqueStacks[technique] == maxStacks) || (!is_ultimate && CurrentTechniqueStacks[technique] == maxStacks))) {
             cooldown.RemainingDuration = 0;
         }
@@ -116,11 +116,11 @@ public class Player : Unit {
 
     public void UpdateAllStacksWhileNotInCombat() {
         foreach(Type ability in Utils.GetAllCurrentlyEquippedAbilityTypes()) {
-            Cooldown cooldown1 = AbilityCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.ExtraInfo == "");
+            Cooldown cooldown1 = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.ExtraInfo == "");
             if(cooldown1 != null) {
                 cooldown1.RemainingDuration = 0;
             }
-            Cooldown cooldown2 = AbilityCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.ExtraInfo == "IsUltimate");
+            Cooldown cooldown2 = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.ExtraInfo == "IsUltimate");
             if(cooldown2 != null) {
                 cooldown2.RemainingDuration = 0;
             }
@@ -238,6 +238,8 @@ public class Player : Unit {
         }
     }
 
+    public Vector2 PlayerSavedPosition;
+
     public bool PreparingForUltimate = false;
     public GameObject CurrentStanceGauge;
 
@@ -283,8 +285,8 @@ public class Player : Unit {
         Instance.Initialize();
         Instance.Energy.Current = Constants.FULLY_RESTED_INITIAL_ENERGY;
         Instance.Ammo = Constants.FULLY_RESTED_INITIAL_AMMO;
-        Instance._abilityCooldowns.Clear();
-        Instance.ItemsCooldown = null;
+        Instance._techniqueCooldowns.Clear();
+        Instance.ToolCooldown = null;
         Instance._effectCooldowns.Clear();
         Instance.PlayAnimation("Idle");
         Instance.Actions.IsFlipped = false;
@@ -309,18 +311,13 @@ public class Player : Unit {
         }
         InventoryTile.RefreshUsableItemUI(1, SaveFile.Instance.EquippedItem1);
         InventoryTile.RefreshUsableItemUI(2, SaveFile.Instance.EquippedItem2);
-        if(SaveFile.Instance.EquippedEnergyFamily != Ability.AbilityFamily.None) {
-            Effect_EnergyUpgrade new_effect = (Effect_EnergyUpgrade)Activator.CreateInstance(Type.GetType("Effect_" + SaveFile.Instance.EquippedEnergyFamily + "Energy"), new object[] {null});
-            new_effect.UpgradeLevel = SaveFile.Instance.EnergyUpgrades[SaveFile.Instance.EquippedEnergyFamily];
-            Player.Instance.AddEffect(new_effect);
-        }
         GameController.Instance.DefaultTimeSpeed = 1;
         Settings.Instance.FieldOfView = Settings.Instance.FieldOfView;
         return player_object.GetComponent<Player>();
     }
 
     public static void ChangeInCombatDependantUI(bool player_is_in_combat) {
-        foreach(ChangeActiveStatusBasedOnInCombat act in MenuManager.Instance.GetComponentsInChildren<ChangeActiveStatusBasedOnInCombat>(true)) {
+        /*foreach(ChangeActiveStatusBasedOnInCombat act in MenuManager.Instance.GetComponentsInChildren<ChangeActiveStatusBasedOnInCombat>(true)) {
             if(act.ChangeInteractableInsteadOfActive && player_is_in_combat && act.WhenInCombatChangeToActive) {
                 act.GetComponent<Selectable>().interactable = true;
             }
@@ -346,7 +343,7 @@ public class Player : Unit {
                 act.gameObject.SetActive(false);
             }
         }
-
+        */
         if(player_is_in_combat) {
             CanvasElements.UICanvas.InCombatMask.GetComponent<UnityEngine.UI.Image>().color = Color.white;
             CanvasElements.UICanvas.InCombatFill.SetActive(true);
@@ -396,10 +393,6 @@ public class Player : Unit {
         Player.Instance.InCombat = false;
     }
 
-    public Effect_EnergyUpgrade EnergyEffect;
-    public Camera Camera { get; set; }
-    public CameraController CameraController { get; set; }
-
     [HideInInspector]
     public GameObject InjuryIndicator;
 
@@ -424,8 +417,6 @@ public class Player : Unit {
         SaveFile.Instance.HealChargesRemaining = SaveFile.Instance.MaxHealCharges;
         Actions = GetComponent<Actions>();
         Animator = GetComponent<Animator>();
-        Camera = GetComponentInChildren<Camera>();
-        CameraController = GetComponentInChildren<CameraController>();
         InteractIndicatorText = CanvasElements.UICanvasObject.transform.Find("Interact Indicator").GetComponent<TextMeshProUGUI>();
         InitializeStats();
         ToolPower = new ToolPower(this, 1);
@@ -492,7 +483,7 @@ public class Player : Unit {
     }
 
     public override void AdditionalUnitSpecificActionsOnFixedUpdate() {
-        Cooldown stanceSwitchCd = AbilityCooldowns.Where(cd => cd.Type == typeof(Ability_StanceSwitch)).FirstOrDefault();
+        Cooldown stanceSwitchCd = TechniqueCooldowns.Where(cd => cd.Type == typeof(Ability_StanceSwitch)).FirstOrDefault();
         if (stanceSwitchCd != null) {
             foreach (Stance stance in SaveFile.Instance.Stances)
             {
@@ -528,7 +519,7 @@ public class Player : Unit {
 
     public bool CheckIfAbilityOnCooldown(Type ability_type)
     {
-        return AbilityCooldowns.Where(cd => cd.Type == ability_type || cd.Type.IsSubclassOf(ability_type)).FirstOrDefault() != null;
+        return TechniqueCooldowns.Where(cd => cd.Type == ability_type || cd.Type.IsSubclassOf(ability_type)).FirstOrDefault() != null;
     }
 
     public Stance GetStanceForGivenWeapon(Constants.ItemCategory weapon_category) {

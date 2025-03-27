@@ -9,8 +9,8 @@ public class NPCAbility_ShieldSpike : Ability {
         DamageSources.Add(new DamageSource(75, 250, Constants.DamageType.Heavy, "AoE Weaker") {Knockback = 850});
         WaitTimeBeforeNextAction = 0.5f;
         AddCustomSound("OnUse","Heavy Object/HeavyObject_Slam1", 0.85f);
-        AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByRiposte });
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.CounteredByRiposte);
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()

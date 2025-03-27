@@ -25,9 +25,11 @@ public static class Constants {
     public const int ACTION_QUEUE_DURATION = 40;
     public const int MAX_ABILITY_LEVEL = 5;
     public const float DEFAULT_CROSSFADE_DURATION = 0.1f;
-    public const float RUN_SPEED = 6f;
-    public const float WALK_SPEED = 3f;
-    public const float BLOCK_MOVE_SPEED = 2f;
+    public const float PLAYER_RUN_SPEED = 6f;
+    public const float PLAYER_WALK_SPEED = 3f;
+    public const float PLAYER_BLOCK_MOVE_SPEED = 2f;
+    public const float DEFAULT_ENEMY_SPEED = 2f;
+    public const float DEFAULT_ALLY_SPEED = 4f;
     public const float BLOCK_COOLDOWN = 1;
     public const float DEFAULT_FLINCHING_DURATION = 0.5f;
     public const float DEFAULT_PLAYER_STAGGERED_DURATION = 15f;
@@ -112,10 +114,6 @@ public static class Constants {
 
     public enum AttackStage { PreAttackPhase, StoringFastAttackInput, StoringStrongAttackInput, CanFollowUpAttack, PostAttackPhase };
 
-    public enum AbilityModifier { IgnoresImmunityToHits, IgnoresImmunityToDamage, CounteredByRoll, CounteredByBackstep, CounteredByRiposte, CounteredByBlock, CountersRoll, CountersBackstep, CountersBlock, CountersRiposte };
-
-    public enum AbilityType { Weapon, Stagger, BasicAttack, Other };
-
     public enum Faction { Ally, Enemy, Neutral, Monster, HostileToAll, DuelingEachOther };
 
     public enum GameplayMode { Regular, InMenu, InCutscene, Shopping, OnStartScreen, InfoPrompt, MissionSelect };
@@ -179,10 +177,6 @@ public static class Constants {
         },
     };
 
-    public static List<String> Unlockables = new List<String> { 
-        "Ability_WindBlast_Unlock", "Ability_WindBlast_UpgradeA", "Ability_WindBlast_UpgradeB",
-        "Stance_OmniMastery_Unlock", "Stance_OmniMastery_Upgrade1", "Stance_OmniMastery_Upgrade2", "Stance_OmniMastery_Upgrade3" };
-
     public static List<string> RegularArenas_Small = new List<string>() { "Warehouse_Containers", "Warehouse_Storage", "Outside_GrassBackAlley", "Outside_RockBackAlley" };
     public static List<string> RegularArenas_Large = new List<string>() { "Warehouse_Library", "Warehouse_Barrels", "Warehouse_Corridor" };
     public static List<string> BossArenas = new List<string>() { "Warehouse_FightClub", "Warehouse_Arena", "Outside_GrassBackAlley", "Outside_RockBackAlley" };
@@ -192,30 +186,48 @@ public static class Constants {
     public static List<string> BossEnemies = new List<string> { "Unit_Ryker", "Unit_Clarise1", "Unit_Blaine",  "Unit_FlameShadow", "Unit_Colten", "Unit_WeaponPillager", "Unit_Maginhart", "Unit_Iris" };
     public static List<string> EliteEnemies = new List<string> {"Unit_ShieldGiant", "Unit_ExplosivesExpert", "Unit_SalutisAssassin",  "Unit_Berserker", "Unit_IgnisCaptain", "Unit_IgnisCannonier", "Unit_IgnisLancer", "Unit_IgnisSwordmaster", "Unit_IgnisAssassin", "Unit_AnimaBlademaster", "Unit_AnimaSpearmaster", "Unit_AnimaBowmaster"   };
     public static List<string> RegularEnemies = new List<string> { "Unit_Criminal_Spear", "Unit_Criminal_Shortbow", "Unit_Criminal_Hammer", "Unit_GraveRobber", "Unit_Criminal_Shield", "Unit_Criminal_Daggers", "Unit_Criminal_FreezeCaster", "Unit_Criminal_Grenadier", "Unit_FireElemental", "Unit_AnimatedArmor", "Unit_IgnisPyromancer", "Unit_IgnisKnight", "Unit_AnimatedGreataxe", "Unit_AnimatedBlades", "Unit_AnimatedBow", "Unit_Adventurer", "Unit_AnimaRookie", "Unit_AnimaGuardian" };
-    public static List<Type> PossibleItemDrops = new List<Type> { 
 
-        };
 
-    public static List<string> PossiblePassivePowerUps = new List<string> { 
-        "Injury~15%-25%",
-        "Stagger~15%-25%",
-        "InjuryAndStagger~7%-13%", 
-        "Health~30-70",
-        "StaggerBar~30-70",
-        "HealthAndStaggerBar~15-35",
-        "AttackSpeed~5%-10%", 
-        "MovementSpeed~10%-20%",
-        "Control~20%-40%",
-        "Tenacity~20%-40%",
-        "EnergyGain~10%-15%",
-        "CooldownReduction~10%-15%", 
-        "HeavyInjury~20%-40%", 
-        "LightInjury~20%-40%", 
-        "RangedInjury~20%-40%", 
-        "MagicInjury~20%-40%",
-        "HeavyStagger~20%-40%",
-        "LightStagger~20%-40%",
-        "RangedStagger~20%-40%",
-        "MagicStagger~20%-40%", 
-        "DamageReduction~7%-13%" };
+    public const int NON_SPECIALITY_SKILL_TREE_TIER1_PB = 10;
+    public const int SPECIALITY_SKILL_TREE_TIER1_PB = 12;
+    public const int NON_SPECIALITY_SKILL_TREE_TIER2_PB = 12;
+    public const int SPECIALITY_SKILL_TREE_TIER2_PB = 14;
+    public const int NON_SPECIALITY_SKILL_TREE_TIER3_PB = 15;
+    public const int SPECIALITY_SKILL_TREE_TIER3_PB = 18;
+    public const int NON_SPECIALITY_SKILL_TREE_TIER4_PB = 20;
+    public const int SPECIALITY_SKILL_TREE_TIER4_PB = 25;
+
+
+
+
+    public const float PB_MULTIPLIER_FOR_WEAPONS_ONLY = 1.1f;
+    public const float PB_MULTIPLIER_FOR_MAGIC_ONLY = 1.1f;
+    public const float PB_MULTIPLIER_FOR_TECHNIQUES_ONLY = 1.5f;
+    public const float PB_MULTIPLIER_FOR_BASIC_ATTACKS_ONLY = 1.5f;
+    public const float PB_MULTIPLIER_FOR_INJURY_OR_STAGGER_ONLY = 1.2f;
+    public const float PB_MULTIPLIER_FOR_ONE_WEAPON_ONLY = 1.25f;
+    public const float PB_MULTIPLIER_FOR_EFFECTIVE_ONLY_AGAINST_COUNTERABLE = 3f;
+    public const float PB_MULTIPLIER_FOR_EFFECTIVE_ONLY_AGAINST_UNCOUNTERABLE = 3f;
+
+
+
+
+    public const float PB_PENALTY_FOR_INFLUENCING_ALL_EFFECTS = 0.5f;
+
+
+
+
+    public const float DAMAGE_PER_PB = 1f;
+    public const float STAGGER_BAR_PER_PB = 10;
+    public const float HEALTH_PER_PB = 10;
+    public const float ATTACK_SPEED_PER_PB = 0.5f;
+    public const float MOVEMENT_SPEED_PER_PB = 0.5f;
+    public const float DAMAGE_REDUCTION_PER_PB = 0.5f;
+    public const float TENACITY_PER_PB = 0.5f;
+    public const float CONTROL_PER_PB = 0.5f;
+    public const float ENERGY_GAIN_PER_PB = 0.5f;
+    public const float COOLDOWN_REDUCTION_PER_PB = 0.5f;
+    public const float EFFECT_AMOUNT_PER_PB = 1f;
+    public const float EFFECT_DECAY_PER_PB = 1f;
+    public const float PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB = 0.1f;
 }

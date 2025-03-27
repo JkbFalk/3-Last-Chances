@@ -7,13 +7,14 @@ public class Greatsword_Retribution : Item
 {
     public Greatsword_Retribution(ItemGrade grade) : base(grade)
     {
+        Set = ItemSetEnum.IronBlooded;
         Category = Constants.ItemCategory.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
         SetBaseWeaponStats(150, 60, 0.85f);
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_DealExtraDamageAfterTakingDamage(1, 1, 3, new(this))};
+        return new List<Effect> {};
     }
 
     public override List<Effect> GetSecondModifier() {

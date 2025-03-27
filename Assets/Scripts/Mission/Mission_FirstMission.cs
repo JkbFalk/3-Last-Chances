@@ -217,9 +217,9 @@ public class Mission_FirstMission : Mission
         Area.Instance.transform.Find("Interactables/Dialogue (3)/Interact Indicator").gameObject.SetActive(true);
         Area.Instance.transform.Find("Interactables/Dialogue (5)").GetComponent<InteractableObject>().CannotInteractWithDuringCombat = false;
         Utils.GetUnit("Wall 1").PlayAnimation("ShieldGuard");
-        Utils.GetUnit("Wall 1").AddEffect(new Effect_Invincible(new(Utils.GetUnit("Wall 1"))) {DisplayEffectIndicator = false});
+        Utils.GetUnit("Wall 1").AddEffect(new Effect_Invincible(new(Utils.GetUnit("Wall 1"))) {ShowsInUI = false});
         Utils.GetUnit("Wall 2").PlayAnimation("ShieldGuard");
-        Utils.GetUnit("Wall 2").AddEffect(new Effect_Invincible(new (Utils.GetUnit("Wall 2"))) {DisplayEffectIndicator = false});
+        Utils.GetUnit("Wall 2").AddEffect(new Effect_Invincible(new (Utils.GetUnit("Wall 2"))) {ShowsInUI = false});
         Utils.GetUnit("ShieldGiant").AttackPlayer();
         Utils.GetUnit("ShieldGiant").Actions.UseAbility(typeof(NPCAbility_ShieldCharge));
         Utils.GetUnit("Criminal_Daggers").AttackPlayer();
@@ -248,7 +248,7 @@ public class Mission_FirstMission : Mission
             new ("FirstMission_Forest_30") {Speaker = "Player", ShowSpeakerBox = false},
             new ("FirstMission_Forest_40") {Speaker = "Player", ShowSpeakerBox = false, WaitTimeBeforeAllowingToProceed=5},
             new ("FirstMission_Forest_50") {Speaker = "Clarise1", Animation = "Intrigued"},
-            new ("FirstMission_Forest_60") {Speaker = "Player", Animation = "ThreatenWithHeavy"},
+            new ("FirstMission_Forest_60") {Speaker = "Player", Animation = "ThreatenWithLight"},
             new ("FirstMission_Forest_70") {Speaker = "Clarise1", Animation = "Laugh"},
             new ("FirstMission_Forest_80") {Speaker = "Player", Animation = "IdleInCombat"}
         }) {PlayerStartingPosition = new Vector2(-10f, 0.6f), SpeakerStartingPosition = new Vector2(8.75f, 6.2f), PlayerEndingFlipped = false, PlayerEndingPosition = new Vector2(-0.5f, 0.5f), DialogueSpeaker=Utils.GetUnit("Clarise1"), SpeakerEndingFlipped=true, SpeakerEndingPosition=new Vector2(3, 0.5f), AutoSaveOnDialogueEnd=false};
@@ -377,7 +377,7 @@ public class Mission_FirstMission : Mission
     public static void PickUpMap(InteractableObject obj) {
         Area.Instance.transform.Find("Leo Group").gameObject.SetActive(true);
         Area.Instance.transform.Find("Interactables/Leo Dialogue Trigger").gameObject.SetActive(true);
-        SaveFile.Instance.AddItem(new Polearm_HeavenlyHalberd(Item.ItemGrade.Regular));
+        SaveFile.Instance.AddItem(new Polearm_Shattershield(Item.ItemGrade.Regular));
         Utils.GetUnit("Leader").SpriteRenderers["Heavy"].SpriteRenderer.gameObject.SetActive(false);
         SaveFile.Instance.AddFlag("FirstMission_FoundMap");
         SaveFile.Instance.GetQuest("3LastChances").GetObjective(10).Status = QuestObjective.ObjectiveStatus.NotRevealed;

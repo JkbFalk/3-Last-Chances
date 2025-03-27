@@ -12,7 +12,8 @@ public class EventManager {
     public static UnityEvent<Ability> AbilityUsed = new UnityEvent<Ability>();
     public static UnityEvent<Ability, float> AbilityEnergyConsumed = new UnityEvent<Ability, float>();
     public static UnityEvent<Ability> AbilityEnded = new UnityEvent<Ability>();
-    public static UnityEvent<Damage> EnemyDefeated = new UnityEvent<Damage>();
+    public static UnityEvent<Damage> UnitKnockedOut = new UnityEvent<Damage>();
+    public static UnityEvent AmmoAmountChanged = new UnityEvent();
     public static UnityEvent<Damage> UnitWouldBeDefeated = new UnityEvent<Damage>();
     public static UnityEvent<Damage> HealthBarBroken = new UnityEvent<Damage>();
     public static UnityEvent<Unit> UnitHealthChanged = new UnityEvent<Unit>();
@@ -39,6 +40,7 @@ public class EventManager {
     public static UnityEvent<Effect> EffectActivated = new UnityEvent<Effect>();
     public static UnityEvent<Effect> EffectEnded = new UnityEvent<Effect>();
     public static UnityEvent<Cooldown> CooldownAdded = new UnityEvent<Cooldown>();
+    public static UnityEvent<Unit> UnitChangedDirection = new UnityEvent<Unit>();
     public static UnityEvent<Unit> EnterCombat = new UnityEvent<Unit>();
     public static UnityEvent<Unit> ExitCombat = new UnityEvent<Unit>();
     /// <summary>

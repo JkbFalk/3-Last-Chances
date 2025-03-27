@@ -10,7 +10,7 @@ public class NPCAbility_ThunderStep : Ability {
         AddCustomSound("Use", "Generic/Generic_Explosion1", 0.8f);
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
         WaitTimeBeforeNextAction = 0f;
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBlock);
+        Properties.Add(AbilityProperty.CounteredByBlock);
     }
 
     public override void CallAbilityEvent1()

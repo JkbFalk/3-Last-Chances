@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 
 public class KeepRotationDespiteFlip : MonoBehaviour
 {
@@ -8,16 +9,16 @@ public class KeepRotationDespiteFlip : MonoBehaviour
     public bool AlwaysFlipped = false;
     public void Start() {
         FlipSource = GetComponentInParent<Actions>();
-        EnsureRotation();
+        EnsureRotation(FlipSource?.Unit);
+        EventManager.UnitChangedDirection.AddListener(EnsureRotation);
     }
     public void OnEnable() {
-        EnsureRotation();
+        EnsureRotation(FlipSource?.Unit);
     }
-    public void EnsureRotation() {
-        if(FlipSource == null) {
+    public void EnsureRotation(Unit unit) {
+        if(FlipSource == null || unit == null || unit.Actions != FlipSource) {
             return;
         }
-        transform.rotation = new Quaternion(0, 0, 0, 0);
-        transform.Rotate(0, FlipSource.IsFlipped ? (AlwaysFlipped ? 0 : 180) : (AlwaysFlipped ? 180 : 0), 0);
+        transform.localEulerAngles = new Vector3(0, FlipSource.IsFlipped ? (AlwaysFlipped ? 0 : 180) : (AlwaysFlipped ? 180 : 0), 0);
     }
 }

@@ -8,9 +8,8 @@ public class NPCAbility_FlameBackstab : Ability {
     private bool _attackFromRightSide = true;
     public NPCAbility_FlameBackstab(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.2f;
-        CanBeInterruptedByFlinching = false;
         AddCustomSound("Teleport", "Fire/FlameTeleport", 0.9f);
-        AbilityModifiers = new() {Constants.AbilityModifier.CounteredByRoll, Constants.AbilityModifier.CounteredByRiposte, Constants.AbilityModifier.CounteredByBlock, Constants.AbilityModifier.CountersBackstep};
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CounteredByRoll, AbilityProperty.CounteredByRiposte, AbilityProperty.CountersBackstep});
         DamageSources.Add(new DamageSource(300, 300, Constants.DamageType.Heavy));
     }
 

@@ -11,13 +11,10 @@ public class NPCAbility_FlameExplosion : Ability {
         AddCustomSound("Shot", "Fire/FireExplosion1", 1.0f);
         DamageSources.Add(new DamageSource(350, 300, Constants.DamageType.Ranged, "Stronger AoE") {Knockback = 1250});
         DamageSources.Add(new DamageSource(200, 150, Constants.DamageType.Ranged, "Weaker AoE") {Knockback = 500});
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersRoll);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersBackstep);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersRiposte);
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.Unstoppable});
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 1f;
-        CanBeInterruptedByFlinching = false;
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 

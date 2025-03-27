@@ -21,7 +21,7 @@ public class Area_IgnisManorOnFire
         }
         CreateExplosion();
 
-        EventManager.EnemyDefeated.AddListener(CheckDefeatedEnemy);
+        EventManager.UnitKnockedOut.AddListener(CheckDefeatedEnemy);
         EventManager.EnterCombat.AddListener(CheckEnteredCombat);
         if(SaveFile.Instance.CurrentAreaLoadedFromSave) {
             NotificationController.ShowCustomizedDialogueNotification(new() {Id="IgnisManorOnFire_Interactions_90"});
@@ -279,7 +279,7 @@ public class Area_IgnisManorOnFire
         new ("IgnisManorOnFire_Colten_40") {Animation="ShoulderShrug", Speaker = "Colten"},
         new ("IgnisManorOnFire_Colten_50") {Animation="Doubtful", Speaker = "Player"},
         new ("IgnisManorOnFire_Colten_60") {Animation="HandWave", Speaker = "Colten"},
-        new ("IgnisManorOnFire_Colten_70") {Animation="ThreatenWithHeavy", Speaker = "Player"},
+        new ("IgnisManorOnFire_Colten_70") {Animation="ThreatenWithLight", Speaker = "Player"},
         new ("IgnisManorOnFire_Colten_80") {Animation="Surprised", Speaker = "Colten"},
         new ("IgnisManorOnFire_Colten_90") {Animation="ShoulderShrug", Speaker = "Player", IdOfNextDialogueLine = SaveFile.Instance.IgnisEnergy < 500 ? "IgnisManorOnFire_Colten_100" : SaveFile.Instance.IgnisEnergy < 700 ? "IgnisManorOnFire_Colten_101" : "IgnisManorOnFire_Colten_102"},
         new ("IgnisManorOnFire_Colten_100") {Animation="ThreatenWithHeavy", Speaker = "Colten", IdOfNextDialogueLine="IgnisManorOnFire_Colten_110"},
@@ -410,10 +410,10 @@ public class Area_IgnisManorOnFire
     }
 
     public static void CheckAbilityUsed(Ability ability) {
-        if(ability.User is Player && ability.IsRiposte) {
+        if(ability.User is Player && ability.Is(Ability.AbilityProperty.Riposte)) {
             SaveFile.Instance.ChangeIgnisEnergy(50);
         }
-        if(ability.User is Player && ability.IsCounter) {
+        if(ability.User is Player && ability.Is(Ability.AbilityProperty.Counter)) {
             SaveFile.Instance.ChangeIgnisEnergy(100);
         }
     }

@@ -221,6 +221,23 @@ public class Settings {
         }
     }
 
+    public float _damageNumbersSize = 1f;
+
+    public float DamageNumbersSize
+    {
+        get => _damageNumbersSize;
+        set
+        {
+            /*AudioListener.volume = value;
+            CanvasElements.MasterVolumeSlider.GetComponent<Slider>().SetValueWithoutNotify(value * 100);
+            CanvasElements.MasterVolumeSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{MasterVolume}: " + value * 100);*/
+            _damageNumbersSize = value;
+            if (GameController.Instance.AutoSaveSettings)
+            {
+                Save();
+            }
+        }
+    }
 
     public float _masterVolume = 0.5f;
 

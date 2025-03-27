@@ -37,7 +37,7 @@ public class StaggerBar : Stat {
             damage.StaggerDealt = damage.Stagger;
         }
         Current += damage.StaggerDealt;
-        if(Current + damage.Stagger > Maximum && damage.Properites.Contains(Damage.DamageProperty.CannotStagger)) {
+        if(Current + damage.Stagger > Maximum && damage.Properties.Contains(Damage.DamageProperty.CannotStagger)) {
             Current = Maximum - 0.1f;
             return;
         }
@@ -70,8 +70,8 @@ public class StaggerBar : Stat {
     public override void AdditionalStatSpecificActionsAfterCurrentValueChanged()
     {
         base.AdditionalStatSpecificActionsAfterCurrentValueChanged();
-        if(Current <= 0 && Owner is Player && Player.Instance.CheckIfUnderEffect(typeof(Effect_PlayerStaggered))) {
-            Player.Instance.GetEffect(typeof(Effect_PlayerStaggered)).EndThisEffect();
+        if(Current <= 0 && Owner is Player && Player.Instance.CheckIfUnderEffect(typeof(Effect_Staggered))) {
+            Player.Instance.GetEffect(typeof(Effect_Staggered)).EndThisEffect();
         }
         else if(Current <= 0 && Owner is not Player && Owner.CheckIfUnderEffect(typeof(Effect_Staggered))) {
             Owner.GetEffect(typeof(Effect_Staggered)).EndThisEffect();

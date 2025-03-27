@@ -64,12 +64,12 @@ public class SurvivalController
         }
         foreach (string power_up in PowerUps)
         {
-            if(!power_up.Contains("Stance_") && !power_up.Contains("_Unlock") && !power_up.Contains("_UpgradeA") && !power_up.Contains("_UpgradeB")) {
+            /*if(!power_up.Contains("Stance_") && !power_up.Contains("_Unlock") && !power_up.Contains("_UpgradeA") && !power_up.Contains("_UpgradeB")) {
                 bool is_percentage = power_up.Contains("%");
                 foreach(Effect e in PassivePowerUpTile.GetPassivePowerUpEffects(power_up.Split("~")[0], is_percentage ? int.Parse(power_up.Split("~")[1].Replace("%", "")) : 0, is_percentage ? 0 : int.Parse(power_up.Split("~")[1]))) {
                     Player.Instance.AddEffect(e);
                 }
-            }
+            }*/
         }
         if(LoadStageWithoutRewards == false && (SaveFile.Instance.SurvivalLevel % 2 == 0 || SaveFile.Instance.SurvivalLevel == 1))
         {
@@ -114,7 +114,7 @@ public class SurvivalController
     }
     
     public static void GiveRandomItems() {
-        int range = UnityEngine.Random.Range(3, 6);
+        /*int range = UnityEngine.Random.Range(3, 6);
         for (int i = 0; i < range; i++)
         {
             Type random_item_type = Constants.PossibleItemDrops[UnityEngine.Random.Range(0, Constants.PossibleItemDrops.Count)];
@@ -124,12 +124,13 @@ public class SurvivalController
             }
             SaveFile.Instance.AddItem(random_item);
         }
-        SaveFile.Instance.Save();
+        SaveFile.Instance.Save();*/
     }
 
     public static List<string> Get4RandomAbilities(List<string> predefined_choices = null)
     {
-        System.Random rng = new System.Random();
+        return null;
+        /*System.Random rng = new System.Random();
         List<string> potential_choices = new List<string>();
         foreach (string unlockable in Unlockables)
         {
@@ -155,12 +156,13 @@ public class SurvivalController
                 chosen_choices.Add(choice);
             }
         }
-        return chosen_choices;
+        return chosen_choices;*/
     }
 
     public static List<string> Get4RandomPowerUps()
     {
-        List<string> power_ups = new List<string>();
+        return null;
+        /*List<string> power_ups = new List<string>();
         System.Random rng = new System.Random();
         foreach (string power_up in PossiblePassivePowerUps.OrderBy(a => rng.Next()).ToList())
         {
@@ -180,7 +182,7 @@ public class SurvivalController
                 }
             }
         }
-        return power_ups;
+        return power_ups;*/
     }
 
     public static void CreateRegularStage()
@@ -283,7 +285,7 @@ public class SurvivalController
     }
 
     public static void FinishCreatingStage() {
-        EventManager.EnemyDefeated.AddListener(CheckEnemyDefeatedCount);
+        EventManager.UnitKnockedOut.AddListener(CheckEnemyDefeatedCount);
         Transform player_spawns = Area.Instance.transform.Find("Player Start Positions");
         Transform random_spawn = player_spawns.GetChild(UnityEngine.Random.Range(0, player_spawns.childCount));
         Player.Instance.transform.position = random_spawn.position;
@@ -300,7 +302,7 @@ public class SurvivalController
 
     public static void EndSurvivalMode()
     {
-        EventManager.EnemyDefeated.RemoveListener(CheckEnemyDefeatedCount);
+        EventManager.UnitKnockedOut.RemoveListener(CheckEnemyDefeatedCount);
     }
 
     public static void CheckEnemyDefeatedCount(Damage damage)

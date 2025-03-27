@@ -1,7 +1,7 @@
 public class BA_TwinBlades_FFS : BasicAttack {
 
     public BA_TwinBlades_FFS(Unit ability_user) : base(ability_user) {
-        IsStrongBasicAttack = true;
+        Properties.Add(AbilityProperty.StrongBasicAttack);
         DamageSources.Add(new DamageSource(150 / 2, 1000 / 2, Constants.DamageType.Light));
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
         AddCustomSound("Swing1", "TwinBlades/TwinBlades_Swing15", 0.7f);

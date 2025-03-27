@@ -23,7 +23,7 @@ public class Area_IgnisVolcano
             return;
         }
         Area.Instance.transform.Find("Environment/GiantArmourWall").gameObject.SetActive(SaveFile.Instance.DoesNotHaveFlag("IgnisVolcano_DefeatedGiantArmor"));
-        EventManager.EnemyDefeated.AddListener(CheckDefeatedEnemy);
+        EventManager.UnitKnockedOut.AddListener(CheckDefeatedEnemy);
         _slainElementals = 0;
         Area.Instance.transform.Find("Interactables/Weapon Mausoleum/Dialogue").gameObject.SetActive(!SaveFile.Instance.HasFlag("IgnisVolcano_SlewRetributionKnight"));
         Area.Instance.transform.Find("Interactables/Weapon Mausoleum_2/Dialogue").gameObject.SetActive(!SaveFile.Instance.HasFlag("IgnisVolcano_SlewHeavenlyHalberdKnight"));
@@ -790,8 +790,8 @@ public class Area_IgnisVolcano
         blaine.Actions.IsFlipped = true;
         Area.Instance.transform.Find("Environment/VisualEffect_RagingInferno").gameObject.SetActive(true);
         Utils.GetUnit("FlameShadow").gameObject.SetActive(true);
-        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatAmount = -25, DisplayEffectIndicator = true, PathToEffectGraphic = "Effect/Bleed", IsRemovable = false};
-        Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatAmount = -25, DisplayEffectIndicator = true, PathToEffectGraphic = "Effect/Burn", IsRemovable = false};
+        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Incision", IsRemovable = false};
+        Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Burn", IsRemovable = false};
         blaine.AddEffect(e1);
         blaine.AddEffect(e2);
         blaine.AttackPlayer();

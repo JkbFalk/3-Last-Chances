@@ -42,7 +42,7 @@ public class Chest : InteractableObject
                 chest.transform.Find("Graphic").GetComponent<SpriteRenderer>().sprite = Resources.Load("Sprites/Environment/Treasure Chest (Open)", typeof(Sprite)) as Sprite;
             }
             chest.transform.Find("Interact Indicator").gameObject.SetActive(false);
-            NotificationController.ShowNotificationWithGraphic(Label.Get(key.GetType() + "_Name") + ": " + Label.Get("OpenedChestUsedKeyNotification"), key.IconPath);
+            NotificationController.ShowNotificationWithGraphic(Label.Get(key.GetType() + "") + ": " + Label.Get("OpenedChestUsedKeyNotification"), key.IconPath);
             if(interactable.AvailableOncePerCycle && !String.IsNullOrEmpty(interactable.InteractableId)) {
                 SaveFile.Instance.AddFlag(Utils.GetFormattedFlag(interactable.InteractableId + "_Destroyed_[Cycle]"));
             }

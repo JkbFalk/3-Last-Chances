@@ -17,6 +17,6 @@ public class Bow_Ebony : Item
         return new List<Effect> { new Effect_ChangeStat(Player.Instance.RangedInjury, new(this)) { RemainsActiveInOtherStances = true, ScaleWithEffectValue = false, PercentageAmount = Grade == ItemGrade.Regular ? 10 : Grade == ItemGrade.Excellent ? 20 :Grade == ItemGrade.Masterful ? 30 :Grade == ItemGrade.Flawless ? 50 : 100 }, new Effect_ChangeStat(Player.Instance.RangedStagger, new(this)) { RemainsActiveInOtherStances = true, ScaleWithEffectValue = false, PercentageAmount = Grade == ItemGrade.Regular ? 10 : Grade == ItemGrade.Excellent ? 20 :Grade == ItemGrade.Masterful ? 30 :Grade == ItemGrade.Flawless ? 50 : 100 }};
     }
     public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.DamageReduction, new(this)) {PercentageAmount= Grade == ItemGrade.Masterful ? 0.4f :Grade == ItemGrade.Flawless ? 0.5f : Grade == ItemGrade.Ultimate ? 0.6f : 0} };
+        return new List<Effect> { new Effect_ChangeStat(Player.Instance.DamageReduction, new(this)) {PercentageAmount= Grade == ItemGrade.Masterful ? 0.4f :Grade == ItemGrade.Flawless ? 0.5f : Grade == ItemGrade.Ultimate ? 0.625f : 0} };
     }
 }

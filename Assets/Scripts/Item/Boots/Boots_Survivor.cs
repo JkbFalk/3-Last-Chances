@@ -16,7 +16,7 @@ public class Boots_Survivor : Item
                     damage.TargetOfDamage == Player.Instance && Player.Instance.Health.Current < Player.Instance.Health.Maximum / 4),
                 Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                     if(!Player.Instance.CheckIfEffectIsOnCooldown(effect)) {
-                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new(this)) {DisplayEffectIndicator=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Boots Icons", "Boots Icons_2"), RegenerationFlatAmount = effect.CustomParam / 10}, 10);
+                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new(this)) {ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Boots Icons", "Boots Icons_2"), RegenerationFlatAmount = effect.CustomParam / 10}, 10);
                         Player.Instance.AddCooldown(effect, 60);
                     }
                 })}};

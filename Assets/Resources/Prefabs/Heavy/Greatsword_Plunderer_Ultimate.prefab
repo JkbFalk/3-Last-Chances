@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IgnoreSpriteParent: 0
-  Grey: {r: 1, g: 0.9990902, b: 0.9764151, a: 0}
+  Grey: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 0}
   GreyBorder1: 2
   GreyBorder2: 5
   Brown: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 0}
@@ -5072,6 +5072,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &548360495681040051
 BoxCollider2D:
   m_ObjectHideFlags: 0

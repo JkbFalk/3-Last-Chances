@@ -17,7 +17,7 @@ public class NPCAbility_LeoWindmill : Ability {
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 1f;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 

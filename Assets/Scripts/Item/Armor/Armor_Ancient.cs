@@ -13,11 +13,10 @@ public class Armor_Ancient : Item
 
     public override List<Effect> GetFirstModifier() {
         return new List<Effect> { 
-            new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new(this)) { PercentageAmount = 0.5f }, 
-            new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Stagger, new(this)) { PercentageAmount = 0.5f }, 
+            new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(this)) { PercentageAmount = 0.5f }, 
             new Effect_AncientBreastplate(new(this)) };
     }
     public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 5 }, new Effect_ChangeStat(Player.Instance.StaggerBar, new(this)) { FlatAmount = 5 } };
+        return new List<Effect> { new Effect_ChangeStat(Player.Instance.DamageReduction, new(this)) { PercentageAmount = 0.5f } };
     }
 }

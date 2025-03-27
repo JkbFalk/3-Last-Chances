@@ -12,7 +12,7 @@ public class NPCAbility_HeavyRush : Ability {
         PlaySoundOnlyOnce = true;
         HitSoundVolume = 0.7f;
         AddCustomSound("Charge", "Criminal/Criminal_Shield_Charge", 0.4f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;
     }
 

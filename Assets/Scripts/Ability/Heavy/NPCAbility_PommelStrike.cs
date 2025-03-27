@@ -7,8 +7,8 @@ public class NPCAbility_PommelStrike : Ability {
     public NPCAbility_PommelStrike(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0f;
         DamageSources.Add(new DamageSource(50, 300, Constants.DamageType.Heavy));
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBlock);
+        Properties.Add(AbilityProperty.CounteredByRoll);
+        Properties.Add(AbilityProperty.CounteredByBlock);
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

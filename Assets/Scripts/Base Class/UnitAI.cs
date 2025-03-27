@@ -98,9 +98,7 @@ public class UnitAI : MonoBehaviour {
             NavMeshHit myNavHit;
             if(NavMesh.SamplePosition(transform.position, out myNavHit, 100 , -1))
             {
-            Debug.Log("UnitAI1 Player.Instance.transform.position: " + Player.Instance.transform.position);
-            transform.position = myNavHit.position;
-            Debug.Log("UnitAI2 Player.Instance.transform.position: " + Player.Instance.transform.position);
+                transform.position = myNavHit.position;
             }
         }
         if (CanMove && CurrentDirectionType != DirectionType.DontChangeFacingDirection) {
@@ -166,6 +164,12 @@ public class UnitAI : MonoBehaviour {
     public void DecideOnNextAction(bool only_attacks = false) {
         if(GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene) {
             return;
+        }
+        foreach(string ability in EnemiesInRangeForAbility.Keys.ToList()) {
+            if(_unit.CheckIfValidTarget(EnemiesInRangeForAbility[ability]) == false) {
+                Debug.Log($"REMOVING INVALID TARGET FOR ABILITY: Unit {_unit}, ability {ability}, target {EnemiesInRangeForAbility[ability]}");
+                EnemiesInRangeForAbility.Remove(ability);
+            }
         }
         if(PredeterminedNextAction != null) {
             if (EnemiesInRangeForAbility.ContainsKey(PredeterminedNextAction.ToString())) {

@@ -11,10 +11,8 @@ public class NPCAbility_PlundererAnima : Ability {
         DamageSources.Add(new DamageSource(300, 100, Constants.DamageType.Heavy) {Knockback = 300});
         WaitTimeBeforeNextAction = 0.4f;
         AddCustomSound("Use", "Wind/WindSlash", 0.9f);
-        CanBeInterruptedByFlinching = false;
+        Properties.AddRange(new List<AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CountersBlock, AbilityProperty.CountersRiposte});
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersBlock);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersRiposte);
         TransitionIntoAnimationDuration = 0;
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;
     }
@@ -52,6 +50,6 @@ public class NPCAbility_PlundererAnima : Ability {
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
         base.ExtraBehaviourOnDamage(damage);
-        damage.TargetOfDamage.AddEffect(new Effect_Bleed(20 * User.HeavyInjury.Current / 100, new(this)));
+        damage.TargetOfDamage.AddEffect(new Effect_Incision(20 * User.HeavyInjury.Current / 100, new(this)));
     }
 }

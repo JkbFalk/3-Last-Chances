@@ -9,11 +9,11 @@ public class BA_Polearm_Charge : BasicAttack {
     public bool IsDashing = false;
     private int _powerLevel = 0;
     public BA_Polearm_Charge(Unit ability_user) : base(ability_user) {
-        IsStrongBasicAttack = true;
+        Properties.Add(AbilityProperty.StrongBasicAttack);
         AddCustomSound("Charge", "Ability/Ability_Snipe_Charge", 0.5f);
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Heavy));
         TransitionIntoAnimationDuration = 0;
-        EffectsAffectingUserDuringAbility = new() {new Effect_Immovable(new(this)), new Effect_Unstoppable(new(this))};
+        EffectsAffectingUserDuringAbility = new() {new Effect_Immovable(new(this)), new Effect_Unstunnable(new(this))};
     }
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)

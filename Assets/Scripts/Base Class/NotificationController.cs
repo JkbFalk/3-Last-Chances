@@ -210,11 +210,11 @@ public class NotificationController : MonoBehaviour
                 
                 if (item.Category == Constants.ItemCategory.Heavy || item.Category == Constants.ItemCategory.Light || item.Category == Constants.ItemCategory.Ranged)
                 {
-                    start_label += item.GetType().ToString() + "_Name} ({ItemGrade_" + item.Grade.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "}): ";
+                    start_label += item.GetType().ToString() + "} ({ItemGrade_" + item.Grade.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "}): ";
                 }
                 else
                 {
-                    start_label += item.GetType().ToString() + "_Name} (" + (item.Grade == Item.ItemGrade.None ? "" : "{ItemGrade_" + item.Grade.ToString() + "_Colored} ") + "{ItemCategory_" + item.Category.ToString() + "}): ";
+                    start_label += item.GetType().ToString() + "} (" + (item.Grade == Item.ItemGrade.None ? "" : "{ItemGrade_" + item.Grade.ToString() + "_Colored} ") + "{ItemCategory_" + item.Category.ToString() + "}): ";
                 }
                 if(item.Category == Constants.ItemCategory.Tool && sold_for > 0) {
                     Item existing_item = SaveFile.Instance.Inventory.FirstOrDefault(i => i.GetType() == item.GetType() && i.Grade == item.Grade);
@@ -243,14 +243,14 @@ public class NotificationController : MonoBehaviour
         if(quest.Status == Quest.QuestStatus.NotStarted) {
             return;
         }
-        ShowNotificationWithGraphic("<b>{" + quest.GetType() + "_Title}</b> {QuestStatusUpdate_" + quest.Status.ToString() + "}", quest.Icon);
+        ShowNotificationWithGraphic("<b>{" + quest.GetType() + "}</b> {QuestStatusUpdate_" + quest.Status.ToString() + "}", quest.Icon);
     }
 
     public static void ShowQuestObjectiveUpdateNotification(Quest quest, QuestObjective objective) {
         if(objective.Status == QuestObjective.ObjectiveStatus.NotRevealed) {
             return;
         }
-        ShowNotificationWithGraphic("<b>{" + quest.GetType() + "_Title}</b> {QuestObjectiveUpdate_" + objective.Status.ToString() + "}: " + Label.Get(quest.GetType() + "_" + objective.Number), quest.Icon);
+        ShowNotificationWithGraphic("<b>{" + quest.GetType() + "}</b> {QuestObjectiveUpdate_" + objective.Status.ToString() + "}: " + Label.Get(quest.GetType() + "_" + objective.Number), quest.Icon);
     }
 
     public class InGameDialogue {

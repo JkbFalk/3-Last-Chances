@@ -12,6 +12,5 @@ using System.Reflection;
 
 public class SaveFileTest
 {
-    public Effect_EnergyUpgrade EnergyEffect;
     public SaveFileTest() {}
 }

@@ -13,7 +13,7 @@ public class Effect_CustomizableDamageChange : Effect
     public float MultiplierChange = 0;
     public float InjuryPercentageChange = 0;
     public float StaggerPercentageChange = 0;
-    public Func<Damage, Effect_CustomizableDamageChange,bool> ConditionCheckOnHitDealt;
+    public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnHitDealt;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckAfterHitDamageCalculation;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnDamageDealt;
     public Action<Damage, Effect_CustomizableDamageChange> Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {

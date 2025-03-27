@@ -10,7 +10,7 @@ public class NPCAbility_SmashAndShoot : Ability {
         AddCustomSound("Shoot", "Explosion/CannonBallShot", 0.65f);
         WaitTimeBeforeNextAction = 0.3f;
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+        Properties.Add(AbilityProperty.CounteredByRoll);
     }
 
     public override void CallAbilityEvent1() {
@@ -19,7 +19,7 @@ public class NPCAbility_SmashAndShoot : Ability {
 
     public override void CallAbilityEvent2()
     {
-        AbilityModifiers.Clear();
+        Properties.Clear();
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

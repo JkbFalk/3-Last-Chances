@@ -156,7 +156,7 @@ MonoBehaviour:
   Grey: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 0}
   GreyBorder1: 1
   GreyBorder2: 5
-  Brown: {r: 0.9245283, g: 0.42270377, b: 0.33579564, a: 0}
+  Brown: {r: 0.745283, g: 0.03163936, b: 0.03163936, a: 0}
   BrownBorder1: 0.4
   BrownBorder2: 0.8
   Red: {r: 0.3207547, g: 0.26174796, b: 0.26174796, a: 0}
@@ -165,7 +165,7 @@ MonoBehaviour:
   Green: {r: 0.2830189, g: 0.19090424, b: 0.19090424, a: 0}
   GreenBorder1: 0.4
   GreenBorder2: 0.8
-  Blue: {r: 1, g: 0.5609143, b: 0.15566039, a: 0}
+  Blue: {r: 0.8490566, g: 0.20936379, b: 0.03604484, a: 0}
   BlueBorder1: 0.4
   BlueBorder2: 0.8
   SpecialSkinColor: {r: 1, g: 1, b: 1, a: 1}
@@ -5072,6 +5072,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &6048960530000090189
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -10,9 +10,8 @@ public class NPCAbility_BlackflameBackstab : Ability {
     private Effect_ChangeStat _coltenPowerUp;
     public NPCAbility_BlackflameBackstab(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.2f;
-        CanBeInterruptedByFlinching = false;
         AddCustomSound("Teleport", "Fire/FlameTeleport", 0.9f);
-        AbilityModifiers = new() {Constants.AbilityModifier.CounteredByRoll, Constants.AbilityModifier.CounteredByRiposte, Constants.AbilityModifier.CounteredByBlock, Constants.AbilityModifier.CountersBackstep};
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CounteredByBackstep, AbilityProperty.CounteredByRiposte, AbilityProperty.CounteredByBlock, AbilityProperty.CountersBackstep});
         DamageSources.Add(new DamageSource(400, 400, Constants.DamageType.Heavy));
     }
 

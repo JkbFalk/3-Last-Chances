@@ -14,19 +14,19 @@ public class Boots_Duelist : Item
 
     public override List<Effect> GetFirstModifier() {
         return new List<Effect> { new Effect_CustomizableEffectOnEvent(new(this)) { EffectTypeName="ReducedDamageAfterRiposteOrCounter", DescriptionParameters = new() {Utils.GetFormattedFloat(GetFirstModifierEffectValue(false) * 0.5f)}, PercentageAmount = GetFirstModifierEffectValue(false) * 0.5f, ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                (ability.User is Player && (ability.IsRiposte || ability.IsCounter))), 
+                (ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter)))), 
             ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, customizableEffect) =>  {
-                if(ability.IsRiposte) {
-                    if(Player.Instance.CurrentEffects.FirstOrDefault(e => e.ExtraInfo == "ReducedDamageAfterRiposte") != null) {
-                        Player.Instance.CurrentEffects.FirstOrDefault(e => e.ExtraInfo == "ReducedDamageAfterRiposte").EndThisEffect();
+                if(ability.Is(Ability.AbilityProperty.Riposte)) {
+                    if(Player.Instance.CurrentEffects.FirstOrDefault(e => e.Identifier == "ReducedDamageAfterRiposte") != null) {
+                        Player.Instance.CurrentEffects.FirstOrDefault(e => e.Identifier == "ReducedDamageAfterRiposte").EndThisEffect();
                     }
-                    Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(ability)) {PercentageAmount = customizableEffect.PercentageAmount, ExtraInfo="ReducedDamageAfterRiposte"});
+                    Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(ability)) {PercentageAmount = customizableEffect.PercentageAmount, Identifier="ReducedDamageAfterRiposte"});
                 }
                 else {
-                    if(Player.Instance.CurrentEffects.FirstOrDefault(e => e.ExtraInfo == "ReducedDamageAfterCounter") != null) {
-                        Player.Instance.CurrentEffects.FirstOrDefault(e => e.ExtraInfo == "ReducedDamageAfterCounter").EndThisEffect();
+                    if(Player.Instance.CurrentEffects.FirstOrDefault(e => e.Identifier == "ReducedDamageAfterCounter") != null) {
+                        Player.Instance.CurrentEffects.FirstOrDefault(e => e.Identifier == "ReducedDamageAfterCounter").EndThisEffect();
                     }
-                    Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(ability)) {PercentageAmount = customizableEffect.PercentageAmount * 2, ExtraInfo="ReducedDamageAfterCounter"});
+                    Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(ability)) {PercentageAmount = customizableEffect.PercentageAmount * 2, Identifier="ReducedDamageAfterCounter"});
                 }
         })} };
     }

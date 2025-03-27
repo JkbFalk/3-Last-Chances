@@ -6,6 +6,7 @@ public class Effect_Flinching : Effect_HardCrowdControl
     public Effect_Flinching(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
+        PathToEffectGraphic = "Effect/Stun";
     }
 
     public override void AdditionalActionsOnSettingTargetOfEffect(Unit target_of_effect)

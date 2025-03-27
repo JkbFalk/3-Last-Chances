@@ -14,12 +14,11 @@ public class NPCAbility_ShieldGuard : Ability {
     private Effect_ShieldingAnAlly _effectOnCaster;
 
     public NPCAbility_ShieldGuard(Unit ability_user) : base(ability_user) {
-        CanBePlundered = false;
         WaitTimeBeforeNextAction = Random.Range(0.3f, 1f);
         AutoPlayAbilityAnimation = false;
         CanMoveWhileUsing = true;
         WaitTimeBeforeNextAction = 0.1f;
-        EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_Unstoppable(new(this)) };
+        EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_Unstunnable(new(this)) };
     }
 
     public override void OnAbilityStart() {

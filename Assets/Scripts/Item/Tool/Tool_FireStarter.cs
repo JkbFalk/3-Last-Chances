@@ -18,6 +18,6 @@ public class Tool_FireStarter : Item
 
     public override string GetDescription(bool detailed = true)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "Simple")), new object[] { Utils.GetFormattedFloat(5 * GetMultiplierForGrade()), Utils.GetFormattedFloat(5 * GetMultiplierForGrade()), Utils.GetFormattedFloat(3 * GetMultiplierForGrade()) }) + (detailed ? "" : " <sprite name=\"Detailed\">") + "\n\n<sprite name=\"Cooldown\"> " + Cooldown.ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "")), new object[] { Utils.GetFormattedFloat(5 * GetMultiplierForGrade()), Utils.GetFormattedFloat(5 * GetMultiplierForGrade()), Utils.GetFormattedFloat(3 * GetMultiplierForGrade()) }) + (detailed ? "" : " [Detailed]") + "\n\n[CD] " + Cooldown.ToString();
     }
 }

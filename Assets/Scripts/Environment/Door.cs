@@ -23,7 +23,7 @@ public class Door : InteractableObject
             Utils.PlaySoundEffect(Player.Instance.AudioSource, door.transform.parent.Find("Open").gameObject.activeSelf ? "Interact/Close Door" : "Interact/Open Door", 0.8f);
             door.transform.parent.Find("Open").gameObject.SetActive(!door.transform.parent.Find("Open").gameObject.activeSelf);
             door.transform.parent.Find("Closed").gameObject.SetActive(!door.transform.parent.Find("Closed").gameObject.activeSelf);
-            NotificationController.ShowNotificationWithGraphic(Label.Get(key.GetType() + "_Name") + ": " + Label.Get("OpenedDoorUsedKeyNotification"), key.IconPath);
+            NotificationController.ShowNotificationWithGraphic(Label.Get(key.GetType() + "") + ": " + Label.Get("OpenedDoorUsedKeyNotification"), key.IconPath);
             return true;
         }
         else if(!string.IsNullOrWhiteSpace(door.RequiredKeyName)){

@@ -9,7 +9,7 @@ public class NPCAbility_PlundererTonitrui : Ability {
         DamageSources.Add(new DamageSource(300, 400, Constants.DamageType.Heavy));
         AddCustomSound("Charge", "Ability/Ability_ThunderStrike_Charge", 0.9f);
         AddCustomSound("Hit", "Ability/Ability_ThunderStrike_Regular", 0.9f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         TransitionIntoAnimationDuration = 0;
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }

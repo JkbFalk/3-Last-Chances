@@ -43,7 +43,7 @@ public abstract class Item
     public String CustomAnimation;
     public ItemSetEnum Set = ItemSetEnum.Unique;
     public ItemSetEnum ItemSet;
-    public enum ItemSetEnum {WeaponMaster, Duelist, Jailer, Knight, BattleBorn, Ancient, Judge, Gunslinger, Arbiter, IronBlooded, Unbreakable, Mercenary, Assassin, Executioner, Survivor, Artisan, Alacrity, Enforcer, Sage, RoyalGuard, ShadowGifted, Unique};
+    public enum ItemSetEnum {WeaponMaster, Duelist, Jailer, Ancient, BattleBorn, Knight, Judge, Gunslinger, Arbiter, IronBlooded, Unbreakable, Mercenary, Survivor, Assassin, Executioner, Artisan, Alacrity, Enforcer, Sage, RoyalGuard, ShadowGifted, Unique};
     protected int _amount = 1;
     [NonSerialized]
     public List<Ability.DamageSource> DamageSources;
@@ -247,7 +247,7 @@ public abstract class Item
 
     public virtual List<Effect> GetFirstModifier() {
         return new();
-    }
+    }   
 
     public virtual List<Effect> GetSecondModifier() {
         return new();
@@ -381,7 +381,7 @@ public abstract class Item
 
     public virtual string GetItemName()
     {
-        return Label.Get(GetType().ToString() + "_Name") + " (" + Label.Get("ItemGrade_" + Grade.ToString() + "_Colored") + " " + Label.Get("ItemCategory_" + Category.ToString()) + ")";
+        return Label.Get(GetType().ToString()) + " (" + Label.Get("ItemGrade_" + Grade.ToString() + "_Colored") + " " + Label.Get("ItemCategory_" + Category.ToString()) + ")";
     }
 
     public virtual string GetDescription(bool detailed = false)
@@ -405,27 +405,27 @@ public abstract class Item
     {
         switch (Category) 
         {
-            case ItemCategory.Heavy: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, this); SaveFile.Instance.EquippedHeavyWeapon = this; break;}
-            case ItemCategory.Light: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, this); SaveFile.Instance.EquippedLightWeapon = this; break;}
-            case ItemCategory.Ranged: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, this); SaveFile.Instance.EquippedRangedWeapon = this; break;}
-            case ItemCategory.Gloves: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, this); SaveFile.Instance.EquippedGloves = this; break;}
-            case ItemCategory.Helmet: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, this); SaveFile.Instance.EquippedHelmet = this; break;}
-            case ItemCategory.Armor: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, this); SaveFile.Instance.EquippedArmor = this; break;}
-            case ItemCategory.Boots: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, this); SaveFile.Instance.EquippedBoots = this; break;}
+            case ItemCategory.Heavy: {SaveFile.Instance.EquippedHeavyWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, this); break;}
+            case ItemCategory.Light: {SaveFile.Instance.EquippedLightWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, this); break;}
+            case ItemCategory.Ranged: {SaveFile.Instance.EquippedRangedWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, this); break;}
+            case ItemCategory.Gloves: {SaveFile.Instance.EquippedGloves = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, this); break;}
+            case ItemCategory.Helmet: {SaveFile.Instance.EquippedHelmet = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, this); break;}
+            case ItemCategory.Armor: {SaveFile.Instance.EquippedArmor = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, this); break;}
+            case ItemCategory.Boots: {SaveFile.Instance.EquippedBoots = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, this); break;}
         }
         if (Category == ItemCategory.Tool)
         {
             if (item_slot == 1)
             {
-                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem1, this);
                 SaveFile.Instance.EquippedItem1 = this;
                 IsEquippedInSlot1 = true;
+                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem1, this);
             }
             if (item_slot == 2)
             {
-                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem2, this);
                 SaveFile.Instance.EquippedItem2 = this;
                 IsEquippedInSlot1 = true;
+                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem2, this);
             }
         }
         else {
@@ -492,25 +492,25 @@ public abstract class Item
         IsEquipped = false;
         switch (Category) 
         {
-            case ItemCategory.Heavy: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, null); SaveFile.Instance.EquippedHeavyWeapon = null; break;}
-            case ItemCategory.Light: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, null); SaveFile.Instance.EquippedLightWeapon = null; break;}
-            case ItemCategory.Ranged: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, null); SaveFile.Instance.EquippedRangedWeapon = null; break;}
-            case ItemCategory.Gloves: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, null); SaveFile.Instance.EquippedGloves = null; break;}
-            case ItemCategory.Helmet: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, null); SaveFile.Instance.EquippedHelmet = null; break;}
-            case ItemCategory.Armor: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, null); SaveFile.Instance.EquippedArmor = null; break;}
-            case ItemCategory.Boots: {EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, null); SaveFile.Instance.EquippedBoots = null; break;}
+            case ItemCategory.Heavy: {SaveFile.Instance.EquippedHeavyWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, null); break;}
+            case ItemCategory.Light: {SaveFile.Instance.EquippedLightWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, null); break;}
+            case ItemCategory.Ranged: {SaveFile.Instance.EquippedRangedWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, null); break;}
+            case ItemCategory.Gloves: {SaveFile.Instance.EquippedGloves = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, null); break;}
+            case ItemCategory.Helmet: {SaveFile.Instance.EquippedHelmet = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, null); break;}
+            case ItemCategory.Armor: {SaveFile.Instance.EquippedArmor = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, null); break;}
+            case ItemCategory.Boots: {SaveFile.Instance.EquippedBoots = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, null); break;}
         }
         if(Category == ItemCategory.Tool)
         {
             if(SaveFile.Instance.EquippedItem1 == this && item_slot == 1)
             {
-                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem1, null);
                 SaveFile.Instance.EquippedItem1 = null;
+                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem1, null);
             }
             if (SaveFile.Instance.EquippedItem2 == this && item_slot == 2)
             {
-                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem2, null);
                 SaveFile.Instance.EquippedItem2 = null;
+                EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem2, null);
             }
         }
         bool IsWeapon = Category == ItemCategory.Heavy || Category == ItemCategory.Light || Category == ItemCategory.Ranged;

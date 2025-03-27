@@ -36,12 +36,12 @@ public class Ability_Eruption : Technique
         {
             DamageSources.Add(new DamageSource(new Dictionary<Constants.DamageType, float>() {{ Constants.DamageType.Heavy, HeavyInjuryScaling },{ Constants.DamageType.Magic, MagicInjuryScaling }}, new Dictionary<Constants.DamageType, float>() {{ Constants.DamageType.Heavy, HeavyStaggerScaling }}, Constants.DamageType.Heavy, "AoE") {Knockback = 180});
         }
-        EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)), new Effect_Unstoppable(new(this))};
+        EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)), new Effect_Unstunnable(new(this))};
     }
 
     public override void CallAbilityEvent1()
     {
-        if(!IsUltimate) {
+        if(IsNot(AbilityProperty.Ultimate)) {
             _aoe = Utils.CreateAreaOfEffect(new(this), "EruptionCircle").transform.parent.parent.gameObject;
             _aoe.transform.position = User.transform.position + new Vector3(0, -0.2f);
             GameController.Instance.WaitAndRunMethod(UpgradeAUnlocked ? 0.5f : 1, AdvanceExplosion);
@@ -51,7 +51,7 @@ public class Ability_Eruption : Technique
 
     public override void CallAbilityEvent2()
     {
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             CreateExplosion();
         }
     }
@@ -101,7 +101,7 @@ public class Ability_Eruption : Technique
 
     public override void ExtraBehaviourOnHit(Damage damage)
     {
-        if (IsUltimate) {
+        if (Is(AbilityProperty.Ultimate)) {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(Player.Instance.MagicStagger.Current * MagicStaggerBurnScalingUltimate / 100, new(this)));
         }
         else {

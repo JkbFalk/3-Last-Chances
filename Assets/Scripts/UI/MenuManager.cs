@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Steamworks;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
@@ -156,7 +157,6 @@ public class MenuManager : MonoBehaviour {
 
     public void ResetAndRefreshAllMenus() {
         Utils.DestroyAllChildren(CanvasElements.UICanvas.StanceGaugeContainer.transform);
-        InitializeEnergyDisplays();
         SaveFile.Instance.MakeSureAllCorrectTechniquesAndStancesAreUnlocked();
         transform.Find("Overview Window/Ability Select").gameObject.SetActive(false);
         transform.Find("Overview Window/Stance Select").gameObject.SetActive(false);
@@ -283,29 +283,6 @@ public class MenuManager : MonoBehaviour {
         }
         foreach(string submenu in new List<string> {"Skill Tree", "Inventory", "Journal", "History", "Guide", "Settings", "Other"}) {
             transform.Find(submenu + " Window").gameObject.SetActive(false);
-        }
-        InitializeEnergyDisplays();
-    }
-
-    public void InitializeEnergyDisplays() {
-        UpdateEnergyBarVisuals();
-        Transform energies = CanvasElements.MenuCanvas.EnergySelection.transform;
-        foreach(Ability.AbilityFamily energy_type in SaveFile.Instance.EnergyUpgrades.Keys) {
-            if(energy_type != Ability.AbilityFamily.None) {
-                energies.Find(energy_type + "/1").GetComponent<Button>().interactable = SaveFile.Instance.EnergyUpgrades[energy_type] > 0;
-                List<string> colors = (List<string>)typeof(Colors).GetField(energy_type + "Energy", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-                energies.Find(energy_type + "/1/Fill Area/Fill").GetComponent<Image>().color = SaveFile.Instance.EnergyUpgrades[energy_type] > 0 ? Colors.GetColorFromCode(colors[0]) : Color.black;
-                energies.Find(energy_type + "/1/Fill Area/Fill/Grandient").GetComponent<Image>().color = SaveFile.Instance.EnergyUpgrades[energy_type] > 0 ? Colors.GetColorFromCode(colors[1]) : Color.black;
-                energies.Find(energy_type + "/1/Fill Area/Fill/Grandient (1)").GetComponent<Image>().color = SaveFile.Instance.EnergyUpgrades[energy_type] > 0 ? Colors.GetColorFromCode(colors[2]) : Color.black;
-                energies.Find(energy_type + "/1/Handle Slide Area/Handle").GetComponent<Image>().color = SaveFile.Instance.EnergyUpgrades[energy_type] > 0 ? Colors.GetColorFromCode(colors[3]) : Color.black;
-                energies.Find(energy_type + "/2").gameObject.SetActive(SaveFile.Instance.EnergyUpgrades[energy_type] > 1);
-                energies.Find(energy_type + "/3").gameObject.SetActive(SaveFile.Instance.EnergyUpgrades[energy_type] > 2);
-                energies.Find(energy_type + "/1/Level").GetComponent<TextMeshProUGUI>().text = SaveFile.Instance.EnergyUpgrades[energy_type] == 1 ? "I" : SaveFile.Instance.EnergyUpgrades[energy_type] == 2 ? "II" : SaveFile.Instance.EnergyUpgrades[energy_type] == 3 ? "III" : "";
-                for(int i = 1; i < 4; i++) {
-                    energies.Find(energy_type + "/Descriptions/" + i).GetComponent<TextMeshProUGUI>().color = new Color(0, 0, 0, SaveFile.Instance.EnergyUpgrades[energy_type] >= i ? 1 : 0.3f);
-                    energies.Find(energy_type + "/Descriptions/" + i).GetComponent<TextMeshProUGUI>().text = energies.Find(energy_type + "/Descriptions/" + i).GetComponent<TextMeshProUGUI>().text.Replace("<sprite name=\"Detailed\">", "");
-                }
-            }
         }
     }
 
@@ -445,7 +422,7 @@ public class MenuManager : MonoBehaviour {
         }
         CanvasElements.MenuCanvas.TutorialWindowTitle.GetComponent<LabelInitializer>().SetLabel("{TutorialTitle" + tutorial_name + "}");
         CanvasElements.MenuCanvas.TutorialWindowImage.GetComponent<Image>().sprite = Resources.Load("Sprites/Tutorial/" + tutorial_name, typeof(Sprite)) as Sprite;
-        CanvasElements.MenuCanvas.TutorialWindowDescription.GetComponent<LabelInitializer>().SetLabel("{TutorialDescription" + tutorial_name + "Simple}");
+        CanvasElements.MenuCanvas.TutorialWindowDescription.GetComponent<LabelInitializer>().SetLabel("{TutorialDescription" + tutorial_name + "}");
     }
 
     public void EndTypingBugReport()
@@ -638,7 +615,7 @@ public class MenuManager : MonoBehaviour {
         transform.Find("Inventory Window/Details").gameObject.SetActive(true);
         transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.Category == Constants.ItemCategory.Quest ? " " : item.GetDescription() + GetModifierDescriptions(item));
         transform.Find("Inventory Window/Details/Flavor Text/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.GetFlavorText());
-        transform.Find("Inventory Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "_Name}");
+        transform.Find("Inventory Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "}");
         if(item.Category == Constants.ItemCategory.Heavy || item.Category == Constants.ItemCategory.Light || item.Category == Constants.ItemCategory.Ranged)
         {
             transform.Find("Inventory Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{ItemGrade_" + item.Grade.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "} ({ItemCategory_" + item.Category.ToString() + "})");
@@ -660,7 +637,7 @@ public class MenuManager : MonoBehaviour {
         GameController.Instance.transform.Find("Shop/Details").gameObject.SetActive(true);
         GameController.Instance.transform.Find("Shop/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.Category == Constants.ItemCategory.Quest ? " " : item.GetDescription() + GetModifierDescriptions(item));
         GameController.Instance.transform.Find("Shop/Details/Flavor Text/Image/Description").GetComponent<LabelInitializer>().SetLabel(item.GetFlavorText());
-        GameController.Instance.transform.Find("Shop/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "_Name}");
+        GameController.Instance.transform.Find("Shop/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "}");
         if(item.Category == Constants.ItemCategory.Heavy || item.Category == Constants.ItemCategory.Light || item.Category == Constants.ItemCategory.Ranged)
         {
             GameController.Instance.transform.Find("Shop/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{ItemGrade_" + item.Grade.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "} ({ItemCategory_" + item.Category.ToString() + "})");
@@ -670,35 +647,6 @@ public class MenuManager : MonoBehaviour {
             GameController.Instance.transform.Find("Shop/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{ItemGrade_" + item.Grade.ToString() + "_Colored} {ItemCategory_" + item.Category.ToString() + "}");
         }
         SetRegularImage(GameController.Instance.transform.Find("Shop/Details/Image/Image").gameObject, item);
-    }
-
-    public void ShowEnergyDetails(Ability.AbilityFamily family)
-    {
-        if(CurrentDetailedEnergyDescription == family || SaveFile.Instance.EnergyUpgrades[family] == 0)
-        {
-            return;
-        }
-        CurrentDetailedEnergyDescription = family;
-        AbilityDetailsWindowOpen = true;
-        transform.Find("Overview Window/Details").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Image").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Stance").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Energy").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Stat").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Description/Image/Energy Description").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Description/Image/Upgrade Description").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Description/Image/Description").gameObject.SetActive(false);
-        List<string> colors = (List<string>)typeof(Colors).GetField(family + "Energy", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-        transform.Find("Overview Window/Details/Energy/Fill Area/Fill").GetComponent<Image>().color = Colors.GetColorFromCode(colors[0]);
-        transform.Find("Overview Window/Details/Energy/Fill Area/Fill/Grandient").GetComponent<Image>().color = Colors.GetColorFromCode(colors[1]);
-        transform.Find("Overview Window/Details/Energy/Fill Area/Fill/Grandient (1)").GetComponent<Image>().color = Colors.GetColorFromCode(colors[2]);
-        transform.Find("Overview Window/Details/Energy/Handle Slide Area/Handle").GetComponent<Image>().color = Colors.GetColorFromCode(colors[3]);
-        transform.Find("Overview Window/Details/Description/Image/Description").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Description/Image/Energy Description/Description1").GetComponent<LabelInitializer>().SetLabel("I: {" + family + "Energy1_DescriptionSimple}");
-        transform.Find("Overview Window/Details/Description/Image/Energy Description/Description2").GetComponent<LabelInitializer>().SetLabel(SaveFile.Instance.EnergyUpgrades[family] > 1 ? "II: {" + family + "Energy2_DescriptionSimple}" : " ");
-        transform.Find("Overview Window/Details/Description/Image/Energy Description/Description3").GetComponent<LabelInitializer>().SetLabel(SaveFile.Instance.EnergyUpgrades[family] > 2 ? "III: {" + family + "Energy3_DescriptionSimple}" :  " ");
-        transform.Find("Overview Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{Energy_" + family + "_Title}" + (SaveFile.Instance.EnergyUpgrades[family] == 1 ? " (I)" : SaveFile.Instance.EnergyUpgrades[family] == 2 ? " (II)" : SaveFile.Instance.EnergyUpgrades[family] == 3 ? " (III)" : ""));
-        transform.Find("Overview Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{Energy_CategoryDescription}");
     }
 
     public List<string> AbilityUpgradeStringParams;
@@ -735,7 +683,7 @@ public class MenuManager : MonoBehaviour {
             transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().string_params = Utils.RoundAllNumbers((List<string>)desc.Invoke(null, null));
         }
         if(ability_type.ToString().Contains("Stance_")) {
-            string stance_desc = "{" + ability_type.ToString() + "_DescriptionSimple}\n";
+            string stance_desc = "{" + ability_type.ToString() + "_Description}\n";
             if(SaveFile.Instance.StanceUpgrades.Contains(ability_type.ToString().Replace("Stance_", "") + "1")) {
                 stance_desc += "\n{StanceUpgrade1}";
             }
@@ -748,7 +696,7 @@ public class MenuManager : MonoBehaviour {
             transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(stance_desc);
         }
         else {
-            transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "_DescriptionSimple}");
+            transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "_Description}");
         }
         transform.Find("Overview Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "}");
         FieldInfo isUltimate = ability_type.GetField("IsUltimate", BindingFlags.Public | BindingFlags.Static);
@@ -764,12 +712,12 @@ public class MenuManager : MonoBehaviour {
         transform.Find("Overview Window/Details/Description/Image/Energy Description").gameObject.SetActive(false);
         transform.Find("Overview Window/Details/Description/Image/Description").gameObject.SetActive(true);
         transform.Find("Overview Window/Details/Stat").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + stat, typeof(Sprite)) as Sprite;
-        transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{MenuStatDescription_" + stat + "Simple}");
-        transform.Find("Overview Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{MenuStatLabel_" + stat + "}");
+        transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{Stat_" + stat + "_Description}");
+        transform.Find("Overview Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{Stat_" + stat + "}");
         transform.Find("Overview Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{MenuStatLabel_Stat}");
     }
 
-    public void ShowPowerUpDetails(PassivePowerUpTile tile, bool refresh = false) {
+    public void ShowPowerUpDetails(PassivePowerUpTile tile, bool refresh = false, bool show_detailed = false) {
         if(tile == null || tile.GetComponent<Button>().interactable == false || (CurrentSkillTreeTileDescription == tile.gameObject && refresh == false))
         {
             return;
@@ -779,21 +727,16 @@ public class MenuManager : MonoBehaviour {
         transform.Find("Skill Tree Window/Details").gameObject.SetActive(true);
         string desc = "";
         string[] power_ups = tile.PowerUp.Split("+");
-        int index = 0;
         for(int i = 0; i < power_ups.Length; i++) {
-            desc += GetLabelWithIncrementedTokens("Effect_" + power_ups[i] + "_DescriptionSimple", ref index) + "\n\n" + (SaveFile.Instance.UnlockedPowerUps.Contains(tile.Id) ? ""  : Utils.GetCalculatedStatIncrease(power_ups[i], tile.Params[i]));
-        }
-        List<string> string_params = new List<string>();
-        foreach(string p in tile.Params) {
-            string_params.Add(p.Replace("%", ""));
+            desc += "{Effect_" + power_ups[i] + "_Description" + ((show_detailed && Label.ContainsKey("{Effect_" + power_ups[i] + "_DescriptionDetailed")) ? "Detailed" : "") + "}\n\n" + (SaveFile.Instance.UnlockedPowerUps.Contains(tile.Id) ? ""  : Utils.GetCalculatedStatIncrease(power_ups[i], tile.Params[i]));
         }
         transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").gameObject.SetActive(true);
-        transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().string_params = string_params;
-        transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().SetLabel(desc);
+        //transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().string_params = string_params;
+        transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().SetLabelWithIncrementedToken(desc, tile.Params);
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<TextMeshProUGUI>().text = "";
-        transform.Find("Skill Tree Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{Effect_" + tile.PowerUp + "_Title}");
+        transform.Find("Skill Tree Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{Effect_" + tile.PowerUp + "}");
         transform.Find("Skill Tree Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{PowerUpName}");
         transform.Find("Skill Tree Window/Details/Ability").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details/Stance").gameObject.SetActive(false);
@@ -819,26 +762,6 @@ public class MenuManager : MonoBehaviour {
         transform.Find("Skill Tree Window/Details/Power-up/Icon").GetComponent<RectTransform>().localPosition = tileRectTransform.localPosition;
     }
 
-    public string GetLabelWithIncrementedTokens(string label, ref int start_index) {
-        if(!Label.ContainsKey(label)) {
-            Debug.LogError("Could not find label: " + label);
-            return label;
-        }
-        string text = Label.Get(label);
-        int highestParamIndex;
-        for(highestParamIndex = 0; text.Contains("{" + highestParamIndex + "}"); highestParamIndex++);
-        start_index += highestParamIndex - 1;
-        for(int i = 0; i < text.Length; i++) {
-            if(text[i] == '{' && text.Length > i+2 && text[i+2] == '}') {
-                text = text.Substring(0, i+1) + (Int32.Parse(text[i+1].ToString()) + start_index).ToString() + text.Substring(i+2, text.Length - i - 2);
-            }
-        }
-        if(highestParamIndex == 1) {
-            start_index++;
-        }
-        return text;
-    }
-
     public void ShowSkillTreeAbilityDetails(AbilityUnlockTile tile, bool refresh = false, bool is_ultimate = false) {
         if(tile == null || (CurrentSkillTreeTileDescription == tile?.gameObject && refresh == false) || tile.AbilityType == null || tile.AbilityType.GetMethod("GetDescriptionValues", BindingFlags.Public | BindingFlags.Static) == null)
         {
@@ -856,7 +779,7 @@ public class MenuManager : MonoBehaviour {
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(true);
         transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + "_FlavorText}");
-        transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + (is_ultimate ? "_Ultimate" : "") + "_DescriptionSimple}");
+        transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + (is_ultimate ? "_Ultimate" : "") + "_Description}");
         transform.Find("Skill Tree Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + "}");
         FieldInfo family = tile.AbilityType.GetField("Family", BindingFlags.Public | BindingFlags.Static);
         FieldInfo isUltimate = tile.AbilityType.GetField("IsUltimate", BindingFlags.Public | BindingFlags.Static);
@@ -881,11 +804,12 @@ public class MenuManager : MonoBehaviour {
         {
             transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().string_params = Utils.RoundAllNumbers((List<string>)desc.Invoke(null, null));
         }
-        transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + (tile.IsUpgrade ? "_Upgrade" + tile.Ability[tile.Ability.Length - 1] : "") + "_DescriptionSimple}");
+        transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + (tile.IsUpgrade ? "_Upgrade" + tile.Ability[tile.Ability.Length - 1] : "") + "_Description}");
         transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(true);
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(true);
         transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<TextMeshProUGUI>().text = "";
+        transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<LabelInitializer>().OriginalValue = "";
         transform.Find("Skill Tree Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + "}");
         transform.Find("Skill Tree Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{TechniqueFamily_" + family.GetValue(null) + "_Colored} " + (tile.IsUpgrade ? ("{StanceUpgrade" + tile.Ability[tile.Ability.Length - 1] + "}") : "{Stance}"));
         transform.Find("Skill Tree Window/Details/Ability").gameObject.SetActive(false);
@@ -899,17 +823,6 @@ public class MenuManager : MonoBehaviour {
             transform.Find("Skill Tree Window/Details/Stance/Graphic").GetComponent<Image>().sprite = tile.transform.Find("Graphic").GetComponent<Image>().sprite;
         }
         transform.Find("Skill Tree Window/Details/Stance/Stance Border").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + tile.AbilityType.ToString(), typeof(Sprite)) as Sprite;
-    }
-
-    public void UpdateEnergyBarVisuals() {
-        Ability.AbilityFamily family = SaveFile.Instance.EquippedEnergyFamily;
-        List<string> colors = (List<string>)typeof(Colors).GetField(family + "Energy", BindingFlags.Public | BindingFlags.Static).GetValue(null);
-        foreach(Transform display in new Transform[] {CanvasElements.UICanvas.ResourceBars.transform.Find("Energy"), CanvasElements.MenuCanvas.Energy.transform}) {
-            display.Find("Fill Area/Fill").GetComponent<Image>().color = Colors.GetColorFromCode(colors[0]);
-            display.Find("Fill Area/Fill/Grandient").GetComponent<Image>().color = Colors.GetColorFromCode(colors[1]);
-            display.Find("Fill Area/Fill/Grandient (1)").GetComponent<Image>().color = Colors.GetColorFromCode(colors[2]);
-            display.Find("Handle Slide Area/Handle").GetComponent<Image>().color = Colors.GetColorFromCode(colors[3]);
-        }
     }
 
     public void OpenEffectsOverview() {
@@ -944,7 +857,8 @@ public class MenuManager : MonoBehaviour {
         {
             transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().string_params = Utils.RoundAllNumbers((List<string>)desc.Invoke(null, null));
         }
-        transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + "_Mastery" + tile.Mastery + "_DescriptionSimple}");
+        transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + "_Mastery" + tile.Mastery + "_Description}");
+        transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<LabelInitializer>().OriginalValue = "";
         transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<TextMeshProUGUI>().text = "";
         transform.Find("Skill Tree Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + tile.AbilityType.ToString() + "}");
         FieldInfo family = tile.AbilityType.GetField("Family", BindingFlags.Public | BindingFlags.Static);
@@ -959,7 +873,6 @@ public class MenuManager : MonoBehaviour {
     public string GetModifierDescriptions(Item item, bool detailed = false)
     {    
         string desc = "";
-        List<Type> UsedEffects = new();
         List<Effect> firstModifier = item.GetFirstModifier();
         if (firstModifier != null && firstModifier.Count > 0)
         {
@@ -968,9 +881,8 @@ public class MenuManager : MonoBehaviour {
                 mod.NonLinearEffectValue = item.GetFirstModifierEffectValue(false);
                 mod.LinearEffectValue = item.GetFirstModifierEffectValue();
                 mod.OnEffectValueChanged();
-                UsedEffects = UsedEffects.Concat(mod.UsesTheFollowingEffects).ToList();
                 if( mod.EffectTypeName != "NoDescription" && String.IsNullOrWhiteSpace(mod.EffectTypeName) == false) {
-                    desc += string.Format(detailed ? Label.Get("Effect_" + mod.EffectTypeName + "_DescriptionDetailed") + "\n\n" : Label.Get("Effect_" + mod.EffectTypeName + "_DescriptionSimple") + "\n\n", mod.DescriptionParameters.ToArray());
+                    desc += string.Format((detailed && Label.ContainsKey("Effect_" + mod.EffectTypeName + "_DescriptionDetailed")) ? Label.Get("Effect_" + mod.EffectTypeName + "_DescriptionDetailed") + "\n\n" : Label.Get("Effect_" + mod.EffectTypeName + "_Description") + (Label.ContainsKey("Effect_" + mod.EffectTypeName + "_DescriptionDetailed") ? " [Detailed]" : "") + "\n\n", mod.DescriptionParameters.ToArray());
                 }
                 else if(mod.EffectTypeName != "NoDescription") {
                     desc += detailed ? mod.ToStringDetailed() + "\n\n" : mod.ToString() + "\n\n";
@@ -985,28 +897,12 @@ public class MenuManager : MonoBehaviour {
                 mod.NonLinearEffectValue = item.GetSecondModifierEffectValue(false);
                 mod.LinearEffectValue = item.GetSecondModifierEffectValue();
                 mod.OnEffectValueChanged();
-                UsedEffects = UsedEffects.Concat(mod.UsesTheFollowingEffects).ToList();
                 if( mod.EffectTypeName != "NoDescription" && String.IsNullOrWhiteSpace(mod.EffectTypeName) == false) {
-                    desc += string.Format(detailed ? Label.Get("Effect_" + mod.EffectTypeName + "_DescriptionDetailed") + "\n\n" : Label.Get("Effect_" + mod.EffectTypeName + "_DescriptionSimple") + "\n\n", mod.DescriptionParameters.ToArray());
+                    desc += string.Format((detailed && Label.ContainsKey("Effect_" + mod.EffectTypeName + "_DescriptionDetailed")) ? Label.Get("Effect_" + mod.EffectTypeName + "_DescriptionDetailed") + "\n\n" : Label.Get("Effect_" + mod.EffectTypeName + "_Description") + (Label.ContainsKey("Effect_" + mod.EffectTypeName + "_DescriptionDetailed") ? " [Detailed]" : "") + "\n\n", mod.DescriptionParameters.ToArray());
                 }
                 else if(mod.EffectTypeName != "NoDescription") {
                     desc += detailed ? mod.ToStringDetailed() + "\n\n" : mod.ToString() + "\n\n";
                 }
-            }
-        }
-        if(detailed) {
-            desc += GetEffectExplanations(UsedEffects);
-        }
-        return desc;
-    }
-
-    public string GetEffectExplanations(List<Type> effects) {
-        string desc = "";
-        List<Type> explainedEffects = new();
-        foreach(Type effectType in effects) {
-            if(explainedEffects.Contains(effectType) == false) {
-                explainedEffects.Add(effectType);
-                desc += "\n\n" + Label.Get(effectType + "_Explanation") + "\n\n";
             }
         }
         return desc;
@@ -1076,10 +972,26 @@ public class MenuManager : MonoBehaviour {
         foreach(Transform child in items) {
             if(child.gameObject.activeSelf) {
                 List<Item> consideredItems = new();
+                List<Item> weaponItems = new();
+                List<Item> nonWeaponItems = new();
                 foreach(InventoryTile tile in child.GetComponentsInChildren<InventoryTile>()) {
                     consideredItems.Add(tile.Item);
+                    if(sort == 1 && (tile.Item.Category == Constants.ItemCategory.Heavy || tile.Item.Category == Constants.ItemCategory.Light || tile.Item.Category == Constants.ItemCategory.Ranged)) {
+                        weaponItems.Add(tile.Item);
+                    }
+                    else if(sort == 1){
+                        nonWeaponItems.Add(tile.Item);
+                    }
                 }
-                List<Item> sortedItems = consideredItems.OrderBy(item => item.Category).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
+                List<Item> sortedItems;
+                if(sort == 1) {
+                    weaponItems = weaponItems.OrderBy(item => item.Category).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
+                    nonWeaponItems = nonWeaponItems.OrderBy(item => item.Category).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
+                    sortedItems = nonWeaponItems.Concat(weaponItems).ToList();
+                }
+                else {
+                    sortedItems = consideredItems.OrderBy(item => item.Category).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
+                } 
                 for(int i = 0; i < sortedItems.Count; i++) {
                     sortedItems[i].TileInInventory.transform.SetSiblingIndex(i);
                 }
@@ -1423,7 +1335,6 @@ public class MenuManager : MonoBehaviour {
         ExperienceReward = 0;
         SaveFile.Instance.CheckIfShouldPerformTimeSensitiveEvent();
         Utils.GetSceneRootObject("Mission Select").Find("Camera").GetComponent<Camera>().enabled = true;
-        Player.Instance.transform.Find("Camera Container/Camera").GetComponent<Camera>().enabled = false;
         Player.Instance.transform.position = new Vector2(-100, -100);
     }
 
@@ -1489,7 +1400,7 @@ public class MenuManager : MonoBehaviour {
                 GameObject missionSelect = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MissionSelect")) as GameObject;
                 mission.MissionSelectGameObject = missionSelect;
                 missionSelect.transform.Find("Text").GetComponent<LabelInitializer>().string_params = mission.GetTitleParameters();
-                missionSelect.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + mission.GetType() + "_Title}");
+                missionSelect.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + mission.GetType() + "}");
                 missionSelect.transform.Find("Text/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/" + mission.Icon, typeof(Sprite)) as Sprite;
                 missionSelect.transform.SetParent(items.Find(mission.Type.ToString()));
                 missionSelect.transform.Find("Time Remaining").gameObject.SetActive(mission.CanExpire);
@@ -1545,7 +1456,7 @@ public class MenuManager : MonoBehaviour {
         Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Viewport/Content/Top Info/Time Passed/Image").GetComponent<Image>().color = mission.GetClockColor();
         Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Viewport/Content/Top Info/Level").GetComponent<LabelInitializer>().SetLabel(String.Format(Label.Get("MissionDetailsLevel"), new string[] {mission.EnemyLevel == 0 ? "-" : mission.EnemyLevel.ToString()}));
         Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Title/Text").GetComponent<LabelInitializer>().string_params = mission.GetTitleParameters();
-        Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Title/Text").GetComponent<LabelInitializer>().SetLabel("{" + mission.GetType() + "_Title}");
+        Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Title/Text").GetComponent<LabelInitializer>().SetLabel("{" + mission.GetType() + "}");
         Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Title/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/" + mission.Icon, typeof(Sprite)) as Sprite;
         Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Viewport/Content/Description").GetComponent<LabelInitializer>().string_params = mission.GetDescriptionParameters();
         Utils.GetSceneRootObject("Mission Select").Find("Mission Details/Viewport/Content/Description").GetComponent<LabelInitializer>().SetLabel("{" + mission.GetDescriptionLabel() + "}");
@@ -1561,11 +1472,11 @@ public class MenuManager : MonoBehaviour {
                 string amount_string = reward.Amount > 1 ? " x" + reward.Amount.ToString() : "";
                 if (item.Category == Constants.ItemCategory.Heavy || item.Category == Constants.ItemCategory.Light || item.Category == Constants.ItemCategory.Ranged)
                 {
-                    missionReward.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "_Name} ({ItemGrade_" + reward.Rarity.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "})" + amount_string);
+                    missionReward.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "} ({ItemGrade_" + reward.Rarity.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "})" + amount_string);
                 }
                 else
                 {
-                    missionReward.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "_Name} ({ItemGrade_" + reward.Rarity.ToString() + "_Colored} {ItemCategory_" + item.Category.ToString() + "})" + amount_string);
+                    missionReward.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + item.GetType().ToString() + "} ({ItemGrade_" + reward.Rarity.ToString() + "_Colored} {ItemCategory_" + item.Category.ToString() + "})" + amount_string);
                 }
                 missionReward.transform.Find("Image").gameObject.SetActive(item.Category != Constants.ItemCategory.Heavy && item.Category != Constants.ItemCategory.Light  && item.Category != Constants.ItemCategory.Ranged );
                 MenuManager.Instance.SetRegularImage(missionReward.transform.Find("Image").gameObject, item);
@@ -1673,7 +1584,7 @@ public class MenuManager : MonoBehaviour {
             item.transform.SetParent(items);
             item.GetComponent<Image>().color = quest.Status == Quest.QuestStatus.InProgress ? Color.white : Color.grey;
             item.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load("Sprites/" + quest.Icon, typeof(Sprite)) as Sprite;
-            item.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + quest.GetType() + "_Title}");
+            item.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel("{" + quest.GetType() + "}");
             item.GetComponent<QuestTile>().Quest = quest;
             item.transform.localScale = new Vector3(1, 1, 1);
         }
@@ -1686,7 +1597,7 @@ public class MenuManager : MonoBehaviour {
         Transform details = transform.Find("Journal Window/Description Window/Viewport/Items");
         details.transform.Find("Status").GetComponent<LabelInitializer>().SetLabel(Label.Get("QuestStatus_" + quest.Status.ToString()));
         details.parent.parent.Find("Title/Text/Icon").GetComponent<Image>().sprite = Resources.Load("Sprites/" + quest.Icon, typeof(Sprite)) as Sprite;
-        details.parent.parent.Find("Title/Text").GetComponent<LabelInitializer>().SetLabel("{" + quest.GetType() + "_Title}");
+        details.parent.parent.Find("Title/Text").GetComponent<LabelInitializer>().SetLabel("{" + quest.GetType() + "}");
         details.Find("Description").GetComponent<LabelInitializer>().SetLabel("{" + quest.GetType() + "_Description}");
         Image lastObjectiveImage = null;
         foreach(QuestObjective objective in quest.Objectives.Where(obj => obj.Status != QuestObjective.ObjectiveStatus.NotRevealed).OrderBy(obj => obj.Status)) {

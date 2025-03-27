@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ES3Types;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -49,22 +50,10 @@ public abstract class Ability {
     }
 
     public enum AbilityInterruptType { Damage, Dodge, BasicAttack, Block, EnergyAbility, StanceSwitch }
-
-    public bool IsBasicAttack = false;
-    public bool IsStrongBasicAttack = false;
-    public bool IsTechnique = false;
-    public bool IsRiposte = false;
-    public bool IsCounter = false;
-    public bool IsBackstab = false;
-    public bool IsUltimate = false;
+    public enum AbilityProperty { BasicAttack, StrongBasicAttack, Technique, Riposte, Counter, Backstab, Ultimate, Unstoppable, Charged, AlreadyGeneratedEnergy, ImmuneToFlinch, CounteredByBackstep, CounteredByBlock, CounteredByRiposte, CounteredByRoll, CountersBackstep, CountersBlock, CountersRiposte, CountersRoll, IgnoresImmunityToHits};
+    public List<AbilityProperty> Properties = new List<AbilityProperty>();    
     public bool AbilityEnded = false;
-    
     public List<Effect> TriggeredEffects = new List<Effect>();
-    public bool IsChargeAbility = false;
-    public bool PlunderedAbility = false;
-    public bool CanBePlundered = true;
-    public bool GeneratedEnergy = false;
-    public bool CanBeInterruptedByFlinching = true;
     private bool _canInterruptCurrentAbility = false;
     public bool CanInterruptCurrentAbility {
         get {
@@ -100,13 +89,13 @@ public abstract class Ability {
     public bool UpgradeAUnlocked 
     {
         get {
-            return !IsUltimate && SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "_UpgradeA");
+            return IsNot(AbilityProperty.Ultimate) && SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "_UpgradeA");
         }
     }
     public bool UpgradeBUnlocked 
     {
         get {
-            return !IsUltimate && SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "_UpgradeB");
+            return IsNot(AbilityProperty.Ultimate) && SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "_UpgradeB");
         }
     }
     public TemporaryObject MostRecentTemporaryObjectThatHitEnemy;
@@ -117,15 +106,21 @@ public abstract class Ability {
 
     public enum AbilityFamily { Ignis, Glacies, Anima, Molis, Salutis, Tonitrui, Proprius, None }
 
+    public bool Is(AbilityProperty property) {
+        return Properties.Contains(property);
+    }
+
+    public bool IsNot(AbilityProperty property) {
+        return !Properties.Contains(property);
+    }
+
     public bool IsCounterable
     {
         get
         {
-            return AbilityModifiers.Contains(Constants.AbilityModifier.CounteredByBackstep) || AbilityModifiers.Contains(Constants.AbilityModifier.CounteredByRoll) || AbilityModifiers.Contains(Constants.AbilityModifier.CounteredByRiposte) || AbilityModifiers.Contains(Constants.AbilityModifier.CounteredByBlock);
+            return Is(AbilityProperty.CounteredByBackstep) || Is(AbilityProperty.CounteredByRoll) || Is(AbilityProperty.CounteredByRiposte) || Is(AbilityProperty.CounteredByBlock) ;
         }
     }
-
-    public bool IsUncounterable = false;
 
     public List<DamageSource> DamageSources = new List<DamageSource>();
 
@@ -140,7 +135,7 @@ public abstract class Ability {
         throw new NotImplementedException();
     }
 
-    public Constants.DamageType DamageType {
+    public Constants.DamageType ScalesWith {
         get {
             return DamageSources.Count == 0 ? Constants.DamageType.None : DamageSources[0].DamageType;
         }
@@ -149,7 +144,6 @@ public abstract class Ability {
     public string ShortDescription { get; private set; }
     public string LongDescription { get; private set; }
     public string FlavorText { get; private set; }
-    public List<Constants.AbilityModifier> AbilityModifiers = new List<Constants.AbilityModifier>();
     public Dictionary<Unit, List<DamagingObject>> AffectedEnemies = new Dictionary<Unit, List<DamagingObject>>();
     public Dictionary<DestructibleEnvironment, List<DamagingObject>> AffectedDestructibles = new Dictionary<DestructibleEnvironment, List<DamagingObject>>();
     public Vector2 SavedShotTarget;
@@ -320,11 +314,16 @@ public abstract class Ability {
     public virtual void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile) {
         if (GetAmmoRequiredToUseAbility(GetType()) > 0) {
             User.Ammo--;
+            if(User.Ammo <= 0) {
+                projectile.IsFinalAmmo = true;
+            }
         }
     }
 
     public virtual void OnAbilityStart() {
-        IsUltimate = Player.Instance.PreparingForUltimate;
+        if(Player.Instance.PreparingForUltimate) {
+            Properties.Add(AbilityProperty.Ultimate);
+        }
         if(GetType().ToString().StartsWith("AI_") == false) {
             Utils.CreateAuditLog("Unit (" + User.GetType() + ") used ability: " + GetType());
         }
@@ -348,7 +347,7 @@ public abstract class Ability {
         {
             return;
         }
-        if (ItemBeingUsed != null && User.ItemsCooldown == null) {
+        if (ItemBeingUsed != null && User.ToolCooldown == null) {
             User.AddCooldown(ItemBeingUsed);
             if(ItemBeingUsed.Category == Constants.ItemCategory.Tool)
             {
@@ -536,11 +535,11 @@ public abstract class Ability {
         bool onCooldown;
         if (item != null)
         {
-            onCooldown = user.ItemsCooldown != null;
+            onCooldown = user.ToolCooldown != null;
         }
         else
         {
-            onCooldown = user.AbilityCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability_type) != null;
+            onCooldown = user.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability_type) != null;
             bool isStacksBased = ability_type.GetField("IsStacksBasedTechnique") != null;
             if(isStacksBased && ((Player.Instance.PreparingForUltimate == false && Player.Instance.CurrentTechniqueStacks[ability_type] > 0) || (Player.Instance.PreparingForUltimate && Player.Instance.CurrentUltimateTechniqueStacks[ability_type] > 0))) {
                 onCooldown = false;

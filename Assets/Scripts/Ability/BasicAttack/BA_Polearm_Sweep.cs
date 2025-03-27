@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BA_Polearm_Sweep : BasicAttack {
     public BA_Polearm_Sweep(Unit ability_user, int combo_counter) : base(ability_user) {
-        IsStrongBasicAttack = true;
+        Properties.Add(AbilityProperty.StrongBasicAttack);
         DamageSources.Add(new DamageSource(50, 200 + combo_counter * 70, Constants.DamageType.Heavy) {Knockback = 800});
         TransitionIntoAnimationDuration = 0.05f;
     }

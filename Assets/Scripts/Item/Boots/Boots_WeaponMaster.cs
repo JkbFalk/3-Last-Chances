@@ -23,6 +23,7 @@ public class Boots_WeaponMaster : Item
         new Effect_ChangeStat(Player.Instance.MagicStagger, new(this)) {EffectTypeName="NoDescription", PercentageAmount = -0.625f}};
     }
     public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 10 }};
+        return new List<Effect> { new Effect_CustomizableDamageChange(new(this)) {DamageReductionChange = GetSecondModifierEffectValue() * 2f, EffectTypeName="DamageReductionDuringBasicAttacks", DescriptionParameters=new List<String>{(GetSecondModifierEffectValue() * 2f).ToString()}, 
+            ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => damage.TargetOfDamage == Player.Instance && Player.Instance.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.BasicAttack))}};
     }
 }

@@ -13,6 +13,7 @@ public class Projectile : DamagingObject {
     public bool IgnoresWalls = false;
     public bool DurabilityDoesNotDecreaseOnDestructibleHit = false;
     public bool OnlyDestroyOnTargetHit = false;
+    public bool IsFinalAmmo = false;
 
     private void Start() {
         Owner = SourceAbility.User;

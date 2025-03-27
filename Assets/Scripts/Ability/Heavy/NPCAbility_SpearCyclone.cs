@@ -13,7 +13,7 @@ public class NPCAbility_SpearCyclone : Ability {
         HitsTriggerDamagedState = false;
         WaitTimeBeforeNextAction = 0.3f;
         HitSoundVolume = 0.6f;
-        EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_Unstoppable(new(this)) };
+        EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_Unstunnable(new(this)) };
     }
 
     public override void OnAbilityStart()

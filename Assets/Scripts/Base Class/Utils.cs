@@ -868,6 +868,7 @@ public class Utils {
         if(string_params[2] == "false") {
             GameController.Instance.LoadingNewArea = false;
         }
+        CameraController.Instance.transform.parent.transform.position = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, -100);
         Player.Instance.SetInteractPromptToClosestInteractable();
     }
 
@@ -936,7 +937,7 @@ public class Utils {
         questDisplayItem = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MissionObjective")) as GameObject;
         questDisplayItem.transform.SetParent(questDisplay.transform);
         questDisplayItem.name = objective.ParentQuest.ToString().Replace("(Clone)", "");
-        questDisplayItem.transform.Find("Title").GetComponent<LabelInitializer>().SetLabel("{" + objective.ParentQuest  + "_Title}");
+        questDisplayItem.transform.Find("Title").GetComponent<LabelInitializer>().SetLabel("{" + objective.ParentQuest  + "}");
         questDisplayItem.transform.Find("Description").GetComponent<LabelInitializer>().string_params = objective.DescriptionParameters;
         questDisplayItem.transform.Find("Description").GetComponent<LabelInitializer>().SetLabel("{" + objective.ParentQuest  + "_" + objective.Number + "}");
         if(!string.IsNullOrWhiteSpace(SaveFile.Instance.GetQuest(objective.ParentQuest).Icon)) {
@@ -987,9 +988,6 @@ public class Utils {
         unit.Level = level;
         unit.ScaleStatsWithLevel = true;
         unit.InitializeStats();
-        if(SaveFile.Instance.GameType == Constants.GameType.Survival) {
-            unit.AddEffect(new Effect_SurvivalModeStats(new(Player.Instance)));
-        }
         unit.UnitAI.BaseAggressiveness = aggressiveness;
         unit_object.gameObject.name = unit_object.gameObject.name + "_" + Guid.NewGuid().ToString();
         if(!infinite_spawn) {
@@ -1105,16 +1103,16 @@ public class Utils {
                 if(!Label.ContainsKey(label_key))
                 {
                     if(game_object != null) {
-                        Debug.LogError("Could not find label '" + label_key + "' for gameObject: " + Utils.GetGameObjectPath(game_object));
+                        Debug.LogWarning("Could not find label '" + label_key + "' for gameObject: " + Utils.GetGameObjectPath(game_object));
                     }
                     result += label_key;
                 }
                 else {
                     result += Label.Get(label_key);
                 }
-                if (label_key.EndsWith("Simple") && Label.ContainsKey(label_key.Replace("Simple", "Detailed")))
+                if (label_key.EndsWith("Description") && Label.ContainsKey(label_key.Replace("Description", "DescriptionDetailed")))
                 {
-                    result += " <sprite name=\"Detailed\">";
+                    result += " [Detailed]";
                 }
                 label_key = "";
             }
@@ -1125,12 +1123,7 @@ public class Utils {
             else if (text[i] == ']')
             {
                 reading_icon = false;
-                if(icon_key.Contains("_Explanation")) {
-                    result += "\n\n" + Label.Get("Effect_" + icon_key);
-                }
-                else {
-                    result += GetIconForPhrase(icon_key);
-                }
+                result += GetIconForPhrase(icon_key);
                 icon_key = "";
             }
             else if (reading_key)
@@ -1154,20 +1147,20 @@ public class Utils {
     }
 
     public static bool CheckIfItemGradeSufficientLevel(Item.ItemGrade grade, string warning_label) {
-        if(grade == Item.ItemGrade.Excellent && SaveFile.Instance.Level < 5) {
-            NotificationController.ShowTextNotification(warning_label, new List<string> {"5", Label.Get("ItemGrade_Excellent_Colored")});
+        if(grade == Item.ItemGrade.Excellent && SaveFile.Instance.Level < 15) {
+            NotificationController.ShowTextNotification(warning_label, new List<string> {"15", Label.Get("ItemGrade_Excellent_Colored")});
             return false;
         }
-        else if(grade == Item.ItemGrade.Masterful && SaveFile.Instance.Level < 15) {
-            NotificationController.ShowTextNotification(warning_label, new List<string> {"15", Label.Get("ItemGrade_Masterful_Colored")});
+        else if(grade == Item.ItemGrade.Masterful && SaveFile.Instance.Level < 30) {
+            NotificationController.ShowTextNotification(warning_label, new List<string> {"30", Label.Get("ItemGrade_Masterful_Colored")});
             return false;
         }
-        else if(grade == Item.ItemGrade.Flawless && SaveFile.Instance.Level < 25) {
-            NotificationController.ShowTextNotification(warning_label, new List<string> {"25", Label.Get("ItemGrade_Flawless_Colored")});
+        else if(grade == Item.ItemGrade.Flawless && SaveFile.Instance.Level < 40) {
+            NotificationController.ShowTextNotification(warning_label, new List<string> {"40", Label.Get("ItemGrade_Flawless_Colored")});
             return false;
         }
-        else if(grade == Item.ItemGrade.Ultimate && SaveFile.Instance.Level < 40) {
-            NotificationController.ShowTextNotification(warning_label, new List<string> {"40", Label.Get("ItemGrade_Ultimate_Colored")});
+        else if(grade == Item.ItemGrade.Ultimate && SaveFile.Instance.Level < 50) {
+            NotificationController.ShowTextNotification(warning_label, new List<string> {"50", Label.Get("ItemGrade_Ultimate_Colored")});
             return false;
         }
         return true;
@@ -1273,10 +1266,10 @@ public class Utils {
             SaveFile.Instance.UnlockAbilityMasteryB(Type.GetType(power_up.Replace("_UpgradeB", "")));
         }
         else {
-            bool is_percentage = power_up.Contains("%");
-            foreach(Effect e in PassivePowerUpTile.GetPassivePowerUpEffects(power_up.Split("~")[0], is_percentage ? int.Parse(power_up.Split("~")[1].Replace("%", "")) : 0, is_percentage ? 0 : int.Parse(power_up.Split("~")[1]))) {
+            /*bool is_percentage = power_up.Contains("%");
+            foreach(Effect e in PassivePowerUpTile.GetPassivePowerUpEffects(power_up.Split("~")[0], GetPowerBudgetForTile()) {
                 Player.Instance.AddEffect(e);
-            }
+            }*/
             SaveFile.Instance.SurvivalPowerUps.Add(power_up);
         }
     }
@@ -1506,7 +1499,7 @@ public class Utils {
         GameObject ability_unlock = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_AbilityUnlockedItem")) as GameObject;
         ability_unlock.name = ability.ToString();
         LabelInitializer description = ability_unlock.transform.Find("Description").GetComponent<LabelInitializer>();
-        description.OriginalValue = "{" + ability.ToString() + "_DescriptionSimple}";
+        description.OriginalValue = "{" + ability.ToString() + "_Description}";
         float cost = Ability.GetEnergyCost(ability);
         if(cost > 0)
         {
@@ -1515,7 +1508,7 @@ public class Utils {
         float cooldown = Ability.GetCooldown(ability);
         if (cooldown > 0)
         {
-            description.OriginalValue = description.OriginalValue + "  <sprite name=\"Cooldown\"> " + cooldown;
+            description.OriginalValue = description.OriginalValue + "  [CD] " + cooldown;
         }
         MethodInfo desc = ability.GetMethod("GetDescriptionValues", BindingFlags.Public | BindingFlags.Static);
         if (desc != null)
@@ -1546,7 +1539,6 @@ public class Utils {
 
     public static void CopyItemAppearanceForPlayer(Constants.ItemCategory category, string prefab_name)
     {
-        Debug.Log("COPYING APPEARANCE FOR PLAYER: " + category  + " , " + prefab_name);
         GameObject item_to_copy_appearance_from = MonoBehaviour.Instantiate(Resources.Load("Prefabs/" + category + "/" + prefab_name)) as GameObject;
         if (category == ItemCategory.Heavy)
         {
@@ -1810,7 +1802,7 @@ public class Utils {
         {
             game_object.transform.position = new Vector2(pos_x, pos_y);
             if(source != null) {
-                game_object.transform.eulerAngles = new Vector3(0, source.User.Actions.IsFlipped ? 180 : 0, 0);
+                game_object.transform.localEulerAngles = new Vector3(0, source.User.Actions.IsFlipped ? 180 : 0, 0);
             }
         }
         foreach(AttachObjectToBodyPart attach in game_object.GetComponentsInChildren<AttachObjectToBodyPart>())

@@ -344,8 +344,7 @@ public class GameController : WorldObject
                 }
             }
             GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Save").GetComponent<Button>().interactable = SaveFile.Instance.CheckIfCurrentlyCanSave();
-            Player.Instance.Camera.enabled = _gameplayMode != Constants.GameplayMode.OnStartScreen && _gameplayMode != Constants.GameplayMode.MissionSelect;
-            Camera.gameObject.GetComponent<Camera>().enabled = _gameplayMode == Constants.GameplayMode.OnStartScreen;
+            CameraController.Instance.Camera.enabled = _gameplayMode != Constants.GameplayMode.MissionSelect;
             if(SceneManager.GetActiveScene().name == "MissionSelect") {
                 Utils.GetSceneRootObject("Mission Select").Find("Camera").GetComponent<Camera>().enabled = _gameplayMode == Constants.GameplayMode.MissionSelect;
                 Player.Instance.transform.position = new Vector2(-100, -100);
@@ -822,7 +821,7 @@ public class GameController : WorldObject
     }
 
     public void TakeScreenshot(string path) {
-        Camera cam = SceneManager.GetActiveScene().name == "MissionSelect" ? Utils.GetSceneRootObject("Mission Select").transform.Find("Camera").GetComponent<Camera>() : Player.Instance.Camera;
+        Camera cam = SceneManager.GetActiveScene().name == "MissionSelect" ? Utils.GetSceneRootObject("Mission Select").transform.Find("Camera").GetComponent<Camera>() : CameraController.Instance.Camera;
 
         var renderTexture = new RenderTexture(Screen.width, Screen.height, 16);
         var texture2D = new Texture2D(Screen.width, Screen.height);
@@ -874,7 +873,7 @@ public class GameController : WorldObject
         {
             SpeechBeepClips.Add(vowel, Resources.Load("Sounds/Sound Effects/Dialogue/DialogueBeep" + vowel) as AudioClip);
         }
-        Camera = transform.Find("Camera").GetComponent<Camera>();
+        Camera = transform.Find("Camera Container/Camera").GetComponent<Camera>();
         PlayerInput = GetComponent<PlayerInput>();
         PlayerControls = GetComponent<PlayerControls>();
         GameController.Instance.GameplayMode = Constants.GameplayMode.OnStartScreen;

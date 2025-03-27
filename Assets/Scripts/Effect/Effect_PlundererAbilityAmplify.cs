@@ -12,7 +12,7 @@ public class Effect_PlundererAbilityAmplify : Effect
     public Effect_PlundererAbilityAmplify(float amount, SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
         Amount = amount;
-        DisplayEffectIndicator = true;
+        ShowsInUI = true;
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 

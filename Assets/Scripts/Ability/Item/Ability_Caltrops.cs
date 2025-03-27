@@ -12,7 +12,7 @@ public class Ability_Caltrops : Ability
     public static int[] CaltropsAmount =  {20, 25, 30, 35, 40};
     public List<Projectile> Caltrops;
     public float SlowApplied;
-    public float BleedApplied;
+    public float IncisionApplied;
     public Ability_Caltrops(Unit ability_user, Item item) : base(ability_user)
     {
         if(item.DamageSources != null && item.DamageSources.Count > 0)
@@ -23,7 +23,7 @@ public class Ability_Caltrops : Ability
         ItemBeingUsed.ItemUseAbility = this;
         CustomHitSound = "Blade/Blade_BloodStab1";
         HitSoundVolume = 0.35f;
-        BleedApplied = 0.125f * ItemBeingUsed.GetFirstModifierEffectValue();
+        IncisionApplied = 0.125f * ItemBeingUsed.GetFirstModifierEffectValue();
         SlowApplied = 2 + 0.03125f * ItemBeingUsed.GetFirstModifierEffectValue();
     }
 
@@ -64,7 +64,7 @@ public class Ability_Caltrops : Ability
     {
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
         unit_getting_attacked.AddEffect(new Effect_Slow(SlowApplied, new(this)));
-        unit_getting_attacked.AddEffect(new Effect_Bleed(BleedApplied, new(this)));
+        unit_getting_attacked.AddEffect(new Effect_Incision(IncisionApplied, new(this)));
         object_hitting.MakeObjectDisappear(0);
     }
 }

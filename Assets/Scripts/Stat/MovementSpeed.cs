@@ -16,7 +16,7 @@ public class MovementSpeed : Stat {
     public override void AdditionalStatSpecificActionsAfterCurrentValueChanged() {
         Owner.Animator.SetFloat("Movement Speed", Current);
         if (Owner.UnitAI != null && Owner.UnitAI.NavMeshAgent != null) {
-            Owner.UnitAI.NavMeshAgent.speed = (Owner.IsHostile ? 3 : 5) * Current;
+            Owner.UnitAI.NavMeshAgent.speed = (Owner.IsHostile ? Constants.DEFAULT_ENEMY_SPEED : Constants.DEFAULT_ALLY_SPEED) * Current;
         }
         if(ShouldInvoke && Current < 0.2f) {
             ChangeCurrentValueWithoutInvoking(0.2f);

@@ -113,13 +113,9 @@ public class PlayerControls : WorldObject {
     public bool IsOn = false;
 
     private void Update() {
-        if(GameController.Instance?.Camera != null && Mouse.current?.position?.ReadValue() != null && (GameController.Instance.GameplayMode == Constants.GameplayMode.OnStartScreen || GameController.Instance.GameplayMode == Constants.GameplayMode.InfoPrompt))
+        if(GameController.Instance?.Camera != null && Mouse.current?.position?.ReadValue() != null)
         {
             CurrentWorldspacePointerPosition = GameController.Instance.Camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        }
-        else if(Player.Instance?.Camera != null && Mouse.current?.position?.ReadValue() != null)
-        {
-            CurrentWorldspacePointerPosition = Player.Instance.Camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         }
         if(SpammingButton && IsOn) {
             OnBlockButtonRelease();
@@ -415,57 +411,48 @@ public class PlayerControls : WorldObject {
         }
     }
 
+    public static List<LabelInitializer> AllLabelInitializers = new();
+
     public void OnShowDetailedDescriptions()
     {
-        List<LabelInitializer> inits = new List<LabelInitializer>();
-        if(SceneManager.GetActiveScene().name == "StartScreen") {
-            inits = Utils.GetSceneRootObject("First-time Launch").transform.root.GetComponentsInChildren<LabelInitializer>(true).ToList();
-        }
-        foreach (LabelInitializer labelInit in inits.Concat(GameController.Instance.transform.root.GetComponentsInChildren<LabelInitializer>(true)))
+        foreach (LabelInitializer labelInit in AllLabelInitializers)
         {
-            if (labelInit.DisableDetailedDescription == false && labelInit.OriginalValue != null && labelInit.OriginalValue.Contains("Simple") && Label.ContainsKey(Utils.ExtractLabelFromText(labelInit.OriginalValue).Replace("Simple", "Detailed")))
+            if (labelInit.DisableDetailedDescription == false && labelInit.OriginalValue != null && labelInit.OriginalValue.Contains("Description") && Label.ContainsKey(Utils.ExtractLabelFromText(labelInit.OriginalValue).Replace("Description", "DescriptionDetailed")))
             {
-                labelInit.OriginalValue = labelInit.OriginalValue.Replace("Simple", "Detailed");
-                labelInit.LoadLabel();
+                labelInit.RefreshLabel(true);
             }
         }
-        if(MenuManager.Instance.CurrentDetailedItemDescription != null)
-        {
-            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(true) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, true));
+        if (MenuManager.Instance.SelectedSubMenu == 1 && MenuManager.Instance.CurrentDetailedItemDescription != null) {
+            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.Category == Constants.ItemCategory.Quest ? " " : MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(true) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, true));
         }
-        if(MenuManager.Instance.CurrentDetailedItemDescription != null)
-        {
-            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(true) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, true));
-        }
-        if(Label.ContainsKey(MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().OriginalValue.Replace("Simple", "Detailed").Replace("{", "").Replace("}", ""))) {
+        if (MenuManager.Instance.SelectedSubMenu == 2 && MenuManager.Instance.CurrentSkillTreeTileDescription?.GetComponent<PassivePowerUpTile>() == null) {
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(false);
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(false);
             MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").gameObject.SetActive(true);
             MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().string_params = MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().string_params;
-            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().SetLabel(Utils.InsertLabelsIntoText(Label.Get(MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().OriginalValue.Replace("Simple", "Detailed").Replace("{", "").Replace("}", ""))));
-            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(false);
-            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(false);
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().OriginalValue = MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().OriginalValue;
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").GetComponent<LabelInitializer>().RefreshLabel(true);
         }
     }
 
     public void OnHideDetailedDescriptions()
     {
-        MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(true);
-        MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(true);
-        MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").gameObject.SetActive(false);
-        List<LabelInitializer> inits = new List<LabelInitializer>();
-        if(SceneManager.GetActiveScene().name == "StartScreen") {
-            inits = Utils.GetSceneRootObject("First-time Launch").transform.root.GetComponentsInChildren<LabelInitializer>(true).ToList();
-        }
-        foreach (LabelInitializer labelInit in inits.Concat(GameController.Instance.transform.root.GetComponentsInChildren<LabelInitializer>(true)))
+        foreach (LabelInitializer labelInit in AllLabelInitializers)
         {
-            if (labelInit.OriginalValue != null && labelInit.OriginalValue.Contains("Detailed"))
+            if (labelInit.DisableDetailedDescription == false && labelInit.OriginalValue != null && labelInit.OriginalValue.Contains("DescriptionDetailed") && Label.ContainsKey(Utils.ExtractLabelFromText(labelInit.OriginalValue).Replace("DescriptionDetailed", "Description")))
             {
-                labelInit.OriginalValue = labelInit.OriginalValue.Replace("Detailed", "Simple");
-                labelInit.LoadLabel();
+                labelInit.RefreshLabel(false);
             }
         }
-        if (MenuManager.Instance.CurrentDetailedItemDescription != null)
-        {
-            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(false) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, false));
+        if (MenuManager.Instance.SelectedSubMenu == 1 && MenuManager.Instance.CurrentDetailedItemDescription != null) {
+            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.Category == Constants.ItemCategory.Quest ? " " : MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(false) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, false));
+        }
+        if (MenuManager.Instance.SelectedSubMenu == 2 && MenuManager.Instance.CurrentSkillTreeTileDescription?.GetComponent<PassivePowerUpTile>() == null) {
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(true);
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").gameObject.SetActive(true);
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description (No Flavor)").gameObject.SetActive(false);
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().RefreshLabel(false);
+            MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Flavor Text").GetComponent<LabelInitializer>().RefreshLabel(false);
         }
     }
 

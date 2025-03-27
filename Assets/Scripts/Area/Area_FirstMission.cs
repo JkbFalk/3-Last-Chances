@@ -10,7 +10,7 @@ public class Area_FirstMission
 
     public static void OnStart()
     {
-        EventManager.EnemyDefeated.AddListener(CheckIfActivateMapPickUp);
+        EventManager.UnitKnockedOut.AddListener(CheckIfActivateMapPickUp);
         if(SaveFile.Instance.HasFlag("FirstMission_FoundMap")) {
             Area.Instance.transform.Find("Leo Group").gameObject.SetActive(true);
             Area.Instance.transform.Find("Interactables/Leo Dialogue Trigger").gameObject.SetActive(true);

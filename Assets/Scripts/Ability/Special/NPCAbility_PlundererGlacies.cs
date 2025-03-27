@@ -9,7 +9,7 @@ public class NPCAbility_PlundererGlacies : Ability {
         DamageSources.Add(new DamageSource(80, 80, Constants.DamageType.Heavy) {Knockback = 100});
         WaitTimeBeforeNextAction = 0.1f;
         AddCustomSound("Shoot", "Ice/Ice_Shot1", 0.4f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
         TransitionIntoAnimationDuration = 0;
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;

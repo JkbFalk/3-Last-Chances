@@ -15,7 +15,7 @@ public class NPCAbility_RykerPayback : Ability {
         DamageSources.Add(new DamageSource(2500, 0, Constants.DamageType.Magic, "AoE 4"));
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
         WaitTimeBeforeNextAction = 0.5f;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void OnAbilityStart()
@@ -24,7 +24,7 @@ public class NPCAbility_RykerPayback : Ability {
         _aoe = Utils.CreateAreaOfEffect(new(this), "Ryker_Payback_Explosion").transform.parent.parent.parent.gameObject;
         _aoe.transform.SetParent(User.SpriteRenderers["Upper Body"].Bone, false);
         _aoe.transform.localPosition = Vector3.zero;
-        Effect_Ryker_Payback effect = (Effect_Ryker_Payback)User.GetEffect(typeof(Effect_Ryker_Payback));
+        Effect_RykerPayback effect = (Effect_RykerPayback)User.GetEffect(typeof(Effect_RykerPayback));
         if(effect.ExplosionGauge < 25)
         {
             _aoe.GetComponentInChildren<AreaOfEffect>(true).gameObject.name = "AoE 1";
@@ -82,7 +82,7 @@ public class NPCAbility_RykerPayback : Ability {
 
     public static bool CheckIfSpecialConditionsAreFulfilled(Unit user)
     {
-        Effect_Ryker_Payback effect = (Effect_Ryker_Payback)user.GetEffect(typeof(Effect_Ryker_Payback));
+        Effect_RykerPayback effect = (Effect_RykerPayback)user.GetEffect(typeof(Effect_RykerPayback));
         if(effect == null)
         {
             return false;
@@ -91,6 +91,6 @@ public class NPCAbility_RykerPayback : Ability {
     }
 
     public static void AdditionalActionsOnSettingsAbilityAsPotentialAction(Unit user) {
-        user.AddEffect(new Effect_Ryker_Payback(new("Passive")));
+        user.AddEffect(new Effect_RykerPayback(new("Passive")));
     }
 }

@@ -73,19 +73,6 @@ public class SaveFile
         }
     }
 
-    public Ability.AbilityFamily EquippedEnergyFamily = Ability.AbilityFamily.None;
-
-    public Dictionary<Ability.AbilityFamily, int> EnergyUpgrades = new() {
-        {Ability.AbilityFamily.Anima, 0},
-        {Ability.AbilityFamily.Ignis, 0},
-        {Ability.AbilityFamily.Glacies, 0},
-        {Ability.AbilityFamily.Molis, 0},
-        {Ability.AbilityFamily.Salutis, 0},
-        {Ability.AbilityFamily.Tonitrui, 0},
-        {Ability.AbilityFamily.Proprius, 0},
-        {Ability.AbilityFamily.None, 1}
-    };
-
     public List<Type> UnlockedTools = new();
     public Dictionary<Type, Item.ItemGrade> ToolGrades = new() {
         {typeof(Tool_Caltrops), Item.ItemGrade.Regular},
@@ -96,7 +83,13 @@ public class SaveFile
         {typeof(Tool_Sanctuary), Item.ItemGrade.Regular},
         {typeof(Tool_SerenityNeedle), Item.ItemGrade.Regular},
         {typeof(Tool_StunGrenade), Item.ItemGrade.Regular},
-        {typeof(Tool_VacuumGrenade), Item.ItemGrade.Regular}
+        {typeof(Tool_VacuumGrenade), Item.ItemGrade.Regular},
+        {typeof(Tool_IceCoating), Item.ItemGrade.Regular},
+        {typeof(Tool_ThoughtAccelerator), Item.ItemGrade.Regular},
+        {typeof(Tool_FirstAidKit), Item.ItemGrade.Regular},
+        {typeof(Tool_Decoy), Item.ItemGrade.Regular},
+        {typeof(Tool_VeilOfShadows), Item.ItemGrade.Regular},
+        {typeof(Tool_VialOfPoison), Item.ItemGrade.Regular}
     };
     public Dictionary<Type, int> ToolMaxAmounts = new() {
         {typeof(Tool_Caltrops), 1},
@@ -107,7 +100,13 @@ public class SaveFile
         {typeof(Tool_Sanctuary), 1},
         {typeof(Tool_SerenityNeedle), 1},
         {typeof(Tool_StunGrenade), 1},
-        {typeof(Tool_VacuumGrenade), 1}
+        {typeof(Tool_VacuumGrenade), 1},
+        {typeof(Tool_IceCoating), 1},
+        {typeof(Tool_ThoughtAccelerator), 1},
+        {typeof(Tool_FirstAidKit), 1},
+        {typeof(Tool_Decoy), 1},
+        {typeof(Tool_VeilOfShadows), 1},
+        {typeof(Tool_VialOfPoison), 1}
     };
     public Dictionary<Type, int> ToolRemainingAmounts = new() {
         {typeof(Tool_Caltrops), 1},
@@ -118,20 +117,17 @@ public class SaveFile
         {typeof(Tool_Sanctuary), 1},
         {typeof(Tool_SerenityNeedle), 1},
         {typeof(Tool_StunGrenade), 1},
-        {typeof(Tool_VacuumGrenade), 1}
+        {typeof(Tool_VacuumGrenade), 1},
+        {typeof(Tool_IceCoating), 1},
+        {typeof(Tool_ThoughtAccelerator), 1},
+        {typeof(Tool_FirstAidKit), 1},
+        {typeof(Tool_Decoy), 1},
+        {typeof(Tool_VeilOfShadows), 1},
+        {typeof(Tool_VialOfPoison), 1}
     };
 
     public void IncreaseEnergyLevel(Ability.AbilityFamily family) {
-        int prevValue = EnergyUpgrades[family];
-        EnergyUpgrades.Remove(family);
-        EnergyUpgrades.Add(family, prevValue + 1);
-        MenuManager.Instance.InitializeEnergyDisplays();
-        if(prevValue == 0) {
-            NotificationController.ShowNotificationWithGraphic("EnergyUnlockNotification", "UI/Energy", new List<string>() {Label.Get("TechniqueFamily_" + family + "_Colored")});
-        }
-        else {
-            NotificationController.ShowNotificationWithGraphic("EnergyUpgradeNotification", "UI/Energy", new List<string>() {Label.Get("TechniqueFamily_" + family + "_Colored"), (prevValue + 1).ToString()});
-        }
+
     }
 
     public void AddPermanentPowerUp(string power_up_name) {
@@ -749,7 +745,7 @@ public class SaveFile
         List<Item> default_items = new List<Item>
         {
         new Greatsword_Retribution(Item.ItemGrade.Regular),
-        new Daggers_WindEdge(Item.ItemGrade.Regular),
+        new Daggers_ZephyrsTalons(Item.ItemGrade.Regular),
         new Bow_Barrage(Item.ItemGrade.Regular),
         };
         foreach(Item item in default_items)
@@ -888,12 +884,12 @@ public class SaveFile
             item.Amount = 10;
             SaveFile.Instance.AddItem(item, false);
             Item item2 = (Item)Activator.CreateInstance(Type.GetType(item_type.Replace("_Unlock", "")), new object[] { Item.ItemGrade.Regular });
-            NotificationController.ShowNotificationWithGraphic(Label.Get("ToolDuplicateMessage"), item2.GetIcon(), new List<string> {Label.Get(item_type.Replace("_Unlock", "_Name")), "10"});
+            NotificationController.ShowNotificationWithGraphic(Label.Get("ToolDuplicateMessage"), item2.GetIcon(), new List<string> {Label.Get(item_type.Replace("_Unlock", "")), "10"});
             Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 1.2f);
         }
         else if(item_type.EndsWith("_Unlock")) {
             Item item = (Item)Activator.CreateInstance(Type.GetType(item_type.Replace("_Unlock", "")), new object[] { Item.ItemGrade.Regular });
-            NotificationController.ShowNotificationWithGraphic(Label.Get("NewToolUnlockMessage"), item.GetIcon(), new List<string> {Label.Get(item_type.Replace("_Unlock", "_Name"))});
+            NotificationController.ShowNotificationWithGraphic(Label.Get("NewToolUnlockMessage"), item.GetIcon(), new List<string> {Label.Get(item_type.Replace("_Unlock", ""))});
             SaveFile.Instance.UnlockTool(Type.GetType(item_type.Replace("_Unlock", "")));
             Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 1.2f);
         }
@@ -1101,7 +1097,7 @@ public class SaveFile
         game_object.Find("Left-side Info/Cycle and Week").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCycleAndWeek"), new string[] {Week.ToString()} );
         game_object.Find("Left-side Info/Cycle and Week/Image").GetComponent<Image>().enabled = true;
         game_object.Find("Left-side Info/Cycle and Week/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + Cycle, typeof(Sprite)) as Sprite;
-        game_object.Find("Left-side Info/Current Mission").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCurrentMission"), new string[] {CurrentMission == null ? Label.Get("CurrentMissionIsNull") : Label.Get(CurrentMission.ToString() + "_Title")} );
+        game_object.Find("Left-side Info/Current Mission").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCurrentMission"), new string[] {CurrentMission == null ? Label.Get("CurrentMissionIsNull") : Label.Get(CurrentMission.ToString())} );
         
         game_object.Find("Right-side Info/Level and Money").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileLevelAndMoney"), new string[] {Level.ToString(), Money.ToString()} );
         if(PointsPutIntoEachSkillTree != null) {

@@ -9,10 +9,9 @@ public class NPCAbility_DelayedJumpSlam : Ability {
         DamageSources.Add(new DamageSource(0, 100, Constants.DamageType.Light) {Knockback = 250});
         DamageSources.Add(new DamageSource(50, 500, Constants.DamageType.Light, "AoE"));
         AddCustomSound("Crack", "Earth/Earth_Crack3", 0.8f);
-        AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByRiposte });
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.CounteredByRiposte, AbilityProperty.ImmuneToFlinch});
         WaitTimeBeforeNextAction = 0.2f;
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        CanBeInterruptedByFlinching = false;
     }
 
     public override void CallAbilityEvent1()

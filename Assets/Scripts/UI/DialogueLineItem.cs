@@ -36,7 +36,6 @@ public class DialogueLineItem : MonoBehaviour, IPointerDownHandler, IPointerEnte
         Id = _dialogueChoice.Id;
         TextMeshPro = transform.GetComponent<TextMeshProUGUI>();
         if(DialogueChoice != null) {
-            Debug.Log("ENABLED1? " + Id + " , " + DialogueChoice + " , " + GetComponent<Button>().enabled);
             GameController.Instance.WaitAndRunMethodRealtime(Constants.SECONDS_UNTIL_DIALOGUE_CHOICES_BECOME_CLICKABLE, UnlockChoiceClick);
             if(Type.GetType(UIManager.Instance.CurrentDialogue.NameOfParentClass)?.GetMethod("CheckIfEnabled_" + DialogueChoice.Id) != null) {
                 DialogueChoice.Disabled = !(bool)Type.GetType(UIManager.Instance.CurrentDialogue.NameOfParentClass).GetMethod("CheckIfEnabled_" + DialogueChoice.Id).Invoke(null, null);
@@ -49,12 +48,9 @@ public class DialogueLineItem : MonoBehaviour, IPointerDownHandler, IPointerEnte
     }
 
     public void UnlockChoiceClick() {
-        Debug.Log("TEST1 " + Id + " , " + DialogueChoice + " , " + GetComponent<Button>().enabled);
         if(gameObject.IsDestroyed() == false) {
-            Debug.Log("ENABLED2? " + Id + " , " + DialogueChoice + " , " + GetComponent<Button>().enabled);
             GetComponent<Button>().enabled = true;
             _canClick = true;
-            Debug.Log("ENABLED3? " + Id + " , " + DialogueChoice + " , " + GetComponent<Button>().enabled);
         }
     }
 

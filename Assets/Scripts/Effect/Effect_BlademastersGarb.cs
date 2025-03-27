@@ -73,7 +73,7 @@ public class Effect_BlademastersGarb : Effect {
 
     public override void OnInvokeHitDealt(Damage damage)
     {
-        if(damage.SourceOfDamage.User != Player.Instance || damage.SourceOfDamage.IsBasicAttack == false) {
+        if(damage.SourceOfDamage.User != Player.Instance || damage.SourceOfDamage.IsNot(Ability.AbilityProperty.BasicAttack)) {
             return;
         }
         base.OnInvokeHitDealt(damage);

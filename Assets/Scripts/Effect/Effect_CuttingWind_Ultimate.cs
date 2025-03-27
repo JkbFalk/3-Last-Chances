@@ -14,7 +14,7 @@ public class Effect_CuttingWind_Ultimate : Effect {
 
     public Effect_CuttingWind_Ultimate( Constants.DamageType weapon_category, SourceOfEffect source_of_effect) : base(source_of_effect) {
         Listeners.Add(EventManager.HitDealt);
-        DisplayEffectIndicator = true;
+        ShowsInUI = true;
         PathToEffectGraphic = "Effect/CuttingWind_Ultimate";
         DamageCategory = weapon_category;
         Type = EffectType.Buff;
@@ -85,6 +85,6 @@ public class Effect_CuttingWind_Ultimate : Effect {
     }
 
     public bool CheckIfAbilityIsValidForSuperCharge(Ability used_ability) {
-        return TargetOfEffect.Actions.CurrentAbilityBeingPerformed != null && (TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsBasicAttack || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsRiposte || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsCounter || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.IsBackstab) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == DamageCategory;
+        return TargetOfEffect.Actions.CurrentAbilityBeingPerformed != null && (TargetOfEffect.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.BasicAttack) || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Riposte) || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Counter) || TargetOfEffect.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Backstab)) && used_ability.DamageSources.Count > 0 && used_ability.DamageSources[0].DamageType == DamageCategory;
     }
 }

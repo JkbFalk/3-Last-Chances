@@ -29,7 +29,7 @@ public class Ability_SeverVitality : Technique
     public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Heavy;
 
     public Ability_SeverVitality(Unit ability_user) : base(ability_user) {
-        IsChargeAbility = true;
+        Properties.Add(AbilityProperty.Charged);
         HitSoundVolume = 0.5f;
         DamageSources.Add(new DamageSource(0, 0, Constants.DamageType.Heavy));
         DamageSources[0].CustomHitSound = "Ability/SeverVitality";

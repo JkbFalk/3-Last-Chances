@@ -49,7 +49,7 @@ public class Mission_EliminateBoss : Mission
     public static List<MissionReward> GetItemRewardsForBoss(string boss, int level) {
         return boss switch
         {
-            "Unit_Berserker" => new List<MissionReward> { new MissionReward() { Item = typeof(TwinBlades_BerserkerBlades), Rarity = GetItemRarityForLevel(level) } },
+            "Unit_Berserker" => new List<MissionReward> { new MissionReward() { Item = typeof(TwinBlades_BerserkersBlades), Rarity = GetItemRarityForLevel(level) } },
             "Unit_Ryker" => new List<MissionReward> { new MissionReward() { Item = typeof(Helmet_WeaponMaster), Rarity = GetItemRarityForLevel(level) } },
             _ => new List<MissionReward>(),
         };

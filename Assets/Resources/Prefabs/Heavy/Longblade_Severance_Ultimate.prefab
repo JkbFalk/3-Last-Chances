@@ -62,6 +62,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &2476044572726309638
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -263,7 +264,7 @@ MonoBehaviour:
   Grey: {r: 0.9716981, g: 0.9716981, b: 0.9716981, a: 0}
   GreyBorder1: 2
   GreyBorder2: 5
-  Brown: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 0}
+  Brown: {r: 0.4433962, g: 0, b: 0, a: 0}
   BrownBorder1: 0.4
   BrownBorder2: 0.8
   Red: {r: 0, g: 0, b: 0, a: 0}

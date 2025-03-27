@@ -81,22 +81,23 @@ public class Effect_ChangeCompositeStat : Effect {
         }
     }
 
-    public enum CompositeStat { AttackSpeed, Injury, Stagger };
+    public enum CompositeStat { AttackSpeed, Injury, Stagger, Damage };
 
     public Effect_ChangeCompositeStat(Unit unit, CompositeStat composite_stat, SourceOfEffect source_of_effect) : base(source_of_effect) {
         TargetOfEffect = unit;
         Stat = composite_stat;
+        PathToEffectGraphic = "UI/" + composite_stat.ToString();
         if (composite_stat == CompositeStat.AttackSpeed)
         {
             _statChanges = new List<Effect_ChangeStat>() {new Effect_ChangeStat(unit.HeavyAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.LightAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.RangedAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.MagicAttackSpeed, SourceOfEffect)};
         }
-        else if (composite_stat == CompositeStat.Injury)
+        else if (composite_stat == CompositeStat.Injury || composite_stat == CompositeStat.Damage)
         {
-            _statChanges = new List<Effect_ChangeStat>() {new Effect_ChangeStat(unit.HeavyInjury, SourceOfEffect), new Effect_ChangeStat(unit.LightInjury, SourceOfEffect), new Effect_ChangeStat(unit.RangedInjury, SourceOfEffect), new Effect_ChangeStat(unit.MagicInjury, SourceOfEffect)};
+            _statChanges = _statChanges.Concat(new List<Effect_ChangeStat> {new Effect_ChangeStat(unit.HeavyInjury, SourceOfEffect), new Effect_ChangeStat(unit.LightInjury, SourceOfEffect), new Effect_ChangeStat(unit.RangedInjury, SourceOfEffect), new Effect_ChangeStat(unit.MagicInjury, SourceOfEffect)}).ToList();
         }
-        else if (composite_stat == CompositeStat.Stagger)
+        if (composite_stat == CompositeStat.Stagger || composite_stat == CompositeStat.Damage)
         {
-            _statChanges = new List<Effect_ChangeStat>() {new Effect_ChangeStat(unit.HeavyStagger, SourceOfEffect), new Effect_ChangeStat(unit.LightStagger, SourceOfEffect), new Effect_ChangeStat(unit.RangedStagger, SourceOfEffect), new Effect_ChangeStat(unit.MagicStagger, SourceOfEffect)};
+            _statChanges = _statChanges.Concat(new List<Effect_ChangeStat> {new Effect_ChangeStat(unit.HeavyStagger, SourceOfEffect), new Effect_ChangeStat(unit.LightStagger, SourceOfEffect), new Effect_ChangeStat(unit.RangedStagger, SourceOfEffect), new Effect_ChangeStat(unit.MagicStagger, SourceOfEffect)}).ToList();
         }
     }
 
@@ -105,6 +106,8 @@ public class Effect_ChangeCompositeStat : Effect {
         base.OnStart();
         foreach(Effect_ChangeStat e in _statChanges) {
             e.IsRemovable = IsRemovable;
+            e.ShowsInMenu = false;
+            e.CountsAsSeparateEffect = false;
             TargetOfEffect.AddEffect(e);
         }
     }

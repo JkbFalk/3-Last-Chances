@@ -6,8 +6,6 @@ public class Effect_Invincible : Effect {
         Type = EffectType.Buff;
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
         Listeners.Add(EventManager.AfterHitDamageCalculation);
-        DescriptionLabel = "Effect_Invincible_Explanation";
-        PathToEffectGraphic = "Effect/Invincible";
     }
 
     public override void OnInvokeAfterHitDamageCalculation(Damage damage) {

@@ -39,7 +39,7 @@ public class Ability_ThunderStrike : Technique
 
     public Ability_ThunderStrike(Unit ability_user) : base(ability_user)
     {
-        IsChargeAbility = true;
+        Properties.Add(AbilityProperty.Charged);
         TransitionIntoAnimationDuration = 0;
         ScaleMaxTimeWithCombatSpeed = false;
         AddCustomSound("Regular", "Ability/Ability_ThunderStrike_Regular", 0.9f);

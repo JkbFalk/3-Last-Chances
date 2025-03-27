@@ -14,7 +14,7 @@ public class NPCAbility_FirePunch : Ability {
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.5f;
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Magic));
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBackstep);
+        Properties.Add(AbilityProperty.CounteredByBackstep);
     }
 
     public override void CallAbilityEvent1()

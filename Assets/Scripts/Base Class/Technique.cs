@@ -8,8 +8,8 @@ public abstract class Technique : Ability
 {
     public Technique(Unit ability_user) : base(ability_user)    
     {
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         HoldingTechniqueButton = true;
-        IsTechnique = true;
+        Properties.Add(AbilityProperty.Technique);
     }
 }

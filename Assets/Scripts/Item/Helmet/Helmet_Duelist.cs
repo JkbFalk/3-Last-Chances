@@ -13,12 +13,12 @@ public class Helmet_Duelist : Item
 
     public override List<Effect> GetFirstModifier() {
         return new List<Effect> { 
-            new Effect_CustomizableEffectOnEvent(new(this)) {UsesTheFollowingEffects=new() {typeof(Effect_Sharp)},EffectTypeName="NoDescription", FlatAmount= GetFirstModifierEffectValue() * 0.2f, ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-            ability.User is Player && (ability.IsRiposte || ability.IsCounter)), 
+            new Effect_CustomizableEffectOnEvent(new(this)) {EffectTypeName="NoDescription", FlatAmount= GetFirstModifierEffectValue() * 0.2f, ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
+            ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))), 
             ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                 Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount, new(this)));
                 })},
-            new Effect_CustomizableEffectOnEvent(new(this)) {UsesTheFollowingEffects=new() {typeof(Effect_Sharp)},EffectTypeName="GainSharpOnCounterOrDodge", DescriptionParameters = new List<String> {Utils.GetFormattedFloat(GetFirstModifierEffectValue() * 0.2f, 1)}, TriggersOncePerAbility=true, FlatAmount = GetFirstModifierEffectValue() * 0.2f, ConditionCheckForDamageWasDodged = new Func<Damage, bool>((damage) => 
+            new Effect_CustomizableEffectOnEvent(new(this)) {EffectTypeName="GainSharpOnCounterOrDodge", DescriptionParameters = new List<String> {Utils.GetFormattedFloat(GetFirstModifierEffectValue() * 0.2f, 1)}, TriggersOncePerAbility=true, FlatAmount = GetFirstModifierEffectValue() * 0.2f, ConditionCheckForDamageWasDodged = new Func<Damage, bool>((damage) => 
                 damage.TargetOfDamage == Player.Instance), ActionOnDamageWasDodged = new Action<Damage, Effect_CustomizableEffectOnEvent> ((damage, effect) =>  {
                 Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount, new(this)));
             })}

@@ -151,7 +151,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
             if(!Utils.CheckIfItemGradeSufficientLevel(Item.Grade, "TooLowLevelToUseWarning")) {
 
             }
-            else if(Player.Instance.ItemsCooldown != null) {
+            else if(Player.Instance.ToolCooldown != null) {
                 NotificationController.ShowTextNotification("ItemsOnCooldownWarning");
             }
             else {

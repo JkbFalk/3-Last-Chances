@@ -59,7 +59,7 @@ public class Ability_BulletTime : Technique
         User.Actions.ConsumeEnergyAndCooldownForTheAbility();
         PlayCustomSound("Start");
         GameController.Instance.DefaultTimeSpeed = _timeSpeed;
-        Player.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Slowed Time") as VolumeProfile;
+        CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Slowed Time") as VolumeProfile;
         ScaleMaxTimeWithCombatSpeed = false;
         ScaleMaxTimeWithAttackSpeed = false;
         StartCountingTime(3f);
@@ -77,7 +77,7 @@ public class Ability_BulletTime : Technique
     public override void OnAbilityEnd() {
         base.OnAbilityEnd();
         GameController.Instance.DefaultTimeSpeed = 1f;
-        Player.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
+        CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
         User.UnitCanFlipDirection = true;
         if(_indicators.Count > 0)
         {

@@ -130,10 +130,10 @@ public class Stat {
             if(this is DamageReduction || this is Tenacity || this is Control || this is MovementSpeed || this is EnergyGain || this is CooldownReduction) {
                 return (int)total_percentages + "% -> " + (int)(total_percentages + percentage_increase) + "%";
             }
-            return Utils.GetFormattedFloat(pre_increase_percentage_total, Base < 10 ? 2 : 1,Base < 10) + " -> " + Utils.GetFormattedFloat(calculated_maximum, Base < 10 ? 2 : 1, Base < 10) + " (" + (int)total_percentages + "% -> " + (int)(total_percentages + percentage_increase) + "%)";
+            return Utils.GetFormattedFloat(pre_increase_percentage_total, Base < 10 ? 2 : 1,Base < 10) + " -> " + Utils.GetFormattedFloat(calculated_maximum, Base < 10 ? 2 : 1, Base < 10) + "     (" + (int)total_percentages + "% -> " + (int)(total_percentages + percentage_increase) + "%)";
         }
         else {
-            return Utils.GetFormattedFloat(calculated_maximum, Base < 10 ? 2 : 1, Base < 10) + " -> " + Utils.GetFormattedFloat((calculated_maximum + modified_flat_increase), Base < 10 ? 2 : 1, Base < 10) + " (" + (int)total_flats + " -> " + (int)(total_flats + flat_increase) + ")";
+            return Utils.GetFormattedFloat(calculated_maximum, Base < 10 ? 2 : 1, Base < 10) + " -> " + Utils.GetFormattedFloat((calculated_maximum + modified_flat_increase), Base < 10 ? 2 : 1, Base < 10) + "      (" + (int)total_flats + " -> " + (int)(total_flats + flat_increase) + ")";
         }
     }
 

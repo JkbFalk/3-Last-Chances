@@ -9,7 +9,7 @@ public class Effect_Inflame : Effect {
 
     public Effect_Inflame( Constants.DamageType weapon_category, SourceOfEffect source_of_effect) : base(source_of_effect) {
         Listeners.Add(EventManager.HitDealt);
-        DisplayEffectIndicator = true;
+        ShowsInUI = true;
         DamageCategory = weapon_category;
         Type = EffectType.Buff;
         PathToEffectGraphic = "UI/Ignis";

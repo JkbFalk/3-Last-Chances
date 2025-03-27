@@ -18,7 +18,7 @@ public class Tool_ExpertBadge : Item
 
     public override string GetDescription(bool detailed = true)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "Simple")), new object[] { Utils.GetFormattedFloat((int)(TotalEnergyRestored[GradeIndex])), Utils.GetFormattedFloat(CooldownIncrease[GradeIndex]) }) + (detailed ? "" : " <sprite name=\"Detailed\">") + "\n\n<sprite name=\"Cooldown\"> " + GetCooldown(GetType(), Grade).ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "")), new object[] { Utils.GetFormattedFloat((int)(TotalEnergyRestored[GradeIndex])), Utils.GetFormattedFloat(CooldownIncrease[GradeIndex]) }) + (detailed ? "" : " [Detailed]") + "\n\n[CD] " + GetCooldown(GetType(), Grade).ToString();
     }
 
     public static bool CheckIfSpecialConditionsAreFulfilled(Unit user)

@@ -10,7 +10,7 @@ public class NPCAbility_QuickLeftAndRightDown : Ability {
         WaitTimeBeforeNextAction = 0.1f;
         IsRight = UnityEngine.Random.Range(0, 100) < 50;
         NameOfAnimationToAutoPlay = IsRight ? "QuickRightDown" : "QuickLeftDown";
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()

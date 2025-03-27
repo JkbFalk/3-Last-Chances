@@ -30,10 +30,10 @@ public class Ability_WindRush : Technique
     {
         if(User.CurrentWeaponDamageCategory == Constants.DamageType.Light) {
             DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
-            DamageSources.Add(new DamageSource(IsUltimate ? UltimateInjuryScaling / 2 : InjuryScaling / 2, IsUltimate ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageCategory));
+            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling / 2 : InjuryScaling / 2, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageCategory));
         }
         else {
-            DamageSources.Add(new DamageSource(IsUltimate ? UltimateInjuryScaling : InjuryScaling, IsUltimate ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageCategory));
+            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : InjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageCategory));
         }
         DamageSources.Add(new DamageSource(0, UltimateStaggerAoEScalingPerSecond / 2, User.CurrentWeaponDamageCategory, "WindRush_AoE"));
         AddCustomSound("Start", "Ability/Ability_WindBlast_Use", 0.4f);
@@ -103,14 +103,14 @@ public class Ability_WindRush : Technique
         if(damage.TargetOfDamage == _intendedTarget && _intendedTargetWasHit == false) {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Knockback");
             aoe.transform.position = damage.TargetOfDamage.transform.position;
-            aoe.GetComponent<PushOrPullUnits>().Force = IsUltimate ? 4000 : 1500;
+            aoe.GetComponent<PushOrPullUnits>().Force = Is(AbilityProperty.Ultimate) ? 4000 : 1500;
             aoe.GetComponent<PushOrPullUnits>().AffectedUnits.AddRange(new List<Unit> { damage.SourceOfDamage.User, damage.TargetOfDamage });
             if(UpgradeBUnlocked) {
                 User.AddEffect(new Effect_Stun(new(this)), UpgradeBStunDuration);
             }
             _intendedTargetWasHit = true;
             PlayCustomSound("WindBlast");
-            if(IsUltimate) {
+            if(Is(AbilityProperty.Ultimate)) {
                 _ultimateAoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Ultimate");
                 _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(false);
                 GameController.Instance.WaitAndRunMethod(1f, ActivateUltimateWall);
@@ -126,7 +126,7 @@ public class Ability_WindRush : Technique
         _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(true);
         _ultimateAoe.transform.parent.position = _targetOfDamage.transform.position;
         _dealingAoEDamage = true;
-        EventManager.EnemyDefeated.AddListener(CheckIfDestroyWall);
+        EventManager.UnitKnockedOut.AddListener(CheckIfDestroyWall);
         PerformActionAfterIntervals(40, 0.5f);
         GameController.Instance.WaitAndRunMethod(UltimateWallDurationInSeconds, TurnOffUltimateWall);
     }
@@ -141,7 +141,7 @@ public class Ability_WindRush : Technique
         if(_ultimateAoe != null && _ultimateAoe.IsDestroyed() == false && _ultimateAoe.gameObject.IsDestroyed() == false) {
             MonoBehaviour.Destroy(_ultimateAoe.gameObject);
         }
-        EventManager.EnemyDefeated.RemoveListener(CheckIfDestroyWall);
+        EventManager.UnitKnockedOut.RemoveListener(CheckIfDestroyWall);
     }
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)

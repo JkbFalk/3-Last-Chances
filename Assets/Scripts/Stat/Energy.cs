@@ -67,9 +67,9 @@ public class Energy : Stat {
         EventManager.GeneratedEnergy.Invoke(BaseGain, Current - current_amount_before, source);
     }
 
-    public void GenerateEnergy(float amount) {
+    public void GenerateEnergy(float amount, bool affected_by_energy_gain = true) {
         if (Owner is Player) {
-            Current += amount;
+            Current += amount * (affected_by_energy_gain ? Player.Instance.EnergyGain.Current : 1);
         }
     }
 

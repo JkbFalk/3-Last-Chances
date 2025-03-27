@@ -57,7 +57,7 @@ public class Ability_CuttingWind : Technique
     }
 
     public override void ActionsToPerformDuringAnotherAbility() {
-        if(Player.Instance.Energy.Current < EnergyCost || Player.Instance.AbilityCooldowns.FirstOrDefault(cooldown => cooldown.Type == GetType()) != null) {
+        if(Player.Instance.Energy.Current < EnergyCost || Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == GetType()) != null) {
             return;
         }
         AddOrUpdateCooldown();

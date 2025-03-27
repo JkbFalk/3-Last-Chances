@@ -25,12 +25,12 @@ public class Stance_SingularPursuit : Effect_Stance
 
     public Stance_SingularPursuit(SourceOfEffect source_of_effect) : base(source_of_effect) {
         MaxSpiritBond = 30 + (UnlockedUpgrade1 ? 20 : 0) + (UnlockedUpgrade2 ? 20 : 0) + (UnlockedUpgrade3 ? 30 : 0);
-        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.DamageDealt, EventManager.EnemyDefeated, EventManager.HealthBarBroken};
+        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.DamageDealt, EventManager.UnitKnockedOut, EventManager.HealthBarBroken};
     }
 
-    public override void OnInvokeEnemyDefeated(Damage damage)
+    public override void OnInvokeUnitKnockedOut(Damage damage)
     {
-        base.OnInvokeEnemyDefeated(damage);
+        base.OnInvokeUnitKnockedOut(damage);
         Activate(damage);
     }
 
@@ -56,16 +56,16 @@ public class Stance_SingularPursuit : Effect_Stance
         if(damage.SourceOfDamage.User != TargetOfEffect) {
             return;
         }
-        if(IsActive && UnlockedUpgrade1 && damage.SourceOfDamage.IsBasicAttack) {
+        if(IsActive && UnlockedUpgrade1 && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)) {
             SpiritBond += 1 / Player.Instance.CurrentWeaponAttackSpeed.Current;
         }
-        else if(IsActive && UnlockedUpgrade2 && damage.SourceOfDamage.IsTechnique) {
+        else if(IsActive && UnlockedUpgrade2 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)) {
             SpiritBond += 5;
         }
-        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.IsRiposte) {
+        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Riposte)) {
             SpiritBond += 3;
         }
-        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.IsCounter) {
+        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter)) {
             SpiritBond += 5;
         }
         base.OnInvokeDamageDealt(damage);

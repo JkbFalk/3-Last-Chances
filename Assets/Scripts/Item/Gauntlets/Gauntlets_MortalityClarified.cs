@@ -1,0 +1,22 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Gauntlets_MortalityClarified : Item
+{
+    public Gauntlets_MortalityClarified(ItemGrade grade) : base(grade)
+    {
+        Set = ItemSetEnum.Arbiter;
+        Category = Constants.ItemCategory.Light;
+        WeaponClass = Constants.WeaponClass.Gauntlets;
+        SetBaseWeaponStats(80, 80, 1.3f);
+    }
+
+    public override List<Effect> GetFirstModifier() {
+        return new List<Effect> {};
+    }
+    public override List<Effect> GetSecondModifier() {
+        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Control, new(this)) {PercentageAmount = 0.5f}};
+    }
+}

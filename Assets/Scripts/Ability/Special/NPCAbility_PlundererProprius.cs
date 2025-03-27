@@ -10,7 +10,7 @@ public class NPCAbility_PlundererProprius : Ability {
         DamageSources.Add(new DamageSource(200, 400, Constants.DamageType.Heavy) {Knockback = 300});
         WaitTimeBeforeNextAction = 0.1f;
         AddCustomSound("Rotate", "Greatsword/Greatsword_Swing21", 0.4f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
         TransitionIntoAnimationDuration = 0;
     }

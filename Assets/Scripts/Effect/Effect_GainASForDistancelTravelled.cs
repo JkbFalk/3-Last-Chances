@@ -19,7 +19,7 @@ public class Effect_GainASForDistancelTravelled : Effect
     {
         base.OnStart();
         _prevPosition = TargetOfEffect.transform.position;
-        ASBuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageAmount = 0, DisplayEffectIndicator=true, PathToEffectGraphic="UI/AttackSpeed", EffectIndicatorText="0%"};
+        ASBuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageAmount = 0, ShowsInUI=true, PathToEffectGraphic="UI/AttackSpeed", EffectIndicatorText="0%"};
         TargetOfEffect.AddEffect(ASBuff);
     }
 

@@ -13,7 +13,7 @@ public class NPCAbility_SnowAvalanche : Ability {
         HitSoundType = Constants.HitSoundTypeEnum.Ice;
         HitSoundVolume = 0.3f;
         PerformActionAfterIntervals(20, 0.5f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1() {

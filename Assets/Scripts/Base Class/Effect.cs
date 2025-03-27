@@ -18,13 +18,13 @@ public class Effect {
         }
         if (GetDescriptionParameters().Count > 0)
         {
-            return string.Format((String.IsNullOrWhiteSpace(DescriptionLabel) ?  Label.Get(GetEffectType() + "_DescriptionSimple") : Label.Get(DescriptionLabel)), DescriptionParameters.ToArray()) + (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") ? " <sprite name=\"Detailed\">" : "");
+            return string.Format((String.IsNullOrWhiteSpace(DescriptionLabel) ?  Label.Get(GetEffectType() + "_Description") : Label.Get(DescriptionLabel)), DescriptionParameters.ToArray()) + (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") ? " [Detailed]" : "");
         }
         if(String.IsNullOrWhiteSpace(DescriptionLabel) == false && Label.ContainsKey(DescriptionLabel)) {
             return Label.Get(DescriptionLabel);
         }
-        if(Label.ContainsKey(GetEffectType() + "_DescriptionSimple")) {
-            return Label.Get(GetEffectType() + "_DescriptionSimple") + (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") ? " <sprite name=\"Detailed\">" : "");
+        if(Label.ContainsKey(GetEffectType() + "_Description")) {
+            return Label.Get(GetEffectType() + "_Description") + (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") ? " [Detailed]" : "");
         }
         Debug.LogError("Effect does not have proper description: " + GetType().ToString() + " (Source: " + SourceOfEffect + ", Target: " + TargetOfEffect + ")");
         return GetType().ToString();
@@ -37,12 +37,11 @@ public class Effect {
         }
         if (GetDescriptionParameters().Count > 0)
         {
-            return  (RemainsActiveInOtherStances ? Label.Get("Effect_RemainsActiveInOtherStances") + "\n": "") + string.Format(Label.Get(GetEffectType() + "_DescriptionDetailed"), GetDescriptionParameters().ToArray());
+            return  (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + string.Format(Label.Get(GetEffectType() + "_DescriptionDetailed"), GetDescriptionParameters().ToArray());
         }
-        return (RemainsActiveInOtherStances ? Label.Get("Effect_RemainsActiveInOtherStances") + "\n": "") + Label.Get(GetEffectType() + "_DescriptionDetailed");
+        return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + Label.Get(GetEffectType() + "_DescriptionDetailed");
     }
 
-    public List<Type> UsesTheFollowingEffects = new();
     public bool RemainsActiveInOtherStances = false;
     public bool IsRemovable { get; set; } = true;
     public enum EffectType { Buff, Debuff, Neutral };
@@ -52,6 +51,7 @@ public class Effect {
     private List<Effect> _effectModifiers;
     public bool ShowsInMenu = true;
     public string DescriptionLabel;
+    public bool CountsAsSeparateEffect = true;
     public bool HasLinearScaling = true;
 
     public Effect(SourceOfEffect source_of_effect) {
@@ -69,7 +69,7 @@ public class Effect {
 
     public virtual void OnEffectValueChanged(){}
 
-    public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, AddDuration, AddDecayingAmount, Custom };
+    public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, AddDuration, AddDecayingAmount, EndShorterDuplicateWithSameIdentifier };
     public BehaviourWhenDuplicateEffectEnum BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AllowDuplicate;
 
     public List<string> DescriptionParameters = new List<string>();
@@ -97,8 +97,8 @@ public class Effect {
     public SourceOfEffect SourceOfEffect;
     private float _baseDuration = 0;
     public string SoundEffectName;
-    public string ExtraInfo = "";
-    public bool DisplayEffectIndicator = false;
+    public string Identifier = "";
+    public bool ShowsInUI = false;
     private string _effectIndicatorText = "";
     public string EffectIndicatorText {
         get => _effectIndicatorText;
@@ -177,14 +177,15 @@ public class Effect {
     }
     public float DefaultDecaySpeed = Constants.DEFAULT_STACKING_EFFECT_DECAY_PER_SECOND;
     public float MaxDecayingAmount = 0;
-    public virtual void AddDecayingAmount(float amount_added, bool include_effect_power = true) {
-        float calculatedAmountAdded = amount_added * (include_effect_power ? EffectPowerModifier : 1);
+    public virtual void ChangeDecayingAmount(float amount_changed, bool include_effect_power = true) {
+        float calculatedAmountAdded = amount_changed * (include_effect_power ? EffectPowerModifier : 1);
         DecayingAmount = MaxDecayingAmount == 0 ? (DecayingAmount + calculatedAmountAdded) : (DecayingAmount + calculatedAmountAdded) > MaxDecayingAmount ? MaxDecayingAmount : (DecayingAmount + calculatedAmountAdded);
         ExtraBehaviourOnDecayingAmountChange();
     }
     public virtual void ExtraBehaviourOnDecayingAmountChange() {}
 
     public virtual void ActivateEffectAmountDecay() {
+        Debug.Log($"ACTIVATING DECAY: GetType {GetType()}, EffectEnded {EffectEnded}, DecayingAmount {DecayingAmount}, EffectDecaySpeedModifier {EffectDecaySpeedModifier}, DefaultDecaySpeed {DefaultDecaySpeed}");
         if(EffectEnded) {
             return;
         }
@@ -192,8 +193,8 @@ public class Effect {
             EndThisEffect();
         }
         else {
-            bool decayDisabled = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect.GetType() == typeof(Effect_DisableEffectDecay) && ((Effect_DisableEffectDecay)effect).AffectedEffectType == GetType()) != null;
-            DecayingAmount = decayDisabled ? DecayingAmount : EffectDecaySpeedModifier > 0 ? (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5)) : (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + Math.Abs(EffectDecaySpeedModifier)) / 5));
+            Debug.Log($"Analysis: EffectDecaySpeedModifier {EffectDecaySpeedModifier}, DecayingAmount {DecayingAmount}, DefaultDecaySpeed {DefaultDecaySpeed}, (1 / Math.Abs(EffectDecaySpeedModifier)) {(1 / Math.Abs(EffectDecaySpeedModifier))}, mod: {(1 / Math.Abs(EffectDecaySpeedModifier)) / 5}, result: {(DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5)}");
+            DecayingAmount = EffectDecaySpeedModifier >= 0 ? (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5)) : (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5));
             ExtraBehaviourOnDecayingAmountChange();
         }
     }
@@ -223,6 +224,7 @@ public class Effect {
             float modifier = 0;
             foreach(Effect e in _effectModifiers.ToArray()) {
                 if(((Effect_ChangeEffectPower)e).ChangeType == Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed) {
+                    Debug.Log("APPLYING DECAY MOD: " + (-((Effect_ChangeEffectPower)e).PercentageChange / 100)); 
                     modifier += -((Effect_ChangeEffectPower)e).PercentageChange / 100;
                 }
             }
@@ -240,7 +242,7 @@ public class Effect {
                 || 
             (((Effect_ChangeEffectPower)effect).AffectedUnitsType == Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player  && TargetOfEffect == Player.Instance))
             && 
-            (((Effect_ChangeEffectPower)effect).ConditionForEffectPowerChange == null || ((Effect_ChangeEffectPower)effect).ConditionForEffectPowerChange())).ToList();
+            (((Effect_ChangeEffectPower)effect).ConditionForEffectPowerChange == null || ((Effect_ChangeEffectPower)effect).ConditionForEffectPowerChange(TargetOfEffect))).ToList();
          
     }
 
@@ -251,15 +253,25 @@ public class Effect {
     }
 
     public virtual bool CheckIfEffectAlreadyAppliedAndHandleBehaviour() {
-        AddDecayingAmount(_initialDecayingAmount);
+        ChangeDecayingAmount(_initialDecayingAmount);
         Effect existingEffect = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect.GetType() == GetType() && effect != this);
         if(existingEffect != null) {
             if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDecayingAmount) {
-                existingEffect.AddDecayingAmount(DecayingAmount, false);
+                existingEffect.ChangeDecayingAmount(DecayingAmount, false);
                 existingEffect.RemainingDuration = existingEffect.BaseDuration;
             }
             if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDuration) {
                 existingEffect.RemainingDuration += BaseDuration;
+            }
+            if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier) {
+                if(existingEffect.Identifier == Identifier && existingEffect.RemainingDuration > RemainingDuration) {
+                    EndThisEffect();
+                    return true;
+                }
+                else if(existingEffect.Identifier == Identifier && existingEffect.RemainingDuration <= RemainingDuration) {
+                    existingEffect.EndThisEffect();
+                }
+                return false;
             }
             EndThisEffect();
             EventManager.EffectEmpowered.Invoke(existingEffect, this);
@@ -275,6 +287,7 @@ public class Effect {
         if(TargetOfEffect is Player) {
             Transform effectsDisplay = CanvasElements.UICanvas.Effects.transform;
             GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
+            effectIndicator.GetComponent<Image>().sprite = Type == EffectType.Buff ? Resources.Load("Sprites/UI/BuffEffectIcon", typeof(Sprite)) as Sprite : Type == EffectType.Debuff ? Resources.Load("Sprites/UI/DebuffEffectIcon", typeof(Sprite)) as Sprite : Resources.Load("Sprites/UI/EffectIcon", typeof(Sprite)) as Sprite;
             effectIndicator.transform.SetParent(effectsDisplay, false);
             effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = EffectGraphic == null ? Resources.Load("Sprites/" + PathToEffectGraphic, typeof(Sprite)) as Sprite : EffectGraphic;
             effectIndicator.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = EffectIndicatorText;
@@ -284,6 +297,7 @@ public class Effect {
         else {
             Transform effectsDisplay = TargetOfEffect.EffectDisplay.transform;
             GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
+            effectIndicator.GetComponent<Image>().sprite = Type == EffectType.Buff ? Resources.Load("Sprites/UI/BuffEffectIcon", typeof(Sprite)) as Sprite : Type == EffectType.Debuff ? Resources.Load("Sprites/UI/DebuffEffectIcon", typeof(Sprite)) as Sprite : Resources.Load("Sprites/UI/EffectIcon", typeof(Sprite)) as Sprite;
             effectIndicator.transform.SetParent(effectsDisplay, false);
             effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = EffectGraphic == null ? Resources.Load("Sprites/" + PathToEffectGraphic, typeof(Sprite)) as Sprite : EffectGraphic;
             effectIndicator.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = EffectIndicatorText;
@@ -318,7 +332,7 @@ public class Effect {
         {
             Utils.PlaySoundEffect(TargetOfEffect.AudioSource, "Effect/" + (SoundEffectName != null ? SoundEffectName : GetEffectType()), SoundEffectVolume);
         }
-        if(DisplayEffectIndicator) {
+        if(ShowsInUI) {
             DisplayEffectIndicatorAboveTarget();
         }
         AddListeners();
@@ -326,6 +340,12 @@ public class Effect {
             _effectModifiers = GetEffectModifiers();
             EventManager.OneFifthSecondElapsedNotRealtime.AddListener(ActivateEffectAmountDecay);
             EventManager.EffectStarted.AddListener(UpdateEffectModifiers);
+        }
+        else if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier) {
+            Effect e = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect != this && effect.Identifier == Identifier);
+            if(e != null) {
+                e.EndThisEffect();
+            }
         }
         EventManager.EffectStarted.Invoke(this);
     }
@@ -342,7 +362,6 @@ public class Effect {
     }
 
     public virtual void OnEnd() {
-        Debug.Log("ENDING " + GetType() + " ON " + TargetOfEffect);
         Utils.CreateAuditLog("Unit (" + TargetOfEffect + ") ending effect: " + GetType() + " from unit " + SourceOfEffect?.User + " and source " + SourceOfEffect?.GetType() + ", original duration: " + BaseDuration);
         if (EffectIndicatorCooldownDisplay != null) {
             MonoBehaviour.Destroy(EffectIndicatorCooldownDisplay.transform.parent.gameObject);
@@ -432,8 +451,14 @@ public class Effect {
         if(Listeners.Contains(EventManager.AbilityEnergyConsumed)) {
             EventManager.AbilityEnergyConsumed.AddListener(OnInvokeAbilityEnergyConsumed);
         }
-        if(Listeners.Contains(EventManager.EnemyDefeated)) {
-            EventManager.EnemyDefeated.AddListener(OnInvokeEnemyDefeated);
+        if(Listeners.Contains(EventManager.UnitKnockedOut)) {
+            EventManager.UnitKnockedOut.AddListener(OnInvokeUnitKnockedOut);
+        }
+        if(Listeners.Contains(EventManager.HealthBarBroken)) {
+            EventManager.HealthBarBroken.AddListener(OnInvokeHealthBarBroken);
+        }
+        if(Listeners.Contains(EventManager.AmmoAmountChanged)) {
+            EventManager.AmmoAmountChanged.AddListener(OnInvokeAmmoAmountChanged);
         }
         if(Listeners.Contains(EventManager.HealthBarBroken)) {
             EventManager.HealthBarBroken.AddListener(OnInvokeHealthBarBroken);
@@ -498,8 +523,14 @@ public class Effect {
         if(Listeners.Contains(EventManager.AbilityEnergyConsumed)) {
             EventManager.AbilityEnergyConsumed.RemoveListener(OnInvokeAbilityEnergyConsumed);
         }
-        if(Listeners.Contains(EventManager.EnemyDefeated)) {
-            EventManager.EnemyDefeated.RemoveListener(OnInvokeEnemyDefeated);
+        if(Listeners.Contains(EventManager.UnitKnockedOut)) {
+            EventManager.UnitKnockedOut.RemoveListener(OnInvokeUnitKnockedOut);
+        }
+        if(Listeners.Contains(EventManager.HealthBarBroken)) {
+            EventManager.HealthBarBroken.RemoveListener(OnInvokeHealthBarBroken);
+        }
+        if(Listeners.Contains(EventManager.AmmoAmountChanged)) {
+            EventManager.AmmoAmountChanged.RemoveListener(OnInvokeAmmoAmountChanged);
         }
         if(Listeners.Contains(EventManager.HealthBarBroken)) {
             EventManager.HealthBarBroken.RemoveListener(OnInvokeHealthBarBroken);
@@ -600,12 +631,16 @@ public class Effect {
         }
     }
 
-    public virtual void OnInvokeEnemyDefeated(Damage damage){
+    public virtual void OnInvokeUnitKnockedOut(Damage damage){
         EventManager.EffectActivated.Invoke(this);
         if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
         {
             damage.SourceOfDamage.TriggeredEffects.Add(this);
         }
+    }
+
+    public virtual void OnInvokeAmmoAmountChanged(){
+        EventManager.EffectActivated.Invoke(this);
     }
 
     public virtual void OnInvokeHealthBarBroken(Damage damage){

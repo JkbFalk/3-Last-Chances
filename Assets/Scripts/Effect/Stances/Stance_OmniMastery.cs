@@ -12,7 +12,7 @@ public class Stance_OmniMastery : Effect_Stance
     public static float DamageBuffAmount = 50;
 
     public static float CleanseCooldownDuration = 15;
-    private Effect_IncreaseDamageDealt _damageBuff;
+    private Effect_Empowered _damageBuff;
 
     private Image _damageGauge;
     private Image _cleanseGauge;
@@ -49,7 +49,7 @@ public class Stance_OmniMastery : Effect_Stance
             _damageBuff.EndThisEffect();
         }
         else if(IsActive){
-            _damageBuff = new Effect_IncreaseDamageDealt(DamageBuffAmount, SourceOfEffect) {DisplayEffectIndicator = false, ShowsInMenu=false};
+            _damageBuff = new Effect_Empowered(DamageBuffAmount, SourceOfEffect) {ShowsInUI = false, ShowsInMenu=false};
             Player.Instance.AddEffect(_damageBuff, DamageBuffDuration);
         }
         Cooldown cd = Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_OmniMastery) && cd.ExtraInfo == AssignedStance.WeaponCategory.ToString());
@@ -67,7 +67,7 @@ public class Stance_OmniMastery : Effect_Stance
 
     public override void OnInvokeDamageDealt(Damage damage)
     {
-        if(IsActive&& UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.IsBasicAttack  && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false ) {
+        if(IsActive&& UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)  && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false ) {
             List<Type> affected_abilities = new List<Type>();
             List<Type> unaffectable_abilities = new List<Type>();
             foreach(Stance.EquippedAbility a in Player.Instance.CurrentStance.Abilities) {
@@ -75,8 +75,8 @@ public class Stance_OmniMastery : Effect_Stance
             }
             for(int i = 0; i < 3; i++) {
                 foreach(Stance.EquippedAbility a in SaveFile.Instance.Stances[i].Abilities) {
-                    if(!unaffectable_abilities.Contains(a.Type) && !affected_abilities.Contains(a.Type) && Player.Instance.AbilityCooldowns.FirstOrDefault(cd => cd.Type == a.Type) != null) {
-                        Cooldown cd = Player.Instance.AbilityCooldowns.FirstOrDefault(cd => cd.Type == a.Type);
+                    if(!unaffectable_abilities.Contains(a.Type) && !affected_abilities.Contains(a.Type) && Player.Instance.TechniqueCooldowns.FirstOrDefault(cd => cd.Type == a.Type) != null) {
+                        Cooldown cd = Player.Instance.TechniqueCooldowns.FirstOrDefault(cd => cd.Type == a.Type);
                         cd.RemainingDuration = cd.RemainingDuration * 0.75f;
                         affected_abilities.Add(a.Type);
                     }

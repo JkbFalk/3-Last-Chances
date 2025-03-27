@@ -49,7 +49,7 @@ public class Stance_PlunderingFlame : Effect_Stance
             Player.Instance.Energy.GenerateEnergy(effect.TargetOfEffect.IsBoss ? EnergyGenerated * 3 : EnergyGenerated);
         }
         else if(IsActive && UnlockedUpgrade3 && effect is Effect_Staggered && effect.SourceOfEffect.User is Player && effect.TargetOfEffect.CheckIfUnderEffect(typeof(Effect_Burn)) && effect.TargetOfEffect.IsHostile) {
-            foreach(Cooldown cd in Player.Instance.AbilityCooldowns.Concat(Player.Instance.EffectCooldowns).Concat(new List<Cooldown> {Player.Instance.ItemsCooldown}))
+            foreach(Cooldown cd in Player.Instance.TechniqueCooldowns.Concat(Player.Instance.EffectCooldowns).Concat(new List<Cooldown> {Player.Instance.ToolCooldown}))
             {
                 if(cd != null && cd.RemainingDuration > 0)
                 {

@@ -11,7 +11,7 @@ public class NPCAbility_FeintCombo : Ability {
         AddCustomSound("Ignite", "Fire/Fire3", 0.7f);
         AddCustomSound("Explosion1", "Fire/FireExplosion1", 0.8f);
         AddCustomSound("Explosion2", "Fire/FireExplosion2", 0.8f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         float random = UnityEngine.Random.Range(1, 100);
         if (random < 25)
         {
@@ -24,7 +24,7 @@ public class NPCAbility_FeintCombo : Ability {
         {
             DamageSources.Add(new DamageSource(150, 350, Constants.DamageType.Heavy));
             NameOfAnimationToAutoPlay = "FeintCombo_Thrust";
-            AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+            Properties.Add(AbilityProperty.CounteredByRoll);
         }
         else if(random < 75)
         {

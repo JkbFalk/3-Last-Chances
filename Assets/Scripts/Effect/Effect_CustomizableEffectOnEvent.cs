@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class Effect_CustomizableEffectOnEvent : Effect
 {
+    public float CustomParam = 0;
     public float PercentageAmount = 0;
     public float FlatAmount = 0;
     public Func<Item, Item, bool> ConditionCheckForItemEquipped;
@@ -21,10 +22,16 @@ public class Effect_CustomizableEffectOnEvent : Effect
     public Action<Projectile, Effect_CustomizableEffectOnEvent> ActionOnProjectileCreated;
     public Func<Effect, bool> ConditionCheckForEffectStarted;
     public Action<Effect, Effect_CustomizableEffectOnEvent> ActionOnEffectStarted;
+    public Func<Effect, bool> ConditionCheckForEffectEnded;
+    public Action<Effect, Effect_CustomizableEffectOnEvent> ActionOnEffectEnded;
     public Func<Effect, Effect, bool> ConditionCheckForEffectEmpowered;
     public Action<Effect, Effect, Effect_CustomizableEffectOnEvent> ActionOnEffectEmpowered;
-    public Func<Damage, bool> ConditionCheckForEnemyDefeated;
-    public Action<Damage, Effect_CustomizableEffectOnEvent> ActionOnEnemyDefeated;
+    public Func<Damage, bool> ConditionCheckForUnitKnockedOut;
+    public Action<Damage, Effect_CustomizableEffectOnEvent> ActionOnUnitKnockedOut;
+    public Func<Damage, bool> ConditionCheckForHealthBarBroken;
+    public Action<Damage, Effect_CustomizableEffectOnEvent> ActionOnHealthBarBroken;
+    public Func<bool> ConditionCheckForAmmoAmountChanged;
+    public Action<Effect_CustomizableEffectOnEvent> ActionOnAmmoAmountChanged;
     public Func<Stat, float, bool> ConditionCheckForUnitStatCurrentAmountChanged;
     public Action<Stat, float, Effect_CustomizableEffectOnEvent> ActionOnUnitStatCurrentAmountChanged;
     public Func<Cooldown, bool> ConditionCheckForCooldownAdded;
@@ -42,10 +49,8 @@ public class Effect_CustomizableEffectOnEvent : Effect
     {
         foreach(FieldInfo fieldInfo in GetType().GetFields()) {
             if(fieldInfo.Name.Contains("ConditionCheckFor") || fieldInfo.Name.Contains("ActionOn") ) {
-                Debug.Log("KEK? " + fieldInfo.Name.Replace("ConditionCheckFor","").Replace("ActionOn", ""));
                 UnityEventBase unityEvent = (UnityEventBase)typeof(EventManager).GetField(fieldInfo.Name.Replace("ConditionCheckFor","").Replace("ActionOn", "")).GetValue(null);
-                if(fieldInfo.GetValue(this) != null && !Listeners.Contains(unityEvent)) {
-                    Debug.Log("ADDING " + unityEvent + " FOR " + GetType() + " (" + TargetOfEffect + " , " + SourceOfEffect + ")");
+                if(fieldInfo.GetValue(this) != null && !Listeners.Contains(unityEvent) && unityEvent != null) {
                     Listeners.Add(unityEvent);
                 }
             }
@@ -90,6 +95,14 @@ public class Effect_CustomizableEffectOnEvent : Effect
         if (ConditionCheckForEffectStarted != null && ConditionCheckForEffectStarted.Invoke(effect) && ActionOnEffectStarted != null)
         {
             ActionOnEffectStarted.Invoke(effect, this);
+        }
+    }
+
+    public override void OnInvokeEffectEnded(Effect effect) {
+        base.OnInvokeEffectStarted(effect);
+        if (ConditionCheckForEffectEnded != null && ConditionCheckForEffectEnded.Invoke(effect) && ActionOnEffectEnded != null)
+        {
+            ActionOnEffectEnded.Invoke(effect, this);
         }
     }
 
@@ -141,11 +154,27 @@ public class Effect_CustomizableEffectOnEvent : Effect
         }
     }
 
-    public override void OnInvokeEnemyDefeated(Damage damage) {
-        base.OnInvokeEnemyDefeated(damage);
-        if (ConditionCheckForEnemyDefeated != null && ConditionCheckForEnemyDefeated.Invoke(damage) && ActionOnEnemyDefeated != null)
+    public override void OnInvokeUnitKnockedOut(Damage damage) {
+        base.OnInvokeUnitKnockedOut(damage);
+        if (ConditionCheckForUnitKnockedOut != null && ConditionCheckForUnitKnockedOut.Invoke(damage) && ActionOnUnitKnockedOut != null)
         {
-            ActionOnEnemyDefeated.Invoke(damage, this);
+            ActionOnUnitKnockedOut.Invoke(damage, this);
+        }
+    }
+
+    public override void OnInvokeHealthBarBroken(Damage damage) {
+        base.OnInvokeHealthBarBroken(damage);
+        if (ConditionCheckForHealthBarBroken != null && ConditionCheckForHealthBarBroken.Invoke(damage) && ActionOnHealthBarBroken != null)
+        {
+            ActionOnHealthBarBroken.Invoke(damage, this);
+        }
+    }
+
+    public override void OnInvokeAmmoAmountChanged() {
+        base.OnInvokeAmmoAmountChanged();
+        if (ConditionCheckForAmmoAmountChanged != null && ConditionCheckForAmmoAmountChanged.Invoke() && ActionOnAmmoAmountChanged != null)
+        {
+            ActionOnAmmoAmountChanged.Invoke(this);
         }
     }
 }

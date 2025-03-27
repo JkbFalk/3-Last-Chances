@@ -7,7 +7,7 @@ public class NPCAbility_HeavySweep : Ability {
         if(User.IsBoss && User.DamageCategory == Constants.DamageType.Heavy)
         {
             DamageSources.Add(new DamageSource(100, 450, Constants.DamageType.Heavy) {Knockback = 600});
-            AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByBackstep });
+            Properties.Add(AbilityProperty.CounteredByBackstep);
         }
         else {
             DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy) {Knockback = 300});

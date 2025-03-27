@@ -7,9 +7,9 @@ public class NPCAbility_SwordThrust : Ability {
     public NPCAbility_SwordThrust(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.5f;
         DamageSources.Add(new DamageSource(300, 50, Constants.DamageType.Heavy));
-        if (User.CheckIfUnderEffect(typeof(Effect_Ignis_Paladin_Buff)))
+        if (User.CheckIfUnderEffect(typeof(Effect_IgnisCaptainBuff)))
         {
-            AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+            Properties.Add(AbilityProperty.CounteredByRoll);
         }
     }
 

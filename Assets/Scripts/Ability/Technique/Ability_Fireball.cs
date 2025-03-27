@@ -40,7 +40,7 @@ public class Ability_Fireball : Ability {
         else {
             DamageSources.Add(new DamageSource(MagicInjuryScalingExplosion, 0, Constants.DamageType.Magic, "AoE") {Knockback = 300});
         }
-        EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstoppable(new(this))};
+        EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstunnable(new(this))};
     }
 
     public override void CallAbilityEvent1()
@@ -76,7 +76,7 @@ public class Ability_Fireball : Ability {
         if(Player.Instance.CurrentTarget == null) {
             _intendedDestinations[0] = Player.Instance.transform.position + relativePosition;
         }
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             for(int i = 0; i < 4; i++) {
                 _fireBalls.Add(Utils.CreateProjectile(new(this), "Fireball"));
                 MonoBehaviour.Destroy(_fireBalls[i+1].GetComponent<AttachObjectToBodyPart>());
@@ -153,7 +153,7 @@ public class Ability_Fireball : Ability {
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
-        if(IsUltimate && _enemiesAffectedByExplosion.Contains(unit_getting_attacked)) {
+        if(Is(AbilityProperty.Ultimate) && _enemiesAffectedByExplosion.Contains(unit_getting_attacked)) {
             return;
         }
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);

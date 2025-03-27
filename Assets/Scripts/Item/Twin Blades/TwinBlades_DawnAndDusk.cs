@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,12 +11,24 @@ public class TwinBlades_DawnAndDusk : Item
         WeaponClass = Constants.WeaponClass.TwinBlades;
         SetBaseWeaponStats(95, 95, 1.1f);
     }
-
+    public override List<Effect> GetFirstModifier() {
+        return new List<Effect> {new Effect_CustomizableDamageChange(new(this)) {EffectTypeName="GainAccelerationOnWeaponTypeHit", CustomParam = GetFirstModifierEffectValue() * 0.05f, DescriptionParameters = new List<String> { Utils.GetFormattedFloat(GetFirstModifierEffectValue() * 0.05f, 1)}, ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
+                    (damage.SourceOfDamage?.User == Player.Instance && damage.AbilityDamageSource.DamageType == Constants.DamageType.Light && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack))),
+                Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
+                    if(damage.InjuryDealt > 0 || damage.StaggerDealt > 0) {
+                        Player.Instance.AddEffect(new Effect_Acceleration(effect.CustomParam, new(this)));
+                    }
+                })}};
+    }
+    public override List<Effect> GetSecondModifier() {
+        return new List<Effect> {};
+    }
+    /*
     public override List<Effect> GetFirstModifier() {
         return new List<Effect> { new Effect_DawnAndDusk(new(this)) };
     }
     public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_AbilitiesForWeaponCategoryDealMoreDamage(Constants.DamageType.Light, 1, 1, new(this)) };
-    }
+        return new List<Effect> {};
+    }*/
 }
 

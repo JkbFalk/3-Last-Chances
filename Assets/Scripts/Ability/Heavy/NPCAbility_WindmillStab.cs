@@ -10,9 +10,9 @@ public class NPCAbility_WindmillStab : Ability {
         AddCustomSound("ChargeUp", "Greatsword/Greatsword_HeavySwing9", 0.3f);
         AddCustomSound("Explosion", "Explosion/Ground Explosion", 0.8f);
         AddCustomSound("Stab", "Greatsword/Greatsword_HeavySwing15", 0.7f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+        Properties.Add(AbilityProperty.CounteredByRoll);
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

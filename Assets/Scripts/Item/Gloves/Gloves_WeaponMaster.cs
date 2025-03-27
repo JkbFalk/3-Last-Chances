@@ -13,7 +13,7 @@ public class Gloves_WeaponMaster : Item
 
     public override List<Effect> GetFirstModifier() {
         return new List<Effect> {new Effect_CustomizableDamageChange(new(this)) {EffectTypeName="RestoreHealthOnWeaponDamage", DescriptionParameters=new List<String>{Utils.GetFormattedFloat(GetFirstModifierEffectValue() * 0.3125f)}, CustomParam = GetFirstModifierEffectValue() * 0.3125f, TriggersOncePerAbility = true, ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                    damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.TriggeredEffects.Contains(effect) == false && (damage.SourceOfDamage.DamageType == Constants.DamageType.Heavy || damage.SourceOfDamage.DamageType == Constants.DamageType.Light || damage.SourceOfDamage.DamageType == Constants.DamageType.Ranged || damage.SourceOfDamage.DamageType == Constants.DamageType.CurrentWeapon)),
+                    damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.TriggeredEffects.Contains(effect) == false && damage.IsWeaponDamage),
                 Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                     Player.Instance.Health.Current += effect.CustomParam;
                 })}};

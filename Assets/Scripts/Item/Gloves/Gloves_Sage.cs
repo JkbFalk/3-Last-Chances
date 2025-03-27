@@ -11,9 +11,9 @@ public class Gloves_Sage : Item
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChargeAbilitiesDealMoreDamage(20, 20, new(this)) };
+        return new List<Effect> {};
     }
     public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new(this)) { PercentageAmount = 0.625f }, new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Stagger, new(this)) { PercentageAmount = 0.625f } };
+        return new List<Effect> { new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(this)) { PercentageAmount = 0.625f }};
     }
 }

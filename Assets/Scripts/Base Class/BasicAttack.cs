@@ -25,7 +25,7 @@ public abstract class BasicAttack : Ability {
     public BasicAttack(Unit ability_user) : base(ability_user) {
         CanAlwaysBeInterruptedBy.Add(AbilityInterruptType.StanceSwitch);
         HoldingMainButton = true;
-        IsBasicAttack = true;
+        Properties.Add(AbilityProperty.BasicAttack);
     }
 
     public override void OnMainButtonPress() {

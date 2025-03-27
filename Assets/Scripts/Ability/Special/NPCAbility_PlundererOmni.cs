@@ -8,12 +8,8 @@ public class NPCAbility_PlundererOmni : Ability {
         DamageSources.Add(new DamageSource(250, 300, Constants.DamageType.Heavy) {Knockback = 1500});
         WaitTimeBeforeNextAction = 0.1f;
         AddCustomSound("Use", "Impact/Impact 11", 0.4f);
-        CanBeInterruptedByFlinching = false;
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersRoll);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersBackstep);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersBlock);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersRiposte);
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.Unstoppable, AbilityProperty.ImmuneToFlinch});
         TransitionIntoAnimationDuration = 0;
     }
 
@@ -34,6 +30,6 @@ public class NPCAbility_PlundererOmni : Ability {
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
         base.ExtraBehaviourOnDamage(damage);
-        damage.TargetOfDamage.AddEffect(new Effect_Void(20, new(this)));
+        damage.TargetOfDamage.AddEffect(new Effect_Enfeebled(50, new(this)), 10);
     }
 }

@@ -4,14 +4,14 @@ public class NPCAbility_DashStab : Ability {
         DamageSources.Add(new DamageSource(70, 250, Constants.DamageType.Heavy) {Knockback = 200});
         WaitTimeBeforeNextAction = 0.2f;
         HitSoundVolume = 0.6f;
-        /*AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBackstep);
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRiposte);*/
+        /*Properties.Add(AbilityProperty.CounteredByBackstep);
+        Properties.Add(AbilityProperty.CounteredByRoll);
+        Properties.Add(AbilityProperty.CounteredByRiposte);*/
     }
 
     public override void CallAbilityEvent1() {
         ChaseCurrentTargetAtGivenDegreeAngle(200, 25, 25);
-        //User.Actions.DisplayExtremeDangerSign();
+        User.Actions.DisplayExtremeDangerSign();
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

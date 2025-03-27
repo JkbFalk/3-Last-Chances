@@ -11,7 +11,7 @@ public class NPCAbility_JumpAndExplosionImpale : Ability {
         DamageSources.Add(new DamageSource(100, 600, Constants.DamageType.Heavy) {Knockback = 600});
         DamageSources.Add(new DamageSource(75, 450, Constants.DamageType.Heavy, "Main AoE") {Knockback = 600});
         DamageSources.Add(new DamageSource(150, 0, Constants.DamageType.Heavy, "Weaker AoE"));
-        AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByRiposte });
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.CounteredByRiposte});
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
@@ -28,7 +28,7 @@ public class NPCAbility_JumpAndExplosionImpale : Ability {
 
     public override void CallAbilityEvent3()
     {
-        AbilityModifiers.Clear();
+        Properties.Clear();
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

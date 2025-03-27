@@ -12,9 +12,9 @@ public class Gun_Revolver : Item
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ExtraDamageToUndamagedEnemies(5, 5, new(this)) };
+        return new List<Effect> {};
     }
     public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_AbilitiesForWeaponCategoryDealMoreDamage(Constants.DamageType.Ranged, 1, 1, new(this)) };
+        return new List<Effect> {};
     }
 }

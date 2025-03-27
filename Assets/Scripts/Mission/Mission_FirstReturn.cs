@@ -121,20 +121,20 @@ public class Mission_FirstReturn : Mission {
     }
 
     public void AbilityUsed(Ability ability) {
-        if(MissionProgress == 30 && ability.IsBasicAttack) {
+        if(MissionProgress == 30 && ability.Is(Ability.AbilityProperty.BasicAttack)) {
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 3) {
                 MissionProgress += 10;
             }
         }
-        else if(MissionProgress == 40 && ability.IsBasicAttack) {
+        else if(MissionProgress == 40 && ability.Is(Ability.AbilityProperty.BasicAttack)) {
             BasicAttack ba = (BasicAttack)ability;
-            if(ba.IsStrongBasicAttack == false) {
+            if(ba.IsNot(Ability.AbilityProperty.StrongBasicAttack)) {
                 return;
             }
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 3) {
                 MissionProgress += 5;
                 Utils.GetUnit("TutorialRyker").SetToNeutralNPC();
@@ -146,7 +146,7 @@ public class Mission_FirstReturn : Mission {
         }
         else if(MissionProgress == 50 && ability.GetType().IsSubclassOf(typeof(Ability_Dodge))) {
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 2) {
                 MissionProgress += 5;
                 Utils.GetUnit("TutorialRyker").SetToNeutralNPC();
@@ -157,7 +157,7 @@ public class Mission_FirstReturn : Mission {
         }
         else if(MissionProgress == 60 && ability is Ability_Block) {
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 2) {
                 MissionProgress += 5;
                 Utils.GetUnit("TutorialRyker").SetToNeutralNPC();
@@ -166,9 +166,9 @@ public class Mission_FirstReturn : Mission {
                 Player.Instance.SetInteractPromptToClosestInteractable();
             }
         }
-        else if(MissionProgress == 70 && (ability.IsRiposte || ability.IsCounter)) {
+        else if(MissionProgress == 70 && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))) {
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 2) {
                 MissionProgress += 10;
                 Utils.GetUnit("TutorialRyker").UnitAI.InitializeAvailableActions(new() {{"20,AI_Chase"}});
@@ -176,14 +176,14 @@ public class Mission_FirstReturn : Mission {
         }
         else if(MissionProgress == 80 && ability.GetType().IsSubclassOf(typeof(Ability_StanceSwitch))) {
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 2) {
                 MissionProgress += 10;
             }
         }
         else if(MissionProgress == 100 && ability is Ability_WindRush) {
             _counter++;
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 2) {
                 MissionProgress += 5;
                 Utils.GetUnit("TutorialRyker").SetToNeutralNPC();
@@ -392,8 +392,8 @@ public class Mission_FirstReturn : Mission {
 
     public static void MovedIntoArea() {
         SaveFile.Instance.CurrentMission.MissionProgress += 10;
-        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_Unkillable(new(Utils.GetUnit("TutorialRyker"))) {DisplayEffectIndicator = false, IsRemovable=false});
-        Player.Instance.AddEffect(new Effect_Unkillable(new(Player.Instance)) {DisplayEffectIndicator = false, IsRemovable=false});
+        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_Unkillable(new(Utils.GetUnit("TutorialRyker"))) {ShowsInUI = false, IsRemovable=false});
+        Player.Instance.AddEffect(new Effect_Unkillable(new(Player.Instance)) {ShowsInUI = false, IsRemovable=false});
         Utils.GetUnit("TutorialRyker").CooldownReduction.Maximum = 9999;
         Utils.GetUnit("TutorialRyker").CooldownReduction.Current = 9999;
         NotificationController.ShowCustomizedDialogueNotification(new() {Id="FirstReturn_Inter_60"});
@@ -411,19 +411,19 @@ public class Mission_FirstReturn : Mission {
         UIManager.Instance.ShowBlackScreen(0);
         GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(false);
         UIManager.Instance.StartDialogue(FirstDialogue());
-        Utils.ShowMissionObjective("Mission_FirstReturn_Title", "Mission_FirstReturn_Step_0", "UI/Cycle1");
+        Utils.ShowMissionObjective("Mission_FirstReturn", "Mission_FirstReturn_Step_0", "UI/Cycle1");
     }
 
     public override void OnMissionProgressUpdated()
     {
         _counter = 0;
-        Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1");
+        Utils.ShowMissionObjective(GetType().ToString() , GetType() + "_Step_" + MissionProgress, "UI/Cycle1");
         if(MissionProgress == 30 || MissionProgress == 40 || MissionProgress == 50 || MissionProgress == 60 ||MissionProgress == 70 || MissionProgress == 80 ||MissionProgress == 90 ||MissionProgress == 100 ||MissionProgress == 110 ||MissionProgress == 120 || MissionProgress == 130 || MissionProgress == 140) {
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {"0"});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {"0"});
             NotificationController.ShowCustomizedDialogueNotification(new() {Id="Mission_FirstReturn_Step_" + MissionProgress + "_Notification", SpeakerName="Ryker", SpeakerPortrait="Ryker"}); 
         }
         else if( MissionProgress == 45 || MissionProgress == 55 || MissionProgress == 65 || MissionProgress == 105 || MissionProgress == 115 || MissionProgress == 125) {
-            Utils.ShowMissionObjective(GetType() + "_Title", GetType() + "_Step_" + (MissionProgress + 5), "UI/Cycle1", new List<string> {"0"});
+            Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + (MissionProgress + 5), "UI/Cycle1", new List<string> {"0"});
             NotificationController.ShowCustomizedDialogueNotification(new() {Id="Mission_FirstReturn_Step_" + (MissionProgress + 5) + "_Notification", SpeakerName="Ryker", SpeakerPortrait="Ryker"}); 
         }
     }

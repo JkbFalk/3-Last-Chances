@@ -54,7 +54,7 @@ public class BA_Bow_F : BasicAttack {
             _movementSpeed = User.MovementSpeed.Current;
         }
         else {
-            IsStrongBasicAttack = true;
+            Properties.Add(AbilityProperty.StrongBasicAttack);
             StartedCharging = true;
             User.Actions.SetFaceVariant("Eyes Squinted");
         }

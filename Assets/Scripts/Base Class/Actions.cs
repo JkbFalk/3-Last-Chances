@@ -17,6 +17,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class Actions : MonoBehaviour {
+    [HideInInspector]
     public LineOfSight LineOfSight;
     private UnitWeapon _heavyWeapon;
     private UnitWeapon _lightWeaponL;
@@ -122,7 +123,7 @@ public class Actions : MonoBehaviour {
 
     [HideInInspector]
     public List<Constants.AttackType> CurrentBasicAttackCombo = new List<Constants.AttackType>();
-
+    [HideInInspector]
     public Vector2 SavedAimDirection;
     public bool MovingToPoint = false;
     public Vector2 MovingToPointDestination;
@@ -135,15 +136,12 @@ public class Actions : MonoBehaviour {
     }
     public List<string> TryingToMoveInDirection { get; set; } = new List<string>();
     public bool IsWalking { get; set; }
+    [HideInInspector]
     public Unit Unit;
 
     private Vector2 _previousPosition;
 
     public void Start() {
-        int random = UnityEngine.Random.Range(0, 100000);
-        if(GameController.Instance.LoadingNewArea == false) {
-            GameController.Instance.WaitAndRunMethod(0.05f, EnsureCorrectRotations, random);
-        }
         Unit = GetComponent<Unit>();
         _heavyWeapon = Unit.SpriteRenderers.ContainsKey("Heavy") ? Unit.SpriteRenderers["Heavy"].Weapon : null;
         _lightWeaponL = Unit.SpriteRenderers.ContainsKey("Light Left") ? Unit.SpriteRenderers["Light Left"].Weapon : null;
@@ -209,7 +207,7 @@ public class Actions : MonoBehaviour {
         if(CurrentAbilityBeingPerformed != null)
         {
             if(Player.Instance.PreparingForUltimate) {
-                CurrentAbilityBeingPerformed.IsUltimate = true;
+                CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.Ultimate);
                 SaveFile.Instance.UltimatesUsedInCurrentCombat++;
                 Player.Instance.Energy.Current = 0;
                 GameController.Instance.PlayerControls.StopPreparingUltimate();
@@ -368,7 +366,7 @@ public class Actions : MonoBehaviour {
             if (leftover_danger_sign2 != null) {
                 MonoBehaviour.Destroy(leftover_danger_sign2.gameObject);
             }
-            _currentAbilityBeingPerformed.IsUncounterable = true;
+            _currentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.Unstoppable);
             GameObject danger_sign = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ExtremeDangerSign")) as GameObject;
             danger_sign.gameObject.name = "UI_ExtremeDangerSign";
             danger_sign.transform.SetParent(Unit.WorldSpaceCanvas.transform, false);
@@ -451,19 +449,19 @@ public class Actions : MonoBehaviour {
         }
         if(name == "Backstep")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBackstep);
+            CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.CounteredByBackstep);
         }
         else if (name == "Roll")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+            CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.CounteredByRoll);
         }
         else if (name == "Riposte")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRiposte);
+            CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.CounteredByRiposte);
         }
         else if (name == "Block")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBlock);
+            CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.CounteredByBlock);
         }
     }
 
@@ -489,19 +487,19 @@ public class Actions : MonoBehaviour {
         }
         if (name == "Backstep")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Remove(Constants.AbilityModifier.CounteredByBackstep);
+            CurrentAbilityBeingPerformed.Properties.Remove(Ability.AbilityProperty.CounteredByBackstep);
         }
         else if (name == "Roll")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Remove(Constants.AbilityModifier.CounteredByRoll);
+            CurrentAbilityBeingPerformed.Properties.Remove(Ability.AbilityProperty.CounteredByRoll);
         }
         else if (name == "Riposte")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Remove(Constants.AbilityModifier.CounteredByRiposte);
+            CurrentAbilityBeingPerformed.Properties.Remove(Ability.AbilityProperty.CounteredByRiposte);
         }
         else if (name == "Block")
         {
-            CurrentAbilityBeingPerformed.AbilityModifiers.Remove(Constants.AbilityModifier.CounteredByBlock);
+            CurrentAbilityBeingPerformed.Properties.Remove(Ability.AbilityProperty.CounteredByBlock);
         }
     }
 
@@ -610,7 +608,7 @@ public class Actions : MonoBehaviour {
         {
             Unit.Actions.CurrentAbilityBeingPerformed = basicAttack;
         }
-        else if (CurrentAbilityBeingPerformed == null || (CurrentAbilityBeingPerformed != null && !(CurrentAbilityBeingPerformed is BasicAttack)))
+        else if (CurrentAbilityBeingPerformed == null || (CurrentAbilityBeingPerformed != null && CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.BasicAttack)))
         {
             QueuedInputs.Add(new QueuedInput("PerformBasicAttack", basicAttackType, null, 10));
         }
@@ -657,7 +655,7 @@ public class Actions : MonoBehaviour {
     }
 
     public void PlayAbilityCustomSound(string sound_name) {
-        if (CurrentAbilityBeingPerformed != null && CurrentAbilityBeingPerformed.CustomSounds.ContainsKey(sound_name) && (Unit.Animator.IsInTransition(0) == false || CurrentAbilityBeingPerformed is BasicAttack == false)) {
+        if (CurrentAbilityBeingPerformed != null && CurrentAbilityBeingPerformed.CustomSounds.ContainsKey(sound_name) && (Unit.Animator.IsInTransition(0) == false || CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.BasicAttack))) {
             CurrentAbilityBeingPerformed.PlayCustomSound(sound_name);
         }
     }
@@ -749,23 +747,14 @@ public class Actions : MonoBehaviour {
         {
             Unit.PlayAnimation(HardCrowdControlEffect.GetType().Name);
         }
-    }
-
-    public void EnsureCorrectRotations(int random) {
-        if(gameObject == null || gameObject.IsDestroyed()) {
-            return;
-        }
-        foreach(KeepRotationDespiteFlip item in GetComponentsInChildren<KeepRotationDespiteFlip>(true)) {
-            item.EnsureRotation();
-        }
-    }    
+    } 
 
     private void CalculateMovement() {
         bool isBlocking = Unit.CheckIfUnderEffect(typeof(Effect_Block));
         Vector3 primary_vector = GetDirectionVector(TryingToMoveInDirection[0]);
-        Vector3 main_move_direction = (IsWalking ? Constants.WALK_SPEED : isBlocking ? Constants.BLOCK_MOVE_SPEED : Constants.RUN_SPEED) * Unit.MovementSpeed.Current * primary_vector * Time.fixedDeltaTime;
+        Vector3 main_move_direction = (IsWalking ? Constants.PLAYER_WALK_SPEED : isBlocking ? Constants.PLAYER_BLOCK_MOVE_SPEED : Constants.PLAYER_RUN_SPEED) * Unit.MovementSpeed.Current * primary_vector * Time.fixedDeltaTime;
         if (TryingToMoveInDirection.Count > 1 && !Utils.GetAreOppositeDirections(TryingToMoveInDirection[0], TryingToMoveInDirection[1])) {
-            Vector3 secondaryVector = GetDirectionVector(TryingToMoveInDirection[1]) * (IsWalking ? Constants.WALK_SPEED : isBlocking ? Constants.BLOCK_MOVE_SPEED : Constants.RUN_SPEED) * Unit.MovementSpeed.Current * Time.fixedDeltaTime;
+            Vector3 secondaryVector = GetDirectionVector(TryingToMoveInDirection[1]) * (IsWalking ? Constants.PLAYER_WALK_SPEED : isBlocking ? Constants.PLAYER_BLOCK_MOVE_SPEED : Constants.PLAYER_RUN_SPEED) * Unit.MovementSpeed.Current * Time.fixedDeltaTime;
             Unit.Rigidbody2D.MovePosition(Unit.transform.position + main_move_direction + secondaryVector);
         }
         else {
@@ -930,30 +919,35 @@ public class Actions : MonoBehaviour {
             return (Player.Instance.CurrentTarget.transform.position - Player.Instance.ProjectileSpawnLocation.transform.position).normalized;
         }
     }
-
-    public bool IsWalkingtoPoint = false;
+    [HideInInspector]
+    public bool IsWalkingToPoint = false;
 
     public void MoveToPoint(float x, float y, bool walk = false) {
+        Unit.GetComponent<NavMeshAgent>().enabled = true;
         if(Unit.GetComponent<NavMeshAgent>() != null && Unit.UnitAI.NavMeshAgent.isOnNavMesh) {
             if(walk) {
                 Unit.CanRun = false;
-                IsWalkingtoPoint = true;
+                IsWalkingToPoint = true;
             }
+            IsFlipped = x < transform.position.x;
             MovingToPoint = true;
             MovingToPointDestination = new Vector2(x, y);
-            Unit.GetComponent<NavMeshAgent>().enabled = true;
+            Unit.PlayAnimation(walk ? "Walk" : "Run");
             Unit.Actions.CurrentActionBeingPerformed = Constants.ActionType.Moving;
             Unit.GetComponent<NavMeshAgent>().SetDestination(new Vector2(x, y));
             Unit.UnitAI.CurrentAIBehavior = Constants.AIBehavior.Repositioning;
             Unit.UnitAI.CurrentDirectionType = UnitAI.DirectionType.FaceDirectionOfCurrentMovement;
         }
+        else {
+            Unit.GetComponent<NavMeshAgent>().enabled = false;
+        }
     }
 
     public void StopMovingToPoint() {
         if(Unit.GetComponent<NavMeshAgent>() != null) {
-            if(IsWalkingtoPoint) {
+            if(IsWalkingToPoint) {
                 Unit.CanRun = true;
-                IsWalkingtoPoint = false;
+                IsWalkingToPoint = false;
             }
             MovingToPoint = false;
             Unit.GetComponent<NavMeshAgent>().enabled = false;
@@ -1049,25 +1043,22 @@ public class Actions : MonoBehaviour {
     }
 
     public bool StartWithFlippedDirection = true;
+    [field: SerializeField]
     private bool _flipDirection;
-
     public bool IsFlipped {
         get => _flipDirection;
         set {
             bool previous_value = _flipDirection;
             _flipDirection = value;
-            if (_flipDirection && transform.localRotation.y == 0) {
-                transform.rotation = new Quaternion(0, 0, 0, 0);
-                transform.Rotate(0, 180, 0);
+            if (_flipDirection && transform.localEulerAngles.y == 0) {
+                transform.localEulerAngles = new Vector3(0, 180, 0);
             }
-            else if (!_flipDirection && transform.localRotation.y != 0) {
-                transform.rotation = new Quaternion(0, 0, 0, 0);
+            else if (!_flipDirection && transform.localEulerAngles.y != 0) {
+                transform.localEulerAngles = new Vector3(0, 0, 0);
             }
             if(previous_value != value)
             {
-                foreach(KeepRotationDespiteFlip item in GetComponentsInChildren<KeepRotationDespiteFlip>(true)) {
-                    item.EnsureRotation();
-                }
+                EventManager.UnitChangedDirection.Invoke(Unit);
                 if(Unit is Player)
                 {
                     foreach (string element in new List<string> { "Hand", "Arm", "Leg", "Foot", "Light" })

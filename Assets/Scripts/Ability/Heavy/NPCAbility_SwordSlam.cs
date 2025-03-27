@@ -6,9 +6,9 @@ public class NPCAbility_SwordSlam : Ability {
     public NPCAbility_SwordSlam(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.2f;
         DamageSources.Add(new DamageSource(80, 250, Constants.DamageType.Heavy));
-        if (User.CheckIfUnderEffect(typeof(Effect_Ignis_Paladin_Buff)))
+        if (User.CheckIfUnderEffect(typeof(Effect_IgnisCaptainBuff)))
         {
-            AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRiposte);
+            Properties.Add(AbilityProperty.CounteredByRiposte);
         }
     }
 }

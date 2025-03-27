@@ -21,7 +21,7 @@ public class Ability_StanceSwitch : Ability {
 
     public override void OnAbilityStart()
     {
-        base.OnAbilityStart();
         User.SetDefaultSortingOrder();
+        base.OnAbilityStart();
     }
 }

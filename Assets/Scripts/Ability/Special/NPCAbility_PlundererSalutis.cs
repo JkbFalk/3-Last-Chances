@@ -7,10 +7,8 @@ public class NPCAbility_PlundererSalutis : Ability {
         DamageSources.Add(new DamageSource(500, 0, Constants.DamageType.Heavy));
         AddCustomSound("Disappear", "Wind/WindWhoosh1", 0.9f);
         AddCustomSound("Appear", "Wind/WindWhoosh2", 0.9f);
-        CanBeInterruptedByFlinching = false;
         TransitionIntoAnimationDuration = 0;
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersRiposte);
-        AbilityModifiers.Add(Constants.AbilityModifier.CountersBlock);
+        Properties.AddRange(new List<AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CountersBlock, AbilityProperty.CountersRiposte});
     }
 
     public override void OnAbilityStart()

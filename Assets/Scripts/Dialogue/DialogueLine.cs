@@ -89,12 +89,14 @@ public class DialogueLine
             SpeakerUnit.PlayAnimation(Animation.Replace("Dialogue_", ""));
         }
         if(WaitTimeBeforeAllowingToProceed > 0) {
+            GameController.Instance.transform.Find("Dialogue Window/Window/CannotProceedYet").gameObject.SetActive(true);
             UIManager.Instance.CanGoToNextDialogueLine = false;
             GameController.Instance.WaitAndRunMethodRealtime(WaitTimeBeforeAllowingToProceed, UnlockProceed);
         }
     }
 
     public void UnlockProceed() {
+        GameController.Instance.transform.Find("Dialogue Window/Window/CannotProceedYet").gameObject.SetActive(false);
         UIManager.Instance.CanGoToNextDialogueLine = true;
     }
 

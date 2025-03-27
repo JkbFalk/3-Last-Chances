@@ -10,9 +10,8 @@ public class NPCAbility_ChargedPunch : Ability {
         DamageSources.Add(new DamageSource(20, 300, Constants.DamageType.Light, "Weaker AoE") {Knockback = 500});
         AddCustomSound("Punch", "Explosion/Explosion3", 0.75f);
         HitSoundType = Constants.HitSoundTypeEnum.SmallBlunt;
-        AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByRoll });
+        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.CounteredByRoll, AbilityProperty.ImmuneToFlinch});
         WaitTimeBeforeNextAction = 0.4f;
-        CanBeInterruptedByFlinching = false;
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

@@ -10,7 +10,7 @@ public class NPCAbility_BerserkerRage : Ability {
         DamageSources.Add(new DamageSource(250, 0, Constants.DamageType.Light));
         AddCustomSound("Use", "Greatsword/Greatsword_HeavySwing15", 0.8f);
         WaitTimeBeforeNextAction = 0f;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void OnAbilityStart()

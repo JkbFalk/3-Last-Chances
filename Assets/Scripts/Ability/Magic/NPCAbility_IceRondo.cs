@@ -13,7 +13,7 @@ public class NPCAbility_IceRondo : Ability {
         HitSoundType = Constants.HitSoundTypeEnum.SmallSharp;
         HitSoundVolume = 0.3f;
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()

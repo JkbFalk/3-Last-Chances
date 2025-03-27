@@ -1,7 +1,7 @@
 public class BA_Gun_S : BasicAttack {
     public static int AmmoRequiredToUseAbility = 3;
     public BA_Gun_S(Unit ability_user) : base(ability_user) {
-        IsStrongBasicAttack = true;
+        Properties.Add(AbilityProperty.StrongBasicAttack);
         DamageSources.Add(new DamageSource(300, 600, Constants.DamageType.Ranged));
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
     }

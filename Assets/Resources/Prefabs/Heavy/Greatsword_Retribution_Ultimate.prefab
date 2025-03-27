@@ -153,19 +153,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IgnoreSpriteParent: 0
-  Grey: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0}
+  Grey: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 0}
   GreyBorder1: 1
   GreyBorder2: 2
-  Brown: {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-  BrownBorder1: 2
-  BrownBorder2: 5
+  Brown: {r: 0.4528302, g: 0.15866584, b: 0.014951949, a: 0}
+  BrownBorder1: 0.4
+  BrownBorder2: 0.8
   Red: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 0}
   RedBorder1: 0.4
   RedBorder2: 0.8
   Green: {r: 0, g: 0, b: 0, a: 0}
   GreenBorder1: 0.4
   GreenBorder2: 0.8
-  Blue: {r: 1, g: 0.9984056, b: 0.8820755, a: 0}
+  Blue: {r: 0.7830189, g: 0.1841386, b: 0, a: 0}
   BlueBorder1: 2
   BlueBorder2: 1
   SpecialSkinColor: {r: 1, g: 1, b: 1, a: 1}
@@ -241,6 +241,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &1923938854239951381
 BoxCollider2D:
   m_ObjectHideFlags: 0

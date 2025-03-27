@@ -4,9 +4,9 @@ public class NPCAbility_StandingStab : Ability {
         DamageSources.Add(new DamageSource(150, 100, Constants.DamageType.Heavy));
         WaitTimeBeforeNextAction = 0.1f;
         HitSoundVolume = 0.6f;
-        /*AbilityModifiers.Add(Constants.AbilityModifier.CounteredByBackstep);
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRiposte);*/
+        Properties.Add(AbilityProperty.CounteredByBackstep);
+        Properties.Add(AbilityProperty.CounteredByRoll);
+        Properties.Add(AbilityProperty.CounteredByRiposte);
     }
     public override void ExtraBehaviourOnDamage(Damage damage)
     {

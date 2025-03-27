@@ -22,7 +22,7 @@ public class Tool_Sanctuary : Item
 
     public override string GetDescription(bool detailed = false)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_DescriptionSimple"), new object[] { Utils.GetFormattedFloat(Duration[GradeIndex]), Utils.GetFormattedFloat(MaxDamageBlocked[GradeIndex]) }) + "\n\n<sprite name=\"Cooldown\"> " + Cooldown.ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description"), new object[] { Utils.GetFormattedFloat(Duration[GradeIndex]), Utils.GetFormattedFloat(MaxDamageBlocked[GradeIndex]) }) + "\n\n[CD] " + Cooldown.ToString();
     }
 
     public override void OnUse()
@@ -30,7 +30,7 @@ public class Tool_Sanctuary : Item
         base.OnUse();
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Item/Sanctuary_Use");
         Utils.CreateVisualEffect(new(this), "Sanctuary", Player.Instance.transform.position.x, Player.Instance.transform.position.y);
-        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(this)) { DisplayEffectIndicator=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_2"), CustomParam = MaxDamageBlocked[GradeIndex], ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
+        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(this)) { ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_2"), CustomParam = MaxDamageBlocked[GradeIndex], ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                     (damage.TargetOfDamage == Player.Instance)),
                 Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                     damage.Injury -= effect.CustomParam;

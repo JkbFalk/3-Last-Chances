@@ -13,7 +13,7 @@ public class NPCAbility_BoulderPunch : Ability {
         AddCustomSound("Hit", "Earth/Earth_Punch2", 0.6f);
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
         WaitTimeBeforeNextAction = 0.1f;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 

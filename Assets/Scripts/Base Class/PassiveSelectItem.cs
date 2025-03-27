@@ -24,9 +24,8 @@ public class PassiveSelectItem : MonoBehaviour, IPointerClickHandler, ISubmitHan
             MethodInfo desc = ability_type.GetMethod("GetMasteryADescriptionValues", BindingFlags.Public | BindingFlags.Static);
             if (desc != null)
             {
-                transform.Find("Description").GetComponent<LabelInitializer>().OriginalValue = "{" + ability_name + "_MasteryA_DescriptionSimple}";
                 transform.Find("Description").GetComponent<LabelInitializer>().string_params = (List<string>)desc.Invoke(null, null);
-                transform.Find("Description").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedLabel(Label.Get(ability_name + "_MasteryA_DescriptionSimple"), (List<string>)desc.Invoke(null, null), gameObject);
+                transform.Find("Description").GetComponent<LabelInitializer>().SetLabel("{" + ability_name + "_MasteryA_Description}");
             }
             else
             {
@@ -42,9 +41,8 @@ public class PassiveSelectItem : MonoBehaviour, IPointerClickHandler, ISubmitHan
             MethodInfo desc = ability_type.GetMethod("GetMasteryBDescriptionValues", BindingFlags.Public | BindingFlags.Static);
             if (desc != null)
             {
-                transform.Find("Description").GetComponent<LabelInitializer>().OriginalValue = "{" + ability_name + "_MasteryB_DescriptionSimple}";
                 transform.Find("Description").GetComponent<LabelInitializer>().string_params = (List<string>)desc.Invoke(null, null);
-                transform.Find("Description").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedLabel(Label.Get(ability_name + "_MasteryB_DescriptionSimple"), (List<string>)desc.Invoke(null, null), gameObject);
+                transform.Find("Description").GetComponent<LabelInitializer>().SetLabel("{" + ability_name + "_MasteryB_Description}");
             }
             else
             {
@@ -63,13 +61,13 @@ public class PassiveSelectItem : MonoBehaviour, IPointerClickHandler, ISubmitHan
             transform.Find("Stance/Border Lower").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
             transform.Find("Stance").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
             transform.Find("Title/Text").GetComponent<TextMeshProUGUI>().text = Label.Get(upgrade_number == "0" ? "StanceUnlockTitle" : "UpgradeUnlockTitle") + (upgrade_number == "0" ? "" : " " + upgrade_number) +": " + Label.Get(ability_name);
-            transform.Find("Description").GetComponent<LabelInitializer>().OriginalValue = "{" + gameObject.name.Replace("_Unlock", "") + "_DescriptionSimple}";
+            transform.Find("Description").GetComponent<LabelInitializer>().SetLabel("{" + gameObject.name.Replace("_Unlock", "") + "_Description}");
         }
         else if (gameObject.name.Contains("_Unlock"))
         {
             string ability_name = gameObject.name.Replace("_Unlock", "");
             transform.Find("Title/Text").GetComponent<TextMeshProUGUI>().text = Label.Get("AbilityUnlockTitle") + ": " + Label.Get(ability_name);
-            transform.Find("Description").GetComponent<LabelInitializer>().OriginalValue = "{" + gameObject.name.Replace("_Unlock", "") + "_DescriptionSimple}";
+            transform.Find("Description").GetComponent<LabelInitializer>().SetLabel("{" + gameObject.name.Replace("_Unlock", "") + "_Description}");
             transform.Find("Icon/Image").GetComponent<Image>().sprite = Utils.GetGraphicForAbility(ability_name);
             Type abilityType = Type.GetType( ability_name);
             MethodInfo desc = abilityType.GetMethod("GetDescriptionValues", BindingFlags.Public | BindingFlags.Static);
@@ -81,8 +79,8 @@ public class PassiveSelectItem : MonoBehaviour, IPointerClickHandler, ISubmitHan
         else
         {
             string[] stat_name_split = gameObject.name.Split('~');
-            transform.Find("Title/Text").GetComponent<TextMeshProUGUI>().text = Label.Get("Effect_" + stat_name_split[0] + "_Title");
-            transform.Find("Description").GetComponent<TextMeshProUGUI>().text = Label.Get("Effect_"  + stat_name_split[0] + "_DescriptionSimple");
+            transform.Find("Title/Text").GetComponent<TextMeshProUGUI>().text = Label.Get("Effect_" + stat_name_split[0]);
+            transform.Find("Description").GetComponent<TextMeshProUGUI>().text = Label.Get("Effect_"  + stat_name_split[0] + "_Description");
             transform.Find("Icon/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + Utils.GetImageNameForStat(stat_name_split[0]), typeof(Sprite)) as Sprite;
             if (stat_name_split.Length > 1)
             {

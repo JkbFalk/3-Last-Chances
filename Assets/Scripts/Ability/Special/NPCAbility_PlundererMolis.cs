@@ -7,7 +7,7 @@ public class NPCAbility_PlundererMolis : Ability {
     public NPCAbility_PlundererMolis(Unit ability_user) : base(ability_user) {
         DamageSources.Add(new DamageSource(200, 500, Constants.DamageType.Heavy) {Knockback = 1200});
         AddCustomSound("Explosion", "Explosion/Explosion2", 0.9f);
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         TransitionIntoAnimationDuration = 0;
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
         TransitionIntoAnimationDuration = 0;

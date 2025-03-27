@@ -11,7 +11,7 @@ public class Boots_Arbiter : Item
     }
 
     public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ExtraVoid(new(this)) {UsesTheFollowingEffects=new() {typeof(Effect_Void)}} };
+        return new List<Effect> {};
     }
     public override List<Effect> GetSecondModifier() {
         return new List<Effect> { new Effect_ChangeStat(Player.Instance.StaggerBar, new(this)) { PercentageAmount = 0.75f } };

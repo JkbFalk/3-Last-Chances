@@ -37,10 +37,10 @@ public class Ability_Quickdraw : Technique
         AddCustomSound("WindSlash", "Wind/WindSlash", 1f);
         AddCustomSound("Counter", "Ability/Ability_Quickdraw_Counter", 1f);
         TransitionIntoAnimationDuration = 0.01f;
-        EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstoppable(new(this))};
+        EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstunnable(new(this))};
         EventManager.HitDealt.AddListener(CheckHitDealt);
         NameOfAnimationToAutoPlay = "Quickdraw_" + User.CurrentWeaponClass;
-        DamageSources.Add(new DamageSource(IsUltimate ? UltimateInjuryScaling : CounterInjuryScaling, IsUltimate ? UltimateStaggerScaling : CounterStaggerScaling, User.CurrentWeaponDamageCategory) {Knockback = 20});
+        DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : CounterInjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : CounterStaggerScaling, User.CurrentWeaponDamageCategory) {Knockback = 20});
     }
 
     public static List<string> GetDescriptionValues()
@@ -67,10 +67,10 @@ public class Ability_Quickdraw : Technique
         base.OnAbilityStart();
         Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
         ShowChargeBar();
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             PlayCustomSound("TimeSlow");
             GameController.Instance.DefaultTimeSpeed = TimeSpeed;
-            Player.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Slowed Time") as VolumeProfile;
+            CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Slowed Time") as VolumeProfile;
             Player.Instance.Animator.SetFloat("Technique Speed", 5);
             StartCountingTime(1f);
         }
@@ -83,9 +83,9 @@ public class Ability_Quickdraw : Technique
         base.OnAbilityEnd();
         StopCountingTime();
         EventManager.HitDealt.RemoveListener(CheckHitDealt);
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             GameController.Instance.DefaultTimeSpeed = 1f;
-            Player.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
+            CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
         }
     }
@@ -101,10 +101,10 @@ public class Ability_Quickdraw : Technique
 
     public override void CallAbilityEvent2()
     {
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
             GameController.Instance.DefaultTimeSpeed = 1f;
-            Player.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
+            CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
         }
         StopCountingTime();
         CreateWindSlash();
@@ -129,9 +129,9 @@ public class Ability_Quickdraw : Technique
 
     public void CheckHitDealt(Damage damage) {
         if(damage.TargetOfDamage == User && _counteredAnAttack == false && damage.DamagingObject is UnitWeapon) {
-            if(IsUltimate) {
+            if(Is(AbilityProperty.Ultimate)) {
                 GameController.Instance.DefaultTimeSpeed = 1f;
-                Player.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
+                CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
             }
             StopCountingTime();
             CounterEnemyAttack(damage);
@@ -144,13 +144,13 @@ public class Ability_Quickdraw : Technique
         }
         _createdWindSlash = true;
         PlayCustomSound("WindSlash");
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateInjuryScaling / 4, UltimateInjuryScaling), GetValueBasedOnPercentageOfTimePassed(UltimateStaggerScaling / 4, UltimateStaggerScaling), User.CurrentWeaponDamageCategory, "Quickdraw_Ultimate_WindSlash") {Knockback = 650});
         }
         else {
             DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(InjuryScaling / 4, InjuryScaling), GetValueBasedOnPercentageOfTimePassed(StaggerScaling / 4, StaggerScaling), User.CurrentWeaponDamageCategory, "Quickdraw_WindSlash") {Knockback = 250});
         }
-        Projectile proj = Utils.CreateProjectile(new(this), IsUltimate ? "Quickdraw_Ultimate_WindSlash" : "Quickdraw_WindSlash");
+        Projectile proj = Utils.CreateProjectile(new(this), Is(AbilityProperty.Ultimate) ? "Quickdraw_Ultimate_WindSlash" : "Quickdraw_WindSlash");
         proj.transform.eulerAngles = new Vector3(0, 0, -90);
     }
 
@@ -160,7 +160,7 @@ public class Ability_Quickdraw : Technique
         }
         _counteredAnAttack = true;
         PlayCustomSound("Counter");
-        if(IsUltimate) {
+        if(Is(AbilityProperty.Ultimate)) {
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
             Player.Instance.Health.Current += damage.Injury;
             Player.Instance.StaggerBar.Current -= damage.Stagger;
@@ -181,11 +181,11 @@ public class Ability_Quickdraw : Technique
         }
         _transitionedAnimation = true;
         Unit target = damage.SourceOfDamage.User;
-        GameObject vfx = Utils.CreateVisualEffect(new(this), IsUltimate ? "Quickdraw_Ultimate_Counter" : "Quickdraw_Counter");
+        GameObject vfx = Utils.CreateVisualEffect(new(this), Is(AbilityProperty.Ultimate) ? "Quickdraw_Ultimate_Counter" : "Quickdraw_Counter");
         vfx.transform.SetParent(target.SpriteRenderers["Upper Body"].Bone);
         vfx.transform.localPosition = Vector2.zero;
         vfx.gameObject.name = vfx.gameObject.name + "_PersistsOnDeath";
-        IsCounter = true;
+        Properties.Add(AbilityProperty.Counter);
         HandleEnemyHit(target, User.SpriteRenderers[User.CurrentWeaponDamageCategory == Constants.DamageType.Light ? "Light Right" : User.CurrentWeaponDamageCategory.ToString()].Bone.GetComponent<UnitWeapon>(), null);
         if(UpgradeBUnlocked){
             target.AddEffect(new Effect_Prone(GetValueBasedOnPercentageOfTimePassed(UpgradeBProneAppliedToCountered / 4, UpgradeBProneAppliedToCountered), new(this)));

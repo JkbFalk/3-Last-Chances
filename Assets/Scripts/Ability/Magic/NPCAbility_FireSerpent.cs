@@ -12,7 +12,7 @@ public class NPCAbility_FireSerpent : Ability {
         AddCustomSound("Use", "Fire/Fire7", 0.65f);
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.5f;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Magic));
     }
 

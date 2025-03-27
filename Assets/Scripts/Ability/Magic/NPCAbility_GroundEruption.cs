@@ -20,7 +20,7 @@ public class NPCAbility_GroundEruption : Ability {
         
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this))};
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()

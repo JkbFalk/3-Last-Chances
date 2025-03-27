@@ -9,12 +9,12 @@ public class Effect_Empowered : Effect
     public int EmpoweredLevel = 0;
     public Effect_Empowered(float damage_increase, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
-        Type = EffectType.Debuff;
+        Type = EffectType.Buff;
         _initialDecayingAmount = damage_increase;
-        DisplayEffectIndicator = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        ShowsInUI = true;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AllowDuplicate;
         Listeners.Add(EventManager.HitDealt);
-        DescriptionLabel = "Effect_Empowered_Explanation";
+        DefaultDecaySpeed = 0;
     }
 
     public override void ExtraBehaviourOnDecayingAmountChange()

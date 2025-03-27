@@ -24,6 +24,6 @@ public class NPCAbility_TripleJumpStab : Ability {
 
     public override void CallAbilityEvent3()
     {
-        AbilityModifiers.Add(Constants.AbilityModifier.CounteredByRoll);
+        Properties.Add(AbilityProperty.CounteredByRoll);
     }
 }

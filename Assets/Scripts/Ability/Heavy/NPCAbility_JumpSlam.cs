@@ -11,8 +11,8 @@ public class NPCAbility_JumpSlam : Ability {
         DamageSources.Add(new DamageSource(150, 150, Constants.DamageType.Heavy, "Spike AoE") {Knockback = 1100});
         WaitTimeBeforeNextAction = 0.5f;
         AddCustomSound("OnUse", "Heavy Object/HeavyObject_Slam1", 0.85f);
-        AbilityModifiers.AddRange(new List<Constants.AbilityModifier> { Constants.AbilityModifier.CounteredByRiposte });
-        CanBeInterruptedByFlinching = false;
+        Properties.Add(AbilityProperty.CounteredByRiposte);
+        Properties.Add(AbilityProperty.ImmuneToFlinch);
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
     }
 
