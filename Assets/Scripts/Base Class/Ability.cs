@@ -76,6 +76,7 @@ public abstract class Ability {
     public bool HoldingTechniqueButton = false;
     public Ability OriginalRipostedAbility;
     public int RipostedCount = 0;
+    public float PowerBudget = 0;
     protected List<Effect> EffectsAffectingUserDuringAbility;
     public string CustomHitSound;
     public Constants.HitSoundTypeEnum HitSoundType;
@@ -314,7 +315,7 @@ public abstract class Ability {
     public virtual void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile) {
         if (GetAmmoRequiredToUseAbility(GetType()) > 0) {
             User.Ammo--;
-            if(User.Ammo <= 0) {
+            if(User.Ammo < 1) {
                 projectile.IsFinalAmmo = true;
             }
         }
@@ -349,7 +350,7 @@ public abstract class Ability {
         }
         if (ItemBeingUsed != null && User.ToolCooldown == null) {
             User.AddCooldown(ItemBeingUsed);
-            if(ItemBeingUsed.Category == Constants.ItemCategory.Tool)
+            if(ItemBeingUsed.Type == Constants.ItemType.Tool)
             {
                 ItemBeingUsed.Amount--;
             }
@@ -564,7 +565,7 @@ public abstract class Ability {
     public virtual void AdditionalActionsOnUpdate() { }
 
     public static bool CheckIfEnoughResourceToUseAbility(Unit user, Type ability_type, Item item = null) {
-        if (item != null && item.Category == Constants.ItemCategory.Tool && item.Amount > 0) {
+        if (item != null && item.Type == Constants.ItemType.Tool && item.Amount > 0) {
             return true;
         }
         return user.Energy.Current >= GetEnergyCost(ability_type);
@@ -690,13 +691,13 @@ public abstract class Ability {
         return found_source;
     }
 
-    public void AddDamageSource(float _health, float _stagger, Constants.DamageType _damage_category, string _colliderName = "Default")
+    public void AddDamageSource(float _health, float _stagger, Constants.DamageType _damage_type, string _colliderName = "Default")
     {
         if(_colliderName == "Default" && DamageSources.FirstOrDefault(item => item.ColliderName == _colliderName) != null)
         {
             Debug.LogError("Ability " + GetType() + " already contains damage source with collider name " + _colliderName);
         }
-        DamageSources.Add(new DamageSource(_health, _stagger, _damage_category, _colliderName));
+        DamageSources.Add(new DamageSource(_health, _stagger, _damage_type, _colliderName));
     }
 
     public Stat GetInjuryStatForDamageSource(DamageSource source)

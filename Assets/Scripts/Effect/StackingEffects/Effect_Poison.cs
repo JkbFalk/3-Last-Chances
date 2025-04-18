@@ -28,7 +28,7 @@ public class Effect_Poison : Effect
             EffectIndicatorText = Utils.GetFormattedFloat(Regen.Amount) + "%";
         }
         else {
-            CDIncreasedEffect.PercentageAmount = DecayingAmount > 100 ? -100 : -DecayingAmount;
+            CDIncreasedEffect.PercentageModifier = DecayingAmount > 100 ? -100 : -DecayingAmount;
             TargetOfEffect.UnitAI.AggressivenessModifier += AggroModifier;
             TargetOfEffect.UnitAI.AggressivenessModifier = DecayingAmount > 100 ? -1 : -DecayingAmount / 100;
             TargetOfEffect.UnitAI.AggressivenessModifier -= AggroModifier;
@@ -44,7 +44,7 @@ public class Effect_Poison : Effect
             Regen = TargetOfEffect.Energy.PercentageRegeneration.FirstOrDefault(regen => regen.Source == this && regen.Amount == -EnergyLossPerSecond);
         }
         else {
-            CDIncreasedEffect = new(TargetOfEffect.CooldownReduction, SourceOfEffect) {PercentageAmount = DecayingAmount > 100 ? -100 : -DecayingAmount};
+            CDIncreasedEffect = new(TargetOfEffect.CooldownReduction, SourceOfEffect) {PercentageModifier = DecayingAmount > 100 ? -100 : -DecayingAmount};
             TargetOfEffect.AddEffect(CDIncreasedEffect, 30);
             AggroModifier = DecayingAmount > 100 ? -1 : -DecayingAmount / 100;
             TargetOfEffect.UnitAI.AggressivenessModifier -= AggroModifier;

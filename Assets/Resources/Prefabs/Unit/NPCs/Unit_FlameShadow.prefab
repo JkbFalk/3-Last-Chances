@@ -10035,7 +10035,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385608493659778}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.0012025096, w: 0.99999934}
+  m_LocalRotation: {x: 0, y: -0, z: 0.0012277305, w: 0.9999993}
   m_LocalPosition: {x: 0.25190747, y: 0.0006058812, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10278,7 +10278,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385608603899552}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.44717988, w: 0.89444405}
+  m_LocalRotation: {x: 0, y: 0, z: 0.44717717, w: 0.8944454}
   m_LocalPosition: {x: 0.33144787, y: 0.012402587, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -10884,7 +10884,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385608924827672}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.85624117, w: 0.5165764}
+  m_LocalRotation: {x: 0, y: 0, z: -0.8562375, w: 0.5165825}
   m_LocalPosition: {x: 0.3341745, y: 0.13639547, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11044,7 +11044,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385608963005242}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7135636, w: -0.70059043}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7135768, w: -0.700577}
   m_LocalPosition: {x: -0.03499398, y: 0.26841775, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11076,7 +11076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385608993662148}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.9972302, w: 0.07437778}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9972301, w: 0.074377954}
   m_LocalPosition: {x: 0.057805806, y: 0.4420214, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11386,7 +11386,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 0
+  DamageType: 5
   NPCWeaponClass: 11
   Faction: 0
   HitStopFramesRemaining: 0
@@ -11408,11 +11408,12 @@ MonoBehaviour:
   - 90
   BaseInjury: 100
   BaseStagger: 100
-  BaseAttackSpeed: 0.8
-  BaseMovementSpeed: 0.5
+  BaseAttackSpeed: 1
+  BaseMovementSpeed: 1
   BaseTenacity: 1
   BaseControl: 1
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!1 &3808385609239713871
 GameObject:
   m_ObjectHideFlags: 0
@@ -12887,7 +12888,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385610007157961}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7049872, w: -0.70922005}
+  m_LocalRotation: {x: 0, y: 0, z: 0.704999, w: -0.7092083}
   m_LocalPosition: {x: -0.20854814, y: 0.2765046, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -13347,7 +13348,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3808385610174318765}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.50667363, w: 0.8621379}
+  m_LocalRotation: {x: 0, y: 0, z: 0.506665, w: 0.8621431}
   m_LocalPosition: {x: 0.32670718, y: -0.0016297102, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

@@ -8,13 +8,8 @@ public class Helmet_Alacrity : Item
     public Helmet_Alacrity(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Alacrity;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AfterDodgingEmpowerNextAttack")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("IncreaseInvincibilityTimeOfDodge")};
     }
 }

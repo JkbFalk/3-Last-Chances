@@ -1,10 +1,15 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ChangeTransformOverTime : MonoBehaviour {
     private int _scalecounter = 0;
     private int _Xcounter = 0;
     private int _Ycounter = 0;
     private int _alphaCounter = 0;
+    private float _realtimeScalecounter = 0;
+    private float _realtimeXcounter = 0;
+    private float _realtimeYcounter = 0;
+    private float _realtimeAlphaCounter = 0;
     private float _scaleChangePerSecond = 0;
     private float _xChangePerSecond = 0;
     private float _yChangePerSecond = 0;
@@ -25,6 +30,8 @@ public class ChangeTransformOverTime : MonoBehaviour {
     public float AlphaTime = 0;
     public float StartAlpha = 0;
     public float EndAlpha = 0;
+
+    public bool RunsInRealtime = false;
 
     private SpriteRenderer _spriteRenderer;
 
@@ -58,6 +65,9 @@ public class ChangeTransformOverTime : MonoBehaviour {
     }
 
     private void FixedUpdate() {
+        if(RunsInRealtime) {
+            return;
+        }
         if (_scalecounter < ScaleTime * 50) {
             _scalecounter++;
             transform.localScale = new Vector3(transform.localScale.x + _scaleChangePerSecond / 50, transform.localScale.y + _scaleChangePerSecond / 50, 1);
@@ -76,11 +86,34 @@ public class ChangeTransformOverTime : MonoBehaviour {
         }
     }
 
+    private void Update() {
+        if(!RunsInRealtime) {
+            return;
+        }
+        if (_realtimeScalecounter < ScaleTime) {
+            _realtimeScalecounter += Time.unscaledDeltaTime;
+            transform.localScale = new Vector3(transform.localScale.x + _scaleChangePerSecond * Time.unscaledDeltaTime, transform.localScale.y + _scaleChangePerSecond * Time.unscaledDeltaTime, 1);
+        }
+        if (_realtimeXcounter < XTime) {
+            _realtimeXcounter += Time.unscaledDeltaTime;
+            transform.localPosition = new Vector3(transform.localPosition.x + _xChangePerSecond * Time.unscaledDeltaTime, transform.localPosition.y, 0);
+        }
+        if (_realtimeYcounter < YTime) {
+            _realtimeYcounter += Time.unscaledDeltaTime;
+            transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + _yChangePerSecond * Time.unscaledDeltaTime, 0);
+        }
+        if (_realtimeAlphaCounter < AlphaTime) {
+            _realtimeAlphaCounter += Time.unscaledDeltaTime;
+            _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, _spriteRenderer.color.a + _alphaChangePerSecond * Time.unscaledDeltaTime);
+        }
+    }
+
     public void SetScaleChangeOverTime(float time, float start_scale, float end_scale) {
         ScaleTime = time;
         StartScale = start_scale;
         EndScale = end_scale;
         _scalecounter = 0;
+        _realtimeScalecounter = 0;
         transform.localScale = new Vector3(StartScale, StartScale, 1);
         _scaleChangePerSecond = (EndScale - StartScale) / ScaleTime;
     }
@@ -90,6 +123,7 @@ public class ChangeTransformOverTime : MonoBehaviour {
         StartX = start_x;
         EndX = end_x;
         _Xcounter = 0;
+        _realtimeXcounter = 0;
         transform.localPosition = new Vector3(StartX, transform.localPosition.y, 0);
         _xChangePerSecond = (EndX - StartX) / XTime;
     }
@@ -99,6 +133,7 @@ public class ChangeTransformOverTime : MonoBehaviour {
         StartY = start_y;
         EndY = end_y;
         _Ycounter = 0;
+        _realtimeYcounter = 0;
         transform.localPosition = new Vector3(transform.localPosition.x, StartY, 0);
         _yChangePerSecond = (EndY - StartY) / YTime;
     }
@@ -108,6 +143,7 @@ public class ChangeTransformOverTime : MonoBehaviour {
         StartAlpha = start_alpha;
         EndAlpha = end_alpha;
         _alphaCounter = 0;
+        _realtimeAlphaCounter = 0;
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, StartAlpha);
         _alphaChangePerSecond = (EndAlpha - StartAlpha) / AlphaTime;

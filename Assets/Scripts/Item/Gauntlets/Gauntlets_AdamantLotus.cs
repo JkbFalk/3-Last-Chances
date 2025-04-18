@@ -8,15 +8,10 @@ public class Gauntlets_AdamantLotus : Item
     public Gauntlets_AdamantLotus(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Mercenary;
-        Category = Constants.ItemCategory.Light;
+        Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
         SetBaseWeaponStats(80, 80, 1.3f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Control, new(this)) {PercentageAmount = 0.5f}};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttacksGrantBarrier")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttackStagger")};
     }
 }

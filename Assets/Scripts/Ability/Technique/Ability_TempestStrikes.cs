@@ -28,10 +28,10 @@ public class Ability_TempestStrikes : Technique
     private int _mostRecentAttack = 1;
 
     public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.CurrentWeapon;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.CurrentWeapon;
     public Ability_TempestStrikes(Unit ability_user) : base(ability_user)
     {
-        DamageSources.Add(new DamageSource(InjuryScaling, StaggerScaling, User.CurrentWeaponDamageCategory));
+        DamageSources.Add(new DamageSource(InjuryScaling, StaggerScaling, User.CurrentWeaponDamageType));
         AddCustomSound("Random1", "Ability/Ability_ThreefoldDance_1", 0.7f);
         AddCustomSound("Random2", "Ability/Ability_ThreefoldDance_2", 0.7f);
         AddCustomSound("Random3", "Ability/Ability_ThreefoldDance_3", 0.7f);
@@ -40,7 +40,7 @@ public class Ability_TempestStrikes : Technique
         EffectsAffectingUserDuringAbility = new();
         _mostRecentAttack = UnityEngine.Random.Range(1, 6);
         NameOfAnimationToAutoPlay = "TempestStrikes_" + User.CurrentWeaponClass + _mostRecentAttack;
-        if(User.CurrentWeaponCategory == Constants.ItemCategory.Ranged) {
+        if(User.CurrentWeaponType == Constants.ItemType.Ranged) {
             DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
         }
     }
@@ -92,7 +92,7 @@ public class Ability_TempestStrikes : Technique
             }
             if((UpgradeAUnlocked && _slashCounter == 9) || (Is(AbilityProperty.Ultimate) && _slashCounter == 19)) {
                 DamageSources.Clear();
-                DamageSources.Add(new DamageSource(InjuryScaling * (Is(AbilityProperty.Ultimate) ? 5 : 3), StaggerScaling * (Is(AbilityProperty.Ultimate) ? 5 : 3), User.CurrentWeaponDamageCategory));
+                DamageSources.Add(new DamageSource(InjuryScaling * (Is(AbilityProperty.Ultimate) ? 5 : 3), StaggerScaling * (Is(AbilityProperty.Ultimate) ? 5 : 3), User.CurrentWeaponDamageType));
                 User.Animator.SetFloat("Technique Speed", Is(AbilityProperty.Ultimate) ? 0.4f : 0.25f);
             }
             User.Actions.ConsumeEnergyAndCooldownForTheAbility();

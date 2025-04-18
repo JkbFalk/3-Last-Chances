@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class Injury : Stat {
 
-public Constants.DamageType Category;
-    public Injury(Constants.DamageType category, Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
+public Constants.DamageType Type;
+    public Injury(Constants.DamageType type, Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         if(stat_owner is Player) {
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find(category.ToString() + "Injury/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find(type.ToString() + "Injury/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
         Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
         Maximum = Base;
         Current = Base;
-        Category = category;
+        Type = type;
     }
 
     public override void AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount()
@@ -40,7 +40,7 @@ public Constants.DamageType Category;
 
     public override string ToString()
     {
-        return Category == Constants.DamageType.Heavy ? "HeavyInjury" : Category == Constants.DamageType.Light ? "LightInjury"  : Category == Constants.DamageType.Ranged ? "RangedInjury"  : Category == Constants.DamageType.Magic ? "MagicInjury" : "Injury";
+        return Type == Constants.DamageType.Heavy ? "HeavyInjury" : Type == Constants.DamageType.Light ? "LightInjury"  : Type == Constants.DamageType.Ranged ? "RangedInjury"  : Type == Constants.DamageType.Magic ? "MagicInjury" : "Injury";
     }
 
     public override void UpdateMenuStatDisplayValue()

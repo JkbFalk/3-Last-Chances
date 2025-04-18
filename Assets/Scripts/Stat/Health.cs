@@ -38,6 +38,6 @@ public class Health : Stat {
 
     public override void UpdateMenuStatDisplayValue()
     {
-        MenuStatDisplay.text = ((int)Current).ToString() + " / " + ((int)Maximum).ToString();
+        MenuStatDisplay.text = Utils.GetFormattedFloat((int)Current)+ " / " + Utils.GetFormattedFloat((int)Maximum);
     }
 }

@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class Effect_AncientFirearmsDamageReduction : Effect { 
 
     public Effect_ChangeStat DamageReductionBuff;
-    public float DamageReductionBuffAmount = 1;
 
     public Effect_AncientFirearmsDamageReduction(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
@@ -14,11 +13,6 @@ public class Effect_AncientFirearmsDamageReduction : Effect {
         Listeners.Add(EventManager.ItemEquipped);
     }
 
-    public override void OnEffectValueChanged()
-    {
-        DamageReductionBuffAmount *= LinearEffectValue;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(DamageReductionBuffAmount) };
-    }
 
     public override void OnStart() {
         base.OnStart();
@@ -55,7 +49,7 @@ public class Effect_AncientFirearmsDamageReduction : Effect {
         if(SaveFile.Instance.EquippedBoots is Boots_Ancient) {
             ancientCount++;
         }
-        DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = DamageReductionBuffAmount * ancientCount};
+        DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = FirstParameter * ancientCount};
         Player.Instance.AddEffect(DamageReductionBuff);
     }
 }

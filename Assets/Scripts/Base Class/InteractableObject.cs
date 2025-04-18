@@ -98,7 +98,6 @@ public class InteractableObject : MonoBehaviour
                         Player.Instance.PlayAnimation("ReadingBook");
                         Transform readPosition = transform.Find("Read Position");
                         if(readPosition != null) {
-                            Debug.Log("Player.Instance.transform.position: " + Player.Instance.transform.position);
                             Player.Instance.transform.position = readPosition.transform.position;
                         }
                     }

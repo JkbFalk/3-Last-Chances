@@ -35,7 +35,7 @@ public class Ability_ThunderStrike : Technique
     public static float Cooldown = 10;
 
     public static AbilityFamily Family = AbilityFamily.Tonitrui;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Magic;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
 
     public Ability_ThunderStrike(Unit ability_user) : base(ability_user)
     {

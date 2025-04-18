@@ -8,13 +8,8 @@ public class Armor_Executioner : Item
     public Armor_Executioner(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Executioner;
-        Category = Constants.ItemCategory.Armor;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Armor;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("Every5thHitDealsMassivelyIncreasedDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Injury", 0.5f), new ItemEffect("TechniqueDamage", 0.5f)};
     }
 }

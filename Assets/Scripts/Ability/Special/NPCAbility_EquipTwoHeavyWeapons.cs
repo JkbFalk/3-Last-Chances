@@ -32,7 +32,7 @@ public class NPCAbility_EquipTwoHeavyWeapons : Ability {
             User.SpriteRenderers["Upper Body"].Bone.transform.Find("Heavy " + lightLeft).gameObject.name = "Light Left";
             User.Animator.Rebind();
             User.InitializeSpriteRenderers();
-            User.DamageCategory = Constants.DamageType.Light;
+            User.DamageType = Constants.DamageType.Light;
             User.UnitAI.InitializeAvailableActions(new() {{"50,AI_Chase"},{"100,EquipTwoHeavyWeapons"},{"15,ScissorSlash"},{"0,DoubleEarthRipper"},{"10,WindStep"},{"10,DashAndDualSlash"},{"10,RunningAndSlashing"},{"10,TwinBladesZigZag"}});
             User.BaseInjury = random < 30 ? 80 : random < 70 ? 140 : 180 ;
             User.BaseStagger = random < 30 ? 200 : random < 70 ? 140 : 100;

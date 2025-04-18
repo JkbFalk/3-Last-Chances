@@ -17,12 +17,12 @@ public class Tool_CrimsonFeather : Item
     public static float[] CooldownPerGrade = new float[5] {60, 50, 40, 30, 20};
     public Tool_CrimsonFeather(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Tool;
+        Type = Constants.ItemType.Tool;
     }
 
     public override string GetDescription(bool detailed = false)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_Description"), new object[] { Utils.GetFormattedFloat(5 * GetMultiplierForGrade())}) + (detailed ? "" : " [Detailed]") + "\n\n[CD] " + CooldownPerGrade[GradeIndex].ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description"), new object[] { Utils.GetFormattedFloat(5 * GetMultiplierForGrade())}) + (detailed ? "" : " <sprite name=\"Detailed\">") + "\n\n[CD] " + CooldownPerGrade[GradeIndex].ToString();
     }
 
     public override void ExtraBehaviourOnEquip() {

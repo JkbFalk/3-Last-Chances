@@ -244,7 +244,7 @@ public class UIManager : MonoBehaviour {
         }
         foreach (Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
             bool isStacksBased = ability.Type?.GetField("IsStacksBasedTechnique") != null;
-            Cooldown abilityCooldown = Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability.Type && cooldown.ExtraInfo == (Player.Instance.PreparingForUltimate ? "IsUltimate" : ""));
+            Cooldown abilityCooldown = Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability.Type && cooldown.Identifier == (Player.Instance.PreparingForUltimate ? "IsUltimate" : ""));
             if (abilityCooldown != null && abilityCooldown.RemainingDuration > 0) {
                 float fillAmount = abilityCooldown.RemainingDuration / abilityCooldown.TotalDuration;
                 ability.CooldownDisplay.fillAmount = fillAmount;
@@ -317,7 +317,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShowStanceRotateLeft() {
-        Constants.ItemCategory stance_to_replace = Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Ranged ? Constants.ItemCategory.Light : (Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Light ? Constants.ItemCategory.Heavy : Constants.ItemCategory.Ranged);
+        Constants.ItemType stance_to_replace = Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Ranged ? Constants.ItemType.Light : (Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Light ? Constants.ItemType.Heavy : Constants.ItemType.Ranged);
         GameObject new_display = InitializeNewStanceDisplay(stance_to_replace.ToString(), Player.Instance.GetCurrentStanceIndex() - 1 < 0 ? SaveFile.Instance.Stances[2] : SaveFile.Instance.Stances[Player.Instance.GetCurrentStanceIndex() - 1]);
         new_display.transform.SetSiblingIndex(0);
         float[] start_scales = new float[4] { 0.01f, 0.5f, 0.7f, 0.5f };
@@ -378,7 +378,7 @@ public class UIManager : MonoBehaviour {
             if(SaveFile.Instance.Stances[index].StanceEffect == null) {
                 SaveFile.Instance.Stances[index].StanceEffect = (Effect_Stance)Activator.CreateInstance(typeof(Stance_None), new object[] {null});
             }
-            SaveFile.Instance.Stances[index].UIStanceDisplay = InitializeNewStanceDisplay(SaveFile.Instance.Stances[index].WeaponCategory.ToString(), SaveFile.Instance.Stances[index]).transform;
+            SaveFile.Instance.Stances[index].UIStanceDisplay = InitializeNewStanceDisplay(SaveFile.Instance.Stances[index].WeaponType.ToString(), SaveFile.Instance.Stances[index]).transform;
             SaveFile.Instance.Stances[index].StanceCooldownDisplay = SaveFile.Instance.Stances[index].UIStanceDisplay.transform.Find("Cooldown").GetComponent<Image>();
             Transform display = SaveFile.Instance.Stances[index].UIStanceDisplay;
             display.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
@@ -407,7 +407,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShowStanceRotateRight() {
-        Constants.ItemCategory stance_to_replace = Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Light ? Constants.ItemCategory.Ranged : (Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Ranged ? Constants.ItemCategory.Heavy : Constants.ItemCategory.Light);
+        Constants.ItemType stance_to_replace = Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Light ? Constants.ItemType.Ranged : (Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Ranged ? Constants.ItemType.Heavy : Constants.ItemType.Light);
         GameObject new_display = InitializeNewStanceDisplay(stance_to_replace.ToString(), Player.Instance.GetCurrentStanceIndex() + 1 > 2 ? SaveFile.Instance.Stances[0] : SaveFile.Instance.Stances[Player.Instance.GetCurrentStanceIndex() + 1]);
         new_display.transform.SetSiblingIndex(3);
         float[] start_scales = new float[4] { 0.5f, 0.7f, 0.5f, 0.01f };
@@ -497,9 +497,7 @@ public class UIManager : MonoBehaviour {
         if(dialogue.DialogueSpeaker != null && dialogue.SpeakerStartingFlipped.HasValue) {
             dialogue.DialogueSpeaker.Actions.IsFlipped = dialogue.SpeakerStartingFlipped.Value;
         }
-        Debug.Log("MISC1 Player.Instance.transform.position: " + dialogue.PlayerStartingPosition);
         if(dialogue.PlayerStartingPosition != Vector2.zero) {
-            Debug.Log("MISC2 Player.Instance.transform.position: " + Player.Instance.transform.position);
             Player.Instance.transform.position = dialogue.PlayerStartingPosition;
         }
         if(dialogue.PlayerStartingFlipped.HasValue) {
@@ -519,9 +517,7 @@ public class UIManager : MonoBehaviour {
         if(dialogue.DialogueSpeaker != null && dialogue.SpeakerStartingFlipped.HasValue) {
             dialogue.DialogueSpeaker.Actions.IsFlipped = dialogue.SpeakerStartingFlipped.Value;
         }
-        Debug.Log("MISC1 Player.Instance.transform.position: " + dialogue.PlayerStartingPosition);
         if(dialogue.PlayerStartingPosition != Vector2.zero) {
-            Debug.Log("MISC2 Player.Instance.transform.position: " + Player.Instance.transform.position);
             Player.Instance.transform.position = dialogue.PlayerStartingPosition;
         }
         if(dialogue.PlayerStartingFlipped.HasValue) {
@@ -534,7 +530,6 @@ public class UIManager : MonoBehaviour {
         GameController.Instance.transform.Find("Dialogue Window").gameObject.SetActive(false);
         CurrentDialogueLine = null;
         if(CurrentDialogue.ReturnUnitsToOriginalPositions) {
-            Debug.Log("MISC3 Player.Instance.transform.position: " + Player.Instance.transform.position);
             Player.Instance.transform.position = CurrentDialogue.PlayerStartedPosition;
             Player.Instance.Actions.IsFlipped = CurrentDialogue.PlayerStartedFlipped;
             if(CurrentDialogue.DialogueSpeaker != null && CurrentDialogue.DialogueSpeaker.gameObject.activeSelf) {
@@ -555,7 +550,6 @@ public class UIManager : MonoBehaviour {
             CurrentDialogue.DialogueSpeaker.Actions.IsFlipped = CurrentDialogue.SpeakerEndingFlipped.Value;
         }
         if(CurrentDialogue.PlayerEndingPosition != Vector2.zero) {
-            Debug.Log("MISC4 Player.Instance.transform.position: " + Player.Instance.transform.position);
             Player.Instance.transform.position = CurrentDialogue.PlayerEndingPosition;
         }
         if(CurrentDialogue.PlayerEndingFlipped.HasValue) {
@@ -623,10 +617,12 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShowBlackScreen(float time = 0.5f) {
+        Debug.Log("SHOWING BLACK SCREEN");
         CanvasElements.TransitionScreenObject.GetComponentInChildren<HideOrShowOverTime>(true).ShowOverTimeFromZero(time);
     }
 
     public void HideBlackScreen(float time = 0.5f) {
+        Debug.Log("HIDING BLACK SCREEN");
         CanvasElements.TransitionScreenObject.GetComponentInChildren<HideOrShowOverTime>(true).HideOverTimeFromFull(time);
     }
 

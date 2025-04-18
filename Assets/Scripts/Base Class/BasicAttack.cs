@@ -17,8 +17,8 @@ public abstract class BasicAttack : Ability {
     public int ButtonPressedCounter = 1;
     public bool DealingDamage {
         get {
-            return (Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Heavy && Player.Instance.SpriteRenderers["Heavy"].Weapon.DealingDamage) ||
-            (Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Light && Player.Instance.SpriteRenderers["Light Right"].Weapon.DealingDamage);
+            return (Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Heavy && Player.Instance.SpriteRenderers["Heavy"].Weapon.DealingDamage) ||
+            (Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Light && Player.Instance.SpriteRenderers["Light Right"].Weapon.DealingDamage);
         }
     }
 

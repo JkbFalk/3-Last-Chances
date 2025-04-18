@@ -113,14 +113,12 @@ public class PassiveSelectItem : MonoBehaviour, IPointerClickHandler, ISubmitHan
         {
             GetComponentInParent<PassiveSelect>().Selection[ChoiceSetNumber - 1] = gameObject.name;
             transform.Find("Stroke").GetComponent<Image>().color = Colors.SelectedColor;
-            transform.Find("Corners").GetComponent<Image>().color = Colors.SelectedColor;
             GetComponent<Button>().Select();
         }
         else
         {
             GetComponentInParent<PassiveSelect>().Selection[ChoiceSetNumber - 1] = null;
             transform.Find("Stroke").GetComponent<Image>().color = Color.white;
-            transform.Find("Corners").GetComponent<Image>().color = Color.white;
         }
     }
 

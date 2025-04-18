@@ -22,7 +22,7 @@ public class Ability_ThrowItem : Ability
     {
         base.OnAbilityStart();
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Item/VacuumGrenade_Use", 0.9f);
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, ItemBeingUsed.GetType().ToString() + "_" + ItemBeingUsed.Grade.ToString());
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, ItemBeingUsed.GetType().ToString() + "_" + ItemBeingUsed.Grade.ToString());
     }
 
     public override void CallAbilityEvent1()

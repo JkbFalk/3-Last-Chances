@@ -50,8 +50,8 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 1
-    m_Name: AllWeapons
-    m_HashCode: 1729133136
+    m_Name: Weapons
+    m_HashCode: 1858639409
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 112
@@ -898,6 +898,42 @@ MonoBehaviour:
     m_Scale: 1
     m_Name: Dodge
     m_HashCode: 79851853
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 140
+    m_Scale: 1
+    m_Name: Ammo
+    m_HashCode: 2246254
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 141
+    m_Scale: 1
+    m_Name: Tool
+    m_HashCode: 2994328
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 142
+    m_Scale: 1
+    m_Name: ToolPower
+    m_HashCode: 371196487
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 143
+    m_Scale: 1
+    m_Name: Item
+    m_HashCode: 2541493
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 144
+    m_Scale: 1
+    m_Name: ItemPower
+    m_HashCode: -618694902
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 0
+    m_Scale: 1
+    m_Name: BasicAttack
+    m_HashCode: -275588430
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -3132,6 +3168,86 @@ MonoBehaviour:
       m_HorizontalAdvance: 72
     m_GlyphRect:
       m_X: 1920
+      m_Y: 0
+      m_Width: 64
+      m_Height: 64
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
+  - m_Index: 140
+    m_Metrics:
+      m_Width: 64
+      m_Height: 64
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 48
+      m_HorizontalAdvance: 72
+    m_GlyphRect:
+      m_X: 1984
+      m_Y: 256
+      m_Width: 64
+      m_Height: 64
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
+  - m_Index: 141
+    m_Metrics:
+      m_Width: 64
+      m_Height: 64
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 48
+      m_HorizontalAdvance: 72
+    m_GlyphRect:
+      m_X: 1984
+      m_Y: 192
+      m_Width: 64
+      m_Height: 64
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
+  - m_Index: 142
+    m_Metrics:
+      m_Width: 64
+      m_Height: 64
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 48
+      m_HorizontalAdvance: 72
+    m_GlyphRect:
+      m_X: 1984
+      m_Y: 128
+      m_Width: 64
+      m_Height: 64
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
+  - m_Index: 143
+    m_Metrics:
+      m_Width: 64
+      m_Height: 64
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 48
+      m_HorizontalAdvance: 72
+    m_GlyphRect:
+      m_X: 1984
+      m_Y: 64
+      m_Width: 64
+      m_Height: 64
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
+  - m_Index: 144
+    m_Metrics:
+      m_Width: 64
+      m_Height: 64
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 48
+      m_HorizontalAdvance: 72
+    m_GlyphRect:
+      m_X: 1984
       m_Y: 0
       m_Width: 64
       m_Height: 64

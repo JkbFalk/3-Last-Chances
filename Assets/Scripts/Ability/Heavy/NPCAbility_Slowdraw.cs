@@ -12,7 +12,7 @@ public class NPCAbility_Slowdraw: Ability {
         AddCustomSound("Draw1", "Longblade/Longblade_Sheathe1", 1f);
         AddCustomSound("Draw2", "Longblade/Longblade_Unsheathe1", 1f);
         AddCustomSound("Indicator", "Ability/QuickdrawIndicator", 0.8f);
-        _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageAmount = UnityEngine.Random.Range(0, 15)};
+        _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageModifier = UnityEngine.Random.Range(0, 15)};
         EffectsAffectingUserDuringAbility = new() {_randomAS};
     }
 
@@ -33,7 +33,7 @@ public class NPCAbility_Slowdraw: Ability {
 
     public override void CallAbilityEvent2()
     {
-        DamageSources.Add(new DamageSource(100 + _powerUps * 30, 50 + _powerUps * 15, User.DamageCategory == Constants.DamageType.Light ? Constants.DamageType.Light : Constants.DamageType.Heavy));
+        DamageSources.Add(new DamageSource(100 + _powerUps * 30, 50 + _powerUps * 15, User.DamageType == Constants.DamageType.Light ? Constants.DamageType.Light : Constants.DamageType.Heavy));
         ChaseCurrentTargetAtGivenDegreeAngle(300, 85, 25);
     }
 }

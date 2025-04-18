@@ -28,7 +28,7 @@ public class Effect_CuttingWind_Ultimate : Effect {
             _vfx.transform.localPosition = new Vector2(0f, 0);
             _vfx.transform.localRotation = Quaternion.Euler(0, 0, 0);
             Utils.CopyWeaponCollider(_vfx.GetComponent<BoxCollider2D>(), Constants.DamageType.Heavy);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {PercentageModifier = AttackSpeedBuffAmount};
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         else if (DamageCategory == Constants.DamageType.Light) {
@@ -41,7 +41,7 @@ public class Effect_CuttingWind_Ultimate : Effect {
             _vfx2.transform.localPosition = new Vector2(0f, 0);
             _vfx2.transform.localRotation = Quaternion.Euler(0, 0, 0);
             Utils.CopyWeaponCollider(_vfx.GetComponent<BoxCollider2D>(), Constants.DamageType.Light);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.LightAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.LightAttackSpeed, SourceOfEffect) {PercentageModifier = AttackSpeedBuffAmount};
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         else if (DamageCategory == Constants.DamageType.Ranged) {
@@ -49,7 +49,7 @@ public class Effect_CuttingWind_Ultimate : Effect {
             _vfx.transform.SetParent(TargetOfEffect.SpriteRenderers["Ranged"].SpriteRenderer.transform.Find("Ranged Bone").transform);
             _vfx.transform.localPosition = new Vector2(0f, 0);
             _vfx.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, SourceOfEffect) {PercentageModifier = AttackSpeedBuffAmount};
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
     }

@@ -16,11 +16,11 @@ public class BA_Polearm_Throw : BasicAttack {
     public override void ExtraBehaviourOnHit(Damage damage)
     {
         if(damage.AbilityDamageSource.ColliderName != "2" && SaveFile.Instance.EquippedHeavyWeapon is Polearm_Harpoon) {
-            damage.Stagger += Player.Instance.CurrentStance.Weapon.GetFirstModifierEffectValue() * 4.6875f;
+            damage.Stagger += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 4.6875f;
         }
         else if(damage.AbilityDamageSource.ColliderName != "2" && SaveFile.Instance.EquippedHeavyWeapon is Polearm_Javelin) {
-            damage.Stagger += Player.Instance.CurrentStance.Weapon.GetFirstModifierEffectValue() * 3.125f;
-            damage.Injury += Player.Instance.CurrentStance.Weapon.GetFirstModifierEffectValue() * 3.125f;
+            damage.Stagger += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3.125f;
+            damage.Injury += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3.125f;
         }
     }
 

@@ -15,6 +15,6 @@ public class Ability_DrinkItem : Ability
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, ItemBeingUsed.GetType().ToString() + "_" + ItemBeingUsed.Grade.ToString());
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, ItemBeingUsed.GetType().ToString() + "_" + ItemBeingUsed.Grade.ToString());
     }
 }

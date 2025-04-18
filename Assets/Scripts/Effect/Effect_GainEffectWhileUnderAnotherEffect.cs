@@ -20,7 +20,6 @@ public class Effect_GainEffectWhileUnderAnotherEffect : Effect
 
     public void Activate() {
         if(EffectEnded && CreatedEffect != null && CreatedEffect.EffectEnded == false) {
-            Debug.Log($"Activate1 {EffectEnded}, {CreatedEffect}, {CreatedEffect?.EffectEnded}");
             CreatedEffect.EndThisEffect();
         }
         else if(!EffectEnded && Player.Instance.CheckIfUnderEffect(EffectNeededToCreateEffect)) {

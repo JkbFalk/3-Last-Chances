@@ -7,15 +7,10 @@ public class Longblade_ArcaneSword : Item
     public Longblade_ArcaneSword(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.RoyalGuard;
-        Category = Constants.ItemCategory.Heavy;
+        Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Longblade;
         SetBaseWeaponStats(135, 50, 1.1f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.HeavyInjury, new(this)) {PercentageAmount = 1.25f, RemainsActiveInOtherStances = true}};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksDealIncreasedDamageBasedOnMagicDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("HeavyAttackSpeed")};
     }
 }

@@ -24,7 +24,7 @@ public class Ability_Snipe : Technique
     private int _attackNumber = 1;
 
     public static AbilityFamily Family = AbilityFamily.Glacies;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Ranged;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Ranged;
 
     public Ability_Snipe(Unit ability_user) : base(ability_user) {
         Properties.Add(AbilityProperty.Charged);

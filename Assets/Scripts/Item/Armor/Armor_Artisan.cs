@@ -8,13 +8,8 @@ public class Armor_Artisan : Item
     public Armor_Artisan(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Artisan;
-        Category = Constants.ItemCategory.Armor;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Armor;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("PassivePowerUpPower", 0.5f), new ItemEffect("StancePower", 0.25f), new ItemEffect("ToolPower", 0.25f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ItemPower")};
     }
 }

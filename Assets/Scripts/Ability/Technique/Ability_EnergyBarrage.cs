@@ -13,7 +13,7 @@ public class Ability_EnergyBarrage : Technique
     private Dictionary<Unit, List<int>> enemies_hit = new Dictionary<Unit, List<int>>();
 
     public static AbilityFamily Family = AbilityFamily.Proprius;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Magic;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
     public static bool IsVariableEnergyTechnique = true;
 
     public static float HealthScaling = 70;

@@ -22,7 +22,7 @@ public class NPCAbility_BlockAndSlash : Ability {
 
     public override void CallAbilityEvent1()
     {
-        _blockEffect = new Effect_ChangeStat(Player.Instance.DamageReduction, new(this)) {PercentageAmount = 1000};
+        _blockEffect = new Effect_ChangeStat(Player.Instance.DamageReduction, new(this)) {PercentageModifier = 1000};
         User.AddEffect(_blockEffect);
     }
 

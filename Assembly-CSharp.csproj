@@ -59,7 +59,7 @@
     <UnityVersion>2022.3.35f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Users\jkbfa\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+    <Analyzer Include="C:\Users\jkbfa\.vscode\extensions\visualstudiotoolsforunity.vstuc-1.1.1\Analyzers\Microsoft.Unity.Analyzers.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.SourceGenerators.dll" />
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.35f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
@@ -222,6 +222,7 @@
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_BlackflameBackstab.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_FlyingSwordImpale.cs" />
     <Compile Include="Assets\Scripts\UI\PassivePowerUpTile.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_IncreaseStatBasedOnStackingEffectLevel.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_WindRush.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_EquipTwoHeavyWeapons.cs" />
     <Compile Include="Assets\Scripts\Item\Cannon\Cannon_Veilbreaker.cs" />
@@ -247,7 +248,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_Immovable.cs" />
     <Compile Include="Assets\Scripts\Base Class\NonInteractableNPC.cs" />
-    <Compile Include="Assets\Scripts\Effect\Effect_GainPortionOfStackingEffectAsStat.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Anima3.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Daggers_S.cs" />
@@ -366,6 +366,7 @@
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_BackstepCountered.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_ScissorSlash.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_RefundCooldownForDamageType.cs" />
     <Compile Include="Assets\Scripts\Area\Area_PropriusMountains.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_MultipleStabs.cs" />
     <Compile Include="Assets\Scripts\Item\Cannon\Cannon_UnforgivableSin.cs" />
@@ -464,7 +465,6 @@
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_ClariseAssassination.cs" />
     <Compile Include="Assets\Scripts\Effect\StackingEffects\Effect_Incision.cs" />
     <Compile Include="Assets\Scripts\UI\StartScreen.cs" />
-    <Compile Include="Assets\Scripts\UI\QuestTile.cs" />
     <Compile Include="Assets\Scripts\Ability\Item\Ability_ExpertBadge.cs" />
     <Compile Include="Assets\Scripts\UI\Dialogue.cs" />
     <Compile Include="Assets\Scripts\Item\Longblade\Longblade_ArcaneSword.cs" />
@@ -485,7 +485,6 @@
     <Compile Include="Assets\Scripts\Stat\Penetration.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_SmashAndShoot.cs" />
     <Compile Include="Assets\Scripts\Base Class\AddEffect.cs" />
-    <Compile Include="Assets\Scripts\Stat\DialogueWindow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Ability\Ranged\NPCAbility_CannonsBlast.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Proprius1.cs" />
@@ -669,7 +668,6 @@
     <Compile Include="Assets\Scripts\Effect\Effect_Plunderer.cs" />
     <Compile Include="Assets\Scripts\UI\MissionSelectItem.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Jailer.cs" />
-    <Compile Include="Assets\Scripts\Effect\Effect_RefundCooldownForDamageCategory.cs" />
     <Compile Include="Assets\Scripts\Item\Armor\Armor_Arbiter.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_Skip10Weeks.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_AssassinationFeint.cs" />
@@ -706,6 +704,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_AncientGauntlets.cs" />
     <Compile Include="Assets\Scripts\Item\Polearm\Polearm_Javelin.cs" />
     <Compile Include="Assets\Scripts\Item\Gloves\Gloves_WeaponMaster.cs" />
+    <Compile Include="Assets\Scripts\Base Class\EffectList.cs" />
     <Compile Include="Assets\Scripts\Item\Daggers\Daggers_FracturedCleavers.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_Fireball.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_MagicRanged_F.cs" />
@@ -747,6 +746,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_Invincible.cs" />
     <Compile Include="Assets\Scripts\Base Class\UnitAI.cs" />
     <Compile Include="Assets\Scripts\Effect\Stances\Stance_MindOverMatter.cs" />
+    <Compile Include="Assets\Scripts\Base Class\PB.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_DashStab.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_SeverVitality.cs" />
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_DelayedJumpSlam.cs" />

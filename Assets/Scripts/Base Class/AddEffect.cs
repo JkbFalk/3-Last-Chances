@@ -13,7 +13,7 @@ public class AddEffect : MonoBehaviour
         unit.AddEffect(effect);
         if(effect.AutoPlayEffectAnimation) {
             unit.EffectAnimationBeingPlayed = effect;
-            unit.PlayAnimation(effect.NameOfAnimationToAutoPlay == null ? effect.GetEffectType() : effect.NameOfAnimationToAutoPlay, effect.InstantlyTransitionIntoAnimation ? 0 : 0.1f);
+            unit.PlayAnimation(effect.NameOfAnimationToAutoPlay == null ? effect.GetType().ToString() : effect.NameOfAnimationToAutoPlay, effect.InstantlyTransitionIntoAnimation ? 0 : 0.1f);
         }
     }
 }

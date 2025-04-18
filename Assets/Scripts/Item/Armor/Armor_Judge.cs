@@ -8,13 +8,8 @@ public class Armor_Judge : Item
     public Armor_Judge(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Judge;
-        Category = Constants.ItemCategory.Armor;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Armor;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("PushAwayAndFreezeUponFallingBelowHalfHealth")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionWhileAbove50PHealth")};
     }
 }

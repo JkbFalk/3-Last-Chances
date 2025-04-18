@@ -164,7 +164,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853471783650066935}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: 0.0012324606, w: 0.9999993}
+  m_LocalRotation: {x: 0, y: -0, z: -0.5058542, w: 0.86261904}
   m_LocalPosition: {x: 0.25190747, y: 0.0006058812, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1666,7 +1666,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3639111832264417329}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.0074643535, w: 0.99997216}
+  m_LocalRotation: {x: 0, y: 0, z: 0.36381087, w: 0.9314729}
   m_LocalPosition: {x: 0.34792092, y: 0.0022353097, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1698,7 +1698,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3649537226294137611}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.59544927, w: -0.80339295}
+  m_LocalRotation: {x: 0, y: 0, z: 0.34494928, w: -0.93862134}
   m_LocalPosition: {x: -0.052031294, y: 0.2774164, z: 0}
   m_LocalScale: {x: 1.15, y: 1.15, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2071,7 +2071,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 1
+  DamageType: 5
   NPCWeaponClass: 8
   Faction: 1
   HitStopFramesRemaining: 0
@@ -2098,6 +2098,7 @@ MonoBehaviour:
   BaseTenacity: 0.8
   BaseControl: 1
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!1 &3945528362138447306
 GameObject:
   m_ObjectHideFlags: 0
@@ -2939,7 +2940,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5244133259390393891}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.4326795, w: 0.90154785}
+  m_LocalRotation: {x: 0, y: 0, z: 0.0012026572, w: 0.99999934}
   m_LocalPosition: {x: 0.25190747, y: 0.0006058812, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9204,7 +9205,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7971122712960964419}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.0013837157, w: 0.9999991}
+  m_LocalRotation: {x: 0, y: 0, z: 0.3238329, w: 0.94611436}
   m_LocalPosition: {x: 0.34988123, y: 0.0012468208, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

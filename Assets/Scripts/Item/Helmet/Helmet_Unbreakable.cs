@@ -8,13 +8,8 @@ public class Helmet_Unbreakable : Item
     public Helmet_Unbreakable(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Unbreakable;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConverStaggerBarToStagger")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatStaggerBar")};
     }
 }

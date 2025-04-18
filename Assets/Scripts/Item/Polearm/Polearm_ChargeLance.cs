@@ -6,15 +6,10 @@ public class Polearm_ChargeLance : Item
 {
     public Polearm_ChargeLance(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Heavy;
+        Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
         SetBaseWeaponStats(115, 115, 0.85f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_Description(new(this)) {EffectTypeName="ChargeLanceAttack", DescriptionParameters=new() {"40", Utils.GetFormattedFloat(GetFirstModifierEffectValue() * 3.125f)}}};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.EnergyGain, new(this)) { PercentageAmount = 0.5f }};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReplaceAllBasicAttacksWithChargeAndImproveDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGain")};
     }
 }

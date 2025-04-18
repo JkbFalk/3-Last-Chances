@@ -8,13 +8,8 @@ public class Armor_Alacrity : Item
     public Armor_Alacrity(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Alacrity;
-        Category = Constants.ItemCategory.Armor;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Armor;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertAttackSpeedToDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ConvertMovementSpeedToDamage")};
     }
 }

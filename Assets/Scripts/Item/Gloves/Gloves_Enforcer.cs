@@ -7,13 +7,8 @@ public class Gloves_Enforcer : Item
     public Gloves_Enforcer(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Enforcer;
-        Category = Constants.ItemCategory.Gloves;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new(this)) { PercentageAmount = 0.5f }  };
+        Type = Constants.ItemType.Gloves;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksGiveOnslaught")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionDuringBasicAttacks")};
     }
 }

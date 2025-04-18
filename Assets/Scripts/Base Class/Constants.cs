@@ -17,26 +17,23 @@ public static class Constants {
     public const float ENERGY_FROM_RIPOSTING = 10f;
     public const float ENERGY_FROM_COUNTERING = 20f;
     public const float ENERGY_FROM_BASIC_ATTACK = 4f;
-    public const float ENERGY_FROM_BLOCKING = 4f;
+    public const float ENERGY_PER_STAGGER_PERCENTAGE_LOST_FROM_BLOCKING = 1.2f;
     public const float ENERGY_PER_HEALTH_PERCENTAGE_LOST = 1f;
+    public const float ENERGY_GAIN_MULTIPLIER_VERSUS_BOSSES = 1.5f;
     public const float ENERGY_FROM_DODGING = 8f;
     public const float ENERGY_FROM_INFLICTING_STAGGERED = 10f;
     public const float DEGREES_PER_RAD = 57.2958f;
     public const int ACTION_QUEUE_DURATION = 40;
-    public const int MAX_ABILITY_LEVEL = 5;
     public const float DEFAULT_CROSSFADE_DURATION = 0.1f;
     public const float PLAYER_RUN_SPEED = 6f;
     public const float PLAYER_WALK_SPEED = 3f;
     public const float PLAYER_BLOCK_MOVE_SPEED = 2f;
     public const float DEFAULT_ENEMY_SPEED = 2f;
     public const float DEFAULT_ALLY_SPEED = 4f;
-    public const float BLOCK_COOLDOWN = 1;
     public const float DEFAULT_FLINCHING_DURATION = 0.5f;
     public const float DEFAULT_PLAYER_STAGGERED_DURATION = 15f;
     public const float DEFAULT_SOFT_STAGGERED_DURATION = 3f;
     public const float DEFAULT_HARD_STAGGERED_DURATION = 15f;
-    public const float DEFAULT_DISTANCE_FROM_CHASE_TARGET = 0.5f;
-    public const float DEFAULT_DISTANCE_PRECISION_FROM_TARGET = 0.35f;
     public const int DEFAULT_FIXED_FRAMES_UNTIL_EXITING_COMBAT = 500;
     public const float STANCE_SWITCH_COOLDOWN = 2f;
     public const float STANCE_SWITCH_COOLDOWN_OMNIMASTERY = 0.5f;
@@ -53,7 +50,6 @@ public static class Constants {
     public const float ENERGY_REQUIRED_TO_USE_ULTIMATE = 0;
 
     public const float SECONDS_UNTIL_DIALOGUE_CHOICES_BECOME_CLICKABLE = 0.75f;
-    public const float DIALOGUE_BEEP_FREQUENCY = 3;
     public const float MAXIMUM_AMOUNT_OF_SAVE_FILES = 20;
     public const float FULLY_RESTED_INITIAL_ENERGY = 20;
     public const int FULLY_RESTED_INITIAL_AMMO = 6;
@@ -102,7 +98,7 @@ public static class Constants {
 
     public enum DamageType { Heavy, Light, Ranged, Magic, CurrentWeapon, None };
 
-    public enum ItemCategory { Heavy, Light, Ranged, Helmet, Armor, Gloves, Boots, Tool, Quest }
+    public enum ItemType { Heavy, Light, Ranged, Helmet, Armor, Gloves, Boots, Tool, Quest }
 
     public enum StatSource { Base, PowerUp, Item, Buff }
 
@@ -111,8 +107,6 @@ public static class Constants {
     public enum ActionType { Idle, Moving, UsingAbility, InCutscene, UnderHardCrowdControl }
 
     public enum AIBehavior { ChasingCurrentTarget, Repositioning, Escaping, CirclingAround, Observing, UsingAbility, Waiting, None }
-
-    public enum AttackStage { PreAttackPhase, StoringFastAttackInput, StoringStrongAttackInput, CanFollowUpAttack, PostAttackPhase };
 
     public enum Faction { Ally, Enemy, Neutral, Monster, HostileToAll, DuelingEachOther };
 
@@ -186,48 +180,4 @@ public static class Constants {
     public static List<string> BossEnemies = new List<string> { "Unit_Ryker", "Unit_Clarise1", "Unit_Blaine",  "Unit_FlameShadow", "Unit_Colten", "Unit_WeaponPillager", "Unit_Maginhart", "Unit_Iris" };
     public static List<string> EliteEnemies = new List<string> {"Unit_ShieldGiant", "Unit_ExplosivesExpert", "Unit_SalutisAssassin",  "Unit_Berserker", "Unit_IgnisCaptain", "Unit_IgnisCannonier", "Unit_IgnisLancer", "Unit_IgnisSwordmaster", "Unit_IgnisAssassin", "Unit_AnimaBlademaster", "Unit_AnimaSpearmaster", "Unit_AnimaBowmaster"   };
     public static List<string> RegularEnemies = new List<string> { "Unit_Criminal_Spear", "Unit_Criminal_Shortbow", "Unit_Criminal_Hammer", "Unit_GraveRobber", "Unit_Criminal_Shield", "Unit_Criminal_Daggers", "Unit_Criminal_FreezeCaster", "Unit_Criminal_Grenadier", "Unit_FireElemental", "Unit_AnimatedArmor", "Unit_IgnisPyromancer", "Unit_IgnisKnight", "Unit_AnimatedGreataxe", "Unit_AnimatedBlades", "Unit_AnimatedBow", "Unit_Adventurer", "Unit_AnimaRookie", "Unit_AnimaGuardian" };
-
-
-    public const int NON_SPECIALITY_SKILL_TREE_TIER1_PB = 10;
-    public const int SPECIALITY_SKILL_TREE_TIER1_PB = 12;
-    public const int NON_SPECIALITY_SKILL_TREE_TIER2_PB = 12;
-    public const int SPECIALITY_SKILL_TREE_TIER2_PB = 14;
-    public const int NON_SPECIALITY_SKILL_TREE_TIER3_PB = 15;
-    public const int SPECIALITY_SKILL_TREE_TIER3_PB = 18;
-    public const int NON_SPECIALITY_SKILL_TREE_TIER4_PB = 20;
-    public const int SPECIALITY_SKILL_TREE_TIER4_PB = 25;
-
-
-
-
-    public const float PB_MULTIPLIER_FOR_WEAPONS_ONLY = 1.1f;
-    public const float PB_MULTIPLIER_FOR_MAGIC_ONLY = 1.1f;
-    public const float PB_MULTIPLIER_FOR_TECHNIQUES_ONLY = 1.5f;
-    public const float PB_MULTIPLIER_FOR_BASIC_ATTACKS_ONLY = 1.5f;
-    public const float PB_MULTIPLIER_FOR_INJURY_OR_STAGGER_ONLY = 1.2f;
-    public const float PB_MULTIPLIER_FOR_ONE_WEAPON_ONLY = 1.25f;
-    public const float PB_MULTIPLIER_FOR_EFFECTIVE_ONLY_AGAINST_COUNTERABLE = 3f;
-    public const float PB_MULTIPLIER_FOR_EFFECTIVE_ONLY_AGAINST_UNCOUNTERABLE = 3f;
-
-
-
-
-    public const float PB_PENALTY_FOR_INFLUENCING_ALL_EFFECTS = 0.5f;
-
-
-
-
-    public const float DAMAGE_PER_PB = 1f;
-    public const float STAGGER_BAR_PER_PB = 10;
-    public const float HEALTH_PER_PB = 10;
-    public const float ATTACK_SPEED_PER_PB = 0.5f;
-    public const float MOVEMENT_SPEED_PER_PB = 0.5f;
-    public const float DAMAGE_REDUCTION_PER_PB = 0.5f;
-    public const float TENACITY_PER_PB = 0.5f;
-    public const float CONTROL_PER_PB = 0.5f;
-    public const float ENERGY_GAIN_PER_PB = 0.5f;
-    public const float COOLDOWN_REDUCTION_PER_PB = 0.5f;
-    public const float EFFECT_AMOUNT_PER_PB = 1f;
-    public const float EFFECT_DECAY_PER_PB = 1f;
-    public const float PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB = 0.1f;
 }

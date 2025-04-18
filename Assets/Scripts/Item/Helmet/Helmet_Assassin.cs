@@ -7,13 +7,8 @@ public class Helmet_Assassin : Item
     public Helmet_Assassin(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Assassin;
-        Category = Constants.ItemCategory.Helmet; 
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_LowerBackstabImmunity(new(this)) };
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new(this)) { PercentageAmount = 0.3f }, new Effect_ChangeStat(Player.Instance.MovementSpeed, new(this)) { PercentageAmount = 0.3f } };
+        Type = Constants.ItemType.Helmet; 
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReducedBackstabCooldown")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BackstabDamage")};
     }
 }

@@ -1911,7 +1911,9 @@ MonoBehaviour:
   MovingToPoint: 0
   MovingToPointDestination: {x: 0, y: 0}
   Unit: {fileID: 0}
+  IsWalkingToPoint: 0
   StartWithFlippedDirection: 0
+  _flipDirection: 0
 --- !u!82 &783137593541337777
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2158,6 +2160,7 @@ MonoBehaviour:
   DamageCategory: 4
   NPCWeaponClass: 11
   Faction: 2
+  HitStopFramesRemaining: 0
   OnScreenBars: {fileID: 0}
   CollisionTurnedOn: 1
   EnemyGroup: {fileID: 0}
@@ -2178,9 +2181,11 @@ MonoBehaviour:
   BaseInjury: 100
   BaseStagger: 100
   BaseAttackSpeed: 1
-  BaseMovementSpeed: 1.2
+  BaseMovementSpeed: 1
   BaseTenacity: 1
   BaseControl: 1
+  BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!1 &5062250496049853430
 GameObject:
   m_ObjectHideFlags: 0

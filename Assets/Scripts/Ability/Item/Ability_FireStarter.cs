@@ -21,7 +21,7 @@ public class Ability_FireStarter : Ability
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, ItemBeingUsed.GetType().ToString() + "_" + ItemBeingUsed.Grade.ToString());
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, ItemBeingUsed.GetType().ToString() + "_" + ItemBeingUsed.Grade.ToString());
     }
 
     public override void CallAbilityEvent1()

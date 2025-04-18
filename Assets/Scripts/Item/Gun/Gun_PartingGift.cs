@@ -7,15 +7,10 @@ public class Gun_PartingGift : Item
     public Gun_PartingGift(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Arbiter;
-        Category = Constants.ItemCategory.Ranged;
+        Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
         SetBaseWeaponStats(60, 120, 1.2f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreStaggerAndKnockbackTheCloserEnemiesHitAreEveryNSeconds")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedDamageToStaggered")};
     }
 }

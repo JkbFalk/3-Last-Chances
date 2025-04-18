@@ -14,6 +14,11 @@ using UnityEngine.AI;
 
 public class Player : Unit {
 
+    public float StancePower = 1;
+    public float ItemPower = 1;
+    public float ToolPower = 1;
+    public float PassivePowerUpPower = 1;
+
     [HideInInspector]
     public TextMeshProUGUI InteractIndicatorText;
     public Collider2D Hitbox;
@@ -91,7 +96,6 @@ public class Player : Unit {
             UpdateAllStacksWhileNotInCombat();
             return;
         }
-        Debug.Log($"Updating stacks for {technique}: {Player.Instance.CurrentTechniqueStacks[technique]} -> {stacks} (isUlt? {is_ultimate})");
         foreach(Stance.EquippedAbility ability in CurrentStance.Abilities) {
             ability.StacksCounter.text = ability.Type?.GetField("IsStacksBasedTechnique") == null ? "" : Player.Instance.CurrentTechniqueStacks[ability.Type].ToString();
         }
@@ -105,22 +109,22 @@ public class Player : Unit {
         else {
             CurrentTechniqueStacks[technique] = stacks > maxStacks ? maxStacks : stacks;
         }
-        Cooldown cooldown = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == technique && cd.ExtraInfo == (is_ultimate ? "IsUltimate" : ""));
+        Cooldown cooldown = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == technique && cd.Identifier == (is_ultimate ? "IsUltimate" : ""));
         if(cooldown != null && ((is_ultimate && CurrentUltimateTechniqueStacks[technique] == maxStacks) || (!is_ultimate && CurrentTechniqueStacks[technique] == maxStacks))) {
             cooldown.RemainingDuration = 0;
         }
         else if (cooldown == null) {
-            AddCooldown(new Cooldown(technique, Ability.GetCooldown(technique), Player.Instance) {ExtraInfo = is_ultimate ? "IsUltimate" : ""});
+            AddCooldown(new Cooldown(technique, Ability.GetCooldown(technique), Player.Instance, is_ultimate ? "IsUltimate" : ""));
         }
     }
 
     public void UpdateAllStacksWhileNotInCombat() {
         foreach(Type ability in Utils.GetAllCurrentlyEquippedAbilityTypes()) {
-            Cooldown cooldown1 = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.ExtraInfo == "");
+            Cooldown cooldown1 = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.Identifier == "");
             if(cooldown1 != null) {
                 cooldown1.RemainingDuration = 0;
             }
-            Cooldown cooldown2 = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.ExtraInfo == "IsUltimate");
+            Cooldown cooldown2 = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == ability && cd.Identifier == "IsUltimate");
             if(cooldown2 != null) {
                 cooldown2.RemainingDuration = 0;
             }
@@ -171,18 +175,7 @@ public class Player : Unit {
         set {
             if(_currentStance != null && _currentStance.Weapon != null)
             {
-                foreach (Effect mod in _currentStance.Weapon.FirstModifier)
-                {
-                    if(mod.RemainsActiveInOtherStances == false) {
-                        Player.Instance.EndEffect(mod);
-                    }
-                }
-                foreach (Effect mod in _currentStance.Weapon.SecondModifier)
-                {
-                    if(mod.RemainsActiveInOtherStances == false) {
-                        Player.Instance.EndEffect(mod);
-                    }
-                }
+                _currentStance.Weapon.DeactivateItemEffects();
             }
             Stance previousValue = _currentStance;
             _currentStance = value;
@@ -201,28 +194,7 @@ public class Player : Unit {
             }
             if (_currentStance != null && _currentStance.Weapon != null && previousValue != null)
             {
-                foreach (Effect mod in _currentStance.Weapon.FirstModifier)
-                {
-                    if(mod.RemainsActiveInOtherStances == false) {
-                        mod.NonLinearEffectValue = _currentStance.Weapon.GetFirstModifierEffectValue(false);
-                        mod.LinearEffectValue = _currentStance.Weapon.GetFirstModifierEffectValue();
-                        mod.OnEffectValueChanged();
-                        mod.IsRemovable = false;
-                        mod.ShowsInMenu=false;
-                        Player.Instance.AddEffect(mod);
-                    }
-                }
-                foreach (Effect mod in _currentStance.Weapon.SecondModifier)
-                {
-                    if(mod.RemainsActiveInOtherStances == false) {
-                        mod.NonLinearEffectValue = _currentStance.Weapon.GetFirstModifierEffectValue(false);
-                        mod.LinearEffectValue = _currentStance.Weapon.GetFirstModifierEffectValue();
-                        mod.OnEffectValueChanged();
-                        mod.IsRemovable = false;
-                        mod.ShowsInMenu=false;
-                        Player.Instance.AddEffect(mod);
-                    }
-                }
+                _currentStance.Weapon.ActivateItemEffects();
             }
             CanvasElements.UICanvas.AmmoDisplay.gameObject.SetActive(CurrentStance.WeaponClass == Constants.WeaponClass.Gun || CurrentStance.WeaponClass == Constants.WeaponClass.Bow || CurrentStance.WeaponClass == Constants.WeaponClass.Cannon);
             EventManager.StanceSwitched.Invoke();
@@ -304,8 +276,8 @@ public class Player : Unit {
                 tile.ApplyPowerUpOfThisTile();
             }
         }
-        foreach(string power_up in SaveFile.Instance.PermanentPowerUps) {
-            foreach(Effect e in PassivePowerUpTile.GetPassivePowerUpEffects(power_up)) {
+        foreach(Tuple<string, int> power_up in SaveFile.Instance.PermanentPowerUps) {
+            foreach(Effect e in EffectList.GetEffect(power_up.Item1, power_up.Item2)) {
                 Player.Instance.AddEffect(e);
             }
         }
@@ -401,9 +373,6 @@ public class Player : Unit {
     public List<Unit> EnemiesInCombatWithPlayer = new();
 
     public Dictionary<string, int> AbilityLevels = new Dictionary<string, int>();
-    
-    public ToolPower ToolPower { get; set; }
-    public ItemPower ItemPower { get; set; }
     public EnergyGain EnergyGain { get; set; }
 
     public void EnterIdleState() {
@@ -419,11 +388,7 @@ public class Player : Unit {
         Animator = GetComponent<Animator>();
         InteractIndicatorText = CanvasElements.UICanvasObject.transform.Find("Interact Indicator").GetComponent<TextMeshProUGUI>();
         InitializeStats();
-        ToolPower = new ToolPower(this, 1);
-        ItemPower = new ItemPower(this, 1);
         EnergyGain = new EnergyGain(this, 1);
-        Stats.Add(ToolPower);
-        Stats.Add(ItemPower);
         Stats.Add(EnergyGain);
         
         Hitbox = SpriteRenderers["Lower Body"].Bone.GetComponent<CapsuleCollider2D>();
@@ -441,7 +406,7 @@ public class Player : Unit {
     public void InitializeStances() {
         SaveFile.Instance.Stances = new List<Stance>();
         SaveFile.Instance.Stances.Add(new Stance {
-            WeaponCategory = ItemCategory.Heavy,
+            WeaponType = ItemType.Heavy,
             Abilities = new List<Stance.EquippedAbility> {
                 new Stance.EquippedAbility(null, 1, DamageType.Heavy),
                 new Stance.EquippedAbility(null, 2, DamageType.Heavy),
@@ -452,7 +417,7 @@ public class Player : Unit {
         }
         );
         SaveFile.Instance.Stances.Add(new Stance {
-            WeaponCategory = ItemCategory.Light,
+            WeaponType = ItemType.Light,
             Abilities = new List<Stance.EquippedAbility> {
                 new Stance.EquippedAbility(null, 1, DamageType.Light),
                 new Stance.EquippedAbility(null, 2, DamageType.Light),
@@ -463,7 +428,7 @@ public class Player : Unit {
         }
         );
         SaveFile.Instance.Stances.Add(new Stance {
-            WeaponCategory = ItemCategory.Ranged,
+            WeaponType = ItemType.Ranged,
             Abilities = new List<Stance.EquippedAbility> {
                 new Stance.EquippedAbility(null, 1, DamageType.Ranged),
                 new Stance.EquippedAbility(null, 2, DamageType.Ranged),
@@ -522,11 +487,11 @@ public class Player : Unit {
         return TechniqueCooldowns.Where(cd => cd.Type == ability_type || cd.Type.IsSubclassOf(ability_type)).FirstOrDefault() != null;
     }
 
-    public Stance GetStanceForGivenWeapon(Constants.ItemCategory weapon_category) {
-        if (SaveFile.Instance.Stances[0].WeaponCategory == weapon_category) {
+    public Stance GetStanceForGivenWeapon(Constants.ItemType weapon_type) {
+        if (SaveFile.Instance.Stances[0].WeaponType == weapon_type) {
             return SaveFile.Instance.Stances[0];
         }
-        else if (SaveFile.Instance.Stances[1].WeaponCategory == weapon_category) {
+        else if (SaveFile.Instance.Stances[1].WeaponType == weapon_type) {
             return SaveFile.Instance.Stances[1];
         }
         else {
@@ -559,10 +524,10 @@ public class Player : Unit {
     }
 
     public int GetCurrentStanceIndex() {
-        switch(CurrentStance.WeaponCategory) {
-            case ItemCategory.Heavy: return 0;
-            case ItemCategory.Light: return 1;
-            case ItemCategory.Ranged: return 2;
+        switch(CurrentStance.WeaponType) {
+            case ItemType.Heavy: return 0;
+            case ItemType.Light: return 1;
+            case ItemType.Ranged: return 2;
             default: return 0;
         }
     }

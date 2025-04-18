@@ -11,21 +11,21 @@ public class Effect_ChangeCompositeStat : Effect {
     {
         bool red = Stat is CompositeStat.Injury;
         bool purple = Stat is CompositeStat.Stagger;
-        if (FlatAmount != 0)
+        if (FlatModifier != 0)
         {
-            return (FlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(FlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + Stat.ToString());
+            return (FlatModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "") + Utils.GetFormattedFloat(FlatModifier) + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + Stat.ToString());
         }
-        else if (PercentageAmount != 0)
+        else if (PercentageModifier != 0)
         {
-            return (PercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "")  + Utils.GetFormattedFloat(PercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + Stat.ToString());
+            return (PercentageModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "")  + Utils.GetFormattedFloat(PercentageModifier) + "%" + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + Stat.ToString());
         }
-        else if (RegenerationFlatAmount != 0)
+        else if (RegenerationFlatModifier != 0)
         {
-            return (RegenerationFlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "")  + Utils.GetFormattedFloat(RegenerationFlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") +Label.Get("StatLabel_" + Stat.ToString());
+            return (RegenerationFlatModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "")  + Utils.GetFormattedFloat(RegenerationFlatModifier) + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") +Label.Get("StatLabel_" + Stat.ToString());
         }
-        else if (RegenerationPercentageAmount != 0)
+        else if (RegenerationPercentageModifier != 0)
         {
-            return (RegenerationPercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "")  + Utils.GetFormattedFloat(RegenerationPercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + Stat.ToString());
+            return (RegenerationPercentageModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "")  + Utils.GetFormattedFloat(RegenerationPercentageModifier) + "%" + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + Stat.ToString());
         }
         else return Label.Get("MissingLabel");
     }
@@ -33,50 +33,50 @@ public class Effect_ChangeCompositeStat : Effect {
     public CompositeStat Stat;
     private List<Effect_ChangeStat> _statChanges = new();
 
-    private float _percentageAmount = 0;
-    public float PercentageAmount {
-        get => _percentageAmount;
+    private float _percentageModifier = 0;
+    public float PercentageModifier {
+        get => _percentageModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.PercentageAmount = value;
+                e.PercentageModifier = value;
             }
-            _percentageAmount = value;
+            _percentageModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
 
-    private float _flatAmount = 0;
-    public float FlatAmount {
-        get => _flatAmount;
+    private float _flatModifier = 0;
+    public float FlatModifier {
+        get => _flatModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.FlatAmount = value;
+                e.BaseModifier = value;
             }
-            _flatAmount = value;
+            _flatModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
 
-    private float _regenerationPercentageAmount = 0;
-    public float RegenerationPercentageAmount {
-        get => _regenerationPercentageAmount;
+    private float _regenerationPercentageModifier = 0;
+    public float RegenerationPercentageModifier {
+        get => _regenerationPercentageModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.RegenerationPercentageAmount = value;
+                e.RegenerationPercentageModifier = value;
             }
-            _regenerationPercentageAmount = value;
+            _regenerationPercentageModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
 
-    private float _regenerationFlatAmount = 0;
-    public float RegenerationFlatAmount {
-        get => _regenerationFlatAmount;
+    private float _regenerationFlatModifier = 0;
+    public float RegenerationFlatModifier {
+        get => _regenerationFlatModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.RegenerationFlatAmount = value;
+                e.RegenerationFlatModifier = value;
             }
-            _regenerationFlatAmount = value;
+            _regenerationFlatModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
@@ -117,22 +117,6 @@ public class Effect_ChangeCompositeStat : Effect {
         base.OnEnd();
         foreach(Effect_ChangeStat e in _statChanges) {
             e.EndThisEffect();
-        }
-    }
-
-    public override void OnEffectValueChanged()
-    {
-        if(Stat is CompositeStat.AttackSpeed) {
-            PercentageAmount *= NonLinearEffectValue;
-            FlatAmount *= NonLinearEffectValue;
-            RegenerationPercentageAmount *= NonLinearEffectValue;
-            RegenerationFlatAmount *= NonLinearEffectValue;
-        }
-        else {
-            PercentageAmount *= LinearEffectValue;
-            FlatAmount *= LinearEffectValue;
-            RegenerationPercentageAmount *= LinearEffectValue;
-            RegenerationFlatAmount *= LinearEffectValue;
         }
     }
 }

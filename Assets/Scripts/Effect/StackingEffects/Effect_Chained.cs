@@ -33,16 +33,16 @@ public class Effect_Chained : Effect
     public override void OnStart() {
         base.OnStart();
         BaseDuration = Constants.DEFAULT_STACKING_EFFECT_BASE_DURATION_IN_SECONDS;
-        DamageBuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageAmount = DecayingAmount};
-        DamageReductionDebuff = new Effect_ChangeStat(TargetOfEffect.DamageReduction, SourceOfEffect) {PercentageAmount = -DecayingAmount / 10};
-        AttackSpeedDebuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageAmount = -DecayingAmount / 10};
+        DamageBuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = DecayingAmount};
+        DamageReductionDebuff = new Effect_ChangeStat(TargetOfEffect.DamageReduction, SourceOfEffect) {PercentageModifier = -DecayingAmount / 10};
+        AttackSpeedDebuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = -DecayingAmount / 10};
         if(TargetOfEffect is Player) {
-            EnergyGainDebuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageAmount = -DecayingAmount / 10};
+            EnergyGainDebuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageModifier = -DecayingAmount / 10};
             TargetOfEffect.AddEffect(DamageBuff);
             TargetOfEffect.AddEffect(EnergyGainDebuff);
         }
         else {
-            EnergyGainDebuff = new Effect_ChangeStat(TargetOfEffect.CooldownReduction, SourceOfEffect) {PercentageAmount = -DecayingAmount / 10};
+            EnergyGainDebuff = new Effect_ChangeStat(TargetOfEffect.CooldownReduction, SourceOfEffect) {PercentageModifier = -DecayingAmount / 10};
             TargetOfEffect.AddEffect(EnergyGainDebuff);
         }
         TargetOfEffect.AddEffect(DamageReductionDebuff);

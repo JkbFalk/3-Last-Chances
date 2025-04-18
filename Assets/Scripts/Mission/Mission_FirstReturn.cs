@@ -105,7 +105,7 @@ public class Mission_FirstReturn : Mission {
         SaveFile.Instance.CurrentMission.MissionProgress += 10;
         EventManager.AbilityUsed.AddListener(((Mission_FirstReturn)SaveFile.Instance.CurrentMission).AbilityUsed);
         EventManager.PlayerTargetChanged.AddListener(((Mission_FirstReturn)SaveFile.Instance.CurrentMission).PlayerTargetChanged);
-        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_ChangeStat(Utils.GetUnit("TutorialRyker").LightStagger, new(Utils.GetUnit("TutorialRyker"))) {PercentageAmount = -50, IsRemovable = false});
+        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_ChangeStat(Utils.GetUnit("TutorialRyker").LightStagger, new(Utils.GetUnit("TutorialRyker"))) {PercentageModifier = -50, IsRemovable = false});
         Utils.GetUnit("TutorialRyker").UnitAI.InitializeAvailableActions(new() {"20,AI_Chase"});
         Utils.GetUnit("TutorialRyker").AttackPlayer();
     }

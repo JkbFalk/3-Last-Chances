@@ -13,11 +13,11 @@ public class AI_Observe : AI {
         base.OnAbilityStart();
         int random = UnityEngine.Random.Range(1, 100);
         float randomSpeed = UnityEngine.Random.Range(0.6f, 1) + User.UnitAI.Aggressiveness / 5;
-        if (random < 50 && User.DamageCategory != Constants.DamageType.Magic)
+        if (random < 50 && User.DamageType != Constants.DamageType.Magic)
         {
             User.Actions.FaceUnit(User.CurrentTarget);
             User.Animator.SetFloat("Observe Speed", UnityEngine.Random.Range(0.6f, 1f) + User.UnitAI.Aggressiveness / 5);
-            User.PlayAnimation("Observe_" + User.DamageCategory + UnityEngine.Random.Range(1, 5));
+            User.PlayAnimation("Observe_" + User.DamageType + UnityEngine.Random.Range(1, 5));
             GameController.Instance.WaitAndRunMethod(4 / randomSpeed, InstantlyAttack);
             
         }

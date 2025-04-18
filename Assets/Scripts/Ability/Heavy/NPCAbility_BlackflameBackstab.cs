@@ -23,8 +23,8 @@ public class NPCAbility_BlackflameBackstab : Ability {
         }
         _attackFromRightSide = User.CurrentTarget.Actions.IsFlipped;
         if(SaveFile.Instance != null && SaveFile.Instance.CurrentMission != null && SaveFile.Instance.CurrentMission is Mission_Ignis3) {
-            _coltenSpeedUp = new(User.HeavyAttackSpeed, new(this)) {PercentageAmount = 50 - (SaveFile.Instance.IgnisEnergy / 20)};
-            _coltenPowerUp = new(User.HeavyInjury, new(this)) {PercentageAmount = 200 - (SaveFile.Instance.IgnisEnergy / 5)};
+            _coltenSpeedUp = new(User.HeavyAttackSpeed, new(this)) {PercentageModifier = 50 - (SaveFile.Instance.IgnisEnergy / 20)};
+            _coltenPowerUp = new(User.HeavyInjury, new(this)) {PercentageModifier = 200 - (SaveFile.Instance.IgnisEnergy / 5)};
             User.AddEffect(_coltenSpeedUp);
             User.AddEffect(_coltenPowerUp);
         }

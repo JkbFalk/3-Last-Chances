@@ -43,7 +43,7 @@ public class Area_AnimaIsland
     public static void StartAllDuels() {
         foreach(Unit u in Utils.GetAllUnits()) {
             if(u.Faction == Constants.Faction.DuelingEachOther) {
-                u.AddEffect(new Effect_ChangeStat(u.Health, new(u)) {RegenerationPercentageAmount = 15, Identifier="DuelRegeneration"});
+                u.AddEffect(new Effect_ChangeStat(u.Health, new(u)) {RegenerationPercentageModifier = 15, Identifier="DuelRegeneration"});
                 u.CurrentTarget = u.GetClosestValidTarget();
             }
         }
@@ -229,7 +229,6 @@ public class Area_AnimaIsland
     public static List<Effect_ChangeStat> IrisBossBuffs = new();
 
     public static void PrepareDuelAgainstIris() {
-        Debug.Log("ACTIVATING PREPARATIONS VS IRIS");
         Unit Iris = Utils.GetUnit("Iris1");
         Player.Instance.Actions.IsFlipped = true;
         Utils.GetUnit("FakeTarget").gameObject.SetActive(false);
@@ -239,11 +238,11 @@ public class Area_AnimaIsland
         Utils.GetUnit("Unit_AnimaHound_2").gameObject.SetActive(false);
         Utils.GetUnit("Unit_AnimaHound_3").gameObject.SetActive(false);
         Utils.GetUnit("Unit_AnimaHound_4").gameObject.SetActive(false);
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.Health, new (Iris)) {PercentageAmount = 60});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.StaggerBar, new (Iris)) {PercentageAmount = 40});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightInjury, new (Iris)) {PercentageAmount = 50});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightStagger, new (Iris)) {PercentageAmount = 50});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightAttackSpeed, new (Iris)) {PercentageAmount = 20});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.Health, new (Iris)) {PercentageModifier = 60});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.StaggerBar, new (Iris)) {PercentageModifier = 40});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightInjury, new (Iris)) {PercentageModifier = 50});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightStagger, new (Iris)) {PercentageModifier = 50});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightAttackSpeed, new (Iris)) {PercentageModifier = 20});
         foreach(Effect_ChangeStat eff in IrisBossBuffs) {
             Iris.AddEffect(eff);
         }
@@ -251,7 +250,6 @@ public class Area_AnimaIsland
     }
 
     public static void PrepareDuelAgainstMaginhart() {
-        Debug.Log("ACTIVATING PREPARATIONS VS MAGINHART");
         Utils.GetUnit("FakeTarget").gameObject.SetActive(false);
         Utils.GetUnit("Maginhart1").transform.position = new Vector2(-50f, -4.5f);
         Utils.GetUnit("Iris1").CurrentTarget = Utils.GetUnit("Unit_AnimaHound_1");
@@ -488,7 +486,7 @@ public class Area_AnimaIsland
         Utils.GetUnit("Iris1").GetComponent<FollowPlayer>().enabled = true;
         SaveFile.Instance.IrisTalksCompleted++;
         if(SaveFile.Instance.IrisTalksCompleted == 3) {
-            SaveFile.Instance.AddPermanentPowerUp("AnimaIsland_3MajorDuels");
+            SaveFile.Instance.AddPermanentPowerUp("AnimaIsland_3MajorDuels", 10);
             if(SaveFile.Instance.GetQuest("Anima").CurrentObjective.Number == 10) {
                 Utils.GetUnit("WeaponPillager1").gameObject.SetActive(false);
                 Area.Instance.transform.Find("Interactables/PillagerAggro").gameObject.SetActive(true);
@@ -512,7 +510,7 @@ public class Area_AnimaIsland
         Utils.GetUnit("Iris1").GetComponent<FollowPlayer>().enabled = true;
         SaveFile.Instance.IrisTalksCompleted++;
         if(SaveFile.Instance.IrisTalksCompleted == 3) {
-            SaveFile.Instance.AddPermanentPowerUp("AnimaIsland_3MajorDuels");
+            SaveFile.Instance.AddPermanentPowerUp("AnimaIsland_3MajorDuels", 10);
         }
     }
 
@@ -532,7 +530,7 @@ public class Area_AnimaIsland
         Utils.GetUnit("Iris1").GetComponent<FollowPlayer>().enabled = true;
         SaveFile.Instance.IrisTalksCompleted++;
         if(SaveFile.Instance.IrisTalksCompleted == 3) {
-            SaveFile.Instance.AddPermanentPowerUp("AnimaIsland_3MajorDuels");
+            SaveFile.Instance.AddPermanentPowerUp("AnimaIsland_3MajorDuels", 10);
         }
     }
 

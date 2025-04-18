@@ -5,14 +5,11 @@ using System.Collections.Generic;
 
 public static class Colors {
 
-    public static List<string> NoneEnergy = new() {"#2721BC", "#0B0690", "#604CFF", "#8F88FF"};
-    public static List<string> AnimaEnergy = new() {"#80D980", "#1C3F11", "#73AB49", "#B1D9AB"};
-    public static List<string> IgnisEnergy = new() {"#D61123", "#4F0613", "#FF3E3B", "#951C19"};
-    public static List<string> GlaciesEnergy = new() {"#30CDD9", "#05626A", "#44AFC0", "#169F90"};
-    public static List<string> MolisEnergy = new() {"#FF970B", "#6A460D", "#E09D3E", "#A66100"};
-    public static List<string> SalutisEnergy = new() {"#C0C0C0", "#222121", "#E9E9E9", "#E9E9E9"};
-    public static List<string> TonitruiEnergy = new() {"#FADE19", "#785A00", "#B7911E", "#FFEC96"};
-    public static List<string> PropriusEnergy = new() {"#7B00EE", "#18003C", "#690DFF", "#B04FFA"};
+    public static string LabelDamage = "#1EC831FF";
+    public static string LabelHealth = "#E20101ff";
+    public static string LabelStagger = "#5700FFff";
+    public static string LabelEnergy = "#4350FFff";
+    public static string LabelCooldown = "#AEAEAE";
     public static string Proprius = "#2F197B";
     public static string Ignis = "#B40020";
     public static string Tonitrui = "#ffcc00";

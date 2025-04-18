@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, ISelectHandler, IDeselectHandler, ISubmitHandler, IPointerEnterHandler
+public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, ISelectHandler, IDeselectHandler, ISubmitHandler
 {
     private Item _item;
     public Item Item
@@ -55,27 +55,27 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
             return;
         }
         AvailableActions.Clear();
-        if(Item.Category == Constants.ItemCategory.Tool)
+        if(Item.Type == Constants.ItemType.Tool)
         {
             AvailableActions.Add(InventoryActions.Use);
         }
-        if (Item.Category != Constants.ItemCategory.Heavy && Item.Category != Constants.ItemCategory.Light && Item.Category != Constants.ItemCategory.Ranged && Item.Category != Constants.ItemCategory.Tool && Item.IsEquipped)
+        if (Item.Type != Constants.ItemType.Heavy && Item.Type != Constants.ItemType.Light && Item.Type != Constants.ItemType.Ranged && Item.Type != Constants.ItemType.Tool && Item.IsEquipped)
         {
             AvailableActions.Add(InventoryActions.Unequip);
         }
-        else if (Item.CheckIfCanEquipItem() && !(Item.Category == Constants.ItemCategory.Tool))
+        else if (Item.CheckIfCanEquipItem() && !(Item.Type == Constants.ItemType.Tool))
         {
             AvailableActions.Add(InventoryActions.Equip);
         }
-        if ((Item.Category == Constants.ItemCategory.Tool) && SaveFile.Instance.EquippedItem1 != Item)
+        if ((Item.Type == Constants.ItemType.Tool) && SaveFile.Instance.EquippedItem1 != Item)
         {
             AvailableActions.Add(InventoryActions.EquipTo1);
         }
-        if ((Item.Category == Constants.ItemCategory.Tool) && SaveFile.Instance.EquippedItem2 != Item)
+        if ((Item.Type == Constants.ItemType.Tool) && SaveFile.Instance.EquippedItem2 != Item)
         {
             AvailableActions.Add(InventoryActions.EquipTo2);
         }
-        if(Item.IsEquipped == false && Item.Category != Constants.ItemCategory.Quest && Item.Category != Constants.ItemCategory.Tool)
+        if(Item.IsEquipped == false && Item.Type != Constants.ItemType.Quest && Item.Type != Constants.ItemType.Tool)
         {
             AvailableActions.Add(InventoryActions.Sell);
         }
@@ -85,14 +85,14 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         if(SaveFile.Instance.EquippedItem2 == Item) {
             AvailableActions.Add(InventoryActions.UnequipFrom2);
         }
-        if(Item.Category != Constants.ItemCategory.Quest && Item.Category != Constants.ItemCategory.Tool && Item.Grade != Item.ItemGrade.Ultimate) {
+        if(Item.Type != Constants.ItemType.Quest && Item.Type != Constants.ItemType.Tool && Item.Grade != Item.ItemGrade.Ultimate) {
             AvailableActions.Add(InventoryActions.Upgrade);
         }
-        if ((Item.Category == Constants.ItemCategory.Tool) && SaveFile.Instance.ToolGrades[Item.GetType()] != Item.ItemGrade.Ultimate)
+        if ((Item.Type == Constants.ItemType.Tool) && SaveFile.Instance.ToolGrades[Item.GetType()] != Item.ItemGrade.Ultimate)
         {
             AvailableActions.Add(InventoryActions.UpgradeGradeTool);
         }
-        if ((Item.Category == Constants.ItemCategory.Tool) && SaveFile.Instance.ToolMaxAmounts[Item.GetType()] != 6)
+        if ((Item.Type == Constants.ItemType.Tool) && SaveFile.Instance.ToolMaxAmounts[Item.GetType()] != 6)
         {
             AvailableActions.Add(InventoryActions.UpgradeUsesTool);
         }
@@ -141,6 +141,9 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                 Dropdown.Show();
             }
         }
+        else if (eventData.button == PointerEventData.InputButton.Right) {
+            MenuManager.Instance.ShowItemDetails(Item);
+        }
     }
 
     public void OptionChosen(int option)
@@ -160,7 +163,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         }
         if (action == InventoryActions.Equip)
         {
-            GetEquipmentTileForItemCategory(Item.Category).EquipItem(Item);
+            GetEquipmentTileForItemType(Item.Type).EquipItem(Item);
         }
         else if (action == InventoryActions.Unequip)
         {
@@ -188,7 +191,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         }
         else if (action == InventoryActions.Sell)
         {
-            MenuManager.Instance.ShowConfirmModal(string.Format(Label.Get("SellItemConfirmation"), new List<string> { Item.GetItemName(), Item.Category == Constants.ItemCategory.Tool ? (Item.Amount * Item.SellPrice).ToString() : Item.SellPrice.ToString() }.ToArray()), SellItem, "InventorySell");
+            MenuManager.Instance.ShowConfirmModal(string.Format(Label.Get("SellItemConfirmation"), new List<string> { Item.GetItemName(), Item.Type == Constants.ItemType.Tool ? (Item.Amount * Item.SellPrice).ToString() : Item.SellPrice.ToString() }.ToArray()), SellItem, "InventorySell");
         }
         else if (action == InventoryActions.Upgrade)
         {
@@ -239,7 +242,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     {
         SaveFile.Instance.Money -= Item.UpgradePrice[Item.GradeIndex];
         Item materials = SaveFile.Instance.Inventory.FirstOrDefault(item => item is Quest_UpgradeMaterials && item.Grade == Item.GetGradeForIndex(Item.GradeIndex + 1));
-        materials.Amount -= Item.IsDoubleValue() ? 2 : 1;
+        materials.Amount -= Item.IsMajorItem() ? 2 : 1;
         UpdateItemAfterUpgrade();
     }
 
@@ -256,15 +259,15 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void UpdateItemAfterUpgrade(bool is_max_amount_upgrade = false) {
         if(is_max_amount_upgrade == false) {
             Item upgraded_item = (Item)Activator.CreateInstance(Item.GetType(), new object[] { Item.GetGradeForIndex(Item.GradeIndex + 1) });
-            if(Item.Category != Constants.ItemCategory.Tool && GetEquipmentTileForItemCategory(Item.Category).Item == Item) {
+            if(Item.Type != Constants.ItemType.Tool && GetEquipmentTileForItemType(Item.Type).Item == Item) {
                 Item.Unequip();
                 upgraded_item.Equip();
             }
-            if(Item.Category == Constants.ItemCategory.Tool && MenuManager.Instance.Item1EquipmentSlot.Item == Item) {
+            if(Item.Type == Constants.ItemType.Tool && MenuManager.Instance.Item1EquipmentSlot.Item == Item) {
                 MenuManager.Instance.Item1EquipmentSlot.UnequipTool(this, 1);
                 upgraded_item.Equip(1);
             }
-            if(Item.Category == Constants.ItemCategory.Tool && MenuManager.Instance.Item2EquipmentSlot.Item == Item) {
+            if(Item.Type == Constants.ItemType.Tool && MenuManager.Instance.Item2EquipmentSlot.Item == Item) {
                 MenuManager.Instance.Item1EquipmentSlot.UnequipTool(this, 2);
                 upgraded_item.Equip(2);
             }
@@ -300,15 +303,15 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         transform.Find("Image").GetComponent<Image>().enabled = true;
         List<RaycastResult> results = new List<RaycastResult>();
         MenuManager.Instance.GetComponent<GraphicRaycaster>().Raycast(eventData, results);
-        if(results != null && results.Count > 0 && Item != null && Item.Category != Constants.ItemCategory.Tool)
+        if(results != null && results.Count > 0 && Item != null && Item.Type != Constants.ItemType.Tool)
         {
             foreach (RaycastResult result in results)
             {
                 if (result.gameObject.name == "Equipment" && Item.CheckIfCanEquipItem())
                 {
-                    GetEquipmentTileForItemCategory(Item.Category).EquipItem(Item);
+                    GetEquipmentTileForItemType(Item.Type).EquipItem(Item);
                 }
-                if(result.gameObject.name == "Inventory" && Item.IsEquipped && EquipmentTile && Item.Category != Constants.ItemCategory.Heavy && Item.Category != Constants.ItemCategory.Light && Item.Category != Constants.ItemCategory.Ranged)
+                if(result.gameObject.name == "Inventory" && Item.IsEquipped && EquipmentTile && Item.Type != Constants.ItemType.Heavy && Item.Type != Constants.ItemType.Light && Item.Type != Constants.ItemType.Ranged)
                 {
                     UnequipItem();
                 }
@@ -358,7 +361,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         item.TileInEquipment = this;
         transform.Find("Default Image").gameObject.SetActive(false);
         transform.Find("Image").gameObject.SetActive(true);
-        transform.Find("Image").GetComponent<UnityEngine.U2D.Animation.SpriteResolver>().SetCategoryAndLabel(item.Category.ToString() + " Icons", item.GetType().ToString().Split('_')[1]);
+        transform.Find("Image").GetComponent<UnityEngine.U2D.Animation.SpriteResolver>().SetCategoryAndLabel(item.Type.ToString() + " Icons", item.GetType().ToString().Split('_')[1]);
         transform.Find("Image").GetComponent<UnityEngine.U2D.Animation.SpriteResolver>().ResolveSpriteToSpriteRenderer();
         transform.Find("Image").GetComponent<Image>().sprite = transform.Find("Image").GetComponent<SpriteRenderer>().sprite;
         if(Item.TileInInventory != null)
@@ -379,15 +382,15 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         if(item == null || item.TileInEquipment == null || item.TileInEquipment.AmountDisplay == null) {
             return;
         }
-        CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Uses").gameObject.SetActive(item.Category == Constants.ItemCategory.Tool);
+        CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Uses").gameObject.SetActive(item.Type == Constants.ItemType.Tool);
         CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<Image>().enabled = true;
-        CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<UnityEngine.U2D.Animation.SpriteResolver>().SetCategoryAndLabel(item.Category.ToString() + " Icons", item.GetType().ToString().Split('_')[1]);
+        CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<UnityEngine.U2D.Animation.SpriteResolver>().SetCategoryAndLabel(item.Type.ToString() + " Icons", item.GetType().ToString().Split('_')[1]);
         CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<UnityEngine.U2D.Animation.SpriteResolver>().ResolveSpriteToSpriteRenderer();
         CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<Image>().sprite = CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<SpriteRenderer>().sprite;
         CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Icon").GetComponent<Image>().color = item == null ? Color.black : Color.white;
-        CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Uses").gameObject.SetActive(item.Category == Constants.ItemCategory.Tool);
+        CanvasElements.UICanvas.Items.transform.Find(item_slot.ToString() + "/Uses").gameObject.SetActive(item.Type == Constants.ItemType.Tool);
 
-        item.TileInEquipment.AmountDisplay.text = item.Category != Constants.ItemCategory.Tool ? "" : item.Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[item.GetType()];
+        item.TileInEquipment.AmountDisplay.text = item.Type != Constants.ItemType.Tool ? "" : item.Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[item.GetType()];
         item.Amount = item.Amount;
     }
 
@@ -452,15 +455,15 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         }
     }
 
-    public static InventoryTile GetEquipmentTileForItemCategory(Constants.ItemCategory category)
+    public static InventoryTile GetEquipmentTileForItemType(Constants.ItemType type)
     {
-        if (category == Constants.ItemCategory.Heavy || category == Constants.ItemCategory.Light || category == Constants.ItemCategory.Ranged)
+        if (type == Constants.ItemType.Heavy || type == Constants.ItemType.Light || type == Constants.ItemType.Ranged)
         {
-            return CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Equipment/Left Panel/" + category.ToString()).GetComponent<InventoryTile>();
+            return CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Equipment/Left Panel/" + type.ToString()).GetComponent<InventoryTile>();
         }
-        else if (category == Constants.ItemCategory.Helmet || category == Constants.ItemCategory.Armor || category == Constants.ItemCategory.Boots || category == Constants.ItemCategory.Gloves)
+        else if (type == Constants.ItemType.Helmet || type == Constants.ItemType.Armor || type == Constants.ItemType.Boots || type == Constants.ItemType.Gloves)
         {
-            return CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Equipment/Right Panel/" + category.ToString()).GetComponent<InventoryTile>();
+            return CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Equipment/Right Panel/" + type.ToString()).GetComponent<InventoryTile>();
         }
         return null;
     }
@@ -475,7 +478,6 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         else
         {
             transform.Find("Stroke").GetComponent<Image>().color = Colors.UISelected;
-            transform.Find("Corners").GetComponent<Image>().color = Colors.UISelected;
         }
         MenuManager.Instance.ShowItemDetails(Item);
         MenuManager.Instance.CurrentlySelectedTile = this;
@@ -492,7 +494,6 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         else
         {
             transform.Find("Stroke").GetComponent<Image>().color = Color.white;
-            transform.Find("Corners").GetComponent<Image>().color = Color.white;
         }
         MenuManager.Instance.CurrentlySelectedTile = null;
     }
@@ -506,10 +507,5 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
                 Dropdown.Show();
             }
         }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        MenuManager.Instance.ShowItemDetails(Item);
     }
 }

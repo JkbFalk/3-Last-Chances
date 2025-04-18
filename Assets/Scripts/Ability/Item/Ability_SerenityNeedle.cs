@@ -22,7 +22,7 @@ public class Ability_SerenityNeedle : Ability
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, "SerenityNeedle");
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, "SerenityNeedle");
     }
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)

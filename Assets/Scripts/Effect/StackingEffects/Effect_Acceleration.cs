@@ -23,7 +23,7 @@ public class Effect_Acceleration : Effect
             return;
         }
         EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount) + "%";
-        ASBuffEffect.PercentageAmount = DecayingAmount;
+        ASBuffEffect.PercentageModifier = DecayingAmount;
     }
 
     public override void OnStart()

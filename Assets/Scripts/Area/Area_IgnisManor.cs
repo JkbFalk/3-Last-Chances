@@ -106,7 +106,7 @@ public class Area_IgnisManor
                 NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisManor_Training_10"});
                 NotificationController.ShowTextNotification("IgnisManor_Training_20");
                 SaveFile.Instance.ChangeIgnisEnergy(10);
-                SaveFile.Instance.AddPermanentPowerUp("IgnisManor_WeaponTraining");
+                SaveFile.Instance.AddPermanentPowerUp("IgnisManor_WeaponTraining", 10);
             }
         }
     }
@@ -355,12 +355,12 @@ public class Area_IgnisManor
 
     public static void IgnisManor_BlaineWrapUpNoChoice_10() {
         SaveFile.Instance.ChangeIgnisEnergy(10);
-        SaveFile.Instance.AddPermanentPowerUp("IgnisManor_BackstabPowerUp");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisManor_BackstabPowerUp", 10);
     }
 
     public static void IgnisManor_BlaineWrapUpBetrayal_10() {
         SaveFile.Instance.ChangeIgnisEnergy(20);
-        SaveFile.Instance.AddPermanentPowerUp("IgnisManor_BurningPowerUp");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisManor_BurningPowerUp", 10);
     }
 
     public static void CheckIfBlaineDefeated(Damage dmg) {

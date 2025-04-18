@@ -26,7 +26,7 @@ public class Effect_Slow : Effect
         }
         float effectiveAmount = DecayingAmount > 80 ? 80 : DecayingAmount;
         EffectIndicatorText = Utils.GetFormattedFloat(effectiveAmount) + "%";
-        MSSlowEffect.PercentageAmount = -effectiveAmount;
+        MSSlowEffect.PercentageModifier = -effectiveAmount;
     }
 
     public override void OnStart()

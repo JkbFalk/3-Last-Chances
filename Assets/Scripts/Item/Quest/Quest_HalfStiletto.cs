@@ -7,7 +7,7 @@ public class Quest_HalfStiletto : Item
 {
     public Quest_HalfStiletto(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Quest;
+        Type = Constants.ItemType.Quest;
         Grade = ItemGrade.Excellent;
     }
 }

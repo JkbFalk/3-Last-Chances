@@ -11,68 +11,36 @@ using Unity.VisualScripting;
 
 public class Effect {
 
-    public override string ToString()
-    {
-        if(EffectTypeName=="NoDescription") {
-            return "";
-        }
-        if (GetDescriptionParameters().Count > 0)
-        {
-            return string.Format((String.IsNullOrWhiteSpace(DescriptionLabel) ?  Label.Get(GetEffectType() + "_Description") : Label.Get(DescriptionLabel)), DescriptionParameters.ToArray()) + (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") ? " [Detailed]" : "");
-        }
-        if(String.IsNullOrWhiteSpace(DescriptionLabel) == false && Label.ContainsKey(DescriptionLabel)) {
-            return Label.Get(DescriptionLabel);
-        }
-        if(Label.ContainsKey(GetEffectType() + "_Description")) {
-            return Label.Get(GetEffectType() + "_Description") + (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") ? " [Detailed]" : "");
-        }
-        Debug.LogError("Effect does not have proper description: " + GetType().ToString() + " (Source: " + SourceOfEffect + ", Target: " + TargetOfEffect + ")");
-        return GetType().ToString();
-    }
-
-    public string ToStringDetailed()
-    {
-        if (Label.ContainsKey(GetEffectType() + "_DescriptionDetailed") == false) {
-            return ToString();
-        }
-        if (GetDescriptionParameters().Count > 0)
-        {
-            return  (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + string.Format(Label.Get(GetEffectType() + "_DescriptionDetailed"), GetDescriptionParameters().ToArray());
-        }
-        return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + Label.Get(GetEffectType() + "_DescriptionDetailed");
-    }
-
     public bool RemainsActiveInOtherStances = false;
     public bool IsRemovable { get; set; } = true;
     public enum EffectType { Buff, Debuff, Neutral };
-    public enum EffectSourceType {Enemy, Tool, Technique, Unknown}
-    public EffectSourceType SourceType = Effect.EffectSourceType.Unknown;
+    public float FirstParameter = 0;
+    public float SecondParameter = 0;
+    public float ThirdParameter = 0;
     public string Id;
     private List<Effect> _effectModifiers;
     public bool ShowsInMenu = true;
     public string DescriptionLabel;
+    public virtual int StackingEffectIntensityLevel {
+        get { return 0;}
+    }
     public bool CountsAsSeparateEffect = true;
     public bool HasLinearScaling = true;
+    public List<Stat> ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat>();
+    public bool IsFlatIncreaseStatIncrease = false;
 
     public Effect(SourceOfEffect source_of_effect) {
         SourceOfEffect = source_of_effect;
     }
-
     public String EffectTypeName;
 
-    public virtual String GetEffectType() {
-        return String.IsNullOrWhiteSpace(EffectTypeName) ? GetType().ToString() : "Effect_" + EffectTypeName;
-    }
-    public float LinearEffectValue = 0;
-
-    public float NonLinearEffectValue = 0;
-
-    public virtual void OnEffectValueChanged(){}
+    public float PowerBudget = 0;
 
     public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, AddDuration, AddDecayingAmount, EndShorterDuplicateWithSameIdentifier };
     public BehaviourWhenDuplicateEffectEnum BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AllowDuplicate;
 
     public List<string> DescriptionParameters = new List<string>();
+    public bool TriggerOnEffectEndedEvent = true;
     public bool TriggersOncePerAbility = false;
     public float SoundEffectVolume = 1;
     public bool PlaySoundEffect = false;
@@ -99,6 +67,7 @@ public class Effect {
     public string SoundEffectName;
     public string Identifier = "";
     public bool ShowsInUI = false;
+    public string HideInUIWhileCooldownWithIdExists = "";
     private string _effectIndicatorText = "";
     public string EffectIndicatorText {
         get => _effectIndicatorText;
@@ -110,9 +79,6 @@ public class Effect {
                 EffectIndicatorCooldownDisplay.transform.parent.Find("Text").GetComponent<TextMeshProUGUI>().text = _effectIndicatorText;
             }
         }
-    }
-    public float GetOriginalBaseDuration() {
-        return _baseDuration;
     }
     public List<UnityEventBase> Listeners = new List<UnityEventBase>();
 
@@ -185,7 +151,6 @@ public class Effect {
     public virtual void ExtraBehaviourOnDecayingAmountChange() {}
 
     public virtual void ActivateEffectAmountDecay() {
-        Debug.Log($"ACTIVATING DECAY: GetType {GetType()}, EffectEnded {EffectEnded}, DecayingAmount {DecayingAmount}, EffectDecaySpeedModifier {EffectDecaySpeedModifier}, DefaultDecaySpeed {DefaultDecaySpeed}");
         if(EffectEnded) {
             return;
         }
@@ -193,7 +158,6 @@ public class Effect {
             EndThisEffect();
         }
         else {
-            Debug.Log($"Analysis: EffectDecaySpeedModifier {EffectDecaySpeedModifier}, DecayingAmount {DecayingAmount}, DefaultDecaySpeed {DefaultDecaySpeed}, (1 / Math.Abs(EffectDecaySpeedModifier)) {(1 / Math.Abs(EffectDecaySpeedModifier))}, mod: {(1 / Math.Abs(EffectDecaySpeedModifier)) / 5}, result: {(DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5)}");
             DecayingAmount = EffectDecaySpeedModifier >= 0 ? (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5)) : (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5));
             ExtraBehaviourOnDecayingAmountChange();
         }
@@ -224,7 +188,6 @@ public class Effect {
             float modifier = 0;
             foreach(Effect e in _effectModifiers.ToArray()) {
                 if(((Effect_ChangeEffectPower)e).ChangeType == Effect_ChangeEffectPower.ChangeTypeEnum.AffectDecaySpeed) {
-                    Debug.Log("APPLYING DECAY MOD: " + (-((Effect_ChangeEffectPower)e).PercentageChange / 100)); 
                     modifier += -((Effect_ChangeEffectPower)e).PercentageChange / 100;
                 }
             }
@@ -260,19 +223,22 @@ public class Effect {
                 existingEffect.ChangeDecayingAmount(DecayingAmount, false);
                 existingEffect.RemainingDuration = existingEffect.BaseDuration;
             }
-            if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDuration) {
+            else if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDuration) {
                 existingEffect.RemainingDuration += BaseDuration;
             }
-            if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier) {
+            else if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier) {
                 if(existingEffect.Identifier == Identifier && existingEffect.RemainingDuration > RemainingDuration) {
+                    TriggerOnEffectEndedEvent = false;
                     EndThisEffect();
                     return true;
                 }
                 else if(existingEffect.Identifier == Identifier && existingEffect.RemainingDuration <= RemainingDuration) {
+                    existingEffect.TriggerOnEffectEndedEvent = false;
                     existingEffect.EndThisEffect();
                 }
                 return false;
             }
+            TriggerOnEffectEndedEvent = false;
             EndThisEffect();
             EventManager.EffectEmpowered.Invoke(existingEffect, this);
             return true;
@@ -282,7 +248,7 @@ public class Effect {
 
     public void DisplayEffectIndicatorAboveTarget() {
         if (PathToEffectGraphic == null) { 
-            PathToEffectGraphic = "Effect/" + GetEffectType().ToString().Replace("Effect_", "");
+            PathToEffectGraphic = "Effect/" + GetType().ToString().Replace("Effect_", "");
         }
         if(TargetOfEffect is Player) {
             Transform effectsDisplay = CanvasElements.UICanvas.Effects.transform;
@@ -312,12 +278,12 @@ public class Effect {
     }
 
     public virtual void OnStart() {
-        Utils.CreateAuditLog("Unit (" + TargetOfEffect?.GetType() + ") starting effect: " + GetEffectType() + " from unit " + SourceOfEffect?.User?.GetType() + " and source " + SourceOfEffect?.GetType() + " for seconds: " + BaseDuration + ":" + Utils.GetStackTrace());
+        Utils.CreateAuditLog("Unit (" + TargetOfEffect?.GetType() + ") starting effect: " + GetType() + " from unit " + SourceOfEffect?.User?.GetType() + " and source " + SourceOfEffect?.GetType() + " for seconds: " + BaseDuration + ":" + Utils.GetStackTrace());
         if (IsHardCrowdControl()) {
             TargetOfEffect.Actions.CurrentActionBeingPerformed = Constants.ActionType.UnderHardCrowdControl;
             if (AutoPlayEffectAnimation && (TargetOfEffect.EffectAnimationBeingPlayed == null || PriorityLevel > TargetOfEffect.EffectAnimationBeingPlayed.PriorityLevel) && GameController.Instance.GameplayMode == Constants.GameplayMode.Regular) {
                 TargetOfEffect.EffectAnimationBeingPlayed = this;
-                TargetOfEffect.PlayAnimation(NameOfAnimationToAutoPlay == null ? GetEffectType() : NameOfAnimationToAutoPlay, InstantlyTransitionIntoAnimation ? 0 : 0.1f);
+                TargetOfEffect.PlayAnimation(NameOfAnimationToAutoPlay == null ? GetType().ToString() : NameOfAnimationToAutoPlay, InstantlyTransitionIntoAnimation ? 0 : 0.1f);
             }
         }
         if (SpecialSkinColorDuringHardCrowdControl != Color.white && TargetOfEffect != null) {
@@ -330,15 +296,15 @@ public class Effect {
         }
         if(PlaySoundEffect)
         {
-            Utils.PlaySoundEffect(TargetOfEffect.AudioSource, "Effect/" + (SoundEffectName != null ? SoundEffectName : GetEffectType()), SoundEffectVolume);
+            Utils.PlaySoundEffect(TargetOfEffect.AudioSource, "Effect/" + (SoundEffectName != null ? SoundEffectName : GetType()), SoundEffectVolume);
         }
-        if(ShowsInUI) {
+        if(ShowsInUI && (HideInUIWhileCooldownWithIdExists == "" || !TargetOfEffect.CheckIfEffectIsOnCooldown(HideInUIWhileCooldownWithIdExists))) {
             DisplayEffectIndicatorAboveTarget();
         }
         AddListeners();
         if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDecayingAmount) {
             _effectModifiers = GetEffectModifiers();
-            EventManager.OneFifthSecondElapsedNotRealtime.AddListener(ActivateEffectAmountDecay);
+            EventManager.OneFifthSecondElapsedInGame.AddListener(ActivateEffectAmountDecay);
             EventManager.EffectStarted.AddListener(UpdateEffectModifiers);
         }
         else if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier) {
@@ -374,9 +340,9 @@ public class Effect {
             {
                 HardCrowdControlEffect = HardCrowdControlEffects.Aggregate((e1, e2) => e1.PriorityLevel > e2.PriorityLevel ? e1 : e2);
             }
-            if (HardCrowdControlEffect != null && TargetOfEffect.EffectAnimationBeingPlayed != HardCrowdControlEffect && HardCrowdControlEffect.AutoPlayEffectAnimation && HardCrowdControlEffect.RemainingDuration > 0.1f && TargetOfEffect.Animator.GetCurrentAnimatorClipInfo(0).Length > 0 && TargetOfEffect.Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != HardCrowdControlEffect.GetEffectType().Replace("Effect_", "") && GameController.Instance.GameplayMode == Constants.GameplayMode.Regular) {
+            if (HardCrowdControlEffect != null && TargetOfEffect.EffectAnimationBeingPlayed != HardCrowdControlEffect && HardCrowdControlEffect.AutoPlayEffectAnimation && HardCrowdControlEffect.RemainingDuration > 0.1f && TargetOfEffect.Animator.GetCurrentAnimatorClipInfo(0).Length > 0 && TargetOfEffect.Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != HardCrowdControlEffect.GetType().ToString().Replace("Effect_", "") && GameController.Instance.GameplayMode == Constants.GameplayMode.Regular) {
                 TargetOfEffect.EffectAnimationBeingPlayed = HardCrowdControlEffect;
-                TargetOfEffect.PlayAnimation(String.IsNullOrWhiteSpace(HardCrowdControlEffect.NameOfAnimationToAutoPlay) == false ? HardCrowdControlEffect.NameOfAnimationToAutoPlay : HardCrowdControlEffect.GetEffectType(), HardCrowdControlEffect.InstantlyTransitionIntoAnimation ? 0 : 0.1f);
+                TargetOfEffect.PlayAnimation(String.IsNullOrWhiteSpace(HardCrowdControlEffect.NameOfAnimationToAutoPlay) == false ? HardCrowdControlEffect.NameOfAnimationToAutoPlay : HardCrowdControlEffect.GetType().ToString(), HardCrowdControlEffect.InstantlyTransitionIntoAnimation ? 0 : 0.1f);
             }
             else if(TargetOfEffect.Actions.CurrentAbilityBeingPerformed == null || IsHardCrowdControl())
             {
@@ -405,7 +371,9 @@ public class Effect {
         }
         EffectEnded = true;
         RemoveListeners();
-        EventManager.EffectEnded.Invoke(this);
+        if(TriggerOnEffectEndedEvent) {
+            EventManager.EffectEnded.Invoke(this);
+        }
         if(SaveFile.Instance.DifficultyLevel > 1 && IsHardCrowdControl() && TargetOfEffect.UnitAI != null && TargetOfEffect.InCombat) {
             TargetOfEffect.UnitAI.DecideOnNextAction(true);
         }
@@ -418,14 +386,9 @@ public class Effect {
         }
     }
 
-    public Effect SetTypeOfEffect(EffectType type_of_effect) {
-        Type = type_of_effect;
-        return this;
-    }
-
     public void AddListeners() {
-        if(Listeners.Contains(EventManager.OneFifthSecondElapsedNotRealtime)) {
-            EventManager.OneFifthSecondElapsedNotRealtime.AddListener(OnInvokeOneFifthSecondElapsedNotRealtime);
+        if(Listeners.Contains(EventManager.OneFifthSecondElapsedInGame)) {
+            EventManager.OneFifthSecondElapsedInGame.AddListener(OnInvokeOneFifthSecondElapsedInGame);
         }
         if(Listeners.Contains(EventManager.OneFifthSecondElapsedRealtime)) {
             EventManager.OneFifthSecondElapsedRealtime.AddListener(OnInvokeOneFifthSecondElapsedRealtime);
@@ -435,6 +398,9 @@ public class Effect {
         }
         if(Listeners.Contains(EventManager.AfterHitDamageCalculation)) {
             EventManager.AfterHitDamageCalculation.AddListener(OnInvokeAfterHitDamageCalculation);
+        }
+        if(Listeners.Contains(EventManager.AboutToHandleFatalBlow)) {
+            EventManager.AboutToHandleFatalBlow.AddListener(OnInvokeAboutToHandleFatalBlow);
         }
         if(Listeners.Contains(EventManager.DamageDealt)) {
             EventManager.DamageDealt.AddListener(OnInvokeDamageDealt);
@@ -481,6 +447,9 @@ public class Effect {
         if(Listeners.Contains(EventManager.EffectEnded)) {
             EventManager.EffectEnded.AddListener(OnInvokeEffectEnded);
         }
+        if(Listeners.Contains(EventManager.AboutToAddCooldown)) {
+            EventManager.AboutToAddCooldown.AddListener(OnInvokeAboutToAddCooldown);
+        }
         if(Listeners.Contains(EventManager.CooldownAdded)) {
             EventManager.CooldownAdded.AddListener(OnInvokeCooldownAdded);
         }
@@ -496,8 +465,8 @@ public class Effect {
     }
 
     public void RemoveListeners() {
-        if(Listeners.Contains(EventManager.OneFifthSecondElapsedNotRealtime)) {
-            EventManager.OneFifthSecondElapsedNotRealtime.RemoveListener(OnInvokeOneFifthSecondElapsedNotRealtime);
+        if(Listeners.Contains(EventManager.OneFifthSecondElapsedInGame)) {
+            EventManager.OneFifthSecondElapsedInGame.RemoveListener(OnInvokeOneFifthSecondElapsedInGame);
         }
         if(Listeners.Contains(EventManager.OneFifthSecondElapsedRealtime)) {
             EventManager.OneFifthSecondElapsedRealtime.RemoveListener(OnInvokeOneFifthSecondElapsedRealtime);
@@ -507,6 +476,9 @@ public class Effect {
         }
         if(Listeners.Contains(EventManager.AfterHitDamageCalculation)) {
             EventManager.AfterHitDamageCalculation.RemoveListener(OnInvokeAfterHitDamageCalculation);
+        }
+        if(Listeners.Contains(EventManager.AboutToHandleFatalBlow)) {
+            EventManager.AboutToHandleFatalBlow.RemoveListener(OnInvokeAboutToHandleFatalBlow);
         }
         if(Listeners.Contains(EventManager.DamageDealt)) {
             EventManager.DamageDealt.RemoveListener(OnInvokeDamageDealt);
@@ -553,6 +525,9 @@ public class Effect {
         if(Listeners.Contains(EventManager.EffectEnded)) {
             EventManager.EffectEnded.RemoveListener(OnInvokeEffectEnded);
         }
+        if(Listeners.Contains(EventManager.AboutToAddCooldown)) {
+            EventManager.AboutToAddCooldown.RemoveListener(OnInvokeAboutToAddCooldown);
+        }
         if(Listeners.Contains(EventManager.CooldownAdded)) {
             EventManager.CooldownAdded.RemoveListener(OnInvokeCooldownAdded);
         }
@@ -567,7 +542,7 @@ public class Effect {
         }
     }
 
-    public virtual void OnInvokeOneFifthSecondElapsedNotRealtime() {
+    public virtual void OnInvokeOneFifthSecondElapsedInGame() {
         EventManager.EffectActivated.Invoke(this);
     } 
 
@@ -590,6 +565,15 @@ public class Effect {
             damage.SourceOfDamage.TriggeredEffects.Add(this);
         }
     }
+
+    public virtual void OnInvokeAboutToHandleFatalBlow(Damage damage) {
+        EventManager.EffectActivated.Invoke(this);
+        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
+        {
+            damage.SourceOfDamage.TriggeredEffects.Add(this);
+        }
+    }
+
 
     public virtual void OnInvokeDamageDealt(Damage damage) {
         EventManager.EffectActivated.Invoke(this);
@@ -693,6 +677,10 @@ public class Effect {
         {
             effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
         }
+    }
+
+    public virtual void OnInvokeAboutToAddCooldown(Cooldown cooldown) {
+        EventManager.EffectActivated.Invoke(this);
     }
 
     public virtual void OnInvokeCooldownAdded(Cooldown cooldown) {

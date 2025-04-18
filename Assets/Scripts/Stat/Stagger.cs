@@ -1,16 +1,16 @@
 using TMPro;
 
 public class Stagger : Stat {
-public Constants.DamageType Category;
-    public Stagger(Constants.DamageType category, Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
+public Constants.DamageType Type;
+    public Stagger(Constants.DamageType type, Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         if(stat_owner is Player) {
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find(category.ToString() + "Stagger/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find(type.ToString() + "Stagger/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
         Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
         Maximum = Base;
         Current = Base;
-        Category = category;
+        Type = type;
     }
 
     public override void AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount()
@@ -38,7 +38,7 @@ public Constants.DamageType Category;
 
     public override string ToString()
     {
-        return Category == Constants.DamageType.Heavy ? "HeavyStagger" : Category == Constants.DamageType.Light ? "LightStagger"  : Category == Constants.DamageType.Ranged ? "RangedStagger"  : Category == Constants.DamageType.Magic ? "MagicStagger" : "Stagger";
+        return Type == Constants.DamageType.Heavy ? "HeavyStagger" : Type == Constants.DamageType.Light ? "LightStagger"  : Type == Constants.DamageType.Ranged ? "RangedStagger"  : Type == Constants.DamageType.Magic ? "MagicStagger" : "Stagger";
     }
 
     public override void UpdateMenuStatDisplayValue()

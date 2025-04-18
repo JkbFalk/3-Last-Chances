@@ -8,15 +8,8 @@ public class Boots_Judge : Item
     public Boots_Judge(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Judge;
-        Category = Constants.ItemCategory.Boots;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { 
-            new Effect_ChangeEffectPower(typeof(Effect_Slow), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, -GetFirstModifierEffectValue() / 3, new(this)) {AffectedUnitsType=Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player,}, 
-            new Effect_ChangeEffectPower(typeof(Effect_Freeze), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, -GetFirstModifierEffectValue() / 3, new(this)) {AffectedUnitsType=Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player} };
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.StaggerBar, new(this)) { FlatAmount = 10 } };
+        Type = Constants.ItemType.Boots;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("IgnorePortionOfEnemyTenacity")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Control")};
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Effect_PlayerStaggered : Effect_SoftCrowdControl
@@ -23,14 +24,15 @@ public class Effect_PlayerStaggered : Effect_SoftCrowdControl
         TargetOfEffect.StaggeredRegen = _staggeredRegen;
         TargetOfEffect.StaggerBar.Current = TargetOfEffect.StaggerBar.Maximum;
         TargetOfEffect.MovementSpeed.AddPercentageModifier(this, -30);
-        DamageDebuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageAmount = -50};
-        AttackSpeedDebuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageAmount = -30};
+        DamageDebuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = -50};
+        AttackSpeedDebuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = -30};
         TargetOfEffect.AddEffect(new Effect_SoftStaggered(SourceOfEffect), Constants.DEFAULT_SOFT_STAGGERED_DURATION);
         TargetOfEffect.AddEffect(DamageDebuff);
         TargetOfEffect.AddEffect(AttackSpeedDebuff);
         TargetOfEffect.Control.AddPercentageModifier(this, -50);
         TargetOfEffect.Tenacity.AddPercentageModifier(this, -50);
         TargetOfEffect.IsStaggered = true;
+
     }
 
     public override void OnEnd() {

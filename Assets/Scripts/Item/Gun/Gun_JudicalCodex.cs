@@ -7,15 +7,10 @@ public class Gun_JudicalCodex : Item
     public Gun_JudicalCodex(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Judge;
-        Category = Constants.ItemCategory.Ranged;
+        Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
         SetBaseWeaponStats(85, 155, 0.6f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksStunEnemies")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedStagger")};
     }
 }

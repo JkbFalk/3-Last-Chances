@@ -19,15 +19,6 @@ public class Effect_BlademastersGarb : Effect {
         TriggersOncePerAbility = true;
     }
 
-    public override void OnEffectValueChanged()
-    {
-        BladedBasicAttackBuff *= LinearEffectValue;
-        NonBladedBasicAttackDebuff *= LinearEffectValue;
-        BladedDamageReductionDebuff *= NonLinearEffectValue;
-        NonBladedDamageReductionBuff *= NonLinearEffectValue;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(BladedBasicAttackBuff), Utils.GetFormattedFloat(BladedDamageReductionDebuff), Utils.GetFormattedFloat(NonBladedDamageReductionBuff), Utils.GetFormattedFloat(Math.Abs(NonBladedBasicAttackDebuff)) };
-    }
-
     public override void OnStart()
     {
         base.OnStart();
@@ -50,11 +41,11 @@ public class Effect_BlademastersGarb : Effect {
             DamageReductionDebuff = null;
         }
         if(!CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass) && (DamageReductionBuff == null || DamageReductionBuff.EffectEnded) && !EffectEnded) {
-            DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = NonBladedDamageReductionBuff};
+            DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = NonBladedDamageReductionBuff};
             Player.Instance.AddEffect(DamageReductionBuff);
         }
         if(CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass) && (DamageReductionDebuff == null || DamageReductionDebuff.EffectEnded) && !EffectEnded) {
-            DamageReductionDebuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = BladedDamageReductionDebuff};
+            DamageReductionDebuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = BladedDamageReductionDebuff};
             Player.Instance.AddEffect(DamageReductionDebuff);
         }
     }

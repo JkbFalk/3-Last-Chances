@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,10 @@ public class Effect_HardStaggered : Effect_Staggered {
         TargetOfEffect.StaggeredRegen = _staggeredRegen;
         TargetOfEffect.StaggerBar.Current = TargetOfEffect.StaggerBar.Maximum;
         EventManager.DamageDealt.AddListener(CheckIfTookHealthDamage);
+        if(TargetOfEffect is not Player && TargetOfEffect.DamageReduction.Current != 1) {
+            TargetOfEffect.DamageReduction.DamageReductionLabel.gameObject.SetActive(false);
+            TargetOfEffect.DamageReduction.DamageReductionDisplay.color = Colors.GetColorFromCode("#353535");
+        }
     }
 
     public void CheckIfTookHealthDamage(Damage damage) {
@@ -42,5 +47,9 @@ public class Effect_HardStaggered : Effect_Staggered {
         TargetOfEffect.StaggeredRegen = 0;
         TargetOfEffect.IsStaggered = false;
         TargetOfEffect.CurrentStaggerBars = TargetOfEffect.StaggerBars.Count;
+        if(TargetOfEffect is not Player && TargetOfEffect.DamageReduction.Current != 1) {
+            TargetOfEffect.DamageReduction.DamageReductionLabel.gameObject.SetActive(true);
+            TargetOfEffect.DamageReduction.DamageReductionDisplay.color = Color.white;
+        }
     }
 }

@@ -5,8 +5,7 @@ using UnityEngine.Events;
 
 public class Effect_AncientGreaves : Effect { 
 
-    public Effect_ChangeCompositeStat SpeedBuff;
-    public float BuffAmount = 0;
+    public Effect_ChangeCompositeStat AttackSpeedBuff;
 
     public Effect_AncientGreaves(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
@@ -14,11 +13,6 @@ public class Effect_AncientGreaves : Effect {
         Listeners.Add(EventManager.ItemEquipped);
     }
 
-    public override void OnEffectValueChanged()
-    {
-        BuffAmount = 0.125f * NonLinearEffectValue;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(BuffAmount) };
-    }
 
     public override void OnStart() {
         base.OnStart();
@@ -29,9 +23,9 @@ public class Effect_AncientGreaves : Effect {
 
     public override void OnInvokeItemEquipped(Item item1, Item item2)
     {
-        if (SpeedBuff != null && (item1 is Armor_Ancient || item1 is Boots_Ancient))
+        if (AttackSpeedBuff != null && (item1 is Armor_Ancient || item1 is Boots_Ancient))
         {
-            SpeedBuff.EndThisEffect();
+            AttackSpeedBuff.EndThisEffect();
         }
         else if ((item2 is Boots_Ancient && SaveFile.Instance.EquippedArmor is Armor_Ancient) || (item2 is Armor_Ancient && SaveFile.Instance.EquippedBoots is Boots_Ancient))
         {
@@ -40,7 +34,7 @@ public class Effect_AncientGreaves : Effect {
     }
 
     public void AddBuffs() {
-        SpeedBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageAmount = BuffAmount};
-        Player.Instance.AddEffect(SpeedBuff);
+        AttackSpeedBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = FirstParameter};
+        Player.Instance.AddEffect(AttackSpeedBuff);
     }
 }

@@ -8,15 +8,10 @@ public class Gauntlets_IronheartSunderers : Item
     public Gauntlets_IronheartSunderers(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Unbreakable;
-        Category = Constants.ItemCategory.Light;
+        Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
         SetBaseWeaponStats(80, 80, 1.3f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Control, new(this)) {PercentageAmount = 0.5f}};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksRestorePercentageOfStaggerBar")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggerBar")};
     }
 }

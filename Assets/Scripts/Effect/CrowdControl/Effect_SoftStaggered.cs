@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,10 @@ public class Effect_SoftStaggered : Effect_Staggered {
         _staggeredRegen = TargetOfEffect.StaggerBar.Maximum / BaseDuration;
         TargetOfEffect.StaggeredRegen = _staggeredRegen;
         TargetOfEffect.StaggerBar.Current = TargetOfEffect.StaggerBar.Maximum;
+        if(TargetOfEffect is not Player && TargetOfEffect.DamageReduction.Current != 1) {
+            TargetOfEffect.DamageReduction.DamageReductionLabel.gameObject.SetActive(false);
+            TargetOfEffect.DamageReduction.DamageReductionDisplay.color = Colors.GetColorFromCode("#353535");
+        }
     }
 
     public override void OnEnd() {
@@ -30,5 +35,9 @@ public class Effect_SoftStaggered : Effect_Staggered {
         TargetOfEffect.StaggerBar.Current = 0;
         TargetOfEffect.StaggeredRegen = 0;
         TargetOfEffect.IsStaggered = false;
+        if(TargetOfEffect is not Player && TargetOfEffect.DamageReduction.Current != 1) {
+            TargetOfEffect.DamageReduction.DamageReductionLabel.gameObject.SetActive(true);
+            TargetOfEffect.DamageReduction.DamageReductionDisplay.color = Color.white;
+        }
     }
 }

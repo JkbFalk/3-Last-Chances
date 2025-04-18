@@ -52,7 +52,7 @@ public class Stance_OmniMastery : Effect_Stance
             _damageBuff = new Effect_Empowered(DamageBuffAmount, SourceOfEffect) {ShowsInUI = false, ShowsInMenu=false};
             Player.Instance.AddEffect(_damageBuff, DamageBuffDuration);
         }
-        Cooldown cd = Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_OmniMastery) && cd.ExtraInfo == AssignedStance.WeaponCategory.ToString());
+        Cooldown cd = Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_OmniMastery) && cd.Identifier == AssignedStance.WeaponType.ToString());
         if(IsActive && UnlockedUpgrade1 && cd == null) {
             if(_cleanseGauge == null) {
                 CreateStanceDisplay();
@@ -104,7 +104,7 @@ public class Stance_OmniMastery : Effect_Stance
         if(_damageGauge != null && IsActive && _damageBuff != null && _damageBuff.RemainingDuration > 0) {
             _damageGauge.GetComponent<Image>().fillAmount = 1 - _damageBuff.RemainingDuration / _damageBuff.BaseDuration;
         }
-        Cooldown cd = Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_OmniMastery) && cd.ExtraInfo == AssignedStance.WeaponCategory.ToString());
+        Cooldown cd = Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_OmniMastery) && cd.Identifier == AssignedStance.WeaponType.ToString());
         if(_cleanseGauge != null && IsActive && UnlockedUpgrade1 && cd != null) {
             _cleanseGauge.GetComponent<Image>().fillAmount = cd.RemainingDuration / cd.TotalDuration;
         }

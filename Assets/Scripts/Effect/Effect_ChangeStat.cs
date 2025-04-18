@@ -10,23 +10,23 @@ public class Effect_ChangeStat : Effect {
         bool red = StatAffected is Health || StatAffected is Injury;
         bool purple = StatAffected is StaggerBar || StatAffected is Stagger;
         if (StatAffected is AttackSpeed speed) {
-            return "+" + Utils.GetFormattedFloat(PercentageAmount) + "%" + Label.Get("StatLabel_" + StatAffected.ToString());
+            return "+" + Utils.GetFormattedFloat(PercentageModifier) + "%" + Label.Get("StatLabel_" + StatAffected.ToString());
         }
-        else if (FlatAmount != 0)
+        else if (BaseModifier != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (FlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(FlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (BaseModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "") + Utils.GetFormattedFloat(BaseModifier) + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
-        else if (PercentageAmount != 0)
+        else if (PercentageModifier != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (PercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(PercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (PercentageModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "") + Utils.GetFormattedFloat(PercentageModifier) + "%" + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
-        else if (RegenerationFlatAmount != 0)
+        else if (RegenerationFlatModifier != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (RegenerationFlatAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(RegenerationFlatAmount) + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (RegenerationFlatModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "") + Utils.GetFormattedFloat(RegenerationFlatModifier) + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
-        else if (RegenerationPercentageAmount != 0)
+        else if (RegenerationPercentageModifier != 0)
         {
-            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (RegenerationPercentageAmount > 0 ? "+" : "") + (red ? "[R]" : purple ? "[P]" : "") + Utils.GetFormattedFloat(RegenerationPercentageAmount) + "%" + (red ? "[/R]" : purple ? "[/P]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
+            return (RemainsActiveInOtherStances ? Label.Get("RemainsActiveInOtherStances") + "\n": "") + (RegenerationPercentageModifier > 0 ? "+" : "") + (red ? "[RED]" : purple ? "[PURPLE]" : "") + Utils.GetFormattedFloat(RegenerationPercentageModifier) + "%" + (red ? "[/RED]" : purple ? "[/PURPLE]" : "") + Label.Get("StatLabel_" + StatAffected.ToString());
         }
         else return Label.Get("MissingLabel");
     }
@@ -38,31 +38,31 @@ public class Effect_ChangeStat : Effect {
             if(_isTurnedOn != value) {
                 _isTurnedOn = value;
                 if(_isTurnedOn) {
-                    if(PercentageAmount != 0) {
-                        StatAffected.AddPercentageModifier(this, PercentageAmount);
+                    if(PercentageModifier != 0) {
+                        StatAffected.AddPercentageModifier(this, PercentageModifier);
                     }
-                    if(FlatAmount != 0) {
-                        StatAffected.AddFlatModifier(this, FlatAmount);
+                    if(BaseModifier != 0) {
+                        StatAffected.AddFlatModifier(this, BaseModifier);
                     }
-                    if(RegenerationPercentageAmount != 0) {
-                        StatAffected.AddPercentageRegeneration(this, RegenerationPercentageAmount);
+                    if(RegenerationPercentageModifier != 0) {
+                        StatAffected.AddPercentageRegeneration(this, RegenerationPercentageModifier);
                     }
-                    if(RegenerationFlatAmount != 0) {
-                        StatAffected.AddFlatRegeneration(this, RegenerationFlatAmount);
+                    if(RegenerationFlatModifier != 0) {
+                        StatAffected.AddFlatRegeneration(this, RegenerationFlatModifier);
                     }
                 }
                 else {
-                    if(PercentageAmount != 0) {
-                        StatAffected.RemovePercentageModifier(this, PercentageAmount);
+                    if(PercentageModifier != 0) {
+                        StatAffected.RemovePercentageModifier(this, PercentageModifier);
                     }
-                    if(FlatAmount != 0) {
-                        StatAffected.RemoveFlatModifier(this, FlatAmount);
+                    if(BaseModifier != 0) {
+                        StatAffected.RemoveFlatModifier(this, BaseModifier);
                     }
-                    if(RegenerationPercentageAmount != 0) {
-                        StatAffected.RemovePercentageRegeneration(this, RegenerationPercentageAmount);
+                    if(RegenerationPercentageModifier != 0) {
+                        StatAffected.RemovePercentageRegeneration(this, RegenerationPercentageModifier);
                     }
-                    if(RegenerationFlatAmount != 0) {
-                        StatAffected.RemoveFlatRegeneration(this, RegenerationFlatAmount);
+                    if(RegenerationFlatModifier != 0) {
+                        StatAffected.RemoveFlatRegeneration(this, RegenerationFlatModifier);
                     }
                 }
             }
@@ -134,63 +134,62 @@ public class Effect_ChangeStat : Effect {
         }
     }
 
-    public bool ScaleWithEffectValue = true;
     public Stat StatAffected;
-    private float _percentageAmount = 0;
-    public float PercentageAmount {
-        get => _percentageAmount;
+    private float _percentageModifier = 0;
+    public float PercentageModifier {
+        get => _percentageModifier;
         set {
-            if(_percentageAmount != 0 && IsTurnedOn) {
-                StatAffected.RemovePercentageModifier(this, _percentageAmount);
+            if(_percentageModifier != 0 && IsTurnedOn) {
+                StatAffected.RemovePercentageModifier(this, _percentageModifier);
             }
-            _percentageAmount = value;
-            if(_percentageAmount != 0 && IsTurnedOn) {
-                StatAffected.AddPercentageModifier(this, PercentageAmount);
+            _percentageModifier = value;
+            if(_percentageModifier != 0 && IsTurnedOn) {
+                StatAffected.AddPercentageModifier(this, PercentageModifier);
             }
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
 
-    private float _flatAmount = 0;
-    public float FlatAmount {
-        get => _flatAmount;
+    private float _baseModifier = 0;
+    public float BaseModifier {
+        get => _baseModifier;
         set {
-            if(_flatAmount != 0 && IsTurnedOn) {
-                StatAffected.RemoveFlatModifier(this, _flatAmount);
+            if(_baseModifier != 0 && IsTurnedOn) {
+                StatAffected.RemoveFlatModifier(this, _baseModifier);
             }
-            _flatAmount = value;
-            if(_flatAmount != 0 && IsTurnedOn) {
-                StatAffected.AddFlatModifier(this, _flatAmount);
+            _baseModifier = value;
+            if(_baseModifier != 0 && IsTurnedOn) {
+                StatAffected.AddFlatModifier(this, _baseModifier);
             }
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
 
-    private float _regenerationPercentageAmount = 0;
-    public float RegenerationPercentageAmount {
-        get => _regenerationPercentageAmount;
+    private float _regenerationPercentageModifier = 0;
+    public float RegenerationPercentageModifier {
+        get => _regenerationPercentageModifier;
         set {
-            if(_regenerationPercentageAmount != 0 && IsTurnedOn) {
-                StatAffected.RemovePercentageRegeneration(this, _regenerationPercentageAmount);
+            if(_regenerationPercentageModifier != 0 && IsTurnedOn) {
+                StatAffected.RemovePercentageRegeneration(this, _regenerationPercentageModifier);
             }
-            _regenerationPercentageAmount = value;
-            if(_regenerationPercentageAmount != 0 && IsTurnedOn) {
-                StatAffected.AddPercentageRegeneration(this, _regenerationPercentageAmount);
+            _regenerationPercentageModifier = value;
+            if(_regenerationPercentageModifier != 0 && IsTurnedOn) {
+                StatAffected.AddPercentageRegeneration(this, _regenerationPercentageModifier);
             }
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
     }
 
-    private float _regenerationFlatAmount = 0;
-    public float RegenerationFlatAmount {
-        get => _regenerationFlatAmount;
+    private float _regenerationFlatModifier = 0;
+    public float RegenerationFlatModifier {
+        get => _regenerationFlatModifier;
         set {
-            if(_regenerationFlatAmount != 0 && IsTurnedOn) {
-                StatAffected.RemoveFlatRegeneration(this, _regenerationFlatAmount);
+            if(_regenerationFlatModifier != 0 && IsTurnedOn) {
+                StatAffected.RemoveFlatRegeneration(this, _regenerationFlatModifier);
             }
-            _regenerationFlatAmount = value;
-            if(_regenerationFlatAmount != 0 && IsTurnedOn) {
-                StatAffected.AddFlatRegeneration(this, _regenerationFlatAmount);
+            _regenerationFlatModifier = value;
+            if(_regenerationFlatModifier != 0 && IsTurnedOn) {
+                StatAffected.AddFlatRegeneration(this, _regenerationFlatModifier);
             }
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
         }
@@ -206,22 +205,6 @@ public class Effect_ChangeStat : Effect {
 
     public void UpdateAffectedStat() {
         StatAffected = Player.Instance.GetUnitStatCorrespondingToGivenStat(StatAffected);
-    }
-
-    public override void OnEffectValueChanged()
-    {
-        if(ScaleWithEffectValue && (StatAffected is MovementSpeed || StatAffected is Control || StatAffected is Tenacity || StatAffected is CooldownReduction || StatAffected is EnergyGain || StatAffected is DamageReduction)){
-            PercentageAmount *= NonLinearEffectValue;
-            FlatAmount *= NonLinearEffectValue;
-            RegenerationPercentageAmount *= NonLinearEffectValue;
-            RegenerationFlatAmount *= NonLinearEffectValue;
-        } 
-        else if(ScaleWithEffectValue) {
-            PercentageAmount *= LinearEffectValue;
-            FlatAmount *= LinearEffectValue;
-            RegenerationPercentageAmount *= LinearEffectValue;
-            RegenerationFlatAmount *= LinearEffectValue;
-        }
     }
 
     public override void OnStart()

@@ -12,7 +12,7 @@ public class Tool_Caltrops : Item
     public static float Cooldown = 40;
     public Tool_Caltrops(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Tool;
+        Type = Constants.ItemType.Tool;
         OnUseAbility = typeof(Ability_Caltrops);
         DamageSources = new List<Ability.DamageSource>()
         {
@@ -22,6 +22,6 @@ public class Tool_Caltrops : Item
 
     public override string GetDescription(bool detailed = false)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "")), new object[] { Ability_Caltrops.CaltropsAmount[GradeIndex], Utils.GetFormattedFloat(0.125f * GetFirstModifierEffectValue()), Utils.GetFormattedFloat(2 + 0.03125f * GetFirstModifierEffectValue()) }) + (detailed ? "" : " [Detailed]") + "\n\n[CD] " + Cooldown.ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "")), new object[] { Ability_Caltrops.CaltropsAmount[GradeIndex], Utils.GetFormattedFloat(0.125f * GetItemFirstEffectPB()), Utils.GetFormattedFloat(2 + 0.03125f * GetItemFirstEffectPB()) }) + (detailed ? "" : " <sprite name=\"Detailed\">") + "\n\n[CD] " + Cooldown.ToString();
     }
 }

@@ -7,14 +7,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Stance {
-    public Constants.ItemCategory WeaponCategory;
+    public Constants.ItemType WeaponType;
 
-    public Constants.DamageType DamageCategory {
+    public Constants.DamageType DamageType {
         get {
-            switch(WeaponCategory) {
-                case Constants.ItemCategory.Heavy: return Constants.DamageType.Heavy;
-                case Constants.ItemCategory.Light: return Constants.DamageType.Light;
-                case Constants.ItemCategory.Ranged: return Constants.DamageType.Ranged;
+            switch(WeaponType) {
+                case Constants.ItemType.Heavy: return Constants.DamageType.Heavy;
+                case Constants.ItemType.Light: return Constants.DamageType.Light;
+                case Constants.ItemType.Ranged: return Constants.DamageType.Ranged;
                 default: return Constants.DamageType.None;
             }
         }
@@ -27,7 +27,7 @@ public class Stance {
             if(SaveFile.Instance.EquippedHeavyWeapon == null || SaveFile.Instance.EquippedLightWeapon == null || SaveFile.Instance.EquippedRangedWeapon == null) {
                 return Constants.WeaponClass.None;
             }
-            switch(DamageCategory) {
+            switch(DamageType) {
                 case Constants.DamageType.Heavy: return SaveFile.Instance.EquippedHeavyWeapon.WeaponClass;
                 case Constants.DamageType.Light: return SaveFile.Instance.EquippedLightWeapon.WeaponClass;
                 case Constants.DamageType.Ranged: return SaveFile.Instance.EquippedRangedWeapon.WeaponClass;
@@ -60,15 +60,15 @@ public class Stance {
     public Item Weapon
     {
         get {
-            if (WeaponCategory == Constants.ItemCategory.Heavy )
+            if (WeaponType == Constants.ItemType.Heavy )
             {
                 return SaveFile.Instance.EquippedHeavyWeapon;
             }
-            else if (WeaponCategory == Constants.ItemCategory.Light)
+            else if (WeaponType == Constants.ItemType.Light)
             {
                 return SaveFile.Instance.EquippedLightWeapon;
             }
-            else if (WeaponCategory == Constants.ItemCategory.Ranged)
+            else if (WeaponType == Constants.ItemType.Ranged)
             {
                 return SaveFile.Instance.EquippedRangedWeapon;
             }
@@ -87,7 +87,7 @@ public class Stance {
                 MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + Category.ToString() + "/" + Index).GetComponent<AbilitySelect>().AbilityType = _type;
                 MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + Category.ToString() + "/" + Index + "/Mask/Icon").GetComponent<Image>().sprite = Utils.GetGraphicForAbility(_type != null ? _type.ToString() : null);
                 MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + Category.ToString() + "/" + Index + "/Mask/Icon").GetComponent<Image>().color = _type != null ? Color.white : Color.black;
-                if(Player.Instance?.CurrentStance?.DamageCategory != null && Player.Instance.CurrentStance.DamageCategory == Category) {
+                if(Player.Instance?.CurrentStance?.DamageType != null && Player.Instance.CurrentStance.DamageType == Category) {
                     RefreshDisplayForEquippedAbility();
                 }
             }

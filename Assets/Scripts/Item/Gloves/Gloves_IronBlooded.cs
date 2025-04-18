@@ -8,13 +8,8 @@ public class Gloves_IronBlooded : Item
     public Gloves_IronBlooded(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.IronBlooded;
-        Category = Constants.ItemCategory.Gloves;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Gloves;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("RegeneratePortionOfInjuryTakenAsHealthOver30Seconds")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionIsPartiallyEffectiveWhileStaggered")};
     }
 }

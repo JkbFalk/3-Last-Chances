@@ -15,7 +15,7 @@ public class Effect_Flinching : Effect_HardCrowdControl
             NameOfAnimationToAutoPlay = "Flinching";
         }
         else {
-            NameOfAnimationToAutoPlay = "Flinching" + (TargetOfEffect.CurrentWeaponDamageCategory == Constants.DamageType.Magic || TargetOfEffect.CurrentWeaponDamageCategory == Constants.DamageType.None ? "" : "_" + TargetOfEffect.CurrentWeaponCategory.ToString());
+            NameOfAnimationToAutoPlay = "Flinching" + (TargetOfEffect.CurrentWeaponDamageType == Constants.DamageType.Magic || TargetOfEffect.CurrentWeaponDamageType == Constants.DamageType.None ? "" : "_" + TargetOfEffect.CurrentWeaponType.ToString());
         }
     }
 

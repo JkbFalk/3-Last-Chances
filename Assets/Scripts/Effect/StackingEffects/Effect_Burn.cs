@@ -7,7 +7,13 @@ public class Effect_Burn : Effect
 {
     private int counter = 0;
     public GameObject Vfx;
-    public int BurnLevel = 0;
+    public override int StackingEffectIntensityLevel {
+        get { 
+            return 
+            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 2.5f ? 1 :
+            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 5 ? 2 : 3;
+        }
+    }
     public Effect_Burn(float decaying_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
@@ -36,21 +42,16 @@ public class Effect_Burn : Effect
     }
 
     public void AddVisualEffect() {
-        int prevLevel = BurnLevel;
-        BurnLevel = 
-        DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 2.5f ? 1 :
-        DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 5 ? 2 :
-        DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 7.5f ? 3 :
-        DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 10 ? 4 : 5;
-        if(prevLevel == BurnLevel) {
+        int prevLevel = StackingEffectIntensityLevel;
+        if(prevLevel == StackingEffectIntensityLevel) {
             return;
         }
         RemoveVFXs();
-        Vfx = Utils.CreateVisualEffect(SourceOfEffect, "Burn" + BurnLevel);
-        Vfx.gameObject.name = "VisualEffect_Burn" + BurnLevel;
+        Vfx = Utils.CreateVisualEffect(SourceOfEffect, "Burn" + StackingEffectIntensityLevel);
+        Vfx.gameObject.name = "VisualEffect_Burn" + StackingEffectIntensityLevel;
         Vfx.transform.SetParent(TargetOfEffect.SpriteRenderers["Upper Body"].Bone);
         Vfx.transform.localPosition = Vector2.zero;
-        Utils.PlaySoundEffect(Vfx.GetComponent<AudioSource>(), "Effect/Effect_Burn", 0.05f + 0.02f * BurnLevel);
+        Utils.PlaySoundEffect(Vfx.GetComponent<AudioSource>(), "Effect/Effect_Burn", 0.05f + 0.03f * StackingEffectIntensityLevel);
     }
 
     public void RemoveVFXs() {
@@ -67,7 +68,7 @@ public class Effect_Burn : Effect
             GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "BurnExplosion");
             vfx.transform.SetParent(effect.TargetOfEffect.SpriteRenderers["Upper Body"].Bone);
             vfx.transform.localPosition = Vector2.zero;
-            float size = 0.7f + BurnLevel * 0.15f;
+            float size = 0.7f + StackingEffectIntensityLevel * 0.25f;
             vfx.transform.localScale = new Vector2(size, size);
             base.OnInvokeEffectStarted(effect);
             EndThisEffect();

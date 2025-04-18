@@ -8,13 +8,8 @@ public class Gloves_Artisan : Item
     public Gloves_Artisan(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Artisan;
-        Category = Constants.ItemCategory.Gloves;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Gloves;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("Gain2ExtraChargesOfHealthPotionAndIncreaseEffectivness")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ToolPower")};
     }
 }

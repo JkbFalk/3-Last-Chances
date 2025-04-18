@@ -115,8 +115,8 @@ public class CanvasElements {
         }
     }
 
-    /*private static GameObject _inWorldDialogueSpeedSlider;
-    public static GameObject InWorldDialogueSpeedSlider => GetCanvasElement(ref _inWorldDialogueSpeedSlider, "Menu Canvas/Settings Window/Gameplay/Items/InGame Dialogue Speed");*/
+    private static GameObject _inWorldDialogueSpeedSlider;
+    public static GameObject InWorldDialogueSpeedSlider => GetCanvasElement(ref _inWorldDialogueSpeedSlider, "Menu Canvas/Settings Window/Gameplay/Items/InGame Dialogue Speed");
     private static GameObject _dialogueTextSpeedSlider;
     public static GameObject DialogueTextSpeedSlider => GetCanvasElement(ref _dialogueTextSpeedSlider, "Menu Canvas/Settings Window/Gameplay/Items/Dialogue Text Speed");
 

@@ -8,6 +8,6 @@ public class QuestDetailsScrollbar : MonoBehaviour, ICancelHandler
 {
     public void OnCancel(BaseEventData eventData)
     {
-        MenuManager.Instance.SelectedQuestTile.GetComponent<Button>().Select();
+        
     }
 }

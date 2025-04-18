@@ -6,15 +6,10 @@ public class Longblade_Severance : Item
 {
     public Longblade_Severance(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Heavy;
+        Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Longblade;
         SetBaseWeaponStats(135, 50, 1.1f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.HeavyInjury, new(this)) {PercentageAmount = 1.25f, RemainsActiveInOtherStances = true}};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttacksApplyIncisionBasedOnEnemyMaximumHealthEveryNSeconds")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("IncisionAmount"), new ItemEffect("IncisionDecay")};
     }
 }

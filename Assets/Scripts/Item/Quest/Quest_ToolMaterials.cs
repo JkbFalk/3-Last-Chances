@@ -6,7 +6,7 @@ public class Quest_ToolMaterials : Item
 {
     public Quest_ToolMaterials(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Quest;
+        Type = Constants.ItemType.Quest;
         Icon = Utils.LoadSpriteFromMultiple("Quest Icons", "ToolMaterials");
     }
 }

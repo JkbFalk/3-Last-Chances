@@ -534,7 +534,9 @@ MonoBehaviour:
   MovingToPoint: 0
   MovingToPointDestination: {x: 0, y: 0}
   Unit: {fileID: 0}
+  IsWalkingToPoint: 0
   StartWithFlippedDirection: 0
+  _flipDirection: 0
 --- !u!82 &2543820967230203694
 AudioSource:
   m_ObjectHideFlags: 0
@@ -771,6 +773,7 @@ MonoBehaviour:
   ActionsAfter1HBarBroken: []
   ActionsAfter2HBarsBroken: []
   BaseAggressiveness: 1
+  AggressivenessModifier: 0
   SkipObserve: 0
   WaitTimeBeforeNextAction: 0
   CanMove: 1
@@ -808,6 +811,7 @@ MonoBehaviour:
   DamageCategory: 1
   NPCWeaponClass: 0
   Faction: 1
+  HitStopFramesRemaining: 0
   OnScreenBars: {fileID: 0}
   CollisionTurnedOn: 1
   EnemyGroup: {fileID: 0}
@@ -829,6 +833,8 @@ MonoBehaviour:
   BaseMovementSpeed: 1.2
   BaseTenacity: 3
   BaseControl: 0.5
+  BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!1 &1352397499453228661
 GameObject:
   m_ObjectHideFlags: 0
@@ -7192,8 +7198,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5160896818500022452}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 291938915
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_SortAtRoot: 0
 --- !u!1 &5249051061892986324
@@ -18728,8 +18734,8 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7797124652266044381}
   m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 291938915
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_SortAtRoot: 0
 --- !u!1 &7826211120266840699

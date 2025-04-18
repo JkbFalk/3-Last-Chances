@@ -12871,7 +12871,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7960603112269964472}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.44124052, w: -0.89738894}
+  m_LocalRotation: {x: 0, y: 0, z: 0.4412402, w: -0.89738905}
   m_LocalPosition: {x: -0.20854814, y: 0.2765046, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14293,7 +14293,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7960603113242603740}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.5219444, w: 0.8529796}
+  m_LocalRotation: {x: 0, y: 0, z: 0.52194405, w: 0.85297966}
   m_LocalPosition: {x: 0.32670718, y: -0.0016297102, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14485,7 +14485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7960603113387269301}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.9907066, w: 0.13601623}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9907066, w: 0.13601604}
   m_LocalPosition: {x: 0.057805806, y: 0.4420214, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14517,7 +14517,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7960603113452955753}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.8452501, w: 0.53437096}
+  m_LocalRotation: {x: 0, y: 0, z: -0.84524995, w: 0.5343712}
   m_LocalPosition: {x: 0.3341745, y: 0.13639547, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14944,7 +14944,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7960603113669029585}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.51002544, w: 0.8601594}
+  m_LocalRotation: {x: 0, y: 0, z: 0.5100253, w: 0.8601594}
   m_LocalPosition: {x: 0.33144787, y: 0.012402587, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15967,7 +15967,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7960603114111414465}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.5279649, w: 0.84926623}
+  m_LocalRotation: {x: 0, y: 0, z: -0.5279653, w: 0.8492659}
   m_LocalPosition: {x: 0.25190747, y: 0.0006058812, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -16559,7 +16559,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 0
+  DamageType: 5
   NPCWeaponClass: 11
   Faction: 1
   HitStopFramesRemaining: 0
@@ -16587,6 +16587,7 @@ MonoBehaviour:
   BaseTenacity: 0.75
   BaseControl: 0.5
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!50 &8492797678905452844
 Rigidbody2D:
   serializedVersion: 4

@@ -801,7 +801,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562349008039108755}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0.6910153, w: 0.7228402}
+  m_LocalRotation: {x: 0, y: -0, z: -0.69101524, w: 0.72284025}
   m_LocalPosition: {x: 0.25190747, y: 0.0006058812, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6522,7 +6522,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 1
+  DamageType: 5
   NPCWeaponClass: 13
   Faction: 1
   HitStopFramesRemaining: 0
@@ -6536,13 +6536,13 @@ MonoBehaviour:
   DistanceAwayFromChaseTarget: 1
   UnitColorChange: {fileID: 2275536687105095748}
   HealthBars:
-  - 7500
-  - 10000
-  - 12500
+  - 5500
+  - 7000
+  - 8500
   StaggeredRegen: 0
   DefaultStaggerBarRegenPercentage: 2
   StaggerBars:
-  - 5000
+  - 2500
   BaseInjury: 125
   BaseStagger: 175
   BaseAttackSpeed: 1
@@ -6550,6 +6550,7 @@ MonoBehaviour:
   BaseTenacity: 1
   BaseControl: 1
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1.5
 --- !u!1 &2203871052562282338
 GameObject:
   m_ObjectHideFlags: 0
@@ -7495,7 +7496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3485403164546527499}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.97451234, w: 0.22433385}
+  m_LocalRotation: {x: 0, y: 0, z: -0.9745124, w: 0.22433372}
   m_LocalPosition: {x: 0.3341745, y: 0.13639547, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -23873,7 +23874,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8589984155081031639}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.61530733, w: 0.7882874}
+  m_LocalRotation: {x: 0, y: 0, z: 0.61530745, w: 0.78828716}
   m_LocalPosition: {x: 0.32670718, y: -0.0016297102, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -24003,7 +24004,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8878499286451959843}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.27768603, w: -0.9606719}
+  m_LocalRotation: {x: 0, y: 0, z: 0.27768606, w: -0.9606719}
   m_LocalPosition: {x: -0.009439901, y: 0.31277877, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

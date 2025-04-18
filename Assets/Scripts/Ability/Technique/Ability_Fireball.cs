@@ -16,7 +16,7 @@ public class Ability_Fireball : Ability {
     public static float UpgradeAStunMinDuration = 2;
     public static float UpgradeAStunMaxDuration = 5;
     public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Magic;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
     private List<Projectile> _fireBalls = new();
     private List<Vector3> _intendedDestinations = new();
     private List<float> _distances = new();

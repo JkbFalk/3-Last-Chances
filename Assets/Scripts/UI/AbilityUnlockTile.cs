@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using System.Reflection;
 using UnityEditor.PackageManager;
 
-public class AbilityUnlockTile : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDeselectHandler
+public class AbilityUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
 {
     public string Ability;
     public Type AbilityType;
@@ -40,9 +40,11 @@ public class AbilityUnlockTile : MonoBehaviour, IPointerEnterHandler, ISelectHan
         return false;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        MenuManager.Instance.ShowSkillTreeAbilityDetails(this, false, IsUltimateUnlock);
+        if (eventData.button == PointerEventData.InputButton.Right) {
+            MenuManager.Instance.ShowSkillTreeAbilityDetails(this, false, IsUltimateUnlock);
+        }
     }
 
     public void OnSelect(BaseEventData eventData)

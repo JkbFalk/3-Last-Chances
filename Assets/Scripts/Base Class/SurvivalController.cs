@@ -25,7 +25,7 @@ public class SurvivalController
 
     public static float PlayerRemainingHealth = 1000;
     public static int RemainingHeals;
-    public static int PlayerRemainingAmmo = 6;
+    public static float PlayerRemainingAmmo = 6;
 
     public static void LoadNextLevel()
     {
@@ -119,7 +119,7 @@ public class SurvivalController
         {
             Type random_item_type = Constants.PossibleItemDrops[UnityEngine.Random.Range(0, Constants.PossibleItemDrops.Count)];
             Item random_item = (Item)Activator.CreateInstance(random_item_type, new object[] { Item.GetRandomizedGradeForGivenLevel(SaveFile.Instance.SurvivalLevel % 10 == 1 ? SaveFile.Instance.SurvivalLevel + 6 : (SaveFile.Instance.SurvivalLevel % 10 == 5 || SaveFile.Instance.SurvivalLevel % 10 == 8) ? SaveFile.Instance.SurvivalLevel + 1 : SaveFile.Instance.SurvivalLevel - 4) });
-            if(random_item.Category == ItemCategory.Tool) {
+            if(random_item.Category == ItemType.Tool) {
                 random_item.Amount = UnityEngine.Random.Range(3, 6);
             }
             SaveFile.Instance.AddItem(random_item);

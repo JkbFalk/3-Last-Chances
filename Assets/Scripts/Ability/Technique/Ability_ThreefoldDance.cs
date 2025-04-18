@@ -20,7 +20,7 @@ public class Ability_ThreefoldDance : Technique
     private List<AbilityInterruptType> _possibleInterruptions = new List<AbilityInterruptType> {AbilityInterruptType.Dodge, AbilityInterruptType.BasicAttack, AbilityInterruptType.Block, AbilityInterruptType.EnergyAbility, AbilityInterruptType.StanceSwitch};
 
     public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Heavy;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
     public Ability_ThreefoldDance(Unit ability_user) : base(ability_user)
     {
         if(UpgradeAUnlocked) {

@@ -353,9 +353,9 @@ public class GameController : WorldObject
         }
     }
 
-    public void OneFifthSecondElapsedNotRealtime() {
-        EventManager.OneFifthSecondElapsedNotRealtime.Invoke();
-        WaitAndRunMethod(0.2f, OneFifthSecondElapsedNotRealtime);
+    public void OneFifthSecondElapsedInGame() {
+        EventManager.OneFifthSecondElapsedInGame.Invoke();
+        WaitAndRunMethod(0.2f, OneFifthSecondElapsedInGame);
     }
 
     public void OneFifthSecondElapsedRealtime() {
@@ -430,7 +430,7 @@ public class GameController : WorldObject
             }
         }
         OneFifthSecondElapsedRealtime();
-        OneFifthSecondElapsedNotRealtime();
+        OneFifthSecondElapsedInGame();
     }
 
     public void ResetGameplay()

@@ -8,13 +8,8 @@ public class Armor_Unbreakable : Item
     public Armor_Unbreakable(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Unbreakable;
-        Category = Constants.ItemCategory.Armor;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Armor;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReflectPortionOfBlockedDamageBackAtAttacker")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatStaggerBar", 0.5f), new ItemEffect("StaggerBar", 0.5f)};
     }
 }

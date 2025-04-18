@@ -13,7 +13,7 @@ public class Tool_FortificationPotion : Item
     public static float Cooldown = 60;
     public Tool_FortificationPotion(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Tool;
+        Type = Constants.ItemType.Tool;
         OnUseAbility = typeof(Ability_DrinkItem);
         TotalStaggerRestored = 30 * GetMultiplierForGrade();
     }
@@ -26,6 +26,6 @@ public class Tool_FortificationPotion : Item
     public override void OnUse()
     {
         base.OnUse();
-        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.StaggerBar, new(this)) { ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_4"), RegenerationFlatAmount = TotalStaggerRestored / HealDuration[GradeIndex]}, HealDuration[GradeIndex]);
+        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.StaggerBar, new(this)) { ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_4"), RegenerationFlatModifier = TotalStaggerRestored / HealDuration[GradeIndex]}, HealDuration[GradeIndex]);
     }
 }

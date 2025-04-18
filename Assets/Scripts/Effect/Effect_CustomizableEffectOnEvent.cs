@@ -7,7 +7,6 @@ using UnityEngine.Events;
 
 public class Effect_CustomizableEffectOnEvent : Effect
 {
-    public float CustomParam = 0;
     public float PercentageAmount = 0;
     public float FlatAmount = 0;
     public Func<Item, Item, bool> ConditionCheckForItemEquipped;
@@ -34,12 +33,14 @@ public class Effect_CustomizableEffectOnEvent : Effect
     public Action<Effect_CustomizableEffectOnEvent> ActionOnAmmoAmountChanged;
     public Func<Stat, float, bool> ConditionCheckForUnitStatCurrentAmountChanged;
     public Action<Stat, float, Effect_CustomizableEffectOnEvent> ActionOnUnitStatCurrentAmountChanged;
+    public Func<Cooldown, bool> ConditionCheckForAboutToAddCooldown;
+    public Action<Cooldown, Effect_CustomizableEffectOnEvent> ActionOnAboutToAddCooldown;
     public Func<Cooldown, bool> ConditionCheckForCooldownAdded;
     public Action<Cooldown, Effect_CustomizableEffectOnEvent> ActionOnCooldownAdded;
     public Func<Ability, float, bool> ConditionCheckForAbilityEnergyConsumed;
     public Action<Ability, float, Effect_CustomizableEffectOnEvent> ActionOnAbilityEnergyConsumed;
-    public Func<bool> ConditionCheckForOneFifthSecondElapsedNotRealtime;
-    public Action<Effect_CustomizableEffectOnEvent> ActionOnOneFifthSecondElapsedNotRealtime;
+    public Func<bool> ConditionCheckForOneFifthSecondElapsedInGame;
+    public Action<Effect_CustomizableEffectOnEvent> ActionOnOneFifthSecondElapsedInGame;
 
     public Effect_CustomizableEffectOnEvent(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
@@ -58,11 +59,11 @@ public class Effect_CustomizableEffectOnEvent : Effect
         base.OnStart();
     }
 
-    public override void OnInvokeOneFifthSecondElapsedNotRealtime(){
-        base.OnInvokeOneFifthSecondElapsedNotRealtime();
-        if (ConditionCheckForOneFifthSecondElapsedNotRealtime != null && ConditionCheckForOneFifthSecondElapsedNotRealtime.Invoke() && ActionOnOneFifthSecondElapsedNotRealtime != null)
+    public override void OnInvokeOneFifthSecondElapsedInGame(){
+        base.OnInvokeOneFifthSecondElapsedInGame();
+        if (ConditionCheckForOneFifthSecondElapsedInGame != null && ConditionCheckForOneFifthSecondElapsedInGame.Invoke() && ActionOnOneFifthSecondElapsedInGame != null)
         {
-            ActionOnOneFifthSecondElapsedNotRealtime.Invoke(this);
+            ActionOnOneFifthSecondElapsedInGame.Invoke(this);
         }
     }
 
@@ -127,6 +128,14 @@ public class Effect_CustomizableEffectOnEvent : Effect
         if (stat.ShouldInvoke && ConditionCheckForUnitStatCurrentAmountChanged != null && ConditionCheckForUnitStatCurrentAmountChanged.Invoke(stat, amount) && ActionOnUnitStatCurrentAmountChanged != null)
         {
             ActionOnUnitStatCurrentAmountChanged.Invoke(stat, amount, this);
+        }
+    }
+
+    public override void OnInvokeAboutToAddCooldown(Cooldown cooldown) {
+        base.OnInvokeAboutToAddCooldown(cooldown);
+        if (ConditionCheckForAboutToAddCooldown != null && ConditionCheckForAboutToAddCooldown.Invoke(cooldown) && ActionOnAboutToAddCooldown != null)
+        {
+            ActionOnAboutToAddCooldown.Invoke(cooldown, this);
         }
     }
 

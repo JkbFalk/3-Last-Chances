@@ -26,7 +26,7 @@ public class Ability_SeverVitality : Technique
     private List<GameObject> _executeVfx = new List<GameObject>();
 
     public static AbilityFamily Family = AbilityFamily.Salutis;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Heavy;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
 
     public Ability_SeverVitality(Unit ability_user) : base(ability_user) {
         Properties.Add(AbilityProperty.Charged);

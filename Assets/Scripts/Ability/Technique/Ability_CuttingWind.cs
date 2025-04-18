@@ -19,9 +19,9 @@ public class Ability_CuttingWind : Technique
     public static float AttackSpeedBuffAmount = 100;
 
     public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageCategory {
+    public static Constants.DamageType TechniqueDamageType {
         get {
-            return Player.Instance.CurrentStance.DamageCategory;
+            return Player.Instance.CurrentStance.DamageType;
         }
     }
 
@@ -29,7 +29,7 @@ public class Ability_CuttingWind : Technique
 
     public Ability_CuttingWind(Unit ability_user) : base(ability_user) {
         if(Player.Instance.PreparingForUltimate) {
-            NameOfAnimationToAutoPlay = "CuttingWind_Ultimate_" + Player.Instance.CurrentWeaponCategory;
+            NameOfAnimationToAutoPlay = "CuttingWind_Ultimate_" + Player.Instance.CurrentWeaponType;
         }
         else {
             AutoPlayAbilityAnimation = false;
@@ -62,7 +62,7 @@ public class Ability_CuttingWind : Technique
         }
         AddOrUpdateCooldown();
         Player.Instance.Energy.Current -= EnergyCost;
-        Effect_CuttingWind effect = new Effect_CuttingWind(StaggerScaling, AttackSpeedBuffAmount, User.CurrentWeaponDamageCategory, new(this)) {MasteryA = SaveFile.Instance.AbilitiesMasteryA.Contains(GetType()), MasteryB = SaveFile.Instance.AbilitiesMasteryB.Contains(GetType())};
+        Effect_CuttingWind effect = new Effect_CuttingWind(StaggerScaling, AttackSpeedBuffAmount, User.CurrentWeaponDamageType, new(this)) {MasteryA = SaveFile.Instance.AbilitiesMasteryA.Contains(GetType()), MasteryB = SaveFile.Instance.AbilitiesMasteryB.Contains(GetType())};
         PlayCustomSound("Ability/Ability_SuperCharge_Use" + UnityEngine.Random.Range(1, 6), 0.9f);
         if (UpgradeAUnlocked)
         {
@@ -73,7 +73,7 @@ public class Ability_CuttingWind : Technique
 
         public override void CallAbilityEvent1()
     {
-        Effect_CuttingWind_Ultimate effect = new Effect_CuttingWind_Ultimate(User.CurrentWeaponDamageCategory, new(this));
+        Effect_CuttingWind_Ultimate effect = new Effect_CuttingWind_Ultimate(User.CurrentWeaponDamageType, new(this));
         User.AddEffect(effect, UltimateEffectDuration);
     }
 }

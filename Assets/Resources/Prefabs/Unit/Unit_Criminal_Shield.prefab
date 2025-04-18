@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4558160602687058312}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.43594593, w: 0.8999729}
+  m_LocalRotation: {x: 0, y: 0, z: 0.0039079715, w: 0.9999924}
   m_LocalPosition: {x: 0.33253556, y: -0.00026232004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1012,7 +1012,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4558160603161327245}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.08031229, w: 0.9967698}
+  m_LocalRotation: {x: 0, y: 0, z: -0.8958421, w: 0.44437274}
   m_LocalPosition: {x: 0.3341745, y: 0.13639547, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2921,7 +2921,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 0
+  DamageType: 5
   NPCWeaponClass: 10
   Faction: 1
   HitStopFramesRemaining: 0
@@ -2935,11 +2935,11 @@ MonoBehaviour:
   DistanceAwayFromChaseTarget: 0.8
   UnitColorChange: {fileID: 4558160603791004631}
   HealthBars:
-  - 2500
+  - 1600
   StaggeredRegen: 0
   DefaultStaggerBarRegenPercentage: 2
   StaggerBars:
-  - 1800
+  - 1000
   BaseInjury: 50
   BaseStagger: 120
   BaseAttackSpeed: 0.8
@@ -2947,6 +2947,7 @@ MonoBehaviour:
   BaseTenacity: 1.5
   BaseControl: 1.2
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1.8
 --- !u!1 &4558160603894029900
 GameObject:
   m_ObjectHideFlags: 0
@@ -8220,7 +8221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4558160604477379429}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.005681018, w: 0.9999839}
+  m_LocalRotation: {x: 0, y: 0, z: -0.0056827604, w: 0.99998385}
   m_LocalPosition: {x: 0.32670718, y: -0.0016297102, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

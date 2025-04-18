@@ -11,12 +11,6 @@ public class Effect_LowerBackstabImmunity : Effect
         Type = EffectType.Buff;
     }
 
-    public override void OnEffectValueChanged()
-    {
-        ImmunityDurationReductionInSeconds = LinearEffectValue * 0.25f;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(ImmunityDurationReductionInSeconds) };
-    }
-
     public override void OnStart()
     {
         base.OnStart();

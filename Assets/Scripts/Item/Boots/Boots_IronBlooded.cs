@@ -8,13 +8,8 @@ public class Boots_IronBlooded : Item
     public Boots_IronBlooded(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.IronBlooded;
-        Category = Constants.ItemCategory.Boots;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Boots;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertXPercentOfStaggerDealtToYouIntoInjury")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health")};
     }
 }

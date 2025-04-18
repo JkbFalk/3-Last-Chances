@@ -7,21 +7,20 @@ using UnityEngine;
 public class Effect_PlundererAbilityAmplify : Effect
 {
     private GameObject _vfx;
-    public float Amount;
     public Ability.AbilityFamily AmplifiedFamily = Ability.AbilityFamily.None;
     public Effect_PlundererAbilityAmplify(float amount, SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
-        Amount = amount;
+        FirstParameter = amount;
         ShowsInUI = true;
-        Listeners.Add(EventManager.AfterHitDamageCalculation);
+        Listeners.Add(EventManager.HitDealt);
     }
 
     public override void OnStart()
     {
         PathToEffectGraphic = "UI/" + AmplifiedFamily;
         base.OnStart();
-        EffectIndicatorText = Utils.GetFormattedFloat(Amount) + "%";
-        if(Amount <= 0) {
+        EffectIndicatorText = Utils.GetFormattedFloat(FirstParameter) + "%";
+        if(FirstParameter <= 0) {
             return;
         }
         _vfx = Utils.CreateVisualEffect(SourceOfEffect, "Plunderer_" + AmplifiedFamily.ToString());
@@ -37,11 +36,19 @@ public class Effect_PlundererAbilityAmplify : Effect
         }
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
+    public override void OnInvokeHitDealt(Damage damage) {
         FieldInfo family = damage.SourceOfDamage.GetType().GetField("Family", BindingFlags.Public | BindingFlags.Static);
         if(damage.SourceOfDamage.User == TargetOfEffect && family != null && family.GetValue(null).ToString() == AmplifiedFamily.ToString()) {
-            damage.Injury = damage.Injury + damage.Injury * Amount / 100;
-            damage.Stagger = damage.Stagger + damage.Stagger * Amount / 100;
+            damage.ExtraDamageDealtPercentage = FirstParameter;
+            Effect extraDR = TargetOfEffect.GetEffect(new System.Func<Effect, bool> (effect => effect.Identifier == "PlundererDamageReduction"));
+            if(extraDR != null) {
+                TargetOfEffect.AddEffect(
+                    new Effect_ChangeStat(TargetOfEffect.DamageReduction, SourceOfEffect) {
+                        PercentageModifier = extraDR.FirstParameter,
+                    }
+                , extraDR.SecondParameter); 
+            }
+            EndThisEffect();
             base.OnInvokeHitDealt(damage);
         } 
     }

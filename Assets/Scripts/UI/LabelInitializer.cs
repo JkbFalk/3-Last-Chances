@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class LabelInitializer : MonoBehaviour {
+public class LabelInitializer : MonoBehaviour, IPointerMoveHandler {
 
     /*private string _originalValue;
     public string OriginalValue {
@@ -17,11 +18,21 @@ public class LabelInitializer : MonoBehaviour {
     [HideInInspector]
     public List<string> string_params;
     public bool DisableDetailedDescription = false;
+    private TextMeshProUGUI _tmp;
+    public TextMeshProUGUI TextMeshPro {
+        get {
+            if(_tmp == null) {
+                _tmp = GetComponent<TextMeshProUGUI>();
+            }
+            return _tmp;
+        }
+    }
+
     public void Start() {
         PlayerControls.AllLabelInitializers.Add(this);
         if (string.IsNullOrEmpty(OriginalValue))
         {
-            OriginalValue = GetComponent<TextMeshProUGUI>().text;
+            OriginalValue = TextMeshPro.text;
         }
         LoadLabel();
     }
@@ -30,17 +41,17 @@ public class LabelInitializer : MonoBehaviour {
     {
         if (string.IsNullOrEmpty(OriginalValue))
         {
-            OriginalValue = GetComponent<TextMeshProUGUI>().text;
+            OriginalValue = TextMeshPro.text;
         }
         if (string_params != null && string_params.Count > 0)
         {
             string format = Utils.InsertLabelsIntoText(OriginalValue, gameObject);
             string formatted_string = string.Format(format, string_params.ToArray());
-            GetComponent<TextMeshProUGUI>().text = formatted_string;
+            TextMeshPro.text = formatted_string;
         }
         else
         {
-            GetComponent<TextMeshProUGUI>().text = Utils.InsertLabelsIntoText(OriginalValue, gameObject);
+            TextMeshPro.text = Utils.InsertLabelsIntoText(OriginalValue, gameObject);
         }
     }
 
@@ -55,16 +66,24 @@ public class LabelInitializer : MonoBehaviour {
         LoadLabel();
     }
 
-    public void SetLabelWithIncrementedToken(string label, string[] tile_params)
+    public void SetLabelWithIncrementedToken(string label, List<string> function_params)
     {
         OriginalValue = label;
-        String text = "";
         int index = 0;
         List<String> extractedIds = ExtractLabelIds(label);
         for(int i = 0; i < extractedIds.Count; i++) {
-            text += GetLabelWithIncrementedTokens(extractedIds[i], ref index) + "\n\n" + (SaveFile.Instance.UnlockedPowerUps.Contains(extractedIds[i].Replace("Effect_", "").Replace("DescriptionDetailed", "").Replace("Description", "")) ? ""  : Utils.GetCalculatedStatIncrease(extractedIds[i], tile_params[i]));
+            label = label.Replace("{" + extractedIds[i] + "}", GetLabelWithIncrementedTokens(extractedIds[i], ref index));
         }
-        LoadLabel();
+        if (function_params != null && function_params.Count > 0)
+        {
+            string format = Utils.InsertLabelsIntoText(label, gameObject);
+            string formatted_string = string.Format(format, function_params.ToArray());
+            TextMeshPro.text = formatted_string;
+        }
+        else
+        {
+            TextMeshPro.text = Utils.InsertLabelsIntoText(label, gameObject);
+        }
     }
 
     public List<string> ExtractLabelIds(string text) {
@@ -78,7 +97,6 @@ public class LabelInitializer : MonoBehaviour {
             else if(text[i] == '}') {
                 extractingId = false;
                 extractedIds.Add(tempId);
-                Debug.Log("EXTRACTED ID! " + tempId);
                 tempId = "";
             }
             else if(extractingId){
@@ -96,7 +114,6 @@ public class LabelInitializer : MonoBehaviour {
         string text = Label.Get(label);
         int highestParamIndex;
         for(highestParamIndex = 0; text.Contains("{" + highestParamIndex + "}"); highestParamIndex++);
-        start_index += highestParamIndex - 1;
         for(int i = 0; i < text.Length; i++) {
             if(text[i] == '{' && text.Length > i+2 && text[i+2] == '}') {
                 text = text.Substring(0, i+1) + (Int32.Parse(text[i+1].ToString()) + start_index).ToString() + text.Substring(i+2, text.Length - i - 2);
@@ -110,5 +127,62 @@ public class LabelInitializer : MonoBehaviour {
 
     public void OnDestroy() {
         PlayerControls.AllLabelInitializers.Remove(this);
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+		int linkIndex = TMP_TextUtilities.FindIntersectingLink(TextMeshPro, Input.mousePosition, null);
+        if(linkIndex == -1) {
+            if(MenuManager.Instance.TooltipDisplay.ChangeInProgress == false && MenuManager.Instance.TooltipDisplay.Visiblity > 0) {
+                MenuManager.Instance.TooltipDisplay.HideOverTimeFromFull(0.15f);
+                MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.3f, 1, 0.05f);
+            }
+            return;
+        }
+		string linkId = TextMeshPro.textInfo.linkInfo[linkIndex].GetLinkID();
+        if(Input.mousePosition.x < Screen.width * 0.18f && Input.mousePosition.y > Screen.height * 0.7f) {
+            MenuManager.Instance.Tooltip.transform.parent.gameObject.GetComponent<RectTransform>().pivot = new Vector2(-0.03f, 1.03f);
+        }
+        else if(Input.mousePosition.x < Screen.width * 0.18f && Input.mousePosition.y <= Screen.height * 0.7f) {
+            MenuManager.Instance.Tooltip.transform.parent.gameObject.GetComponent<RectTransform>().pivot = new Vector2(-0.03f, -0.03f);
+        }
+        else if(Input.mousePosition.x >= Screen.width * 0.18f && Input.mousePosition.y > Screen.height * 0.7f) {
+            MenuManager.Instance.Tooltip.transform.parent.gameObject.GetComponent<RectTransform>().pivot = new Vector2(1.03f, 1.03f);
+        }
+        else{
+            MenuManager.Instance.Tooltip.transform.parent.gameObject.GetComponent<RectTransform>().pivot = new Vector2(1.03f, -0.03f);
+        }
+        MenuManager.Instance.Tooltip.transform.parent.gameObject.transform.position = Input.mousePosition;
+        MenuManager.Instance.Tooltip.transform.parent.gameObject.SetActive(true);
+        if(MenuManager.Instance.TooltipDisplay.ChangeInProgress == false && MenuManager.Instance.TooltipDisplay.Visiblity < 1) {
+            MenuManager.Instance.TooltipDisplay.ShowOverTimeFromZero(0.15f);
+            MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.3f, 0.05f, 1);
+            MenuManager.Instance.TooltipDisplay.CheckIfShouldHideOnceFinishedChanging = true;
+            MenuManager.Instance.TooltipDisplay.LabelInitializer = this;
+        }
+        if(linkId == "FirstItemEffects") {
+            List<Effect> ef = EffectList.GetEffect(MenuManager.Instance.CurrentDetailedItemDescription.FirstItemEffects[0].EffectName, MenuManager.Instance.CurrentDetailedItemDescription.FirstItemEffects[0].PortionOfPowerBudget * MenuManager.Instance.CurrentDetailedItemDescription.GetItemFirstEffectPB());
+            MenuManager.Instance.Tooltip.string_params = ef[0].DescriptionParameters;
+            MenuManager.Instance.Tooltip.SetLabel("{Effect_" + MenuManager.Instance.CurrentDetailedItemDescription.FirstItemEffects[0].EffectName + "_DescriptionDetailed}");
+        }
+        else if(linkId == "SecondItemEffects") {
+            List<Effect> ef = EffectList.GetEffect(MenuManager.Instance.CurrentDetailedItemDescription.SecondItemEffects[0].EffectName, MenuManager.Instance.CurrentDetailedItemDescription.SecondItemEffects[0].PortionOfPowerBudget * MenuManager.Instance.CurrentDetailedItemDescription.GetItemSecondEffectPB());
+            MenuManager.Instance.Tooltip.string_params = ef[0].DescriptionParameters;
+            MenuManager.Instance.Tooltip.SetLabel("{Effect_" + MenuManager.Instance.CurrentDetailedItemDescription.SecondItemEffects[0].EffectName + "_DescriptionDetailed}");
+        }
+        else {
+            MenuManager.Instance.Tooltip.SetLabel("{" + linkId + "}");
+        }
+    }
+
+    public void CheckIfShouldHide() {
+        int linkIndex = TMP_TextUtilities.FindIntersectingLink(TextMeshPro, Input.mousePosition, null);
+        if(linkIndex == -1) {
+            if(MenuManager.Instance.TooltipDisplay.Visiblity > 0) {
+                MenuManager.Instance.TooltipDisplay.HideOverTimeFromFull(0.15f);
+                MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.3f, 1, 0.05f);
+            }
+            return;
+        }
     }
 }

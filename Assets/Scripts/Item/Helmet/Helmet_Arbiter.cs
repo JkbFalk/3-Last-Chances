@@ -8,14 +8,9 @@ public class Helmet_Arbiter : Item
     public Helmet_Arbiter(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Arbiter;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.StaggerBar, new(this)) { FlatAmount = 10 } };
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertAllInjuryToStaggerAgainstNonStaggered")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToStaggered")};
     }
 }
 

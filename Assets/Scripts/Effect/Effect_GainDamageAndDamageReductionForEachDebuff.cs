@@ -19,12 +19,6 @@ public class Effect_GainDamageAndDamageReductionForEachDebuff : Effect
         TriggersOncePerAbility = true;
     }
 
-    public override void OnEffectValueChanged()
-    {
-        DamageReductionGainedPerDebuff *= NonLinearEffectValue;
-        DamageGainedPerDebuff *= NonLinearEffectValue;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(DamageGainedPerDebuff), Utils.GetFormattedFloat(DamageReductionGainedPerDebuff), MaxDebuffs.ToString()};
-    }
 
     public void Activate() {
         if(EffectEnded && DamageReductionBuff != null && DamageReductionBuff.EffectEnded == false) {
@@ -33,7 +27,6 @@ public class Effect_GainDamageAndDamageReductionForEachDebuff : Effect
         }
         else if(!EffectEnded) {
             int debuffCount = Player.Instance.CurrentEffects.Where(effect => effect.Type == EffectType.Debuff && effect.CountsAsSeparateEffect).Count();
-            Debug.Log("XXX: Found debuffs: " + debuffCount);
             if(debuffCount > MaxDebuffs) {
                 debuffCount = MaxDebuffs;
             }
@@ -44,8 +37,8 @@ public class Effect_GainDamageAndDamageReductionForEachDebuff : Effect
             if(debuffCount == 0) {
                 return;
             }
-            DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {ShowsInUI=true, EffectIndicatorText=Utils.GetFormattedFloat(DamageReductionGainedPerDebuff * debuffCount) + "%", PercentageAmount = DamageReductionGainedPerDebuff * debuffCount};
-            DamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {ShowsInUI=true, EffectIndicatorText=Utils.GetFormattedFloat(DamageGainedPerDebuff * debuffCount) + "%", PercentageAmount = DamageGainedPerDebuff * debuffCount};
+            DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {ShowsInUI=true, EffectIndicatorText=Utils.GetFormattedFloat(DamageReductionGainedPerDebuff * debuffCount) + "%", PercentageModifier = DamageReductionGainedPerDebuff * debuffCount};
+            DamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {ShowsInUI=true, EffectIndicatorText=Utils.GetFormattedFloat(DamageGainedPerDebuff * debuffCount) + "%", PercentageModifier = DamageGainedPerDebuff * debuffCount};
             Player.Instance.AddEffect(DamageReductionBuff);
             Player.Instance.AddEffect(DamageBuff);
         }

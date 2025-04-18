@@ -200,11 +200,11 @@ public class DebugController : MonoBehaviour
                     e.EndThisEffect();
                 }
             }
-            superInjury = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new("Cheat")) {IsRemovable = false, PercentageAmount = 100000};
-            superAS = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {IsRemovable = false, PercentageAmount = 100};
-            superDef = new Effect_ChangeStat(Player.Instance.DamageReduction, new("Cheat")) {PercentageAmount = 5000};
-            superRes = new Effect_ChangeStat(Player.Instance.Tenacity, new("Cheat")) {IsRemovable = false, PercentageAmount = 1000};
-            superSpeed = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("Cheat")) {IsRemovable = false, PercentageAmount = 250};
+            superInjury = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new("Cheat")) {IsRemovable = false, PercentageModifier = 100000};
+            superAS = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {IsRemovable = false, PercentageModifier = 100};
+            superDef = new Effect_ChangeStat(Player.Instance.DamageReduction, new("Cheat")) {PercentageModifier = 5000};
+            superRes = new Effect_ChangeStat(Player.Instance.Tenacity, new("Cheat")) {IsRemovable = false, PercentageModifier = 1000};
+            superSpeed = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("Cheat")) {IsRemovable = false, PercentageModifier = 250};
             foreach(Effect e in new List<Effect> {superInjury, superAS, superDef, superRes, superSpeed}) {
                 Player.Instance.AddEffect(e);
             }
@@ -264,11 +264,11 @@ public class DebugController : MonoBehaviour
     public void RefreshSpeedMode() {
         if(MaxAttackSpeed) {
             foreach(GameObject go in GameObject.FindGameObjectsWithTag("Enemy")) {
-                Effect_ChangeCompositeStat buff = new(go.GetComponent<Unit>(), Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {PercentageAmount = 1000};
+                Effect_ChangeCompositeStat buff = new(go.GetComponent<Unit>(), Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {PercentageModifier = 1000};
                 SpeedBuffs.Add(buff);
                 go.GetComponent<Unit>().AddEffect(buff);
             }
-            Effect_ChangeCompositeStat buff2 = new(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {PercentageAmount = 1000};
+            Effect_ChangeCompositeStat buff2 = new(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {PercentageModifier = 1000};
             SpeedBuffs.Add(buff2);
             Player.Instance.AddEffect(buff2);
         }
@@ -293,8 +293,8 @@ public class DebugController : MonoBehaviour
 
     public void RefreshSpamMode() {
         if(SpamModeEnabled) {
-            superCDR = new Effect_ChangeStat(Player.Instance.CooldownReduction, new("Cheat")) {IsRemovable = false, PercentageAmount = 10000};
-            superEG = new Effect_ChangeStat(Player.Instance.Energy, new("Cheat")) {IsRemovable = false, RegenerationFlatAmount = 100};
+            superCDR = new Effect_ChangeStat(Player.Instance.CooldownReduction, new("Cheat")) {IsRemovable = false, PercentageModifier = 10000};
+            superEG = new Effect_ChangeStat(Player.Instance.Energy, new("Cheat")) {IsRemovable = false, RegenerationFlatModifier = 100};
             Player.Instance.AddEffect(superCDR);
             Player.Instance.AddEffect(superEG);
             Player.Instance.RemoveAllCooldowns();
@@ -380,11 +380,11 @@ public class DebugController : MonoBehaviour
                     {
                         added_item.Amount = added_item.MaxAmount;
                     }
-                    if(added_item.Category == Constants.ItemCategory.Tool) {
+                    if(added_item.Type == Constants.ItemType.Tool) {
                         SaveFile.Instance.UnlockTool(type);
                         break;
                     }
-                    else if(!(added_item is Quest_UpgradeMaterials) && added_item.Category == Constants.ItemCategory.Quest) {
+                    else if(!(added_item is Quest_UpgradeMaterials) && added_item.Type == Constants.ItemType.Quest) {
                         added_item.Grade = Item.ItemGrade.None;
                         SaveFile.Instance.AddItem(added_item, false);
                         break;

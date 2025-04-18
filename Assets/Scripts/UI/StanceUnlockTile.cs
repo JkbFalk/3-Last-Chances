@@ -6,7 +6,7 @@ using System;
 using UnityEngine.UI;
 using System.Reflection;
 
-public class StanceUnlockTile : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDeselectHandler
+public class StanceUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
 {
     public string Ability;
     public Type AbilityType;
@@ -69,9 +69,11 @@ public class StanceUnlockTile : MonoBehaviour, IPointerEnterHandler, ISelectHand
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        MenuManager.Instance.ShowSkillTreeStanceDetails(this);
+        if (eventData.button == PointerEventData.InputButton.Right) {
+            MenuManager.Instance.ShowSkillTreeStanceDetails(this);
+        }
     }
 
     public void OnSelect(BaseEventData eventData)

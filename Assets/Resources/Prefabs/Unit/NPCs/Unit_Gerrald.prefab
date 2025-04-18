@@ -7418,7 +7418,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 0
+  DamageType: 5
   NPCWeaponClass: 5
   Faction: 2
   HitStopFramesRemaining: 0
@@ -7442,9 +7442,10 @@ MonoBehaviour:
   BaseStagger: 100
   BaseAttackSpeed: 1
   BaseMovementSpeed: 1
-  BaseTenacity: 1.3
-  BaseControl: 1.3
+  BaseTenacity: 1
+  BaseControl: 1
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!114 &991857471941095573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7964,7 +7965,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CategoryHash: 4.816446e-35
-  m_labelHash: 0.0014986778
+  m_labelHash: 1.9785174e-25
   m_SpriteKey: 1.9077801e-25
   m_SpriteHash: 252777749
 --- !u!114 &8419474564596567054
@@ -8740,7 +8741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CategoryHash: 4.816446e-35
-  m_labelHash: 0.0014986778
+  m_labelHash: 1.9785174e-25
   m_SpriteKey: 1.9077801e-25
   m_SpriteHash: 252777749
 --- !u!114 &5230546694031096894

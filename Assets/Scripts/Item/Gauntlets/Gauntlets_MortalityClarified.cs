@@ -8,15 +8,10 @@ public class Gauntlets_MortalityClarified : Item
     public Gauntlets_MortalityClarified(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Arbiter;
-        Category = Constants.ItemCategory.Light;
+        Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
         SetBaseWeaponStats(80, 80, 1.3f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Control, new(this)) {PercentageAmount = 0.5f}};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("StaggeringAppliesXLethargySlowAndProne")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToStaggered")};
     }
 }

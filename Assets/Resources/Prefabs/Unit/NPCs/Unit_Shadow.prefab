@@ -2423,7 +2423,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 0
+  DamageType: 5
   NPCWeaponClass: 11
   Faction: 0
   HitStopFramesRemaining: 0
@@ -2445,11 +2445,12 @@ MonoBehaviour:
   - 90
   BaseInjury: 100
   BaseStagger: 100
-  BaseAttackSpeed: 0.8
-  BaseMovementSpeed: 0.5
+  BaseAttackSpeed: 1
+  BaseMovementSpeed: 1
   BaseTenacity: 1
   BaseControl: 1
   BaseCooldownReduction: 1
+  BaseDamageReduction: 1
 --- !u!1 &643590633037495560
 GameObject:
   m_ObjectHideFlags: 0

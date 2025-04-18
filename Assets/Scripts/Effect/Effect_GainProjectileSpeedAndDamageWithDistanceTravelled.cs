@@ -20,14 +20,6 @@ public class Effect_GainProjectileSpeedAndDamageWithDistanceTravelled : Effect
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void OnEffectValueChanged()
-    {
-        MaxRangeBuff *= NonLinearEffectValue;
-        FlightSpeedBuff *= NonLinearEffectValue;
-        DamageBuff *= LinearEffectValue;
-        DescriptionParameters = new() {Utils.GetFormattedFloat(MaxRangeBuff, 1), Utils.GetFormattedFloat(FlightSpeedBuff, 1), Utils.GetFormattedFloat(DamageBuff, 1)};
-    }
-
     public override void OnInvokeProjectileCreated(Projectile projectile)
     {
         if (projectile.SourceAbility.User != TargetOfEffect || projectile.SourceAbility.ScalesWith != Constants.DamageType.Ranged) {

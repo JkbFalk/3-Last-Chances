@@ -8,14 +8,8 @@ public class Boots_Enforcer : Item
     public Boots_Enforcer(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Enforcer;
-        Category = Constants.ItemCategory.Boots;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_CustomizableDamageChange(new(this)) { EffectTypeName="BasicAttackDamage", DescriptionParameters = new() {Utils.GetFormattedFloat(GetFirstModifierEffectValue())}, InjuryPercentageChange = GetFirstModifierEffectValue(), StaggerPercentageChange = GetFirstModifierEffectValue(), ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                    (damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)))} };
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Boots;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("SharpAndAnalysisAlsoIncreaseBasicAttackDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AttackSpeed")};
     }
 }

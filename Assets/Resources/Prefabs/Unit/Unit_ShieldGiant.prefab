@@ -5308,7 +5308,7 @@ MonoBehaviour:
   IsStaggered: 0
   FootstepsOverride: 
   Collider: {fileID: 0}
-  DamageCategory: 0
+  DamageType: 5
   NPCWeaponClass: 10
   Faction: 1
   HitStopFramesRemaining: 0
@@ -5322,14 +5322,14 @@ MonoBehaviour:
   DistanceAwayFromChaseTarget: 1
   UnitColorChange: {fileID: 4390521988277471082}
   HealthBars:
-  - 12000
+  - 7500
   StaggeredRegen: 0
   DefaultStaggerBarRegenPercentage: 0.5
   StaggerBars:
-  - 2000
-  - 1500
   - 1000
+  - 750
   - 500
+  - 250
   BaseInjury: 90
   BaseStagger: 150
   BaseAttackSpeed: 0.85
@@ -5337,6 +5337,7 @@ MonoBehaviour:
   BaseTenacity: 0.8
   BaseControl: 1.5
   BaseCooldownReduction: 1
+  BaseDamageReduction: 2
 --- !u!1 &4390521988348215515
 GameObject:
   m_ObjectHideFlags: 0

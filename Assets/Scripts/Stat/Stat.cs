@@ -14,7 +14,7 @@ public class Stat {
     public TextMeshProUGUI MenuStatDisplay;
     public Unit Owner;
     public string Id;
-    public List<StatModifier> FlatModifiers = new List<StatModifier>();
+    public List<StatModifier> BaseModifiers = new List<StatModifier>();
     public List<StatModifier> PercentageModifiers = new List<StatModifier>();
 
     public float Regeneration { get; protected set; } = 0;
@@ -24,6 +24,11 @@ public class Stat {
     public bool CannotBeLowerThan1 = false;
     protected float _current = 0;
     public float MaximumValue = 1000000;
+    public bool IsBase1Stat {
+        get {
+            return this is EnergyGain || this is DamageReduction || this is Tenacity || this is CooldownReduction || this is Control || this is MovementSpeed || this is AttackSpeed || this is ItemPower || this is ToolPower || this is Penetration;
+        }
+    }
 
     public bool ShouldInvoke = true;
     public float Current {
@@ -103,7 +108,7 @@ public class Stat {
     }
 
     public void AddFlatModifier(System.Object source, float amount) {
-        FlatModifiers.Add(new StatModifier(amount, source));
+        BaseModifiers.Add(new StatModifier(amount, source));
         RecalculateMaximumAmount(source);
     }
 
@@ -113,7 +118,7 @@ public class Stat {
         float total_percentages = 0;
         float total_flats = 0;
         float modified_flat_increase = flat_increase;
-        foreach (StatModifier modifier in FlatModifiers)
+        foreach (StatModifier modifier in BaseModifiers)
         {
             total_flats += modifier.Amount;
             calculated_maximum += modifier.Amount;
@@ -127,23 +132,20 @@ public class Stat {
         total_added += calculated_maximum * percentage_increase / 100;
         calculated_maximum += total_added;
         if(flat_increase == 0) {
-            if(this is DamageReduction || this is Tenacity || this is Control || this is MovementSpeed || this is EnergyGain || this is CooldownReduction) {
-                return (int)total_percentages + "% -> " + (int)(total_percentages + percentage_increase) + "%";
-            }
-            return Utils.GetFormattedFloat(pre_increase_percentage_total, Base < 10 ? 2 : 1,Base < 10) + " -> " + Utils.GetFormattedFloat(calculated_maximum, Base < 10 ? 2 : 1, Base < 10) + "     (" + (int)total_percentages + "% -> " + (int)(total_percentages + percentage_increase) + "%)";
+            return Utils.GetFormattedFloat(pre_increase_percentage_total, IsBase1Stat ? 2 : 0) + " -> " + Utils.GetFormattedFloat(calculated_maximum, IsBase1Stat ? 2 : 0) + "     (" + Utils.GetFormattedFloat(total_percentages) + "% -> " + Utils.GetFormattedFloat(total_percentages + percentage_increase) + "%)";
         }
         else {
-            return Utils.GetFormattedFloat(calculated_maximum, Base < 10 ? 2 : 1, Base < 10) + " -> " + Utils.GetFormattedFloat((calculated_maximum + modified_flat_increase), Base < 10 ? 2 : 1, Base < 10) + "      (" + (int)total_flats + " -> " + (int)(total_flats + flat_increase) + ")";
+            return Utils.GetFormattedFloat(calculated_maximum, IsBase1Stat ? 2 : 0) + " -> " + Utils.GetFormattedFloat(calculated_maximum + modified_flat_increase, IsBase1Stat ? 2 : 0) + "      (" + Utils.GetFormattedFloat(Base + total_flats) + " -> " + Utils.GetFormattedFloat(Base + total_flats + flat_increase) + ")";
         }
     }
 
     public void RemoveFlatModifier(System.Object source, float amount = 0) {
-        StatModifier modifierToRemove = FlatModifiers.FirstOrDefault(statModifier => statModifier.Source == source && (amount == 0 || statModifier.Amount == amount));
+        StatModifier modifierToRemove = BaseModifiers.FirstOrDefault(statModifier => statModifier.Source == source && (amount == 0 || statModifier.Amount == amount));
         if (modifierToRemove == null) {
             Debug.LogWarning("Flat Modifier to remove (" + source + ": " + amount + ") for stat " + GetType().Name + " not found");
             return;
         }
-        FlatModifiers.Remove(modifierToRemove);
+        BaseModifiers.Remove(modifierToRemove);
         RecalculateMaximumAmount(source);
     }
 
@@ -233,7 +235,7 @@ public class Stat {
 
     public void RecalculateMaximumAmount(System.Object source) {
         float calculated_maximum = Base;
-        foreach (StatModifier modifier in FlatModifiers)
+        foreach (StatModifier modifier in BaseModifiers)
         {
             calculated_maximum += modifier.Amount;
         }
@@ -271,7 +273,7 @@ public class Stat {
 
     public void ClearAllModifiers()
     {
-        FlatModifiers.Clear();
+        BaseModifiers.Clear();
         PercentageModifiers.Clear();
         FlatRegeneration.Clear();
         PercentageRegeneration.Clear();

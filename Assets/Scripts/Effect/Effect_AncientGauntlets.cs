@@ -6,18 +6,11 @@ using UnityEngine.Events;
 public class Effect_AncientGauntlets : Effect { 
 
     public Effect_ChangeStat EnergyGainBuff;
-    public float BuffAmount = 0;
 
     public Effect_AncientGauntlets(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
         Listeners.Add(EventManager.ItemEquipped);
-    }
-
-    public override void OnEffectValueChanged()
-    {
-        BuffAmount = 0.125f * NonLinearEffectValue;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(BuffAmount) };
     }
 
     public override void OnStart() {
@@ -40,7 +33,7 @@ public class Effect_AncientGauntlets : Effect {
     }
 
     public void AddBuffs() {
-        EnergyGainBuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageAmount = BuffAmount};
+        EnergyGainBuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageModifier = FirstParameter};
         Player.Instance.AddEffect(EnergyGainBuff);
     }
 }

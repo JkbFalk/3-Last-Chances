@@ -34,7 +34,7 @@ public class Ability_Flamethrower : Technique
     private Dictionary<Unit, float> UltimateEnemiesAndBurn = new();
 
     public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Magic;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
 
     public Ability_Flamethrower(Unit ability_user) : base(ability_user)
     {

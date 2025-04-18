@@ -167,7 +167,6 @@ public class UnitAI : MonoBehaviour {
         }
         foreach(string ability in EnemiesInRangeForAbility.Keys.ToList()) {
             if(_unit.CheckIfValidTarget(EnemiesInRangeForAbility[ability]) == false) {
-                Debug.Log($"REMOVING INVALID TARGET FOR ABILITY: Unit {_unit}, ability {ability}, target {EnemiesInRangeForAbility[ability]}");
                 EnemiesInRangeForAbility.Remove(ability);
             }
         }

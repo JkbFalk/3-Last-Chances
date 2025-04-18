@@ -12,9 +12,4 @@ public class Effect_ProtectFromFlinchingOnce : Effect
         Type = EffectType.Buff;
     }
 
-    public override void OnEffectValueChanged()
-    {
-        Cooldown = LinearEffectValue == 10 ? 20 : LinearEffectValue == 20 ? 10 : LinearEffectValue == 40 ? 5 : 0;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(Cooldown) };
-    }
 }

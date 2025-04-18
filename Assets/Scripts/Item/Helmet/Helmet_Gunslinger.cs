@@ -8,13 +8,8 @@ public class Helmet_Gunslinger : Item
     public Helmet_Gunslinger(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Gunslinger;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealExtraDamageToEnemiesFarAway")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedDamage")};
     }
 }

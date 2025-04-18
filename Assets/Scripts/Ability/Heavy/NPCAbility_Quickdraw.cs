@@ -12,7 +12,7 @@ public class NPCAbility_Quickdraw: Ability {
         AddCustomSound("Draw2", "Ability/Ability_SeverVitality_Swing", 1f);
         AddCustomSound("Indicator", "Ability/QuickdrawIndicator", 0.8f);
         AddCustomSound("Wind", "Ability/Ability_WindBlast_Dash", 0.8f);
-        _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageAmount = UnityEngine.Random.Range(0, 25)};
+        _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageModifier = UnityEngine.Random.Range(0, 25)};
         EffectsAffectingUserDuringAbility = new() {_randomAS};
     }
 

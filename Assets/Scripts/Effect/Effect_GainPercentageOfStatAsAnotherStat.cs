@@ -2,58 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect_GainPercentageOfStatAsAnotherStat : Effect
+public class Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat : Effect
 {
     public float PercentageOfStatConverted = 0;
-    public Stat StatToTakePercentageFrom;
-    public Stat StatToConvertInto;
-    public string StatToTakePercentageFromColor = "";
-    public string StatToConvertIntoColor = "";
-    public float CurrentBonus;
-    public float MaxAmount = 0;
+    public Stat StatToTakeIncreasesFrom;
+    public Stat StatToApplyIncreasesTo;
+    private Effect_ChangeStat _extraIncreases;
 
-    public Effect_GainPercentageOfStatAsAnotherStat(Stat stat_to_take_percentage_from, Stat stat_to_convert_into, float percentage_amount, float max_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
+    public Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Stat stat_to_take_increases_from, Stat stat_to_apply_increases_to, float percentage_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
-        StatToTakePercentageFrom = stat_to_take_percentage_from;
-        StatToConvertInto = stat_to_convert_into;
-        MaxAmount = max_amount;
+        StatToTakeIncreasesFrom = stat_to_take_increases_from;
+        StatToApplyIncreasesTo = stat_to_apply_increases_to;
         PercentageOfStatConverted = percentage_amount;
-    }
-
-    public override void OnEffectValueChanged()
-    {
-        MaxAmount *= LinearEffectValue;
-        if(StatToTakePercentageFrom != null && StatToConvertInto != null)
-        {
-            DescriptionParameters = new List<string> { Utils.GetFormattedFloat(PercentageOfStatConverted), "{StatLabel_" + StatToTakePercentageFrom.GetType().ToString() + "}", "{StatLabel_" + StatToConvertInto.GetType().ToString() + "}", Utils.GetFormattedFloat(MaxAmount), StatToTakePercentageFromColor, StatToConvertIntoColor };
-        }
+        Listeners.Add(EventManager.UnitStatCurrentAmountChanged);
     }
 
     public override void OnStart()
     {
         base.OnStart();
-        CurrentBonus = StatToTakePercentageFrom.Maximum * PercentageOfStatConverted / 100 > MaxAmount ? MaxAmount: StatToTakePercentageFrom.Maximum * PercentageOfStatConverted / 100;
-        StatToConvertInto.AddFlatModifier(this, CurrentBonus);
-        EventManager.UnitStatCurrentAmountChanged.AddListener(RecalculateBonus);
-    }
-
-    public void RecalculateBonus(Stat stat, float amount)
-    {
-        if(stat.ShouldInvoke && stat == StatToTakePercentageFrom)
-        {
-            stat.ShouldInvoke = false;
-            StatToConvertInto.RemoveFlatModifier(this);
-            CurrentBonus = StatToTakePercentageFrom.Maximum * PercentageOfStatConverted / 100 > MaxAmount ? MaxAmount : StatToTakePercentageFrom.Maximum * PercentageOfStatConverted / 100;
-            StatToConvertInto.AddFlatModifier(this, CurrentBonus);
-            stat.ShouldInvoke = true;
-        }
+        _extraIncreases = new Effect_ChangeStat(StatToApplyIncreasesTo, SourceOfEffect) {
+            PercentageModifier = PercentageOfStatConverted / 100 * StatToTakeIncreasesFrom.Maximum,
+        };
+        TargetOfEffect.AddEffect(_extraIncreases);
     }
 
     public override void OnEnd()
     {
         base.OnEnd();
-        StatToConvertInto.RemoveFlatModifier(this);
-        EventManager.UnitStatCurrentAmountChanged.RemoveListener(RecalculateBonus);
+        _extraIncreases.EndThisEffect();
+    }
+
+    public override void OnInvokeUnitStatCurrentAmountChanged(Stat stat, float amount)
+    {
+        if(stat.ShouldInvoke && stat == StatToTakeIncreasesFrom)
+        {
+            stat.ShouldInvoke = false;
+            _extraIncreases.PercentageModifier = PercentageOfStatConverted / 100 * StatToTakeIncreasesFrom.Maximum;
+            stat.ShouldInvoke = true;
+        }
     }
 }

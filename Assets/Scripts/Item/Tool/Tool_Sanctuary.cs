@@ -15,7 +15,7 @@ public class Tool_Sanctuary : Item
 
     public Tool_Sanctuary(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Tool;
+        Type = Constants.ItemType.Tool;
         OnUseAbility = typeof(Ability_DrinkItem);
         CustomAnimation = "ActivateItem";
     }
@@ -30,11 +30,11 @@ public class Tool_Sanctuary : Item
         base.OnUse();
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Item/Sanctuary_Use");
         Utils.CreateVisualEffect(new(this), "Sanctuary", Player.Instance.transform.position.x, Player.Instance.transform.position.y);
-        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(this)) { ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_2"), CustomParam = MaxDamageBlocked[GradeIndex], ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
+        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(this)) { ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_2"), FirstParameter = MaxDamageBlocked[GradeIndex], ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                     (damage.TargetOfDamage == Player.Instance)),
                 Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                    damage.Injury -= effect.CustomParam;
-                    damage.Stagger -= effect.CustomParam;
+                    damage.Injury -= effect.FirstParameter;
+                    damage.Stagger -= effect.FirstParameter;
                 })}, Duration[GradeIndex]);
     }
 }

@@ -16,8 +16,8 @@ public class Effect_ReflectDebuffs : Effect
 
     /*public override void OnEffectValueChanged()
     {
-        DamageReductionGainedPerDebuff *= NonLinearEffectValue;
-        DamageGainedPerDebuff *= NonLinearEffectValue;
+        DamageReductionGainedPerDebuff *= PowerBudget;
+        DamageGainedPerDebuff *= PowerBudget;
         DescriptionParameters = new List<string> { Utils.GetFormattedFloat(DamageGainedPerDebuff), Utils.GetFormattedFloat(DamageReductionGainedPerDebuff), MaxDebuffs.ToString()};
     }
 

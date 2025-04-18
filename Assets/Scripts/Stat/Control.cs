@@ -15,6 +15,6 @@ public class Control : Stat {
 
     public override void UpdateMenuStatDisplayValue()
     {
-        MenuStatDisplay.text = (Current < 1 ? "" : "+") + Math.Round((Current - 1) * 100, 0).ToString() + "%";
+        MenuStatDisplay.text = (Current < 1 ? "" : "+") + Utils.GetFormattedFloat((Current - 1) * 100, 0) + "%";
     }
 }

@@ -7,9 +7,6 @@ using UnityEngine.UIElements.Experimental;
 [Serializable]
 public class QuestObjective {
     public Type ParentQuest;
-    public bool ShouldShowUpInJournal = false;
-    public bool ShowInJournalAsFailedWhenCompleted = false;
-    public bool OnlyShowInJournalWhenCompleted = false;
     public string JournalId;
     public int Number;
     [SerializeField]

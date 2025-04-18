@@ -7,13 +7,8 @@ public class Helmet_Enforcer : Item
     public Helmet_Enforcer(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Enforcer;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new(this)) { PercentageAmount = 0.5f }  };
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksReduceCooldowns")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttackDamage")};
     }
 }

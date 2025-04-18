@@ -769,14 +769,14 @@ public class Area_IgnisVolcano
     public static void BuriedEnergy() {
         NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisVolcano_Interactions_90"});
         NotificationController.ShowTextNotification("IgnisVolcano_Interactions_91");
-        SaveFile.Instance.AddPermanentPowerUp("IgnisVolcano_BuriedEnergy");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisVolcano_BuriedEnergy", 10);
         SaveFile.Instance.ChangeIgnisEnergy(10);
     }
 
     public static void FireRiver() {
         NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisVolcano_Interactions_100"});
         NotificationController.ShowTextNotification("IgnisVolcano_Interactions_101");
-        SaveFile.Instance.AddPermanentPowerUp("IgnisVolcano_FireRiver");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisVolcano_FireRiver", 10);
         SaveFile.Instance.ChangeIgnisEnergy(10);
     }
 
@@ -790,8 +790,8 @@ public class Area_IgnisVolcano
         blaine.Actions.IsFlipped = true;
         Area.Instance.transform.Find("Environment/VisualEffect_RagingInferno").gameObject.SetActive(true);
         Utils.GetUnit("FlameShadow").gameObject.SetActive(true);
-        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Incision", IsRemovable = false};
-        Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Burn", IsRemovable = false};
+        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatModifier = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Incision", IsRemovable = false};
+        Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatModifier = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Burn", IsRemovable = false};
         blaine.AddEffect(e1);
         blaine.AddEffect(e2);
         blaine.AttackPlayer();

@@ -37,7 +37,7 @@ public class NPCAbility_FlankingSlash : Ability {
             User.PlayAnimation("FlankingSlash", 0.05f, 0.8f);
         }
         else {
-            User.AddEffect(new Effect_ChangeStat(User.LightAttackSpeed, new(this)) {PercentageAmount=50}, 1);
+            User.AddEffect(new Effect_ChangeStat(User.LightAttackSpeed, new(this)) {PercentageModifier=50}, 1);
             User.PlayAnimation("FlankingSlash", 0.05f, 0.8f);
         }
     }

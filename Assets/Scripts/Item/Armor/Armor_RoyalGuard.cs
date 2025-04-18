@@ -8,13 +8,8 @@ public class Armor_RoyalGuard : Item
     public Armor_RoyalGuard(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.RoyalGuard;
-        Category = Constants.ItemCategory.Armor;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Armor;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainDamageReductionBasedOnAnalysisAmount")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AnalysisAmount", 0.5f), new ItemEffect("AnalysisDecay", 0.5f)};
     }
 }

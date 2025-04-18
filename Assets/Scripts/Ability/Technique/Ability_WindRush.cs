@@ -24,18 +24,18 @@ public class Ability_WindRush : Technique
     private Unit _targetOfDamage = null;
 
     public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.CurrentWeapon;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.CurrentWeapon;
 
     public Ability_WindRush(Unit ability_user) : base(ability_user)
     {
-        if(User.CurrentWeaponDamageCategory == Constants.DamageType.Light) {
+        if(User.CurrentWeaponDamageType == Constants.DamageType.Light) {
             DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
-            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling / 2 : InjuryScaling / 2, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageCategory));
+            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling / 2 : InjuryScaling / 2, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageType));
         }
         else {
-            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : InjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageCategory));
+            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : InjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageType));
         }
-        DamageSources.Add(new DamageSource(0, UltimateStaggerAoEScalingPerSecond / 2, User.CurrentWeaponDamageCategory, "WindRush_AoE"));
+        DamageSources.Add(new DamageSource(0, UltimateStaggerAoEScalingPerSecond / 2, User.CurrentWeaponDamageType, "WindRush_AoE"));
         AddCustomSound("Start", "Ability/Ability_WindBlast_Use", 0.4f);
         AddCustomSound("WindBlast", "Ability/Ability_WindBlast_Dash", 0.5f);
         NameOfAnimationToAutoPlay = "WindRush_" + User.CurrentWeaponClass;

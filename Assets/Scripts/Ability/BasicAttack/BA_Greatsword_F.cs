@@ -3,6 +3,7 @@ using UnityEngine;
 public class BA_Greatsword_F : BasicAttack {
 
     public BA_Greatsword_F(Unit ability_user) : base(ability_user) {
+        PowerBudget = 160;
         DamageSources.Add(new DamageSource(80, 80, Constants.DamageType.Heavy));
     }
     public override void CallAbilityEvent1()

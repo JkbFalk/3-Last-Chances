@@ -15,7 +15,7 @@ public class Stance_MindOverMatter : Effect_Stance
     public Stance_MindOverMatter(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Listeners.Add(EventManager.DamageDealt);
         Listeners.Add(EventManager.UnitStatCurrentAmountChanged);
-        EnergyGainDoubled = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageAmount = 0, ShowsInMenu=false};
+        EnergyGainDoubled = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageModifier = 0, ShowsInMenu=false};
     }
 
     public static Ability.AbilityFamily Family = Ability.AbilityFamily.Proprius;
@@ -68,10 +68,10 @@ public class Stance_MindOverMatter : Effect_Stance
     public void DoubleEnergyGain() {
         if(UnlockedUpgrade1 && Player.Instance.EnergyGain.ShouldInvoke) {
             Player.Instance.EnergyGain.ShouldInvoke = false;
-            EnergyGainDoubled.PercentageAmount = 0;
+            EnergyGainDoubled.PercentageModifier = 0;
             if(Player.Instance.EnergyGain.Current > 1 && IsActive) {
                 Player.Instance.EnergyGain.ShouldInvoke = false;
-                EnergyGainDoubled.PercentageAmount = (int)Math.Round((Player.Instance.EnergyGain.Current - 1) * 100);
+                EnergyGainDoubled.PercentageModifier = (int)Math.Round((Player.Instance.EnergyGain.Current - 1) * 100);
             }
         }
     }

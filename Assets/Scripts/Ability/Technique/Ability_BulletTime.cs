@@ -26,7 +26,7 @@ public class Ability_BulletTime : Technique
     private static float _masteryBInjuryScaling = 800;
 
     public static AbilityFamily Family = AbilityFamily.Glacies;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Ranged;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Ranged;
     public Dictionary<Unit, int> TimesEachUnitWasHit = new();
 
     public Ability_BulletTime(Unit ability_user) : base(ability_user) {

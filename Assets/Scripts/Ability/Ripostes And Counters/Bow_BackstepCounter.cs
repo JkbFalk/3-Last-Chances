@@ -26,6 +26,6 @@ public class Bow_BackstepCounter : Counter
     {
         base.OnAbilityStart();
         User.Rigidbody2D.velocity = Vector2.zero;
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, "Projectile_BowBasicAttack");
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, "Projectile_BowBasicAttack");
     }
 }

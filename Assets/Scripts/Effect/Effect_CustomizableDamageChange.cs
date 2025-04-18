@@ -6,17 +6,22 @@ using UnityEngine;
 
 public class Effect_CustomizableDamageChange : Effect
 {
-    public float CustomParam = 0;
-    public float CustomParam2 = 0;
     public float DamageReductionChange = 0;
+    public float IgnorePercentageOfDamageReduction = 0;
     public float PenetrationChange = 0;
     public float MultiplierChange = 0;
+    public float DamagePercentageChange = 0;
     public float InjuryPercentageChange = 0;
     public float StaggerPercentageChange = 0;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnHitDealt;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckAfterHitDamageCalculation;
+    public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnAboutToHandleFatalBlow;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnDamageDealt;
     public Action<Damage, Effect_CustomizableDamageChange> Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
+            if(effect.DamagePercentageChange != 0) {
+                damage.ExtraInjuryDealtPercentage += effect.DamagePercentageChange;
+                damage.ExtraStaggerDealtPercentage += effect.DamagePercentageChange;
+            }
             if(effect.InjuryPercentageChange != 0) {
                 damage.ExtraInjuryDealtPercentage += effect.InjuryPercentageChange;
             }
@@ -49,6 +54,14 @@ public class Effect_CustomizableDamageChange : Effect
         if(ConditionCheckAfterHitDamageCalculation != null && ConditionCheckAfterHitDamageCalculation.Invoke(damage, this)){
             Action.Invoke(damage, this);
             base.OnInvokeAfterHitDamageCalculation(damage);
+        }
+    }    
+
+    public override void OnInvokeAboutToHandleFatalBlow(Damage damage)
+    {
+        if(ConditionCheckOnAboutToHandleFatalBlow != null && ConditionCheckOnAboutToHandleFatalBlow.Invoke(damage, this)){
+            Action.Invoke(damage, this);
+            base.OnInvokeAboutToHandleFatalBlow(damage);
         }
     }    
 

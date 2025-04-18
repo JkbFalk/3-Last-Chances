@@ -4,12 +4,15 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using Steamworks;
+using Unity.VisualScripting;
 
 public class Cooldown {
-    public bool ShowCooldownInEffectUI = false;
+    public float ExtraCooldownReduction;
+    public bool ShowsInUI = false;
     public string PathToCooldownGraphic = "";
     public Sprite CooldownGraphic;
     public Type Type;
+    public Unit CooldownTarget;
     public float TotalDuration;
     private float _remainingDuration;
     public float RemainingDuration {
@@ -21,29 +24,39 @@ public class Cooldown {
             }
         }
     }
-    public string ExtraInfo = "";
+    public string Identifier = "";
     public Image CooldownDisplay;
 
-    public Cooldown(Type type, float total_duration, Unit target, float remaining_duration = 0) {
-        Utils.CreateAuditLog("Adding cooldown (" + type + ") for unit " + target.gameObject.name + ": " + total_duration + (remaining_duration != 0 ? "/" + remaining_duration : ""));
+    public Cooldown(Type type, float total_duration, Unit target, string identifier = "") {
         Type = type;
-        float extraCDR = 0;
-        if(target is Player && type.IsSubclassOf(typeof(Ability)) && Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "TechniqueCooldownReduction")) != null) {
-            extraCDR += ((Effect_Description)Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "TechniqueCooldownReduction"))).PercentageAmount;
+        CooldownTarget = target;
+        Identifier = identifier;
+        TotalDuration = total_duration * (100 / (100 + (CooldownTarget.CooldownReduction.Current + (ExtraCooldownReduction / 100) - 1) * 100));
+        RemainingDuration = TotalDuration;
+        if(identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
+            Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == identifier);
+            if(hiddenEffect != null && hiddenEffect.EffectIndicatorCooldownDisplay != null) {
+                MonoBehaviour.Destroy(hiddenEffect.EffectIndicatorCooldownDisplay.transform.parent.gameObject);
+            }
         }
-        if(target is Player && type.IsSubclassOf(typeof(Ability)) && Ability.GetFamily(type) == Ability.AbilityFamily.Salutis && Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "SalutisTechniqueCooldownReduction")) != null) {
-            extraCDR += ((Effect_Description)Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "SalutisTechniqueCooldownReduction"))).PercentageAmount;
+    }
+
+    public void OnEnd() {
+        if(ShowsInUI && CooldownDisplay != null) {
+            MonoBehaviour.Destroy(CooldownDisplay.transform.parent.gameObject);
         }
-        else if(target is Player && type.IsSubclassOf(typeof(Ability)) && Ability.GetFamily(type) == Ability.AbilityFamily.Proprius && Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "PropriusTechniqueCooldownReduction")) != null) {
-            extraCDR += ((Effect_Description)Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "PropriusTechniqueCooldownReduction"))).PercentageAmount;
+        if(Identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
+            Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == Identifier);
+            if(hiddenEffect != null && hiddenEffect.EffectIndicatorCooldownDisplay == null) {
+                hiddenEffect.DisplayEffectIndicatorAboveTarget();
+            }
         }
-        else if(target is Player && type.IsSubclassOf(typeof(Item)) && Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "ToolCooldownReduction")) != null) {
-            extraCDR += ((Effect_Description)Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "ToolCooldownReduction"))).PercentageAmount;
+    }
+
+    public string GetCooldownTechniqueFamily() {
+        if(Type == null || Type.IsSubclassOf(typeof(Ability))) {
+            return "";
         }
-        else if(target is Player && type.IsSubclassOf(typeof(Effect)) && Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "EffectCooldownReduction")) != null) {
-            extraCDR += ((Effect_Description)Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "EffectCooldownReduction"))).PercentageAmount;
-        }
-        TotalDuration = total_duration * (100 / (100 + (target.CooldownReduction.Current + (extraCDR / 100) - 1) * 100));
-        RemainingDuration = remaining_duration != 0 ?  remaining_duration * (100 / (100 + (target.CooldownReduction.Current + (extraCDR / 100) - 1) * 100)) : TotalDuration;
+        return Ability.GetFamily(Type).ToString();
     }
 }

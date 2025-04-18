@@ -208,15 +208,15 @@ public class NotificationController : MonoBehaviour
                 notification.transform.SetParent(i == 1 ? CanvasElements.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? CanvasElements.MenuCanvas.Notifications.transform : CanvasElements.UICanvas.Notifications.transform);
                 string start_label = "{";
                 
-                if (item.Category == Constants.ItemCategory.Heavy || item.Category == Constants.ItemCategory.Light || item.Category == Constants.ItemCategory.Ranged)
+                if (item.Type == Constants.ItemType.Heavy || item.Type == Constants.ItemType.Light || item.Type == Constants.ItemType.Ranged)
                 {
                     start_label += item.GetType().ToString() + "} ({ItemGrade_" + item.Grade.ToString() + "_Colored} {ItemClass_" + item.WeaponClass.ToString() + "}): ";
                 }
                 else
                 {
-                    start_label += item.GetType().ToString() + "} (" + (item.Grade == Item.ItemGrade.None ? "" : "{ItemGrade_" + item.Grade.ToString() + "_Colored} ") + "{ItemCategory_" + item.Category.ToString() + "}): ";
+                    start_label += item.GetType().ToString() + "} (" + (item.Grade == Item.ItemGrade.None ? "" : "{ItemGrade_" + item.Grade.ToString() + "_Colored} ") + ": ";
                 }
-                if(item.Category == Constants.ItemCategory.Tool && sold_for > 0) {
+                if(item.Type == Constants.ItemType.Tool && sold_for > 0) {
                     Item existing_item = SaveFile.Instance.Inventory.FirstOrDefault(i => i.GetType() == item.GetType() && i.Grade == item.Grade);
                     int amountAwayFromMax = existing_item.MaxAmount - existing_item.Amount;
                     start_label += string.Format(Label.Get("ItemToolAutoSellNotification"), new object[] {amountAwayFromMax, item.Amount - amountAwayFromMax, sold_for.ToString()});
@@ -226,7 +226,7 @@ public class NotificationController : MonoBehaviour
                 }
                 notification.transform.Find("Background/Text").GetComponent<LabelInitializer>().SetLabel(start_label);
                 MenuManager.Instance.SetRegularImage(notification.transform.Find("Background/Text/Image").gameObject, item);
-                if(item.Category == Constants.ItemCategory.Tool || (item.Category == Constants.ItemCategory.Quest && item.Amount > 1)) {
+                if(item.Type == Constants.ItemType.Tool || (item.Type == Constants.ItemType.Quest && item.Amount > 1)) {
                     notification.transform.Find("Background/Text/Image/Amount").GetComponent<TextMeshProUGUI>().text = "x" + item.Amount.ToString();
                 }
                 if(i == 0) {

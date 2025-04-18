@@ -225,59 +225,59 @@ public class Actions : MonoBehaviour {
         }
     }
 
-    public void TurnOnWeaponCollision(string weapon_category) {
-        ChangeWeaponCollision(weapon_category, true);
-        ChangeWeaponTrail(weapon_category, true);
+    public void TurnOnWeaponCollision(string weapon_type) {
+        ChangeWeaponCollision(weapon_type, true);
+        ChangeWeaponTrail(weapon_type, true);
     }
-    public void TurnOffWeaponCollision(string weapon_category)
+    public void TurnOffWeaponCollision(string weapon_type)
     {
-        if(weapon_category == "Heavy") {
+        if(weapon_type == "Heavy") {
             _heavyWeaponCheckPoint = new Vector2(999, 999);;
         }
-        if(weapon_category == "Light") {
+        if(weapon_type == "Light") {
             _lightWeaponLCheckPoint = new Vector2(999, 999);
             _lightWeaponRCheckPoint = new Vector2(999, 999);
         }
-        ChangeWeaponCollision(weapon_category, false);
-        ChangeWeaponTrail(weapon_category, false);
+        ChangeWeaponCollision(weapon_type, false);
+        ChangeWeaponTrail(weapon_type, false);
     }
 
-    public void TurnOnWeaponTrail(string weapon_category)
+    public void TurnOnWeaponTrail(string weapon_type)
     {
-        if(weapon_category == "Light")
+        if(weapon_type == "Light")
         {
             ChangeWeaponTrail("Light Left", true);
             ChangeWeaponTrail("Light Right", true);
         }
         else
         {
-            ChangeWeaponTrail(weapon_category, true);
+            ChangeWeaponTrail(weapon_type, true);
         }
     }
-    public void TurnOffWeaponTrail(string weapon_category)
+    public void TurnOffWeaponTrail(string weapon_type)
     {
-        if (weapon_category == "Light")
+        if (weapon_type == "Light")
         {
             ChangeWeaponTrail("Light Left", false);
             ChangeWeaponTrail("Light Right", false);
         }
         else
         {
-            ChangeWeaponTrail(weapon_category, false);
+            ChangeWeaponTrail(weapon_type, false);
         }
     }
 
-    public void ChangeWeaponCollision(string weapon_category, bool deal_damage)
+    public void ChangeWeaponCollision(string weapon_type, bool deal_damage)
     {
-        if (_currentAbilityBeingPerformed == null || String.IsNullOrEmpty(weapon_category) || (weapon_category != "Light" && !Unit.SpriteRenderers.ContainsKey(weapon_category)))
+        if (_currentAbilityBeingPerformed == null || String.IsNullOrEmpty(weapon_type) || (weapon_type != "Light" && !Unit.SpriteRenderers.ContainsKey(weapon_type)))
         {
             return;
         }
-        if (weapon_category == "Heavy" || weapon_category == "Ranged" || weapon_category == "Projectile")
+        if (weapon_type == "Heavy" || weapon_type == "Ranged" || weapon_type == "Projectile")
         {
-            Unit.SpriteRenderers[weapon_category].Weapon.ChangeWeaponDealingDamage(deal_damage, _currentAbilityBeingPerformed);
+            Unit.SpriteRenderers[weapon_type].Weapon.ChangeWeaponDealingDamage(deal_damage, _currentAbilityBeingPerformed);
         }
-        else if (weapon_category == "Light")
+        else if (weapon_type == "Light")
         {
             if(Unit.SpriteRenderers.ContainsKey("Light Right")) {
                 Unit.SpriteRenderers["Light Right"].Weapon.ChangeWeaponDealingDamage(deal_damage, _currentAbilityBeingPerformed);
@@ -301,15 +301,15 @@ public class Actions : MonoBehaviour {
         }
     }
 
-    public void ChangeWeaponTrail(string weapon_category, bool show_trail)
+    public void ChangeWeaponTrail(string weapon_type, bool show_trail)
     {
-        if (_currentAbilityBeingPerformed == null || String.IsNullOrEmpty(weapon_category) || !Unit.SpriteRenderers.ContainsKey(weapon_category) ||Unit.SpriteRenderers[weapon_category] == null ||Unit.SpriteRenderers[weapon_category]?.Weapon?.WeaponTrail == null)
+        if (_currentAbilityBeingPerformed == null || String.IsNullOrEmpty(weapon_type) || !Unit.SpriteRenderers.ContainsKey(weapon_type) ||Unit.SpriteRenderers[weapon_type] == null ||Unit.SpriteRenderers[weapon_type]?.Weapon?.WeaponTrail == null)
         {
             return;
         }
-        if (weapon_category == "Heavy" || weapon_category == "Ranged")
+        if (weapon_type == "Heavy" || weapon_type == "Ranged")
         {
-            ParticleSystem system = Unit.SpriteRenderers[weapon_category]?.Weapon?.WeaponTrail.GetComponent<ParticleSystem>();
+            ParticleSystem system = Unit.SpriteRenderers[weapon_type]?.Weapon?.WeaponTrail.GetComponent<ParticleSystem>();
             if (show_trail)
             {
                 system.Play();
@@ -319,7 +319,7 @@ public class Actions : MonoBehaviour {
                 system.Stop();
             }
         }
-        else if(weapon_category == "Light")
+        else if(weapon_type == "Light")
         {
             ParticleSystem system1 = Unit.SpriteRenderers["Light Left"]?.Weapon?.WeaponTrail.GetComponent<ParticleSystem>();
             ParticleSystem system2 = Unit.SpriteRenderers["Light Right"]?.Weapon?.WeaponTrail.GetComponent<ParticleSystem>();
@@ -617,9 +617,9 @@ public class Actions : MonoBehaviour {
     public void SetItemSprite(string item_path) {
         if(Unit?.SpriteRenderers != null && Unit.SpriteRenderers.ContainsKey("Consumable")) {
             Unit.SpriteRenderers["Consumable"].SpriteRenderer.enabled = true;
-            Constants.ItemCategory category = Constants.ItemCategory.Quest;
-            Enum.TryParse(item_path.Split("/")[0], out category);
-            Utils.CopyItemAppearanceForPlayer(category, item_path.Split("/")[1]);
+            Constants.ItemType type = Constants.ItemType.Quest;
+            Enum.TryParse(item_path.Split("/")[0], out type);
+            Utils.CopyItemAppearanceForPlayer(type, item_path.Split("/")[1]);
         }
     }
 

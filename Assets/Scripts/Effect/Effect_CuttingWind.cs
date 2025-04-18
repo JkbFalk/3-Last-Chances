@@ -34,7 +34,7 @@ public class Effect_CuttingWind : Effect {
             _visualEffect.transform.SetParent(TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone").transform);
             _visualEffect.transform.localPosition = new Vector2(1f, 0);
             _visualEffect.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {PercentageModifier = AttackSpeedBuffAmount};
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         if (EffectCategory == Constants.DamageType.Light) {
@@ -46,7 +46,7 @@ public class Effect_CuttingWind : Effect {
             _visualEffect2.transform.SetParent(TargetOfEffect.SpriteRenderers["Light Left"].SpriteRenderer.transform.Find("Light Left Bone").transform);
             _visualEffect2.transform.localPosition = new Vector2(0.5f, 0);
             _visualEffect2.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.LightAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.LightAttackSpeed, SourceOfEffect) {PercentageModifier = AttackSpeedBuffAmount};
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         else if (EffectCategory == Constants.DamageType.Ranged) {
@@ -54,11 +54,11 @@ public class Effect_CuttingWind : Effect {
             _visualEffect.transform.SetParent(TargetOfEffect.SpriteRenderers["Ranged"].SpriteRenderer.transform.Find("Ranged Bone").transform);
             _visualEffect.transform.localPosition = new Vector2(0.25f, 0);
             _visualEffect.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, SourceOfEffect) {PercentageModifier = AttackSpeedBuffAmount};
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         if(MasteryB) {
-            DamageReductionEffect = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = 200};
+            DamageReductionEffect = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 200};
             CcImmunityEffect = new Effect_Unstunnable(SourceOfEffect);
             Player.Instance.AddEffect(DamageReductionEffect, 3);
             Player.Instance.AddEffect(CcImmunityEffect, 3);

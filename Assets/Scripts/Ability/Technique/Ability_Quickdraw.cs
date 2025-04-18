@@ -10,7 +10,7 @@ public class Ability_Quickdraw : Technique
     public static float Cooldown = 50;
 
     public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.CurrentWeapon;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.CurrentWeapon;
     private bool _canFinishAbility = false;
     private bool _buttonWasReleased = false;
     private bool _preparedForHit = false;
@@ -40,7 +40,7 @@ public class Ability_Quickdraw : Technique
         EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstunnable(new(this))};
         EventManager.HitDealt.AddListener(CheckHitDealt);
         NameOfAnimationToAutoPlay = "Quickdraw_" + User.CurrentWeaponClass;
-        DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : CounterInjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : CounterStaggerScaling, User.CurrentWeaponDamageCategory) {Knockback = 20});
+        DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : CounterInjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : CounterStaggerScaling, User.CurrentWeaponDamageType) {Knockback = 20});
     }
 
     public static List<string> GetDescriptionValues()
@@ -145,10 +145,10 @@ public class Ability_Quickdraw : Technique
         _createdWindSlash = true;
         PlayCustomSound("WindSlash");
         if(Is(AbilityProperty.Ultimate)) {
-            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateInjuryScaling / 4, UltimateInjuryScaling), GetValueBasedOnPercentageOfTimePassed(UltimateStaggerScaling / 4, UltimateStaggerScaling), User.CurrentWeaponDamageCategory, "Quickdraw_Ultimate_WindSlash") {Knockback = 650});
+            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateInjuryScaling / 4, UltimateInjuryScaling), GetValueBasedOnPercentageOfTimePassed(UltimateStaggerScaling / 4, UltimateStaggerScaling), User.CurrentWeaponDamageType, "Quickdraw_Ultimate_WindSlash") {Knockback = 650});
         }
         else {
-            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(InjuryScaling / 4, InjuryScaling), GetValueBasedOnPercentageOfTimePassed(StaggerScaling / 4, StaggerScaling), User.CurrentWeaponDamageCategory, "Quickdraw_WindSlash") {Knockback = 250});
+            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(InjuryScaling / 4, InjuryScaling), GetValueBasedOnPercentageOfTimePassed(StaggerScaling / 4, StaggerScaling), User.CurrentWeaponDamageType, "Quickdraw_WindSlash") {Knockback = 250});
         }
         Projectile proj = Utils.CreateProjectile(new(this), Is(AbilityProperty.Ultimate) ? "Quickdraw_Ultimate_WindSlash" : "Quickdraw_WindSlash");
         proj.transform.eulerAngles = new Vector3(0, 0, -90);
@@ -186,7 +186,7 @@ public class Ability_Quickdraw : Technique
         vfx.transform.localPosition = Vector2.zero;
         vfx.gameObject.name = vfx.gameObject.name + "_PersistsOnDeath";
         Properties.Add(AbilityProperty.Counter);
-        HandleEnemyHit(target, User.SpriteRenderers[User.CurrentWeaponDamageCategory == Constants.DamageType.Light ? "Light Right" : User.CurrentWeaponDamageCategory.ToString()].Bone.GetComponent<UnitWeapon>(), null);
+        HandleEnemyHit(target, User.SpriteRenderers[User.CurrentWeaponDamageType == Constants.DamageType.Light ? "Light Right" : User.CurrentWeaponDamageType.ToString()].Bone.GetComponent<UnitWeapon>(), null);
         if(UpgradeBUnlocked){
             target.AddEffect(new Effect_Prone(GetValueBasedOnPercentageOfTimePassed(UpgradeBProneAppliedToCountered / 4, UpgradeBProneAppliedToCountered), new(this)));
         }

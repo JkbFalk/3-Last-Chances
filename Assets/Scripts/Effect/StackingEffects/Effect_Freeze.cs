@@ -34,8 +34,8 @@ public class Effect_Freeze : Effect
         if(TargetOfEffect is not Player) {
             SpecialSkinColorDuringHardCrowdControl = new Color(0, Utils.GetValueBasedOnMinAndMax(FreezePercentage, 0, 100, 0, 0.5f), Utils.GetValueBasedOnMinAndMax(FreezePercentage, 0, 100, 0, 1));
         }
-        MSSlowEffect.PercentageAmount = -FreezePercentage / 2;
-        ASSlowEffect.PercentageAmount = -FreezePercentage / 2;
+        MSSlowEffect.PercentageModifier = -FreezePercentage / 2;
+        ASSlowEffect.PercentageModifier = -FreezePercentage / 2;
         if(FreezePercentage >= 100) {
             TargetOfEffect.AddEffect(new Effect_Frozen(SourceOfEffect), 5);
             ChangeDecayingAmount(-TargetOfEffect.StaggerBar.Maximum * 0.25f, false);

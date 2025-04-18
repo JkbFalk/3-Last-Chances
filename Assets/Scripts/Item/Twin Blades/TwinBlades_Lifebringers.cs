@@ -7,16 +7,11 @@ public class TwinBlades_Lifebringers : Item
     public TwinBlades_Lifebringers(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Survivor;
-        Category = Constants.ItemCategory.Light;
+        Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
         SetBaseWeaponStats(110, 40, 1.2f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("HealOnBasicAttacks")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightAttackSpeed")};
     }
 }
 

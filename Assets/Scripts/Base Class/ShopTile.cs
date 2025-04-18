@@ -106,7 +106,7 @@ public class ShopTile : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
                 Item i = (Item)Activator.CreateInstance(Item.GetType(), new object[] {Item.Grade});
                 i.Amount = 1;
                 SaveFile.Instance.AddItem(i);
-                if(Item.CanOnlyBuyOnce || (Item.Category == Constants.ItemCategory.Tool && existingItem != null && existingItem.Amount == 9)) {
+                if(Item.CanOnlyBuyOnce || (Item.Type == Constants.ItemType.Tool && existingItem != null && existingItem.Amount == 9)) {
                     MonoBehaviour.Destroy(gameObject);
                     SaveFile.Instance.AddFlag(ShopName + "_" + Item.GetType() + "_" + Item.Grade + "_[Cycle]");
                 }
@@ -138,7 +138,6 @@ public class ShopTile : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         else
         {
             transform.Find("Stroke").GetComponent<Image>().color = Colors.UISelected;
-            transform.Find("Corners").GetComponent<Image>().color = Colors.UISelected;
         }
         MenuManager.Instance.ShowShopItemDetails(Item);
         MenuManager.Instance.CurrentlySelectedShopTile = this;
@@ -154,7 +153,6 @@ public class ShopTile : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         else
         {
             transform.Find("Stroke").GetComponent<Image>().color = Color.white;
-            transform.Find("Corners").GetComponent<Image>().color = Color.white;
         }
         MenuManager.Instance.CurrentlySelectedTile = null;
     }

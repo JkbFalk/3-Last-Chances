@@ -423,7 +423,7 @@ public class PlayerControls : WorldObject {
             }
         }
         if (MenuManager.Instance.SelectedSubMenu == 1 && MenuManager.Instance.CurrentDetailedItemDescription != null) {
-            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.Category == Constants.ItemCategory.Quest ? " " : MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(true) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, true));
+            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.Type == Constants.ItemType.Quest ? " " : MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(true) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, true));
         }
         if (MenuManager.Instance.SelectedSubMenu == 2 && MenuManager.Instance.CurrentSkillTreeTileDescription?.GetComponent<PassivePowerUpTile>() == null) {
             MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(false);
@@ -445,7 +445,7 @@ public class PlayerControls : WorldObject {
             }
         }
         if (MenuManager.Instance.SelectedSubMenu == 1 && MenuManager.Instance.CurrentDetailedItemDescription != null) {
-            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.Category == Constants.ItemCategory.Quest ? " " : MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(false) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, false));
+            MenuManager.Instance.transform.Find("Inventory Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(MenuManager.Instance.CurrentDetailedItemDescription.Type == Constants.ItemType.Quest ? " " : MenuManager.Instance.CurrentDetailedItemDescription.GetDescription(false) + MenuManager.Instance.GetModifierDescriptions(MenuManager.Instance.CurrentDetailedItemDescription, false));
         }
         if (MenuManager.Instance.SelectedSubMenu == 2 && MenuManager.Instance.CurrentSkillTreeTileDescription?.GetComponent<PassivePowerUpTile>() == null) {
             MenuManager.Instance.transform.Find("Skill Tree Window/Details/Description/Image/Description").gameObject.SetActive(true);
@@ -457,10 +457,10 @@ public class PlayerControls : WorldObject {
     }
 
     public void OnRotateStanceLeft() {
-        if(Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl && Player.Instance.GetStanceOnTheLeft().StanceEffect is Stance_OmniMastery && ((Stance_OmniMastery)Player.Instance.GetStanceOnTheLeft().StanceEffect).UnlockedUpgrade1 && Player.Instance.EffectCooldowns.FirstOrDefault(e => e.Type == typeof(Stance_OmniMastery) && e.ExtraInfo == Player.Instance.GetStanceOnTheLeft().WeaponCategory.ToString()) == null) {
+        if(Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl && Player.Instance.GetStanceOnTheLeft().StanceEffect is Stance_OmniMastery && ((Stance_OmniMastery)Player.Instance.GetStanceOnTheLeft().StanceEffect).UnlockedUpgrade1 && Player.Instance.EffectCooldowns.FirstOrDefault(e => e.Type == typeof(Stance_OmniMastery) && e.Identifier == Player.Instance.GetStanceOnTheLeft().WeaponType.ToString()) == null) {
             Player.Instance.Actions.CleanseAllHardCrowdControl();
             Player.Instance.Actions.UseAbility(typeof(Ability_StanceSwitchLeft));
-            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_OmniMastery), Stance_OmniMastery.CleanseCooldownDuration, Player.Instance) {ExtraInfo = Player.Instance.GetStanceOnTheLeft().WeaponCategory.ToString()});
+            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_OmniMastery), Stance_OmniMastery.CleanseCooldownDuration, Player.Instance, Player.Instance.GetStanceOnTheLeft().WeaponType.ToString()));
             Player.Instance.AddCooldown(new Cooldown(typeof(Ability_StanceSwitch), Constants.STANCE_SWITCH_COOLDOWN_OMNIMASTERY, Player.Instance));
         }
         else if (!Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_StanceSwitch)) && Ability.CheckIfCanPerformAbility(Player.Instance, typeof(Ability_StanceSwitchLeft)) && 
@@ -473,10 +473,10 @@ public class PlayerControls : WorldObject {
     }
 
     public void OnRotateStanceRight() {
-        if(Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl && Player.Instance.GetStanceOnTheRight().StanceEffect is Stance_OmniMastery && ((Stance_OmniMastery)Player.Instance.GetStanceOnTheRight().StanceEffect).UnlockedUpgrade1 && Player.Instance.EffectCooldowns.FirstOrDefault(e => e.Type == typeof(Stance_OmniMastery) && e.ExtraInfo == Player.Instance.GetStanceOnTheRight().WeaponCategory.ToString()) == null) {
+        if(Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl && Player.Instance.GetStanceOnTheRight().StanceEffect is Stance_OmniMastery && ((Stance_OmniMastery)Player.Instance.GetStanceOnTheRight().StanceEffect).UnlockedUpgrade1 && Player.Instance.EffectCooldowns.FirstOrDefault(e => e.Type == typeof(Stance_OmniMastery) && e.Identifier == Player.Instance.GetStanceOnTheRight().WeaponType.ToString()) == null) {
             Player.Instance.Actions.CleanseAllHardCrowdControl();
             Player.Instance.Actions.UseAbility(typeof(Ability_StanceSwitchRight));
-            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_OmniMastery), Stance_OmniMastery.CleanseCooldownDuration, Player.Instance) {ExtraInfo = Player.Instance.GetStanceOnTheRight().WeaponCategory.ToString()});
+            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_OmniMastery), Stance_OmniMastery.CleanseCooldownDuration, Player.Instance, Player.Instance.GetStanceOnTheRight().WeaponType.ToString()));
             Player.Instance.AddCooldown(new Cooldown(typeof(Ability_StanceSwitch), Constants.STANCE_SWITCH_COOLDOWN_OMNIMASTERY, Player.Instance));
         }
         else if (!Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_StanceSwitch)) && Ability.CheckIfCanPerformAbility(Player.Instance, typeof(Ability_StanceSwitchRight)))
@@ -561,7 +561,7 @@ public class PlayerControls : WorldObject {
             return;
         }
         Player.Instance.PreparingForUltimate = true;
-        Player.Instance.PlayAnimation("PreparingForUltimate_" + ((Player.Instance.CurrentStance.StanceEffect is Stance_MindOverMatter || Player.Instance.CurrentStance.StanceEffect is Stance_PowerWithoutLimit) ? "Magic" : Player.Instance.CurrentWeaponDamageCategory));
+        Player.Instance.PlayAnimation("PreparingForUltimate_" + ((Player.Instance.CurrentStance.StanceEffect is Stance_MindOverMatter || Player.Instance.CurrentStance.StanceEffect is Stance_PowerWithoutLimit) ? "Magic" : Player.Instance.CurrentWeaponDamageType));
         foreach(Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
             if(ability.Type != null) {
                 ability.Icon.sprite = Resources.Load("Sprites/Ability/" + ability.Type.ToString().Replace("Ability_", "") + "_Ultimate", typeof(Sprite)) as Sprite;

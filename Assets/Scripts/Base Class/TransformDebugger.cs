@@ -14,7 +14,7 @@ public class TransformDebugger : MonoBehaviour
     private Vector3 previousLocalRotation = Vector3.zero;
     void Start()
     {
-        if(position) {
+        /*if(position) {
             transform.SetPositionExecuting += (sender, args) => {
                 if(previousPosition != transform.position) {
                     Debug.Log($"Position of object {gameObject.name} changed from {previousPosition} to {transform.position}"); 
@@ -45,6 +45,6 @@ public class TransformDebugger : MonoBehaviour
                     previousLocalRotation = transform.localEulerAngles;
                 }
             };
-        }
+        }*/
     }
 }

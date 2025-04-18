@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 public class EventManager {
-    public static UnityEvent OneFifthSecondElapsedNotRealtime = new UnityEvent();
+    public static UnityEvent OneFifthSecondElapsedInGame = new UnityEvent();
     public static UnityEvent OneFifthSecondElapsedRealtime = new UnityEvent();
     public static UnityEvent<Damage> HitDealt = new UnityEvent<Damage>();
     public static UnityEvent<Damage> AfterHitDamageCalculation = new UnityEvent<Damage>();
+    public static UnityEvent<Damage> AboutToHandleFatalBlow = new UnityEvent<Damage>();
     public static UnityEvent<Damage> DamageDealt = new UnityEvent<Damage>();
     public static UnityEvent<Damage> DamageWasDodged = new UnityEvent<Damage>();
     public static UnityEvent<Ability> AbilityUsed = new UnityEvent<Ability>();
@@ -39,6 +40,7 @@ public class EventManager {
     public static UnityEvent<Effect> EffectDecayingAmountChanged = new UnityEvent<Effect>();
     public static UnityEvent<Effect> EffectActivated = new UnityEvent<Effect>();
     public static UnityEvent<Effect> EffectEnded = new UnityEvent<Effect>();
+    public static UnityEvent<Cooldown> AboutToAddCooldown = new UnityEvent<Cooldown>();
     public static UnityEvent<Cooldown> CooldownAdded = new UnityEvent<Cooldown>();
     public static UnityEvent<Unit> UnitChangedDirection = new UnityEvent<Unit>();
     public static UnityEvent<Unit> EnterCombat = new UnityEvent<Unit>();

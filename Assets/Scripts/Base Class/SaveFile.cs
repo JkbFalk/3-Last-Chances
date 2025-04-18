@@ -130,9 +130,9 @@ public class SaveFile
 
     }
 
-    public void AddPermanentPowerUp(string power_up_name) {
-        SaveFile.Instance.PermanentPowerUps.Add(power_up_name);
-        List<Effect> effects = PassivePowerUpTile.GetPassivePowerUpEffects(power_up_name);
+    public void AddPermanentPowerUp(string power_up_name, int pb) {
+        SaveFile.Instance.PermanentPowerUps.Add(new(power_up_name, pb));
+        List<Effect> effects = EffectList.GetEffect(power_up_name, pb);
         foreach(Effect e in effects) {
             Player.Instance.AddEffect(e);
         }
@@ -156,7 +156,7 @@ public class SaveFile
     public int GoldFromInvestmentsMaximum = 15000;
     public int ExtraGoldFromInvestmentsStartingNextCycle = 0;
 
-    public List<string> PermanentPowerUps = new List<string>();
+    public List<Tuple<string, int>> PermanentPowerUps = new List<Tuple<string, int>>();
     public List<string> PowerUpsRemovedOnNextCycle = new List<string>();
     [SerializeField]
     public MidMissionInformation MidMissionInformation;
@@ -530,8 +530,8 @@ public class SaveFile
             CanvasElements.UICanvasObject.transform.Find("Ignis Energy/Amount").GetComponent<TextMeshProUGUI>().text = SaveFile.Instance.IgnisEnergy.ToString();
             CanvasElements.UICanvasObject.transform.Find("Ignis Energy").GetComponent<Slider>().value = SaveFile.Instance.IgnisEnergy / 2000;
             if(Area_IgnisManorOnFire.PlayerBuffEffect != null) {
-                Area_IgnisManorOnFire.PlayerBuffEffect.Amount = SaveFile.Instance.IgnisEnergy / 10;
-                Area_IgnisManorOnFire.PlayerBuffEffect.EffectIndicatorText = Utils.GetFormattedFloat(Area_IgnisManorOnFire.PlayerBuffEffect.Amount) + "%";
+                Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter = SaveFile.Instance.IgnisEnergy / 10;
+                Area_IgnisManorOnFire.PlayerBuffEffect.EffectIndicatorText = Utils.GetFormattedFloat(Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter) + "%";
             }
         }
     }
@@ -781,7 +781,7 @@ public class SaveFile
                 return;
             }
         }
-        if(item.Category != Constants.ItemCategory.Tool && item.Category != Constants.ItemCategory.Quest && !FoundItemTypes.Contains(item.GetType())) {
+        if(item.Type != Constants.ItemType.Tool && item.Type != Constants.ItemType.Quest && !FoundItemTypes.Contains(item.GetType())) {
             FoundItemTypes.Add(item.GetType());
         }
         Inventory.Add(item);
@@ -796,7 +796,7 @@ public class SaveFile
 
     public int CheckSellPriceIfItemIsDuplicate(Item item) {
         Item existing_item = Inventory.FirstOrDefault(i => i.GetType() == item.GetType() && i.Grade == item.Grade);
-        if(item.Category == Constants.ItemCategory.Tool || item.Category == Constants.ItemCategory.Quest)
+        if(item.Type == Constants.ItemType.Tool || item.Type == Constants.ItemType.Quest)
         {
             return 0;
         }
@@ -856,17 +856,17 @@ public class SaveFile
         return Inventory.FirstOrDefault(item => item.GetType() == item_type && item.Grade == grade);
     }
 
-    public Item GetEquipmentForCategory(Constants.ItemCategory category)
+    public Item GetEquipmentForType(Constants.ItemType type)
     {
-        switch (category)
+        switch (type)
         {
-            case Constants.ItemCategory.Heavy: return SaveFile.Instance.EquippedHeavyWeapon;
-            case Constants.ItemCategory.Light: return SaveFile.Instance.EquippedLightWeapon;
-            case Constants.ItemCategory.Ranged: return SaveFile.Instance.EquippedRangedWeapon;
-            case Constants.ItemCategory.Gloves: return SaveFile.Instance.EquippedGloves;
-            case Constants.ItemCategory.Helmet: return SaveFile.Instance.EquippedHelmet;
-            case Constants.ItemCategory.Armor: return SaveFile.Instance.EquippedArmor;
-            case Constants.ItemCategory.Boots: return SaveFile.Instance.EquippedBoots;
+            case Constants.ItemType.Heavy: return SaveFile.Instance.EquippedHeavyWeapon;
+            case Constants.ItemType.Light: return SaveFile.Instance.EquippedLightWeapon;
+            case Constants.ItemType.Ranged: return SaveFile.Instance.EquippedRangedWeapon;
+            case Constants.ItemType.Gloves: return SaveFile.Instance.EquippedGloves;
+            case Constants.ItemType.Helmet: return SaveFile.Instance.EquippedHelmet;
+            case Constants.ItemType.Armor: return SaveFile.Instance.EquippedArmor;
+            case Constants.ItemType.Boots: return SaveFile.Instance.EquippedBoots;
             default: return null;
         }
     }
@@ -1183,42 +1183,42 @@ public class SaveFile
             Item item_to_add = (Item)Activator.CreateInstance(item.Type, new object[] { item.Rarity });
             item_to_add.Amount = item.Amount;
             AddItem(item_to_add, false);
-            if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Heavy) {
+            if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Heavy) {
                 EquippedHeavyWeapon = item_to_add;
                 MenuManager.Instance.HeavyEquipmentSlot.EquipItem(EquippedHeavyWeapon);
             }
-            else if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Light) {
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Light) {
                 EquippedLightWeapon = item_to_add;
                 MenuManager.Instance.LightEquipmentSlot.EquipItem(EquippedLightWeapon);
             }
-            else if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Ranged) {
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Ranged) {
                 EquippedRangedWeapon = item_to_add;
                 MenuManager.Instance.RangedEquipmentSlot.EquipItem(EquippedRangedWeapon);
             }
-            else if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Gloves) {
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Gloves) {
                 EquippedGloves = item_to_add;
                 MenuManager.Instance.GlovesEquipmentSlot.EquipItem(EquippedGloves);
             }
-            else if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Helmet) {
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Helmet) {
                 EquippedHelmet = item_to_add;
                 MenuManager.Instance.HelmetEquipmentSlot.EquipItem(EquippedHelmet);
             }
-            else if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Armor) {
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Armor) {
                 EquippedArmor = item_to_add;
                 MenuManager.Instance.ArmorEquipmentSlot.EquipItem(EquippedArmor);
             }
-            else if(item.IsEquipped && item_to_add.Category == Constants.ItemCategory.Boots) {
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Boots) {
                 EquippedBoots = item_to_add;
                 MenuManager.Instance.BootsEquipmentSlot.EquipItem(EquippedBoots);
             }
-            /*else if(item.IsEquippedToSlot1 && (item_to_add.Category == Constants.ItemCategory.Tool)) {
+            else if(item.IsEquippedToSlot1 && item_to_add.Type == Constants.ItemType.Tool) {
                 EquippedItem1 = item_to_add;
                 MenuManager.Instance.Item1EquipmentSlot.EquipItem(EquippedItem1);
             }
-            else if(item.IsEquippedToSlot2 && (item_to_add.Category == Constants.ItemCategory.Tool)) {
+            else if(item.IsEquippedToSlot2 && item_to_add.Type == Constants.ItemType.Tool) {
                 EquippedItem2 = item_to_add;
                 MenuManager.Instance.Item2EquipmentSlot.EquipItem(EquippedItem2);
-            }*/
+            }
         }
         foreach(Type unlockedTool in SaveFile.Instance.UnlockedTools) {
             Item item_to_add = (Item)Activator.CreateInstance(unlockedTool, new object[] { SaveFile.Instance.ToolGrades[unlockedTool] });
@@ -1252,7 +1252,7 @@ public class SaveFile
                 Effect_Stance stance_effect = (Effect_Stance)Activator.CreateInstance(s.StanceEffectType, new object[] {null});
                 s.StanceEffect = stance_effect;
             }
-            Image img = MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + s.WeaponCategory + "/UI_StanceTile").GetComponent<Image>();
+            Image img = MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + s.WeaponType + "/UI_StanceTile").GetComponent<Image>();
             string family = s.StanceEffect.GetType().GetField("Family",  BindingFlags.Public | BindingFlags.Static).GetValue(null).ToString();
             if(img.GetComponent<Button>() != null) {
                 img.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + s.StanceEffect.GetType().ToString(), typeof(Sprite)) as Sprite;

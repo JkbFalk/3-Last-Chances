@@ -75,7 +75,7 @@ public class ButtonDropdown : MonoBehaviour
             }
             else if (action == InventoryActions.Sell)
             {
-                gameObject.transform.Find("Item Label").GetComponent<LabelInitializer>().OriginalValue = "{Inventory" + action.ToString() + "} (" + (Item.Category == Constants.ItemCategory.Tool ? "[Money]" + Utils.GetFormattedInteger(Item.Amount * Item.SellPrice) : "[Money]" + Utils.GetFormattedInteger(Item.SellPrice)) + ")";
+                gameObject.transform.Find("Item Label").GetComponent<LabelInitializer>().OriginalValue = "{Inventory" + action.ToString() + "} (" + (Item.Type == Constants.ItemType.Tool ? "[Money]" + Utils.GetFormattedInteger(Item.Amount * Item.SellPrice) : "[Money]" + Utils.GetFormattedInteger(Item.SellPrice)) + ")";
             }
             else
             {

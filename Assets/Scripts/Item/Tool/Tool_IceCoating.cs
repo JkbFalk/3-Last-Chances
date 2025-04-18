@@ -16,7 +16,7 @@ public class Tool_IceCoating : Item
     public static float Cooldown = 10;
     public Tool_IceCoating(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Tool;
+        Type = Constants.ItemType.Tool;
         OnUseAbility = typeof(Ability_ThrowItem);
         DamageSources = new List<Ability.DamageSource>()
         {
@@ -27,13 +27,13 @@ public class Tool_IceCoating : Item
 
     public override string GetDescription(bool detailed = false)
     {
-        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "")), new object[] { Utils.GetFormattedFloat(3 * GetMultiplierForGrade()), Utils.GetFormattedFloat(10 * GetMultiplierForGrade()), Utils.GetFormattedFloat(20 * GetMultiplierForGrade()), 5, Utils.GetFormattedFloat(1 * GetMultiplierForGrade()) }) + (detailed ? "" : " [Detailed]") + "\n\n[CD] " + Cooldown.ToString();
+        return string.Format(Label.Get(GetType().ToString() + "_Description" + (detailed ? "Detailed" : "")), new object[] { Utils.GetFormattedFloat(3 * GetMultiplierForGrade()), Utils.GetFormattedFloat(10 * GetMultiplierForGrade()), Utils.GetFormattedFloat(20 * GetMultiplierForGrade()), 5, Utils.GetFormattedFloat(1 * GetMultiplierForGrade()) }) + (detailed ? "" : " <sprite name=\"Detailed\">") + "\n\n[CD] " + Cooldown.ToString();
     }
 
     public override void OnUse()
     {
         base.OnUse();
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, "Tool_VacuumGrenade_" + Grade);
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, "Tool_VacuumGrenade_" + Grade);
         _soundPlayed = false;
         EnemyWasHit = false;
         GameController.Instance.WaitAndRunMethod(1.5f, ExplodeIfNotHittingEnemy);

@@ -12,9 +12,9 @@ public class HideOrShowOverTime : MonoBehaviour {
             return _canvasGroup;
         }
     }
-
+    public bool ChangeInProgress = false;
+    public float Visiblity = 0;
     public bool DestroyAfterHiding = false;
-    private float _changePerUpdate;
     private bool _hiding = false;
     private bool _showing = false;
 
@@ -22,15 +22,28 @@ public class HideOrShowOverTime : MonoBehaviour {
 
     private void Update() {
         if (_showing) {
-            CanvasGroup.alpha = CanvasGroup.alpha +  (1 / (_seconds / (Time.deltaTime == 0 ? 0.01f : Time.deltaTime)));
+            CanvasGroup.alpha = CanvasGroup.alpha +  (1 / (_seconds / (Time.unscaledDeltaTime > 0.05f ? 0.05f : Time.unscaledDeltaTime)));
             if (CanvasGroup.alpha >= 1) {
                 _showing = false;
+                ChangeInProgress = false;
+                Visiblity = CanvasGroup.alpha;
+                if(CheckIfShouldHideOnceFinishedChanging) {
+                    CheckIfShouldHideOnceFinishedChanging = false;
+                    LabelInitializer.CheckIfShouldHide();
+                }
             }
         }
         else if (_hiding) {
-            CanvasGroup.alpha = CanvasGroup.alpha -  (1 / (_seconds / (Time.deltaTime == 0 ? 0.01f : Time.deltaTime)));
+            Debug.Log("HIDING " + Time.unscaledDeltaTime + " result: " + CanvasGroup.alpha + " -> " +  (CanvasGroup.alpha -  (1 / (_seconds / Time.unscaledDeltaTime))));
+            CanvasGroup.alpha = CanvasGroup.alpha -  (1 / (_seconds / (Time.unscaledDeltaTime > 0.05f ? 0.05f : Time.unscaledDeltaTime)));
             if (CanvasGroup.alpha <= 0) {
                 _hiding = false;
+                ChangeInProgress = false;
+                Visiblity = CanvasGroup.alpha;
+                if(CheckIfShouldHideOnceFinishedChanging) {
+                    CheckIfShouldHideOnceFinishedChanging = false;
+                    LabelInitializer.CheckIfShouldHide();
+                }
                 if (DestroyAfterHiding) {
                     Destroy(gameObject);
                 }
@@ -42,6 +55,7 @@ public class HideOrShowOverTime : MonoBehaviour {
         _seconds = seconds;
         _hiding = true;
         _showing = false;
+        ChangeInProgress = true;
     }
 
     public void HideOverTimeFromFull(float seconds) {
@@ -53,12 +67,14 @@ public class HideOrShowOverTime : MonoBehaviour {
         CanvasGroup.alpha = 1;
         _hiding = true;
         _showing = false;
+        ChangeInProgress = true;
     }
 
     public void ShowOverTime(float seconds) {
         _seconds = seconds;
         _showing = true;
         _hiding = false;
+        ChangeInProgress = true;
     }
 
     public void ShowOverTimeFromZero(float seconds) {
@@ -70,5 +86,9 @@ public class HideOrShowOverTime : MonoBehaviour {
         CanvasGroup.alpha = 0;
         _showing = true;
         _hiding = false;
+        ChangeInProgress = true;
     }
+    public LabelInitializer LabelInitializer;
+    public bool CheckIfShouldHideOnceFinishedChanging = false;
+
 }

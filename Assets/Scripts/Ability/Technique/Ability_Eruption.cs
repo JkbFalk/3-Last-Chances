@@ -21,7 +21,7 @@ public class Ability_Eruption : Technique
     public static float MasteryAProneApplied = 20;
 
     public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Heavy;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
 
     public Ability_Eruption(Unit ability_user) : base(ability_user)
     {

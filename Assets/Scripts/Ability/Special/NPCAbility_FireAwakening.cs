@@ -17,6 +17,6 @@ public class NPCAbility_FireAwakening : Ability {
 
     public override void CallAbilityEvent1() {
         User.AddEffect(new Effect_IgnisCaptainBuff(new(this)), 12);
-        User.AddEffect(new Effect_Inflame(User.DamageCategory, new(this)), 12);
+        User.AddEffect(new Effect_Inflame(User.DamageType, new(this)), 12);
     }
 }

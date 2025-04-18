@@ -45,7 +45,7 @@ public class Effect_RollForward : Effect {
             damage.SourceOfDamage.User.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
             GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, damage.SourceOfDamage.User);
             new Damage(damage.SourceOfDamage.User, roll_counter, null)
-                .SetDamageSource(0,  Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageCategory)
+                .SetDamageSource(0,  Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageType)
                 .CalculateDamage();
             if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player)
             {
@@ -84,7 +84,7 @@ public class Effect_RollForward : Effect {
             damage.Stagger *= 0.5f;
 
             TargetOfEffect.AddEffect(new Effect_Stun(SourceOfEffect), SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
-            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
+            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
     }

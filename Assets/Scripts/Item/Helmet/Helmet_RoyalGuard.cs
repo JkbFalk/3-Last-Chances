@@ -7,14 +7,9 @@ public class Helmet_RoyalGuard : Item
     public Helmet_RoyalGuard(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.RoyalGuard;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksGiveAnalysis")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AttackSpeed")};
     }
 }
 

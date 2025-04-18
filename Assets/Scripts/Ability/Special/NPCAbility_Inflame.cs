@@ -15,12 +15,12 @@ public class NPCAbility_Inflame : Ability {
         WaitTimeBeforeNextAction = 0.1f;
         Properties.Add(AbilityProperty.ImmuneToFlinch);
 
-        NameOfAnimationToAutoPlay = User.DamageCategory == Constants.DamageType.Heavy ? "Inflame_Heavy" : "Inflame_Light";
+        NameOfAnimationToAutoPlay = User.DamageType == Constants.DamageType.Heavy ? "Inflame_Heavy" : "Inflame_Light";
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 
     public override void CallAbilityEvent1()
     {
-        User.AddEffect(new Effect_Inflame(User.DamageCategory, new(this)), 25);
+        User.AddEffect(new Effect_Inflame(User.DamageType, new(this)), 25);
     }
 }

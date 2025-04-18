@@ -7,15 +7,10 @@ public class Polearm_Hurricane : Item
     public Polearm_Hurricane(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Enforcer;
-        Category = Constants.ItemCategory.Heavy;
+        Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
         SetBaseWeaponStats(105, 105, 0.9f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_GainSpeedAndDamageDuringBasicAttackCombo(new(this)) {SpeedBonusPerHit = GetFirstModifierEffectValue(false) * 0.0625f, DamageBonusPerHit = GetFirstModifierEffectValue() * 0.0625f, DescriptionParameters=new List<string>{Utils.GetFormattedFloat(GetFirstModifierEffectValue(false) * 0.0625f), Utils.GetFormattedFloat(GetFirstModifierEffectValue() * 0.0625f)}} };
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.DamageReduction, new(this)) {PercentageAmount=0.5f} };
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("NonStopBasicAttackingIncreasesDamageDealtAndSpeed")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ReduceDamageByAFlatAmountWhileBasicAttacking")};
     }
 }

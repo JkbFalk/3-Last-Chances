@@ -23,7 +23,7 @@ public class BA_Bow_F : BasicAttack {
 
     public override void OnAbilityStart()
     {
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, "Projectile_BowBasicAttack");
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, "Projectile_BowBasicAttack");
         base.OnAbilityStart();
     }
 

@@ -11,7 +11,7 @@ public class Ability_HeavySlash : Technique
     public static float Cooldown = 40;
 
     public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageCategory = Constants.DamageType.Heavy;
+    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
 
     private bool _canFinishAbility = false;
     private bool _buttonWasReleased = false;

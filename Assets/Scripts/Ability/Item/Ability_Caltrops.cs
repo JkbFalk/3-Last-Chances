@@ -23,14 +23,14 @@ public class Ability_Caltrops : Ability
         ItemBeingUsed.ItemUseAbility = this;
         CustomHitSound = "Blade/Blade_BloodStab1";
         HitSoundVolume = 0.35f;
-        IncisionApplied = 0.125f * ItemBeingUsed.GetFirstModifierEffectValue();
-        SlowApplied = 2 + 0.03125f * ItemBeingUsed.GetFirstModifierEffectValue();
+        IncisionApplied = 0.125f * ItemBeingUsed.GetItemFirstEffectPB();
+        SlowApplied = 2 + 0.03125f * ItemBeingUsed.GetItemFirstEffectPB();
     }
 
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        Utils.CopyItemAppearanceForPlayer(Constants.ItemCategory.Tool, "Caltrops");
+        Utils.CopyItemAppearanceForPlayer(Constants.ItemType.Tool, "Caltrops");
     }
 
     public override void CallAbilityEvent1()

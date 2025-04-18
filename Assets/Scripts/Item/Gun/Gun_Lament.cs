@@ -7,15 +7,10 @@ public class Gun_Lament : Item
     public Gun_Lament(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Executioner;
-        Category = Constants.ItemCategory.Ranged;
+        Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
         SetBaseWeaponStats(135, 50, 0.75f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("FinishOffLowHealthEnemies")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("TakedownsRestoreAmmo")};
     }
 }

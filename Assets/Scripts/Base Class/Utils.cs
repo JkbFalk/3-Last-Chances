@@ -24,39 +24,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
 using Unity.Properties;
+using System.IO.Compression;
+using Unity.VisualScripting.FullSerializer;
 
 public class Utils {
     public static readonly Dictionary<string, AudioClip> LoadedAudioClips = new Dictionary<string, AudioClip>();
     public static readonly Dictionary<string, Sprite> LoadedSprites = new Dictionary<string, Sprite>();
-
-    public static Sprite LoadSprite(string file_path) {
-        if (LoadedSprites.ContainsKey(file_path)) {
-            return LoadedSprites[file_path];
-        }
-        else {
-            Sprite sprite = Resources.Load("Sprites/" + file_path, typeof(Sprite)) as Sprite;
-            LoadedSprites.Add(file_path, sprite);
-            return sprite;
-        }
-    }
-
-    public static string GetWeaponCategoryForGivenType(string weapon_type)
-    {
-        if(weapon_type == "Greatsword")
-        {
-            return "Heavy";
-        }
-        else if (weapon_type == "TwinBlades")
-        {
-            return "Light";
-        }
-        else if (weapon_type == "Gun")
-        {
-            return "Ranged";
-        }
-        Debug.LogError("Could not find Weapon Category for given type: " + weapon_type);
-        return null;
-    }
 
     public static AnimationClip GetAnimationClip(Animator animator, string clip_name) {
         foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
@@ -214,14 +187,14 @@ public class Utils {
         }
     }
 
-    public static WeaponClass GetPlayerWeaponClassForDamageCategory(Constants.DamageType damage_category) {
-        if(damage_category == DamageType.Heavy) {
+    public static WeaponClass GetPlayerWeaponClassForDamageType(Constants.DamageType damage_type) {
+        if(damage_type == DamageType.Heavy) {
             return SaveFile.Instance.EquippedHeavyWeapon.WeaponClass;
         }
-        else if(damage_category == DamageType.Light) {
+        else if(damage_type == DamageType.Light) {
             return SaveFile.Instance.EquippedLightWeapon.WeaponClass;
         }
-        else if(damage_category == DamageType.Ranged) {
+        else if(damage_type == DamageType.Ranged) {
             return SaveFile.Instance.EquippedRangedWeapon.WeaponClass;
         }
         else {
@@ -239,22 +212,6 @@ public class Utils {
         if(distance < optimal_distance) {
             damage.TargetOfDamage.ApplyForce(direction_vector_towards_target * (optimal_distance - distance) * 500, damage.SourceOfDamage);
         }
-    }
-
-    public static string GetCalculatedStatIncrease(string power_up, string value) {
-        Stat stat = GetPlayerStatForGivenName(power_up);
-        if(power_up == "Injury" || power_up == "Stagger" || power_up == "AttackSpeed") {
-            string result = "";
-            List<Stat> stats = power_up == "Injury" ? new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury } : power_up == "Stagger" ? new List<Stat> { Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger } : new List<Stat> { Player.Instance.HeavyAttackSpeed,Player.Instance.LightAttackSpeed,Player.Instance.RangedAttackSpeed,Player.Instance.MagicAttackSpeed };
-            foreach(Stat it_stat in stats) {
-                result += "<sprite name=\"" + it_stat.ToString() + "\">" + it_stat.GetCalculatedIncrease(value.Contains("%") ? float.Parse(value.Replace("%", "")) : 0, value.Contains("%") ? 0 : float.Parse(value)) + "\n";
-            }
-            return result + "\n\n";
-        }
-        else if(stat == null) {
-            return null;
-        }
-        return "<sprite name=\"" + power_up + "\">" + stat.GetCalculatedIncrease(value.Contains("%") ? float.Parse(value.Replace("%", "")) : 0, value.Contains("%") ? 0 : float.Parse(value)) + "\n\n";
     }
 
     public static int GetRandomSoundNumber(string type) {
@@ -388,17 +345,6 @@ public class Utils {
         return text.Replace("0", "").Replace("1", "").Replace("2", "").Replace("3", "").Replace("4", "").Replace("5", "").Replace("6", "").Replace("7", "").Replace("8", "").Replace("9", "").Replace("Unit_", "").Replace("(Clone)", "");  
     }
 
-    public static string GetTitleForName(string name) {
-        return
-            Label.ContainsKey("Title_" + name) ? Label.Get("Title_" + name) : 
-            Label.ContainsKey(name) ? Label.Get(name) : 
-            Label.ContainsKey("Name_" + name) ? Label.Get("Name_" + name) : 
-            Label.ContainsKey("Title_" + name.Replace("Unit_", "").Replace("(Clone)", "")) ? Label.Get("Title_" + name.Replace("Unit_", "").Replace("(Clone)", "")) : 
-            Label.ContainsKey(name.Replace("Unit_", "").Replace("(Clone)", "")) ? Label.Get(name.Replace("Unit_", "").Replace("(Clone)", "")) : 
-            Label.ContainsKey("Name_" + name.Replace("Unit_", "").Replace("(Clone)", "")) ? Label.Get("Name_" + name.Replace("Unit_", "").Replace("(Clone)", "")) : 
-            Label.Get("Title_UnknownEnemy");
-    }
-
     public static string GetDisplayedNameForName(string name) {
         return 
             name == null ? Label.Get("Name_Unknown") :
@@ -484,39 +430,6 @@ public class Utils {
             }
         }
         return null;
-    }
-
-    public static Stat GetPlayerStatForGivenName(string stat_name) {
-        switch(stat_name) {
-            case "HeavyInjury": return Player.Instance.HeavyInjury;
-            case "LightInjury": return Player.Instance.LightInjury;
-            case "RangedInjury": return Player.Instance.RangedInjury;
-            case "MagicInjury": return Player.Instance.MagicInjury;
-            case "HeavyStagger": return Player.Instance.HeavyStagger;
-            case "LightStagger": return Player.Instance.LightStagger;
-            case "RangedStagger": return Player.Instance.RangedStagger;
-            case "MagicStagger": return Player.Instance.MagicStagger;
-            case "HeavyAttackSpeed": return Player.Instance.HeavyAttackSpeed;
-            case "LightAttackSpeed": return Player.Instance.LightAttackSpeed;
-            case "RangedAttackSpeed": return Player.Instance.RangedAttackSpeed;
-            case "MagicAttackSpeed": return Player.Instance.MagicAttackSpeed;
-            case "Health": return Player.Instance.Health;
-            case "StaggerBar": return Player.Instance.StaggerBar;
-            case "Energy": return Player.Instance.Energy;
-            case "EnergyGain": return Player.Instance.EnergyGain;
-            case "DamageReduction": return Player.Instance.DamageReduction;
-            case "Tenacity": return Player.Instance.Tenacity;
-            case "Control": return Player.Instance.Control;
-            case "CooldownReduction": return Player.Instance.CooldownReduction;
-            case "MovementSpeed": return Player.Instance.MovementSpeed;
-            default: return null;
-        }
-    }
-
-    public static bool CheckIfPlayerCurrentlyPerformingAbilityType(Type ability_type)
-    {
-        return Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UsingAbility &&
-            Player.Instance.Actions.CurrentAbilityBeingPerformed != null && Player.Instance.Actions.CurrentAbilityBeingPerformed.GetType().IsSubclassOf(ability_type);
     }
 
     public static bool CheckIfUnitCanPerformActions(Unit unit) {
@@ -605,17 +518,6 @@ public class Utils {
             Constants.ActionType.UnderHardCrowdControl => 3,
             Constants.ActionType.InCutscene => 4,
             _ => -1,
-        };
-    }
-
-    public static Constants.ActionType GetActionForGivenCode(int code) {
-        return code switch {
-            0 => Constants.ActionType.Idle,
-            1 => Constants.ActionType.Moving,
-            2 => Constants.ActionType.UsingAbility,
-            3 => Constants.ActionType.UnderHardCrowdControl,
-            4 => Constants.ActionType.InCutscene,
-            _ => Constants.ActionType.Idle,
         };
     }
 
@@ -876,11 +778,6 @@ public class Utils {
         Settings.Instance.FieldOfView = Settings.Instance.FieldOfView;
     }
 
-    public static InteractableObject GetInteractable(string name) {
-        InteractableObject[] objs = Area.Instance.transform.root.GetComponentsInChildren<InteractableObject>(true);
-        return objs.FirstOrDefault(obj => obj.gameObject.name == name);
-    }
-
     public static List<Unit> SpawnUnits(List<string> units, int enemy_level = 1, float aggressiveness = 1, bool is_elite = false)
     {
         Transform enemy_spawns = Area.Instance.transform.Find(is_elite ? "Boss Spawns" : "Enemy Spawns");
@@ -1022,7 +919,7 @@ public class Utils {
         unit.ApplyForce((position - unit.transform.position) * Vector2.Distance(unit.transform.position, position) * intensity, source);
     }
 
-    public static string InsertLabelsIntoText(string text, GameObject game_object = null)
+    public static string InsertLabelsIntoText(string text, GameObject game_object = null, string effect_name = "")
     {
         if(string.IsNullOrEmpty(text))
         {
@@ -1042,33 +939,64 @@ public class Utils {
                     if(text.Length > i+5) {
                         string check = text.Substring(i+3, 3);
                         if(check == "[I]" || check == "[H]") {
-                            result += "<color=#E20101ff>";
+                            result += $"<color={Colors.LabelHealth}>";
                             coloring_text = true;
                         }
                         else if(check == "[S]") {
-                            result += "<color=#5700FFff>";
+                            result += $"<color={Colors.LabelStagger}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "[E]") {
+                            result += $"<color={Colors.LabelEnergy}>";
                             coloring_text = true;
                         }
                     }
                     if(text.Length > i+6) {
                         string check = text.Substring(i+3, 4);
                         if(check == "[HI]" || check == "[LI]" || check == "[RI]" || check == "[MI]" || check == "%[H]" || check == "%[I]") {
-                            result += "<color=#E20101ff>";
+                            result += $"<color={Colors.LabelHealth}>";
                             coloring_text = true;
                         }
                         else if(check == "[HS]" || check == "[LS]" || check == "[RS]" || check == "[MS]" || check == "[SD]" || check == "%[S]" || check == "[SB]") {
-                            result += "<color=#5700FFff>";
+                            result += $"<color={Colors.LabelStagger}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "%[E]" || check == "[EG]") {
+                            result += $"<color={Colors.LabelEnergy}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "[CD]") {
+                            result += $"<color={Colors.LabelCooldown}>";
                             coloring_text = true;
                         }
                     }
                     if(text.Length > i+7) {
                         string check = text.Substring(i+3, 5);
                         if(check == "%[HI]" || check == "%[LI]" || check == "%[RI]" || check == "%[MI]" ) {
-                            result += "<color=#E20101ff>";
+                            result += $"<color={Colors.LabelHealth}>";
                             coloring_text = true;
                         }
                         else if(check == "%[HS]" || check == "%[LS]" || check == "%[RS]" || check == "%[MS]" || check == "%[SB]") {
-                            result += "<color=#5700FFff>";
+                            result += $"<color={Colors.LabelStagger}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "%[EG]") {
+                            result += $"<color={Colors.LabelEnergy}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "%[CD]") {
+                            result += $"<color={Colors.LabelCooldown}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "[CDR]") {
+                            result += $"<color={Colors.LabelCooldown}>";
+                            coloring_text = true;
+                        }
+                    }
+                    if(text.Length > i+8) {
+                        string check = text.Substring(i+3, 6);
+                        if(check == "%[CDR]") {
+                            result += $"<color={Colors.LabelCooldown}>";
                             coloring_text = true;
                         }
                     } 
@@ -1112,7 +1040,7 @@ public class Utils {
                 }
                 if (label_key.EndsWith("Description") && Label.ContainsKey(label_key.Replace("Description", "DescriptionDetailed")))
                 {
-                    result += " [Detailed]";
+                    result += " <link=\"" + label_key + "Detailed\"><sprite name=\"Detailed\"></link>";
                 }
                 label_key = "";
             }
@@ -1166,7 +1094,7 @@ public class Utils {
         return true;
     }
 
-    public static string GetIconForPhrase(string phrase) {
+    public static string GetIconForPhrase(string phrase, string effect_name = "") {
         if(phrase.Contains("Binding")) {
             if(phrase == "Item1Binding" && Settings.Instance.ControlScheme == "Gamepad") {
                 return GetIconForPhrase("ItemsHighlightBinding") + "+<sprite name=\"Item1BindingGamepad\">";
@@ -1182,20 +1110,45 @@ public class Utils {
             }
             return "<sprite name=\"" + phrase + Settings.Instance.ControlScheme.ToString() + "\">";
         }
-        else if(phrase=="R") {
-            return "<color=#E20101ff>";
+        else if(phrase=="RED") {
+            return $"<color={Colors.LabelHealth}>";
         }
-        else if(phrase=="/R") {
+        else if(phrase=="/RED") {
             return "</color>";
         }
-        else if(phrase=="P") {
-            return "<color=#5700FFff>";
+        else if(phrase=="PURPLE") {
+            return $"<color={Colors.LabelStagger}>";
         }
-        else if(phrase=="/P") {
+        else if(phrase=="/PURPLE") {
+            return "</color>";
+        }
+        else if(phrase=="BLUE") {
+            return $"<color={Colors.LabelEnergy}>";
+        }
+        else if(phrase=="/BLUE") {
+            return "</color>";
+        }
+        else if(phrase=="GREY") {
+            return $"<color={Colors.LabelCooldown}>";
+        }
+        else if(phrase=="/GREY") {
+            return "</color>";
+        }
+        else if(phrase=="GREEN") {
+            return $"<color={Colors.LabelDamage}>";
+        }
+        else if(phrase=="/GREEN") {
+            return "</color>";
+        }
+        else if(phrase=="/C") {
             return "</color>";
         }
         else {
-            return "<sprite name=\"" + (IconShortcuts.ContainsKey(phrase) ? IconShortcuts[phrase] : phrase) + "\">";
+            bool isLinked = PhrasesAndExplanations.ContainsKey(phrase) || Label.ContainsKey("Effect_" + phrase + "_Description");
+            return 
+                (isLinked ? "<link=\"" + (PhrasesAndExplanations.ContainsKey(phrase) ? PhrasesAndExplanations[phrase] : "Effect_" + phrase + "_Description") + ">" : "") + 
+                "<sprite name=\"" + (IconShortcuts.ContainsKey(phrase) ? IconShortcuts[phrase] : phrase) + "\">" + 
+                (isLinked ? "</link>" : "");
         }
     }
 
@@ -1224,12 +1177,63 @@ public class Utils {
         {"CD", "Cooldown"},
         {"CDR", "CooldownReduction"},
         {"C", "Control"},
+        {"MOV", "MovementSpeed"},
+        {"MOVE", "MovementSpeed"},
+        {"SPEED", "MovementSpeed"},
         {"SP", "MovementSpeed"},
         {"AS", "AttackSpeed"},
         {"HAS", "HeavyAttackSpeed"},
         {"LAS", "LightAttackSpeed"},
         {"RAS", "RangedAttackSpeed"},
-        {"MAS", "MagicAttackSpeed"}
+        {"MAS", "MagicAttackSpeed"},
+        {"WD", "WeaponDamage"},
+        {"WI", "WeaponInjury"},
+        {"WS", "WeaponStagger"},
+        {"TD", "TechniqueDamage"},
+        {"TI", "TechniqueInjury"},
+        {"TS", "TechniqueStagger"}
+    };
+
+    public static Dictionary<string, string> PhrasesAndExplanations = new Dictionary<string, string> {
+        {"D", "Stat_Damage_Description"},
+        {"I", "Stat_Injury_Description"},
+        {"S", "Stat_Stagger_Description"},
+        {"HD", "Stat_HeavyDamage_Description"},
+        {"LD", "Stat_LightDamage_Description"},
+        {"RD", "Stat_RangedDamage_Description"},
+        {"MD", "Stat_MagicDamage_Description"},
+        {"WD", "Stat_WeaponDamage_Description"},
+        {"TD", "Stat_TechniqueDamage_Description"},
+        {"HI", "Stat_HeavyInjury_Description"},
+        {"LI", "Stat_LightInjury_Description"},
+        {"RI", "Stat_RangedInjury_Description"},
+        {"MI", "Stat_MagicInjury_Description"},
+        {"WI", "Stat_WeaponInjury_Description"},
+        {"TI", "Stat_TechniqueInjury_Description"},
+        {"HS", "Stat_HeavyStagger_Description"},
+        {"LS", "Stat_LightStagger_Description"},
+        {"RS", "Stat_RangedStagger_Description"},
+        {"MS", "Stat_MagicStagger_Description"},
+        {"WS", "Stat_WeaponStagger_Description"},
+        {"TS", "Stat_TechniqueStagger_Description"},
+        {"H", "Stat_Health_Description"},
+        {"SB", "Stat_StaggerBar_Description"},
+        {"E", "Stat_Energy_Description"},
+        {"EG", "Stat_EnergyGain_Description"},
+        {"DR", "Stat_DamageReduction_Description"},
+        {"T", "Stat_Tenacity_Description"},
+        {"CD", "Stat_Cooldown_Description"},
+        {"CDR", "Stat_CooldownReduction_Description"},
+        {"C", "Stat_Control_Description"},
+        {"MOV", "Stat_MovementSpeed_Description"},
+        {"MOVE", "Stat_MovementSpeed_Description"},
+        {"SPEED", "Stat_MovementSpeed_Description"},
+        {"SP", "Stat_MovementSpeed_Description"},
+        {"AS", "Stat_AttackSpeed_Description"},
+        {"HAS", "Stat_HeavyAttackSpeed_Description"},
+        {"LAS", "Stat_LightAttackSpeed_Description"},
+        {"RAS", "Stat_RangedAttackSpeed_Description"},
+        {"MAS", "Stat_MagicAttackSpeed_Description"}
     };
 
     public static bool CheckIfPlayerIsFacingUnit(Unit unit)
@@ -1266,10 +1270,6 @@ public class Utils {
             SaveFile.Instance.UnlockAbilityMasteryB(Type.GetType(power_up.Replace("_UpgradeB", "")));
         }
         else {
-            /*bool is_percentage = power_up.Contains("%");
-            foreach(Effect e in PassivePowerUpTile.GetPassivePowerUpEffects(power_up.Split("~")[0], GetPowerBudgetForTile()) {
-                Player.Instance.AddEffect(e);
-            }*/
             SaveFile.Instance.SurvivalPowerUps.Add(power_up);
         }
     }
@@ -1286,28 +1286,36 @@ public class Utils {
         passive_select.InitializeOptions();
     }
 
-    public static string GetFormattedLabel(string label, List<string> string_params, GameObject game_object = null)
+    public static string GetFormattedFloat(float number, int force_show_decimals = -1)
     {
-        string text = label;
-        if(Label.ContainsKey(label)) {
-            text = Label.Get(label);
+        if(force_show_decimals == -1) {
+            return Math.Round(number, 1).ToString().Replace(",", ".");
         }
-        string_params = RoundAllNumbers(string_params);
-        string format = Utils.InsertLabelsIntoText(text, game_object);
-        if(string_params.Count > 0) {
-            return string.Format(format, string_params.ToArray());
+        else if(force_show_decimals == 0) {
+            return Math.Round(number, 0).ToString().Replace(",", ".");
         }
-        return text;
+        float rounded = (float)Math.Round(number, 2);
+        int digits = GetFloatDigits(rounded);
+        if(force_show_decimals == 2 && digits == 0) {
+            return rounded.ToString().Replace(",", ".") + ".00";
+        } 
+        else if(force_show_decimals == 2 && digits == 1) {
+            return rounded.ToString().Replace(",", ".") + "0";
+        } 
+        else if(force_show_decimals == 1 && digits == 0) {
+            return rounded.ToString().Replace(",", ".") + ".0";
+        } 
+        return rounded.ToString().Replace(",", ".");
     }
 
-    public static string GetFormattedFloat(float number, int decimals = 0, bool force_show_first_decimal = false)
-    {
-        if(force_show_first_decimal && number % 1 == 0)
-        {
-            return Math.Round(number, 1).ToString().Replace(",", ".") + ".0";
+    public static int GetFloatDigits(float number) {
+        int i;
+        for(i = 0; number % 1 != 0; i++) {
+            number *= 10;
         }
-        return Math.Round(number, decimals).ToString().Replace(",", ".");
+        return i;
     }
+
 
     public static List<string> RoundAllNumbers(List<string> string_params)
     {
@@ -1485,43 +1493,6 @@ public class Utils {
 			fitter.SetLayoutHorizontal();
 		}
 	}
-
-    public static void UnlockAbility(Type ability)
-    {
-        SaveFile.Instance.UnlockAbility(ability);
-        GameController.Instance.GameplayMode = Constants.GameplayMode.InfoPrompt;
-        CanvasElements.UnlockInformation.gameObject.SetActive(true);
-        Transform abilities = CanvasElements.UnlockInformation.transform.Find("Choices/Abilities");
-        for (int i = abilities.childCount - 1; i >= 0; i--)
-        {
-            MonoBehaviour.Destroy(abilities.GetChild(i).gameObject);
-        }
-        GameObject ability_unlock = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_AbilityUnlockedItem")) as GameObject;
-        ability_unlock.name = ability.ToString();
-        LabelInitializer description = ability_unlock.transform.Find("Description").GetComponent<LabelInitializer>();
-        description.OriginalValue = "{" + ability.ToString() + "_Description}";
-        float cost = Ability.GetEnergyCost(ability);
-        if(cost > 0)
-        {
-            description.OriginalValue = description.OriginalValue + "\n\n<sprite name=\"Energy\"> " + cost;
-        }
-        float cooldown = Ability.GetCooldown(ability);
-        if (cooldown > 0)
-        {
-            description.OriginalValue = description.OriginalValue + "  [CD] " + cooldown;
-        }
-        MethodInfo desc = ability.GetMethod("GetDescriptionValues", BindingFlags.Public | BindingFlags.Static);
-        if (desc != null)
-        {
-            description.string_params = RoundAllNumbers((List<string>)desc.Invoke(null, null));
-        }
-        ability_unlock.transform.SetParent(CanvasElements.UnlockInformation.transform.Find("Choices/Abilities"));
-        foreach (Stance.EquippedAbility item in Player.Instance.CurrentStance.Abilities)
-        {
-            item.AbilityGraphic.transform.Find("Disabled").gameObject.SetActive(!SaveFile.Instance.UnlockedAbilities.Contains(item.Type));
-        }
-        GameController.Instance.transform.Find("Unlock Information/Choices/Button").GetComponent<UnityEngine.UI.Button>().Select();
-    }
     public static string GetGameObjectPath(GameObject obj)
     {
         string path = "/" + obj.name;
@@ -1537,15 +1508,15 @@ public class Utils {
         return (unit.Actions.IsFlipped && unit_to_check_if_in_front.transform.position.x < unit.transform.position.x) || (!unit.Actions.IsFlipped && unit_to_check_if_in_front.transform.position.x > unit.transform.position.x);
     }
 
-    public static void CopyItemAppearanceForPlayer(Constants.ItemCategory category, string prefab_name)
+    public static void CopyItemAppearanceForPlayer(Constants.ItemType type, string prefab_name)
     {
-        GameObject item_to_copy_appearance_from = MonoBehaviour.Instantiate(Resources.Load("Prefabs/" + category + "/" + prefab_name)) as GameObject;
-        if (category == ItemCategory.Heavy)
+        GameObject item_to_copy_appearance_from = MonoBehaviour.Instantiate(Resources.Load("Prefabs/" + type + "/" + prefab_name)) as GameObject;
+        if (type == ItemType.Heavy)
         {
-            CopyGameObjectAppearance(Player.Instance.SpriteRenderers[category.ToString()].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
+            CopyGameObjectAppearance(Player.Instance.SpriteRenderers[type.ToString()].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
         }
-        else if(category == ItemCategory.Ranged) {
-            CopyGameObjectAppearance(Player.Instance.SpriteRenderers[category.ToString()].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
+        else if(type == ItemType.Ranged) {
+            CopyGameObjectAppearance(Player.Instance.SpriteRenderers[type.ToString()].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
             if(prefab_name.Contains("Bow")) {
                 Player.Instance.SpriteRenderers["Ranged"].SpriteRenderer.GetComponent<SpriteSkin>().boneTransforms[0] = null;
             }
@@ -1553,7 +1524,7 @@ public class Utils {
 
             }
         }
-        else  if (category == ItemCategory.Light)
+        else  if (type == ItemType.Light)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Light Right"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Light Right").gameObject, false);
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Light Left"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Light Left").gameObject, false);
@@ -1562,7 +1533,7 @@ public class Utils {
                 FlipNonSymmetricSpritePlacement("Light", Player.Instance);
             }
         }
-        else if (category == ItemCategory.Gloves)
+        else if (type == ItemType.Gloves)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Right Hand"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Right Hand").gameObject, false);
             Player.Instance.SpriteRenderers["Right Hand"].Bone.transform.localScale = item_to_copy_appearance_from.transform.Find("Right Hand/Right Hand Bone").localScale;
@@ -1573,11 +1544,11 @@ public class Utils {
                 FlipNonSymmetricSpritePlacement("Hand", Player.Instance);
             }
         }
-        else if (category == ItemCategory.Helmet)
+        else if (type == ItemType.Helmet)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Hair"].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
         }
-        else if (category == ItemCategory.Armor)
+        else if (type == ItemType.Armor)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Lower Body"].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Upper Body"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Lower Body Bone/Upper Body").gameObject, false);
@@ -1594,7 +1565,7 @@ public class Utils {
                 FlipNonSymmetricSpritePlacement("Leg", Player.Instance);
             }
         }
-        else if (category == ItemCategory.Boots)
+        else if (type == ItemType.Boots)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Right Foot"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Right Foot").gameObject, false);
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Left Foot"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Left Foot").gameObject, false);
@@ -1603,7 +1574,7 @@ public class Utils {
                 FlipNonSymmetricSpritePlacement("Foot", Player.Instance);
             }
         }
-        else if (category == ItemCategory.Tool || category == ItemCategory.Quest)
+        else if (type == ItemType.Tool || type == ItemType.Quest)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Consumable"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.gameObject, false);
             Player.Instance.SpriteRenderers["Consumable"].SpriteRenderer.transform.localScale = Vector3.one;

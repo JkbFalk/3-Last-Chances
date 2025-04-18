@@ -14,16 +14,15 @@ using static MenuManager;
 
 public abstract class Item
 {
+    public List<ItemEffect> FirstItemEffects;
+    public List<ItemEffect> SecondItemEffects;
     public string IconPath;
     public Sprite Icon;
     public bool CanOnlyBuyOnce = true;
     public int BuyPrice = 0;
     public int SellPrice = 0;
+    public List<Effect> ActiveEffects = new List<Effect>();
     public bool RemoveAtEndOfMission = false;
-    [NonSerialized]
-    public List<Effect> FirstModifier = new List<Effect>();
-    [NonSerialized]
-    public List<Effect> SecondModifier = new List<Effect>();
     public int[] UpgradePrice;
     [NonSerialized]
     public InventoryTile TileInInventory;
@@ -31,10 +30,9 @@ public abstract class Item
     public InventoryTile TileInEquipment;
     [NonSerialized]
     public GameObject ToolObject;
-    public Dictionary<string, List<string>> ModifierDescriptions = new();
     public int MaxAmount {
         get {
-            return Category == ItemCategory.Tool ? SaveFile.Instance.ToolMaxAmounts[GetType()] : GetType() == typeof(Quest_UpgradeMaterials) ? 99 : GetType() == typeof(Quest_ToolMaterials) ? 999 : 1;
+            return Type == ItemType.Tool ? SaveFile.Instance.ToolMaxAmounts[GetType()] : GetType() == typeof(Quest_UpgradeMaterials) ? 99 : GetType() == typeof(Quest_ToolMaterials) ? 999 : 1;
         }
     }
     [NonSerialized]
@@ -42,35 +40,29 @@ public abstract class Item
     [NonSerialized]
     public String CustomAnimation;
     public ItemSetEnum Set = ItemSetEnum.Unique;
-    public ItemSetEnum ItemSet;
-    public enum ItemSetEnum {WeaponMaster, Duelist, Jailer, Ancient, BattleBorn, Knight, Judge, Gunslinger, Arbiter, IronBlooded, Unbreakable, Mercenary, Survivor, Assassin, Executioner, Artisan, Alacrity, Enforcer, Sage, RoyalGuard, ShadowGifted, Unique};
+    public enum ItemSetEnum {Duelist, WeaponMaster, Jailer, Ancient, BattleBorn, Knight, Judge, Gunslinger, Arbiter, IronBlooded, Unbreakable, Mercenary, Survivor, Assassin, Executioner, Artisan, Alacrity, Enforcer, Sage, RoyalGuard, ShadowGifted, Unique};
     protected int _amount = 1;
     [NonSerialized]
     public List<Ability.DamageSource> DamageSources;
     public Sprite GetIcon() {
-        GameController.Instance.GetComponent<SpriteResolver>().SetCategoryAndLabel(Category.ToString() + " Icons", GetType().ToString().Split('_')[1]);
+        GameController.Instance.GetComponent<SpriteResolver>().SetCategoryAndLabel(Type.ToString() + " Icons", GetType().ToString().Split('_')[1]);
         GameController.Instance.GetComponent<SpriteResolver>().ResolveSpriteToSpriteRenderer();
         return GameController.Instance.GetComponent<SpriteRenderer>().sprite;
     }
 
-    public static Sprite GetIcon(Constants.ItemCategory category, Type type) {
-        GameController.Instance.GetComponent<SpriteResolver>().SetCategoryAndLabel(category.ToString() + " Icons", type.ToString().Split('_')[1]);
-        GameController.Instance.GetComponent<SpriteResolver>().ResolveSpriteToSpriteRenderer();
-        return GameController.Instance.GetComponent<SpriteRenderer>().sprite;
-    }
     public int Amount
     {
         get { return _amount; }
         set
         {
-            if(Category != ItemCategory.Tool && Category != ItemCategory.Quest)
+            if(Type != ItemType.Tool && Type != ItemType.Quest)
             {
                 return;
             }
             _amount = value < 0 ? 0 : value > MaxAmount ? MaxAmount : value;
             if(TileInInventory != null)
             {
-                TileInInventory.AmountDisplay.text = Category == ItemCategory.Tool ? Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()] : Amount.ToString();
+                TileInInventory.AmountDisplay.text = Type == ItemType.Tool ? Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()] : Amount.ToString();
             }
             if (TileInEquipment != null)
             {
@@ -88,7 +80,7 @@ public abstract class Item
                 MenuManager.Instance.Item2EquipmentSlot.AmountDisplay.text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
                 CanvasElements.UICanvas.Items.transform.Find("2/Disabled").gameObject.SetActive(_amount <= 0);
             }
-            if(_amount == 0 && Category != ItemCategory.Tool) {
+            if(_amount == 0 && Type != ItemType.Tool) {
                 SaveFile.Instance.RemoveItem(this);
             }
         }
@@ -96,7 +88,7 @@ public abstract class Item
     public enum ItemGrade { Regular, Excellent, Masterful, Flawless, Ultimate, None };
     private ItemGrade _grade;
     public ItemGrade Grade {
-        get { return Category == ItemCategory.Tool ? SaveFile.Instance.ToolGrades[GetType()] : _grade; }
+        get { return Type == ItemType.Tool ? SaveFile.Instance.ToolGrades[GetType()] : _grade; }
         set { _grade = value; }
     }
     public int GradeIndex
@@ -182,13 +174,13 @@ public abstract class Item
         }
     }
 
-    private Constants.ItemCategory _category;
-    public Constants.ItemCategory Category {
-        get => _category;
+    private Constants.ItemType _type;
+    public Constants.ItemType Type {
+        get => _type;
         set {
-            _category = value;
-            UpgradePrice = (_category == ItemCategory.Heavy || _category == ItemCategory.Light || _category == ItemCategory.Ranged || _category == ItemCategory.Armor) ? new int[]{ 12000, 40000, 120000, 500000 } : new int[]{ 6000, 20000, 60000, 250000 };
-            if(_category == ItemCategory.Tool)
+            _type = value;
+            UpgradePrice = (_type == ItemType.Heavy || _type == ItemType.Light || _type == ItemType.Ranged || _type == ItemType.Armor) ? new int[]{ 12000, 40000, 120000, 500000 } : new int[]{ 6000, 20000, 60000, 250000 };
+            if(_type == ItemType.Tool)
             {
                 switch (Grade)
                 {
@@ -200,7 +192,7 @@ public abstract class Item
                     default: SellPrice = 0; break;
                 }
             } 
-            else if(_category == ItemCategory.Heavy || _category == ItemCategory.Light || _category == ItemCategory.Ranged || _category == ItemCategory.Armor) {
+            else if(_type == ItemType.Heavy || _type == ItemType.Light || _type == ItemType.Ranged || _type == ItemType.Armor) {
                 switch(Grade)
                 {
                     case ItemGrade.Regular: SellPrice = 2000; break;
@@ -222,44 +214,35 @@ public abstract class Item
                     default: SellPrice = 0; break;
                 }
             }
-            if(_category == ItemCategory.Tool) {
+            if(_type == ItemType.Tool) {
                 CanOnlyBuyOnce = false;
             }
         }
     }
 
-    public float Duration;
     public Type OnUseAbility;
     public float BaseInjury = 0;
     public float BaseStagger = 0;
     public float BaseAttackSpeed;
 
-    public float GetFirstModifierEffectValue(bool linear_scaling = true) {
+    public float GetItemFirstEffectPB() {
         switch(Grade) {
-            case ItemGrade.Regular: return linear_scaling ? (IsDoubleValue() ? 32 : 16) : (IsDoubleValue() ? 80 : 40);
-            case ItemGrade.Excellent: return linear_scaling ? (IsDoubleValue() ? 64 : 32) : (IsDoubleValue() ? 100 : 50);
-            case ItemGrade.Masterful: return linear_scaling ? (IsDoubleValue() ? 80 : 40) : (IsDoubleValue() ? 120 : 60);
-            case ItemGrade.Flawless: return linear_scaling ? (IsDoubleValue() ? 120 : 60) : (IsDoubleValue() ? 140 : 70);
-            case ItemGrade.Ultimate: return linear_scaling ? (IsDoubleValue() ? 160 : 80) : (IsDoubleValue() ? 160 : 80);
+            case ItemGrade.Regular: return IsMajorItem() ? PB.MAJOR_ITEM_FIRST_EFFECT_LINEAR_TIER1_PB : PB.MINOR_ITEM_FIRST_EFFECT_LINEAR_TIER1_PB;
+            case ItemGrade.Excellent: return IsMajorItem() ? PB.MAJOR_ITEM_FIRST_EFFECT_LINEAR_TIER2_PB : PB.MINOR_ITEM_FIRST_EFFECT_LINEAR_TIER2_PB;
+            case ItemGrade.Masterful: return IsMajorItem() ? PB.MAJOR_ITEM_FIRST_EFFECT_LINEAR_TIER3_PB : PB.MINOR_ITEM_FIRST_EFFECT_LINEAR_TIER3_PB;
+            case ItemGrade.Flawless: return IsMajorItem() ? PB.MAJOR_ITEM_FIRST_EFFECT_LINEAR_TIER4_PB : PB.MINOR_ITEM_FIRST_EFFECT_LINEAR_TIER4_PB;
+            case ItemGrade.Ultimate: return IsMajorItem() ? PB.MAJOR_ITEM_FIRST_EFFECT_LINEAR_TIER5_PB : PB.MINOR_ITEM_FIRST_EFFECT_LINEAR_TIER5_PB;
             default: return 0;
         }
     }
 
-    public virtual List<Effect> GetFirstModifier() {
-        return new();
-    }   
-
-    public virtual List<Effect> GetSecondModifier() {
-        return new();
-    }
-
-    public float GetSecondModifierEffectValue(bool linear_scaling = true) {
+    public float GetItemSecondEffectPB() {
         switch(Grade) {
-            case ItemGrade.Regular: return 0;
-            case ItemGrade.Excellent: return 0;
-            case ItemGrade.Masterful: return linear_scaling ? (IsDoubleValue() ? 20f : 10f) : (IsDoubleValue() ? 40f : 20f);
-            case ItemGrade.Flawless: return linear_scaling ? (IsDoubleValue() ? 40 : 20f) : (IsDoubleValue() ? 60f : 30f);
-            case ItemGrade.Ultimate: return linear_scaling ? (IsDoubleValue() ? 80 : 40) : (IsDoubleValue() ? 80f : 40f);
+            case ItemGrade.Regular: return IsMajorItem() ? PB.MAJOR_ITEM_SECOND_EFFECT_LINEAR_TIER1_PB : PB.MINOR_ITEM_SECOND_EFFECT_LINEAR_TIER1_PB;
+            case ItemGrade.Excellent: return IsMajorItem() ? PB.MAJOR_ITEM_SECOND_EFFECT_LINEAR_TIER2_PB : PB.MINOR_ITEM_SECOND_EFFECT_LINEAR_TIER2_PB;
+            case ItemGrade.Masterful: return IsMajorItem() ? PB.MAJOR_ITEM_SECOND_EFFECT_LINEAR_TIER3_PB : PB.MINOR_ITEM_SECOND_EFFECT_LINEAR_TIER3_PB;
+            case ItemGrade.Flawless: return IsMajorItem() ? PB.MAJOR_ITEM_SECOND_EFFECT_LINEAR_TIER4_PB : PB.MINOR_ITEM_SECOND_EFFECT_LINEAR_TIER4_PB;
+            case ItemGrade.Ultimate: return IsMajorItem() ? PB.MAJOR_ITEM_SECOND_EFFECT_LINEAR_TIER5_PB : PB.MINOR_ITEM_SECOND_EFFECT_LINEAR_TIER5_PB;
             default: return 0;
         }
     }
@@ -275,8 +258,8 @@ public abstract class Item
         TileInInventory = null;
     }
 
-    public bool IsDoubleValue() {
-        return Category == ItemCategory.Heavy || Category == ItemCategory.Light || Category == ItemCategory.Ranged || Category == ItemCategory.Armor;
+    public bool IsMajorItem() {
+        return Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged || Type == ItemType.Armor;
     }
 
     public string GetUpgradeMaterialIcon() {
@@ -284,11 +267,11 @@ public abstract class Item
     }
 
     public string GetUpgradeMaterialAmount() {
-        return IsDoubleValue() ? "x2" : "";
+        return IsMajorItem() ? "x2" : "";
     }
 
     public bool CheckIfEnoughUpgradeMaterials() {
-        int amount_required = IsDoubleValue() ? 2 : 1;
+        int amount_required = IsMajorItem() ? 2 : 1;
         if(Grade == ItemGrade.Regular && SaveFile.Instance.Inventory.FirstOrDefault(item => item is Quest_UpgradeMaterials && item.Amount >= amount_required && item.Grade == ItemGrade.Excellent) != null) {
             return true;
         }
@@ -355,7 +338,7 @@ public abstract class Item
 
     public bool CheckIfCanUpgrade()
     {
-        return (Category == ItemCategory.Heavy || Category == ItemCategory.Light || Category == ItemCategory.Ranged || Category == ItemCategory.Gloves || Category == ItemCategory.Helmet || Category == ItemCategory.Armor || Category == ItemCategory.Boots || Category == ItemCategory.Tool) && Grade != ItemGrade.Ultimate;
+        return (Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged || Type == ItemType.Gloves || Type == ItemType.Helmet || Type == ItemType.Armor || Type == ItemType.Boots || Type == ItemType.Tool) && Grade != ItemGrade.Ultimate;
     }
 
     public static float GetCooldown(Type tool_type, ItemGrade grade = ItemGrade.None) {
@@ -381,20 +364,16 @@ public abstract class Item
 
     public virtual string GetItemName()
     {
-        return Label.Get(GetType().ToString()) + " (" + Label.Get("ItemGrade_" + Grade.ToString() + "_Colored") + " " + Label.Get("ItemCategory_" + Category.ToString()) + ")";
+        return Label.Get(GetType().ToString()) + " (" + Label.Get("ItemGrade_" + Grade.ToString() + "_Colored") + ")";
     }
 
     public virtual string GetDescription(bool detailed = false)
     {
         string description = "";
-        if(Category == Constants.ItemCategory.Heavy || Category == Constants.ItemCategory.Light || Category == Constants.ItemCategory.Ranged)
+        if(Type == Constants.ItemType.Heavy || Type == Constants.ItemType.Light || Type == Constants.ItemType.Ranged)
         {
-            description += "<sprite name=\"" + Category.ToString() + "Injury\">" + Utils.GetFormattedFloat(BaseInjury) + " <sprite name=\"" + Category.ToString() + "Stagger\">" + Utils.GetFormattedFloat(BaseStagger) +" <sprite name=\"" + WeaponCategory.ToString() + "AttackSpeed\">" + Utils.GetFormattedFloat(BaseAttackSpeed, 2, true) + "\n\n";
+            description += "<link=\"Stat_" + Type +"Injury_Description\"><sprite name=\"" + Type.ToString() + "Injury\"></link>" + Utils.GetFormattedFloat(BaseInjury) + " <link=\"Stat_" + Type +"Stagger_Description\"><sprite name=\"" + Type.ToString() + "Stagger\"></link>" + Utils.GetFormattedFloat(BaseStagger) +" <link=\"Stat_" + Type +"AttackSpeed_Description\"><sprite name=\"" + WeaponCategory.ToString() + "AttackSpeed\"></link>" + Utils.GetFormattedFloat(BaseAttackSpeed, 2) + "\n\n";
         }
-        /*else if(Category == Constants.ItemCategory.Gloves)
-        {
-            description += "<sprite name=\"MagicInjury\">" + Utils.GetFormattedFloat(BaseInjury) + " <sprite name=\"MagicStagger\">" + Utils.GetFormattedFloat(BaseStagger) + " <sprite name=\"AttackSpeed\">" + Utils.GetFormattedFloat(BaseAttackSpeed, 2, true) + "\n\n";
-        }*/
         return description;
     }
 
@@ -403,17 +382,17 @@ public abstract class Item
 
     public void Equip(int item_slot = 0)
     {
-        switch (Category) 
+        switch (Type) 
         {
-            case ItemCategory.Heavy: {SaveFile.Instance.EquippedHeavyWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, this); break;}
-            case ItemCategory.Light: {SaveFile.Instance.EquippedLightWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, this); break;}
-            case ItemCategory.Ranged: {SaveFile.Instance.EquippedRangedWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, this); break;}
-            case ItemCategory.Gloves: {SaveFile.Instance.EquippedGloves = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, this); break;}
-            case ItemCategory.Helmet: {SaveFile.Instance.EquippedHelmet = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, this); break;}
-            case ItemCategory.Armor: {SaveFile.Instance.EquippedArmor = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, this); break;}
-            case ItemCategory.Boots: {SaveFile.Instance.EquippedBoots = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, this); break;}
+            case ItemType.Heavy: {SaveFile.Instance.EquippedHeavyWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, this); break;}
+            case ItemType.Light: {SaveFile.Instance.EquippedLightWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, this); break;}
+            case ItemType.Ranged: {SaveFile.Instance.EquippedRangedWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, this); break;}
+            case ItemType.Gloves: {SaveFile.Instance.EquippedGloves = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, this); break;}
+            case ItemType.Helmet: {SaveFile.Instance.EquippedHelmet = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, this); break;}
+            case ItemType.Armor: {SaveFile.Instance.EquippedArmor = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, this); break;}
+            case ItemType.Boots: {SaveFile.Instance.EquippedBoots = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, this); break;}
         }
-        if (Category == ItemCategory.Tool)
+        if (Type == ItemType.Tool)
         {
             if (item_slot == 1)
             {
@@ -434,54 +413,76 @@ public abstract class Item
         if(Player.Instance == null) {
             return;
         }
-        bool IsWeapon = Category == ItemCategory.Heavy || Category == ItemCategory.Light || Category == ItemCategory.Ranged;
-        FirstModifier = GetFirstModifier();
-        foreach (Effect mod in FirstModifier)
-        {
-            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponCategory == Category) {
-                mod.NonLinearEffectValue = GetFirstModifierEffectValue(false);
-                mod.LinearEffectValue = GetFirstModifierEffectValue();
-                mod.OnEffectValueChanged();
-                mod.IsRemovable = false;
-                mod.ShowsInMenu=false;
-                Player.Instance.AddEffect(mod);
-            }
-        }
-        SecondModifier = GetSecondModifier();
-        foreach (Effect mod in SecondModifier)
-        {
-            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponCategory == Category) {
-                mod.NonLinearEffectValue = GetSecondModifierEffectValue(false);
-                mod.LinearEffectValue = GetSecondModifierEffectValue();
-                mod.OnEffectValueChanged();
-                mod.IsRemovable = false;
-                mod.ShowsInMenu=false;
-                Player.Instance.AddEffect(mod);
-            }
-        }
-        if(Category == ItemCategory.Heavy)
+        ActivateItemEffects();
+        if(Type == ItemType.Heavy)
         {
             Player.Instance.HeavyInjury.Base = BaseInjury;
             Player.Instance.HeavyStagger.Base = BaseStagger;
             Player.Instance.HeavyAttackSpeed.Base = BaseAttackSpeed;
         }
-        else if (Category == ItemCategory.Light)
+        else if (Type == ItemType.Light)
         {
             Player.Instance.LightInjury.Base = BaseInjury;
             Player.Instance.LightStagger.Base = BaseStagger;
             Player.Instance.LightAttackSpeed.Base = BaseAttackSpeed;
         }
-        else if (Category == ItemCategory.Ranged)
+        else if (Type == ItemType.Ranged)
         {
             Player.Instance.RangedInjury.Base = BaseInjury;
             Player.Instance.RangedStagger.Base = BaseStagger;
             Player.Instance.RangedAttackSpeed.Base = BaseAttackSpeed;
         }
-        if (Category != ItemCategory.Tool)
+        if (Type != ItemType.Tool)
         {
-            Utils.CopyItemAppearanceForPlayer(Category, GetType().ToString() + "_" + Grade.ToString());
+            Utils.CopyItemAppearanceForPlayer(Type, GetType().ToString() + "_" + Grade.ToString());
         }
         ExtraBehaviourOnEquip();
+    }
+
+    public void ActivateItemEffects() {
+        bool IsWeapon = Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged;
+        List<Effect> firstEffects = new List<Effect>();
+        foreach(ItemEffect itemEffect in FirstItemEffects) {
+            firstEffects.Concat(EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * GetItemFirstEffectPB(), ToString())).ToList();
+        }
+        foreach (Effect mod in firstEffects)
+        {
+            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponType == Type) {
+                mod.PowerBudget = GetItemFirstEffectPB();
+                mod.IsRemovable = false;
+                mod.ShowsInMenu=false;
+                Player.Instance.AddEffect(mod);
+            }
+        }
+        if(GetItemSecondEffectPB() == 0) {
+            ActiveEffects = firstEffects;
+            return;
+        }
+        List<Effect> secondEffects = new List<Effect>();
+        foreach(ItemEffect itemEffect in SecondItemEffects) {
+            secondEffects.Concat(EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * GetItemSecondEffectPB(), ToString())).ToList();
+        }
+        foreach (Effect mod in secondEffects)
+        {
+            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponType == Type) {
+                mod.PowerBudget = GetItemSecondEffectPB();
+                mod.IsRemovable = false;
+                mod.ShowsInMenu=false;
+                Player.Instance.AddEffect(mod);
+            }
+        }
+        ActiveEffects = firstEffects.Concat(secondEffects).ToList();
+    }
+
+    public void DeactivateItemEffects() {
+        bool IsWeapon = Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged;
+        foreach (Effect mod in ActiveEffects)
+        {
+            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponType == Type) {
+                Player.Instance.EndEffect(mod);
+            }
+        }
+        ActiveEffects.Clear();
     }
 
     public void Unequip(int item_slot = 0)
@@ -490,17 +491,17 @@ public abstract class Item
             return;
         }
         IsEquipped = false;
-        switch (Category) 
+        switch (Type) 
         {
-            case ItemCategory.Heavy: {SaveFile.Instance.EquippedHeavyWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, null); break;}
-            case ItemCategory.Light: {SaveFile.Instance.EquippedLightWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, null); break;}
-            case ItemCategory.Ranged: {SaveFile.Instance.EquippedRangedWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, null); break;}
-            case ItemCategory.Gloves: {SaveFile.Instance.EquippedGloves = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, null); break;}
-            case ItemCategory.Helmet: {SaveFile.Instance.EquippedHelmet = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, null); break;}
-            case ItemCategory.Armor: {SaveFile.Instance.EquippedArmor = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, null); break;}
-            case ItemCategory.Boots: {SaveFile.Instance.EquippedBoots = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, null); break;}
+            case ItemType.Heavy: {SaveFile.Instance.EquippedHeavyWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHeavyWeapon, null); break;}
+            case ItemType.Light: {SaveFile.Instance.EquippedLightWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedLightWeapon, null); break;}
+            case ItemType.Ranged: {SaveFile.Instance.EquippedRangedWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, null); break;}
+            case ItemType.Gloves: {SaveFile.Instance.EquippedGloves = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, null); break;}
+            case ItemType.Helmet: {SaveFile.Instance.EquippedHelmet = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, null); break;}
+            case ItemType.Armor: {SaveFile.Instance.EquippedArmor = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, null); break;}
+            case ItemType.Boots: {SaveFile.Instance.EquippedBoots = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, null); break;}
         }
-        if(Category == ItemCategory.Tool)
+        if(Type == ItemType.Tool)
         {
             if(SaveFile.Instance.EquippedItem1 == this && item_slot == 1)
             {
@@ -513,23 +514,11 @@ public abstract class Item
                 EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedItem2, null);
             }
         }
-        bool IsWeapon = Category == ItemCategory.Heavy || Category == ItemCategory.Light || Category == ItemCategory.Ranged;
-        foreach (Effect mod in FirstModifier)
+        DeactivateItemEffects();
+        if(Type != ItemType.Heavy && Type != ItemType.Light && Type != ItemType.Ranged && Type != ItemType.Tool)
         {
-            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponCategory == Category) {
-                Player.Instance.EndEffect(mod);
-            }
-        }
-        foreach (Effect mod in SecondModifier)
-        {
-            if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponCategory == Category) {
-                Player.Instance.EndEffect(mod);
-            }
-        }
-        if(Category != ItemCategory.Heavy && Category != ItemCategory.Light && Category != ItemCategory.Ranged && Category != ItemCategory.Tool)
-        {
-            Utils.CopyItemAppearanceForPlayer(Category, "Default");
-            if(Category == ItemCategory.Helmet && Area.ComponentInstance != null && Area.ComponentInstance.ApplyPlayerCamouflage) {
+            Utils.CopyItemAppearanceForPlayer(Type, "Default");
+            if(Type == ItemType.Helmet && Area.ComponentInstance != null && Area.ComponentInstance.ApplyPlayerCamouflage) {
                 Player.Instance.UnitColorChange.Hair = Colors.GetColorFromCode("#DBA600");
                 Player.Instance.UnitColorChange.Eye = Colors.GetColorFromCode("#359C34");
                 Player.Instance.UnitColorChange.UpdateMaterialProperties();
@@ -562,12 +551,12 @@ public abstract class Item
 
     public virtual bool CheckIfCanEquipItem()
     {
-        return IsEquipped == false && Category != ItemCategory.Quest;
+        return IsEquipped == false && Type != ItemType.Quest;
     }
 
     public bool CheckIfItemHasSeparateItemIcon()
     {
-        return Category != Constants.ItemCategory.Heavy && Category != Constants.ItemCategory.Light && Category != Constants.ItemCategory.Ranged;
+        return Type != Constants.ItemType.Heavy && Type != Constants.ItemType.Light && Type != Constants.ItemType.Ranged;
     }
 
     public void RemoveItemFromInventory()
@@ -598,5 +587,14 @@ public abstract class Item
             }
         }
         return ItemGrade.Regular;
+    }
+
+    public class ItemEffect {
+        public string EffectName;
+        public float PortionOfPowerBudget;
+        public ItemEffect(string effect_name, float portion_of_power_budget = 1) {
+            EffectName = effect_name;
+            PortionOfPowerBudget = portion_of_power_budget;
+        }
     }
 }

@@ -110,8 +110,8 @@ public class Settings {
                         stance.Abilities[i].Reload();
                     }
                     if(GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances").childCount == 3) {
-                        stance.UIStanceDisplay = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponCategory + "StanceDisplay").transform;
-                        stance.StanceCooldownDisplay = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponCategory + "StanceDisplay/Cooldown").GetComponent<Image>();
+                        stance.UIStanceDisplay = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponType + "StanceDisplay").transform;
+                        stance.StanceCooldownDisplay = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponType + "StanceDisplay/Cooldown").GetComponent<Image>();
                     }
                 }
             }
@@ -185,7 +185,7 @@ public class Settings {
         }
     }
 
-    /*public int _inWorldDialogueBubbleSpeed = 10;
+    public int _inWorldDialogueBubbleSpeed = 10;
 
     public int InWorldDialogueBubbleSpeed
     {
@@ -201,7 +201,7 @@ public class Settings {
                 Save();
             }
         }
-    }*/
+    }
 
     public int _dialogueTextSpeed = 10;
 

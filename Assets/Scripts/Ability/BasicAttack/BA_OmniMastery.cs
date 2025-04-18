@@ -16,10 +16,10 @@ public class BA_OmniMastery : BasicAttack {
         AddCustomSound("SwingGun", "Generic/Generic_Swoosh4", 0.8f);
         AddCustomSound("SwingBow", "Generic/Generic_Swoosh4", 0.8f);
         AddCustomSound("SwingMagic", "Magic/Magic_Blast2", 0.8f);
-        if(ability_user.CurrentWeaponDamageCategory == Constants.DamageType.Ranged) {
+        if(ability_user.CurrentWeaponDamageType == Constants.DamageType.Ranged) {
             DamageSources.Add(new DamageSource(200, 400, Constants.DamageType.Ranged, "AoE"));
         } else {
-            DamageSources.Add(new DamageSource(200, 400, ability_user.CurrentWeaponDamageCategory));
+            DamageSources.Add(new DamageSource(200, 400, ability_user.CurrentWeaponDamageType));
         }
     }
 }

@@ -7,13 +7,8 @@ public class Armor_Mercenary : Item
     public Armor_Mercenary(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Mercenary;
-        Category = Constants.ItemCategory.Armor; 
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_GainPercentageOfStatAsAnotherStat(Player.Instance.Health, Player.Instance.StaggerBar, 30, 15f, new(this) ) {StatToTakePercentageFromColor = "[R]", StatToConvertIntoColor = "[P]"}};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 10 } };
+        Type = Constants.ItemType.Armor; 
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainDamageReductionBasedOnBarrierAmount")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BarrierAmount", 0.5f), new ItemEffect("BarrierDecay", 0.5f)};
     }
 }

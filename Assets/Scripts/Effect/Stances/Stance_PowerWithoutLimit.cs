@@ -76,7 +76,7 @@ public class Stance_PowerWithoutLimit : Effect_Stance
             }
         }
         if(IsActive && UnlockedUpgrade3) {
-                IncreasedMaxEnergy.FlatAmount += energy / 5f;
+                IncreasedMaxEnergy.BaseModifier += energy / 5f;
                 if(!IncreasedMaxEnergy.IsTurnedOn) {
                     Player.Instance.AddEffect(IncreasedMaxEnergy);
                 }
@@ -95,7 +95,7 @@ public class Stance_PowerWithoutLimit : Effect_Stance
     public void OnInvokeExitCombat(Unit unit) {
         if(UnlockedUpgrade3 && unit is Player) {
             Player.Instance.EndEffect(IncreasedMaxEnergy);
-            IncreasedMaxEnergy.FlatAmount = 0;
+            IncreasedMaxEnergy.BaseModifier = 0;
         }
     }
 }

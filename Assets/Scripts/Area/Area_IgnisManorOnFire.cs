@@ -106,7 +106,7 @@ public class Area_IgnisManorOnFire
         SaveFile.Instance.AddItem(typeof(Helmet_Knight), Item.ItemGrade.Ultimate);
         SaveFile.Instance.AddItem(typeof(Gloves_Knight), Item.ItemGrade.Ultimate);
         SaveFile.Instance.AddItem(typeof(Boots_Knight), Item.ItemGrade.Ultimate);
-        SaveFile.Instance.AddPermanentPowerUp("IgnisManorOnFire_MuseumArmour");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisManorOnFire_MuseumArmour", 10);
         SaveFile.Instance.ChangeIgnisEnergy(10);
     }
 
@@ -221,13 +221,13 @@ public class Area_IgnisManorOnFire
     public static void SwordMonumentsPowerUp(InteractableObject obj) {
         NotificationController.ShowCustomizedDialogueNotification(new() {Id ="IgnisManorOnFire_SwordMonuments_0"});
         NotificationController.ShowTextNotification("IgnisManorOnFire_SwordMonuments_10");
-        SaveFile.Instance.AddPermanentPowerUp("IgnisManorOnFire_BurningSword");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisManorOnFire_BurningSword", 10);
         SaveFile.Instance.ChangeIgnisEnergy(15);
     }
     public static void MuseumSwordPowerUp(InteractableObject obj) {
         NotificationController.ShowCustomizedDialogueNotification(new() {Id ="IgnisManorOnFire_MuseumSword_0"});
         NotificationController.ShowTextNotification("IgnisManorOnFire_MuseumSword_10");
-        SaveFile.Instance.AddPermanentPowerUp("IgnisManorOnFire_MuseumSword");
+        SaveFile.Instance.AddPermanentPowerUp("IgnisManorOnFire_MuseumSword", 10);
         SaveFile.Instance.ChangeIgnisEnergy(10);
     }
 

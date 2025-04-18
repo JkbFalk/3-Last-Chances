@@ -65,7 +65,7 @@ public class Effect_Block : Effect {
             damage.Stagger *= 0.5f;
 
             TargetOfEffect.AddEffect(new Effect_Stun(SourceOfEffect), SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
-            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
+            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
         }
     }
 
@@ -94,7 +94,7 @@ public class Effect_Block : Effect {
         damage.SourceOfDamage.User.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
         GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, damage.SourceOfDamage.User);
         new Damage(damage.SourceOfDamage.User, counter, null)
-            .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageCategory)
+            .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageType)
             .CalculateDamage();
         if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player) {
             CameraController.Instance.ShakeScreen(0.2f, 0.1f);
@@ -135,7 +135,7 @@ public class Effect_Block : Effect {
             damage.SourceOfDamage.User.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
             GameController.Instance.WaitAndRunMethod(0.5f, AdjustRemainingRipostedAnimation, damage.SourceOfDamage.User);
             new Damage(damage.SourceOfDamage.User, riposte, null)
-                .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_RIPOSTE, UnitCreatingTheEffect.CurrentWeaponDamageCategory)
+                .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_RIPOSTE, UnitCreatingTheEffect.CurrentWeaponDamageType)
                 .CalculateDamage();
         }
         if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player) {

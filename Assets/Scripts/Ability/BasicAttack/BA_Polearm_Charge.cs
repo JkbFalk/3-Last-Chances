@@ -83,8 +83,8 @@ public class BA_Polearm_Charge : BasicAttack {
     public override void ExtraBehaviourOnHit(Damage damage)
     {
         if(_powerLevel > 0) {
-            damage.Stagger += Player.Instance.CurrentStance.Weapon.GetFirstModifierEffectValue() * 3f * (_powerLevel / 20);
-            damage.Injury += Player.Instance.CurrentStance.Weapon.GetFirstModifierEffectValue() * 3f * (_powerLevel / 20);
+            damage.Stagger += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3f * (_powerLevel / 20);
+            damage.Injury += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3f * (_powerLevel / 20);
         }
     }
 }

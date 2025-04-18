@@ -6,15 +6,10 @@ public class Gun_Revolver : Item
 {
     public Gun_Revolver(ItemGrade grade) : base(grade)
     {
-        Category = Constants.ItemCategory.Ranged;
+        Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
         SetBaseWeaponStats(115, 115, 0.8f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> {};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> {};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealExtraDamageToUndamagedEnemies")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedTechniqueDamage")};
     }
 }

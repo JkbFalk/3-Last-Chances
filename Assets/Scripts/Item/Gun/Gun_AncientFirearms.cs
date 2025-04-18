@@ -8,15 +8,10 @@ public class Gun_AncientFirearms : Item
     public Gun_AncientFirearms(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Ancient;
-        Category = Constants.ItemCategory.Ranged;
+        Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
         SetBaseWeaponStats(130, 100, 0.75f);
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_AncientFirearmsDamage(new(this))};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_AncientFirearmsDamageReduction(new(this))};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsDamageReduction")};
     }
 }

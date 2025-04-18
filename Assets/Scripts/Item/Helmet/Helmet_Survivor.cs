@@ -8,13 +8,8 @@ public class Helmet_Survivor : Item
     public Helmet_Survivor(ItemGrade grade) : base(grade)
     {
         Set = ItemSetEnum.Survivor;
-        Category = Constants.ItemCategory.Helmet;
-    }
-
-    public override List<Effect> GetFirstModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
-    }
-    public override List<Effect> GetSecondModifier() {
-        return new List<Effect> { new Effect_ChangeStat(Player.Instance.Health, new(this)) { FlatAmount = 1 }};
+        Type = Constants.ItemType.Helmet;
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("HealthRestorationPower")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health")};
     }
 }

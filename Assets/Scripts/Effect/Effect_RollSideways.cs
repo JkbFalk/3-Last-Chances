@@ -38,7 +38,7 @@ public class Effect_RollSideways : Effect {
             damage.Stagger *= 0.5f;
 
             TargetOfEffect.AddEffect(new Effect_Stun(SourceOfEffect), SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
-            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageAmount = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
+            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
     }

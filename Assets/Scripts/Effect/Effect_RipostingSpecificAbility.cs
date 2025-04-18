@@ -25,7 +25,7 @@ public class Effect_RipostingSpecificAbility : Effect
                 return;
             }
             TargetOfEffect.Actions.EndCurrentAbility();
-            TargetOfEffect.PlayAnimation(TargetOfEffect.DamageCategory == Constants.DamageType.Heavy ? "Greatsword_Riposte" : TargetOfEffect.DamageCategory == Constants.DamageType.Light ? "TwinBlades_Riposte" : TargetOfEffect.DamageCategory == Constants.DamageType.Ranged ? "Gun_Riposte" : "Gun_Riposte");
+            TargetOfEffect.PlayAnimation(TargetOfEffect.DamageType == Constants.DamageType.Heavy ? "Greatsword_Riposte" : TargetOfEffect.DamageType == Constants.DamageType.Light ? "TwinBlades_Riposte" : TargetOfEffect.DamageType == Constants.DamageType.Ranged ? "Gun_Riposte" : "Gun_Riposte");
             damage.DestroyProjectileAfterDamageCalcuation = true;
             TargetOfEffect.AddCooldown(this, 1.5f);
             Projectile proj = Utils.SendProjectileBackTowardsSource(damage, TargetOfEffect, damage.DamagingObject.SourceAbility, true);

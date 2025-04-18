@@ -12,14 +12,14 @@ public class Effect_GainASForDistancelTravelled : Effect
     {
         Type = EffectType.Buff;
         ASPer1MTravelled = as_per_1m_travelled;
-        Listeners.Add(EventManager.OneFifthSecondElapsedNotRealtime);
+        Listeners.Add(EventManager.OneFifthSecondElapsedInGame);
     }
 
     public override void OnStart()
     {
         base.OnStart();
         _prevPosition = TargetOfEffect.transform.position;
-        ASBuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageAmount = 0, ShowsInUI=true, PathToEffectGraphic="UI/AttackSpeed", EffectIndicatorText="0%"};
+        ASBuff = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = 0, ShowsInUI=true, PathToEffectGraphic="UI/AttackSpeed", EffectIndicatorText="0%"};
         TargetOfEffect.AddEffect(ASBuff);
     }
 
@@ -29,7 +29,7 @@ public class Effect_GainASForDistancelTravelled : Effect
         ASBuff.EndThisEffect();
     }
 
-    public override void OnInvokeOneFifthSecondElapsedNotRealtime()
+    public override void OnInvokeOneFifthSecondElapsedInGame()
     {
         float[] _updatedDistances = new float[25];
         _updatedDistances[0] = Vector2.Distance(TargetOfEffect.transform.position, _prevPosition);
@@ -42,8 +42,8 @@ public class Effect_GainASForDistancelTravelled : Effect
         for(int i = 0; i < 25; i++) {
             travelledTotal += _distanceTravelledInGivenSecond[i] * (1 - 0.04f * i);
         }
-        ASBuff.PercentageAmount = travelledTotal * ASPer1MTravelled;
-        ASBuff.EffectIndicatorText = Utils.GetFormattedFloat(ASBuff.PercentageAmount) + "%";
+        ASBuff.PercentageModifier = travelledTotal * ASPer1MTravelled;
+        ASBuff.EffectIndicatorText = Utils.GetFormattedFloat(ASBuff.PercentageModifier) + "%";
     }
 
 }

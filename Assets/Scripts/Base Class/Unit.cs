@@ -110,21 +110,21 @@ public class Unit : PermanentObject {
     }
 
     public Effect EffectAnimationBeingPlayed { get; set; } = null;
-    public Constants.DamageType DamageCategory = Constants.DamageType.None;
+    public Constants.DamageType DamageType = Constants.DamageType.None;
     public Constants.WeaponClass NPCWeaponClass = Constants.WeaponClass.None;
 
     public Constants.Faction Faction = Constants.Faction.Neutral;
     public float RiposteDamage { get; set; } = 100;
     public List<Unit> PotentialTargets { get; set; } = new List<Unit>();
 
-    private int _ammo;
+    private float _ammo;
 
-    public int Ammo {
+    public float Ammo {
         get {
             return _ammo;
         }
         set {
-            int prevValue = _ammo;
+            float prevValue = _ammo;
             if (value < 0) {
                 _ammo = 0;
             }
@@ -193,7 +193,7 @@ public class Unit : PermanentObject {
                         bool isStacksBased = ability?.GetField("IsStacksBasedTechnique") != null;
                         if(isStacksBased) {
                             AddCooldown(new Cooldown(ability, Ability.GetCooldown(ability), Player.Instance));
-                            AddCooldown(new Cooldown(ability, Ability.GetCooldown(ability), Player.Instance) {ExtraInfo = "IsUltimate"});
+                            AddCooldown(new Cooldown(ability, Ability.GetCooldown(ability), Player.Instance, "IsUltimate"));
                         }
                     }
                     if((GameController.Instance.PlayBossMusicDuringNextCombat && !String.IsNullOrEmpty(Area.ComponentInstance.BossBattleMusic)) || !String.IsNullOrEmpty(Area.ComponentInstance.BattleMusic)) {
@@ -225,6 +225,12 @@ public class Unit : PermanentObject {
                         StaggerBar.HUDSlider = sliders[1];
                         StaggerBar.HUDFill = sliders[1].transform.Find("Fill Area/Fill").GetComponent<Image>();
                         StaggerBar.StaggerBars = sliders[1].transform.Find("Extra Stagger Bars").gameObject;
+                        DamageReduction.DamageReductionDisplay = sliders[0].transform.Find("DamageReduction").GetComponent<Image>();
+                        DamageReduction.DamageReductionLabel = sliders[0].transform.Find("DamageReduction/Label").GetComponent<TextMeshProUGUI>();
+                        if(DamageReduction.Current != 1) {
+                            DamageReduction.DamageReductionDisplay.gameObject.SetActive(true);
+                            DamageReduction.DamageReductionLabel.text = Utils.GetFormattedFloat((DamageReduction.Current - 1) * 100, 0);
+                        }
                         InitializeDisplays();
                         AdjustUIResourceBarsSize();
                     }
@@ -452,13 +458,13 @@ public class Unit : PermanentObject {
 
     public Injury CurrentWeaponInjury {
         get {
-            if (CurrentWeaponDamageCategory == Constants.DamageType.Heavy) {
+            if (CurrentWeaponDamageType == Constants.DamageType.Heavy) {
                 return HeavyInjury;
             }
-            else if (CurrentWeaponDamageCategory == Constants.DamageType.Light) {
+            else if (CurrentWeaponDamageType == Constants.DamageType.Light) {
                 return LightInjury;
             }
-            else if (CurrentWeaponDamageCategory == Constants.DamageType.Ranged) {
+            else if (CurrentWeaponDamageType == Constants.DamageType.Ranged) {
                 return RangedInjury;
             }
             else {
@@ -467,20 +473,20 @@ public class Unit : PermanentObject {
         }
     }
 
-    public Injury GetInjuryStatForGivenDamageType(Constants.DamageType damage_category) {
-        if (damage_category == Constants.DamageType.Heavy) {
+    public Injury GetInjuryStatForGivenDamageType(Constants.DamageType damage_type) {
+        if (damage_type == Constants.DamageType.Heavy) {
             return HeavyInjury;
         }
-        else if (damage_category == Constants.DamageType.Light) {
+        else if (damage_type == Constants.DamageType.Light) {
             return LightInjury;
         }
-        else if (damage_category == Constants.DamageType.Ranged) {
+        else if (damage_type == Constants.DamageType.Ranged) {
             return RangedInjury;
         }
-        else if (damage_category == Constants.DamageType.CurrentWeapon) {
+        else if (damage_type == Constants.DamageType.CurrentWeapon) {
             return CurrentWeaponInjury;
         }
-        else if (damage_category == Constants.DamageType.Magic) {
+        else if (damage_type == Constants.DamageType.Magic) {
             return MagicInjury;
         }
         else {
@@ -488,20 +494,20 @@ public class Unit : PermanentObject {
         }
     }
 
-    public Stagger GetStaggerStatForGivenDamageType(Constants.DamageType damage_category) {
-        if (damage_category == Constants.DamageType.Heavy) {
+    public Stagger GetStaggerStatForGivenDamageType(Constants.DamageType damage_type) {
+        if (damage_type == Constants.DamageType.Heavy) {
             return HeavyStagger;
         }
-        else if (damage_category == Constants.DamageType.Light) {
+        else if (damage_type == Constants.DamageType.Light) {
             return LightStagger;
         }
-        else if (damage_category == Constants.DamageType.Ranged) {
+        else if (damage_type == Constants.DamageType.Ranged) {
             return RangedStagger;
         }
-        else if (damage_category == Constants.DamageType.CurrentWeapon) {
+        else if (damage_type == Constants.DamageType.CurrentWeapon) {
             return CurrentWeaponStagger;
         }
-        else if (damage_category == Constants.DamageType.Magic) {
+        else if (damage_type == Constants.DamageType.Magic) {
             return MagicStagger;
         }
         else {
@@ -509,20 +515,20 @@ public class Unit : PermanentObject {
         }
     }
 
-    public AttackSpeed GetAttackSpeedStatForGivenDamageType(Constants.DamageType damage_category) {
-        if (damage_category == Constants.DamageType.Heavy) {
+    public AttackSpeed GetAttackSpeedStatForGivenDamageType(Constants.DamageType damage_type) {
+        if (damage_type == Constants.DamageType.Heavy) {
             return HeavyAttackSpeed;
         }
-        else if (damage_category == Constants.DamageType.Light) {
+        else if (damage_type == Constants.DamageType.Light) {
             return LightAttackSpeed;
         }
-        else if (damage_category == Constants.DamageType.Ranged) {
+        else if (damage_type == Constants.DamageType.Ranged) {
             return RangedAttackSpeed;
         }
-        else if (damage_category == Constants.DamageType.CurrentWeapon) {
+        else if (damage_type == Constants.DamageType.CurrentWeapon) {
             return CurrentWeaponAttackSpeed;
         }
-        else if (damage_category == Constants.DamageType.Magic) {
+        else if (damage_type == Constants.DamageType.Magic) {
             return MagicAttackSpeed;
         }
         else {
@@ -539,13 +545,13 @@ public class Unit : PermanentObject {
 
     public Stagger CurrentWeaponStagger {
         get {
-            if (CurrentWeaponDamageCategory == Constants.DamageType.Heavy) {
+            if (CurrentWeaponDamageType == Constants.DamageType.Heavy) {
                 return HeavyStagger;
             }
-            else if (CurrentWeaponDamageCategory == Constants.DamageType.Light) {
+            else if (CurrentWeaponDamageType == Constants.DamageType.Light) {
                 return LightStagger;
             }
-            else if (CurrentWeaponDamageCategory == Constants.DamageType.Ranged) {
+            else if (CurrentWeaponDamageType == Constants.DamageType.Ranged) {
                 return RangedStagger;
             }
             else {
@@ -573,23 +579,23 @@ public class Unit : PermanentObject {
 
     public List<Effect> CurrentEffects { get; private set; } = new List<Effect>();
 
-    public Constants.DamageType CurrentWeaponDamageCategory
+    public Constants.DamageType CurrentWeaponDamageType
     {
         get
         {
             if(!(this is Player))
             {
-                return DamageCategory;
+                return DamageType;
             }
-            if(CurrentWeaponCategory == Constants.ItemCategory.Heavy)
+            if(CurrentWeaponType == Constants.ItemType.Heavy)
             {
                 return Constants.DamageType.Heavy;
             }
-            else if (CurrentWeaponCategory == Constants.ItemCategory.Light)
+            else if (CurrentWeaponType == Constants.ItemType.Light)
             {
                 return Constants.DamageType.Light;
             }
-            else if (CurrentWeaponCategory == Constants.ItemCategory.Ranged)
+            else if (CurrentWeaponType == Constants.ItemType.Ranged)
             {
                 return Constants.DamageType.Ranged;
             }
@@ -600,15 +606,15 @@ public class Unit : PermanentObject {
         }
     }
 
-    protected Constants.ItemCategory _currentWeaponCategory;
+    protected Constants.ItemType _currentWeaponType;
 
-    public Constants.ItemCategory CurrentWeaponCategory {
+    public Constants.ItemType CurrentWeaponType {
         get {
             if (this is Player) {
-                return Player.Instance.CurrentStance.WeaponCategory;
+                return Player.Instance.CurrentStance.WeaponType;
             }
             else {
-                return _currentWeaponCategory;
+                return _currentWeaponType;
             }
         }
     }
@@ -638,7 +644,7 @@ public class Unit : PermanentObject {
         {
             if (this is Player)
             {
-                return Player.Instance.GetStanceForGivenWeapon(Constants.ItemCategory.Ranged).WeaponClass;
+                return Player.Instance.GetStanceForGivenWeapon(Constants.ItemType.Ranged).WeaponClass;
             }
             else if(NPCWeaponClass != Constants.WeaponClass.None) {
                 return NPCWeaponClass;
@@ -658,13 +664,13 @@ public class Unit : PermanentObject {
                 if(Player.Instance.CurrentStance.StanceEffectType == typeof(Stance_PowerWithoutLimit) || Player.Instance.CurrentStance.StanceEffectType == typeof(Stance_MindOverMatter)) {
                     return MagicAttackSpeed;
                 }
-                return Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Heavy ? HeavyAttackSpeed : Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Light ? LightAttackSpeed :
-                    Player.Instance.CurrentStance.WeaponCategory == Constants.ItemCategory.Ranged ? RangedAttackSpeed : MagicAttackSpeed;
+                return Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Heavy ? HeavyAttackSpeed : Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Light ? LightAttackSpeed :
+                    Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Ranged ? RangedAttackSpeed : MagicAttackSpeed;
             }
             else
             {
-                return CurrentWeaponCategory == Constants.ItemCategory.Heavy ? HeavyAttackSpeed : CurrentWeaponCategory == Constants.ItemCategory.Light ? LightAttackSpeed :
-                    CurrentWeaponCategory == Constants.ItemCategory.Ranged ? RangedAttackSpeed : MagicAttackSpeed;
+                return CurrentWeaponType == Constants.ItemType.Heavy ? HeavyAttackSpeed : CurrentWeaponType == Constants.ItemType.Light ? LightAttackSpeed :
+                    CurrentWeaponType == Constants.ItemType.Ranged ? RangedAttackSpeed : MagicAttackSpeed;
             }
         }
     }
@@ -673,18 +679,18 @@ public class Unit : PermanentObject {
         return given_stat is Health ? Health :
         given_stat is StaggerBar ? StaggerBar :
         given_stat is Energy ? Energy :
-        (given_stat is Injury && ((Injury)given_stat).Category == Constants.DamageType.Heavy) ? HeavyInjury :
-        (given_stat is Injury && ((Injury)given_stat).Category == Constants.DamageType.Light) ? LightInjury :
-        (given_stat is Injury && ((Injury)given_stat).Category == Constants.DamageType.Ranged) ? RangedInjury :
-        (given_stat is Injury && ((Injury)given_stat).Category == Constants.DamageType.Magic) ? MagicInjury :
-        (given_stat is Stagger && ((Stagger)given_stat).Category == Constants.DamageType.Heavy) ? HeavyStagger :
-        (given_stat is Stagger && ((Stagger)given_stat).Category == Constants.DamageType.Light) ? LightStagger :
-        (given_stat is Stagger && ((Stagger)given_stat).Category == Constants.DamageType.Ranged) ? RangedStagger :
-        (given_stat is Stagger && ((Stagger)given_stat).Category == Constants.DamageType.Magic) ? MagicStagger :
-        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Category == Constants.DamageType.Heavy) ? HeavyAttackSpeed :
-        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Category == Constants.DamageType.Light) ? LightAttackSpeed :
-        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Category == Constants.DamageType.Ranged) ? RangedAttackSpeed :
-        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Category == Constants.DamageType.Magic) ? MagicAttackSpeed :
+        (given_stat is Injury && ((Injury)given_stat).Type == Constants.DamageType.Heavy) ? HeavyInjury :
+        (given_stat is Injury && ((Injury)given_stat).Type == Constants.DamageType.Light) ? LightInjury :
+        (given_stat is Injury && ((Injury)given_stat).Type == Constants.DamageType.Ranged) ? RangedInjury :
+        (given_stat is Injury && ((Injury)given_stat).Type == Constants.DamageType.Magic) ? MagicInjury :
+        (given_stat is Stagger && ((Stagger)given_stat).Type == Constants.DamageType.Heavy) ? HeavyStagger :
+        (given_stat is Stagger && ((Stagger)given_stat).Type == Constants.DamageType.Light) ? LightStagger :
+        (given_stat is Stagger && ((Stagger)given_stat).Type == Constants.DamageType.Ranged) ? RangedStagger :
+        (given_stat is Stagger && ((Stagger)given_stat).Type == Constants.DamageType.Magic) ? MagicStagger :
+        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Type == Constants.DamageType.Heavy) ? HeavyAttackSpeed :
+        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Type == Constants.DamageType.Light) ? LightAttackSpeed :
+        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Type == Constants.DamageType.Ranged) ? RangedAttackSpeed :
+        (given_stat is AttackSpeed && ((AttackSpeed)given_stat).Type == Constants.DamageType.Magic) ? MagicAttackSpeed :
         given_stat is MovementSpeed ? MovementSpeed :
         given_stat is Tenacity ? Tenacity :
         given_stat is Control ? Control :
@@ -749,6 +755,7 @@ public class Unit : PermanentObject {
     public float BaseTenacity = 1;
     public float BaseControl = 1;
     public float BaseCooldownReduction = 1;
+    public float BaseDamageReduction = 1;
 
     public void Awake() {
         InitializeComponents();
@@ -932,8 +939,16 @@ public class Unit : PermanentObject {
         return CurrentEffects.FirstOrDefault(effect => effect.GetType() == effect_type || effect.GetType().IsSubclassOf(effect_type));
     }
 
+    public Effect GetEffectWithGivenId(string identifier) {
+        return CurrentEffects.FirstOrDefault(effect => effect.Identifier == identifier);
+    }
+
     public bool CheckIfUnderEffect(Type effect_type) {
         return CurrentEffects.FirstOrDefault(effect => effect.GetType() == effect_type || effect.GetType().IsSubclassOf(effect_type)) != null;
+    }
+
+    public bool CheckIfUnderEffectWithGivenId(string identifier) {
+        return CurrentEffects.FirstOrDefault(effect => effect.Identifier == identifier) != null;
     }
 
     public bool CheckIfUnderEffectFromGivenAbility(Type under_effect, Type ability_type) {
@@ -1179,6 +1194,9 @@ public class Unit : PermanentObject {
     }
 
     public void InitializeStats() {
+        if(this is Player) {
+            DefaultStaggerBarRegenPercentage = 4;
+        }
         Health = new Health(this, this is Player ? 1000 + SaveFile.Instance.HealthGainedFromTraining : HealthBars[0] * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1));
         StaggerBar = new StaggerBar(this, this is Player ? 1000 + SaveFile.Instance.StaggerBarGainedFromTraining : StaggerBars[0] * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1));
         Energy = new Energy(this, 100);
@@ -1195,13 +1213,12 @@ public class Unit : PermanentObject {
         LightStagger = new Stagger(Constants.DamageType.Light, this, !use_default ? SaveFile.Instance.EquippedLightWeapon.BaseStagger : BaseStagger);
         RangedStagger = new Stagger(Constants.DamageType.Ranged, this, !use_default ? SaveFile.Instance.EquippedRangedWeapon.BaseStagger : BaseStagger);
         MagicStagger = new Stagger(Constants.DamageType.Magic, this, !use_default ? 100 : BaseStagger);
-
         HeavyAttackSpeed = new AttackSpeed(Constants.DamageType.Heavy, this, !use_default ? SaveFile.Instance.EquippedHeavyWeapon.BaseAttackSpeed : BaseAttackSpeed);
         LightAttackSpeed = new AttackSpeed(Constants.DamageType.Light, this, !use_default ? SaveFile.Instance.EquippedLightWeapon. BaseAttackSpeed : BaseAttackSpeed);
         RangedAttackSpeed = new AttackSpeed(Constants.DamageType.Ranged, this, !use_default ? SaveFile.Instance.EquippedRangedWeapon.BaseAttackSpeed : BaseAttackSpeed);
         MagicAttackSpeed = new AttackSpeed(Constants.DamageType.Magic, this, !use_default ? 1.0f : BaseAttackSpeed);
         if(DebugController.MaxAttackSpeed) {
-            Effect_ChangeCompositeStat buff = new(this, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new ("Cheat")) {PercentageAmount = 1000};
+            Effect_ChangeCompositeStat buff = new(this, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new ("Cheat")) {PercentageModifier = 1000};
             DebugController.SpeedBuffs.Add(buff);
             AddEffect(buff);
         }
@@ -1211,18 +1228,22 @@ public class Unit : PermanentObject {
             Effect_ChangeStat hp_regen_outside_combat = new Effect_ChangeStat( Health, new ("Cheat"))
             {
                 IsRemovable = false,
-                RegenerationPercentageAmount = 5,
+                RegenerationPercentageModifier = 5,
                 DependenceOnCombatStatus = Effect_ChangeStat.DependenceOnCombatStatusEnum.OnlyWorksOutOfCombat
             };
             AddEffect(hp_regen_outside_combat);
         }
-
         MovementSpeed = new MovementSpeed(this, BaseMovementSpeed);
         Tenacity = new Tenacity(this, BaseTenacity * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1));
         Control = new Control(this, BaseControl);
-        DamageReduction = new DamageReduction(this, 1);
         Penetration = new Penetration(this, 1);
         CooldownReduction = new CooldownReduction(this, BaseCooldownReduction);
+        DamageReduction = new DamageReduction(this, BaseDamageReduction);
+        if(this is not Player && IsBoss == false && BaseDamageReduction != 1) {
+            DamageReduction.DamageReductionDisplay.gameObject.SetActive(true);
+            DamageReduction.DamageReductionLabel.gameObject.SetActive(true);
+            DamageReduction.DamageReductionLabel.GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedFloat((BaseDamageReduction - 1) * 100, 0);
+        }
 
         CurrentHealthBars = HealthBars.Count;
         CurrentStaggerBars = StaggerBars.Count;
@@ -1273,6 +1294,11 @@ public class Unit : PermanentObject {
         }
     }
 
+    public bool CheckIfEffectIsOnCooldown(string indentifier)
+    {
+        return EffectCooldowns.FirstOrDefault(eff => eff.Identifier == indentifier) != null;
+    }
+
     public bool CheckIfEffectIsOnCooldown(Effect effect)
     {
         return EffectCooldowns.FirstOrDefault(eff => effect.GetType() == eff.Type) != null;
@@ -1284,6 +1310,9 @@ public class Unit : PermanentObject {
     }
 
     private void DecreaseEffectsDuration() {
+        if(Time.deltaTime == 0) {
+            return;
+        }
         foreach (Effect effect in CurrentEffects.ToList()) {
             effect.OnUpdate();
             if (effect.BaseDuration > 0) {
@@ -1302,20 +1331,7 @@ public class Unit : PermanentObject {
                 }
             }
         }
-        foreach(Cooldown cd in EffectCooldowns.Where(cd => cd.ShowCooldownInEffectUI)) {
-            if(cd.CooldownDisplay == null) {
-                Transform effectsDisplay = CanvasElements.UICanvas.Effects.transform;
-                GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
-                effectIndicator.GetComponent<Image>().sprite = Resources.Load("Sprites/UI/CooldownEffectIcon", typeof(Sprite)) as Sprite;
-                effectIndicator.transform.SetParent(effectsDisplay, false);
-                effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = cd.CooldownGraphic != null ? cd.CooldownGraphic : Resources.Load("Sprites/" + cd.PathToCooldownGraphic, typeof(Sprite)) as Sprite;
-                cd.CooldownDisplay = effectIndicator.transform.Find("CooldownDisplay").GetComponent<Image>();
-                cd.CooldownDisplay.fillAmount = 0;
-            }
-            else {
-                cd.CooldownDisplay.fillAmount = 1f - (cd.RemainingDuration / cd.TotalDuration);
-            }
-        }
+
     }
 
     private void UpdateAllCooldowns() {
@@ -1327,22 +1343,20 @@ public class Unit : PermanentObject {
             if(cooldown.RemainingDuration <= 0) {
                 bool isStacksBased = cooldown.Type?.GetField("IsStacksBasedTechnique") != null;
                 int maxStacks = 0;
-                bool isUltimate = cooldown.ExtraInfo == "IsUltimate";
+                bool isUltimate = cooldown.Identifier == "IsUltimate";
                 if(cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "") + "MaxStacks") != null) {
                     maxStacks = (int)cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "")  + "MaxStacks").GetValue(null);
                 }
-                if(isStacksBased && ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.ExtraInfo == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks))) {
+                if(isStacksBased && ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks))) {
                     Player.Instance.UpdateTechniqueStacksAmount(cooldown.Type, isUltimate ? Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] + 1 : Player.Instance.CurrentTechniqueStacks[cooldown.Type] + 1, isUltimate);
-                    if((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.ExtraInfo == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks)) {
+                    if((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks)) {
                         cooldown.RemainingDuration = cooldown.TotalDuration;
                     }
                 }
                 else {
                     _techniqueCooldowns.Remove(cooldown);
                 }
-                if(cooldown.ShowCooldownInEffectUI && cooldown.CooldownDisplay != null) {
-                    MonoBehaviour.Destroy(cooldown.CooldownDisplay.transform.parent.gameObject);
-                }
+                cooldown.OnEnd();
             }
         }
         foreach (Cooldown cooldown in EffectCooldowns.ToArray())
@@ -1350,9 +1364,19 @@ public class Unit : PermanentObject {
             cooldown.RemainingDuration -= Time.deltaTime;
             if(cooldown.RemainingDuration <= 0) {
                 _effectCooldowns.Remove(cooldown);
-                if(cooldown.ShowCooldownInEffectUI && cooldown.CooldownDisplay != null) {
-                    MonoBehaviour.Destroy(cooldown.CooldownDisplay.transform.parent.gameObject);
-                }
+                cooldown.OnEnd();
+            }
+            else if(cooldown.ShowsInUI && cooldown.CooldownDisplay == null) {
+                Transform effectsDisplay = CanvasElements.UICanvas.Effects.transform;
+                GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
+                effectIndicator.GetComponent<Image>().sprite = Resources.Load("Sprites/UI/CooldownEffectIcon", typeof(Sprite)) as Sprite;
+                effectIndicator.transform.SetParent(effectsDisplay, false);
+                effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = cooldown.CooldownGraphic != null ? cooldown.CooldownGraphic : Resources.Load("Sprites/" + cooldown.PathToCooldownGraphic, typeof(Sprite)) as Sprite;
+                cooldown.CooldownDisplay = effectIndicator.transform.Find("CooldownDisplay").GetComponent<Image>();
+                cooldown.CooldownDisplay.fillAmount = 0;
+            }
+            else if(cooldown.ShowsInUI){
+                cooldown.CooldownDisplay.fillAmount = 1f - (cooldown.RemainingDuration / cooldown.TotalDuration);
             }
         }
         if(ToolCooldown != null) {
@@ -1415,7 +1439,7 @@ public class Unit : PermanentObject {
             _effectCooldowns.Add(cooldown);
         }
         else if(cooldown.Type.IsSubclassOf(typeof(Ability))) {
-            Cooldown existing_cd = _techniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type && cd.ExtraInfo == cooldown.ExtraInfo);
+            Cooldown existing_cd = _techniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type && cd.Identifier == cooldown.Identifier);
             if(existing_cd != null) {
                 _techniqueCooldowns.Remove(existing_cd);
             }
@@ -1451,7 +1475,7 @@ public class Unit : PermanentObject {
             Debug.LogError("Tried to remove cooldown that was not found on any cooldown list for unit " + gameObject.name + ": " +  cd.Type);
             return;           
         }
-        if(cd.ShowCooldownInEffectUI && cd.CooldownDisplay != null) {
+        if(cd.ShowsInUI && cd.CooldownDisplay != null) {
             MonoBehaviour.Destroy(cd.CooldownDisplay.transform.parent.gameObject);
         }
     }
