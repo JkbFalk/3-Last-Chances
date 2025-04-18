@@ -134,8 +134,8 @@ public class LabelInitializer : MonoBehaviour, IPointerMoveHandler {
 		int linkIndex = TMP_TextUtilities.FindIntersectingLink(TextMeshPro, Input.mousePosition, null);
         if(linkIndex == -1) {
             if(MenuManager.Instance.TooltipDisplay.ChangeInProgress == false && MenuManager.Instance.TooltipDisplay.Visiblity > 0) {
-                MenuManager.Instance.TooltipDisplay.HideOverTimeFromFull(0.15f);
-                MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.3f, 1, 0.05f);
+                MenuManager.Instance.TooltipDisplay.HideOverTimeFromFull(0.12f);
+                MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.2f, MenuManager.Instance.TooltipTransformChange.transform.localScale.x, 0.05f);
             }
             return;
         }
@@ -155,8 +155,8 @@ public class LabelInitializer : MonoBehaviour, IPointerMoveHandler {
         MenuManager.Instance.Tooltip.transform.parent.gameObject.transform.position = Input.mousePosition;
         MenuManager.Instance.Tooltip.transform.parent.gameObject.SetActive(true);
         if(MenuManager.Instance.TooltipDisplay.ChangeInProgress == false && MenuManager.Instance.TooltipDisplay.Visiblity < 1) {
-            MenuManager.Instance.TooltipDisplay.ShowOverTimeFromZero(0.15f);
-            MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.3f, 0.05f, 1);
+            MenuManager.Instance.TooltipDisplay.ShowOverTimeFromZero(0.12f);
+            MenuManager.Instance.TooltipTransformChange.SetScaleChangeOverTime(0.2f, MenuManager.Instance.TooltipTransformChange.transform.localScale.x, 1);
             MenuManager.Instance.TooltipDisplay.CheckIfShouldHideOnceFinishedChanging = true;
             MenuManager.Instance.TooltipDisplay.LabelInitializer = this;
         }

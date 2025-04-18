@@ -494,17 +494,17 @@ public class EffectList
             };
         }
         else if (effect_name == "SharpEmpowersBasicAttacks") {
-            float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.SHARP_PER_PB, PB.SPECIALIZATION__BASIC_ATTACK});
+            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB), PB.SPECIALIZATION__BASIC_ATTACK});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DamagePercentageChange = calculatedPB,
-                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
+                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 100)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack) && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Sharp sharp = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
-                        damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.InjuryPercentageChange / 100;
+                        damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.DamagePercentageChange;
                     })
                 }
             };
@@ -549,17 +549,17 @@ public class EffectList
             };
         }
         else if (effect_name == "SharpEmpowersWeaponTechniques") {
-            float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.SHARP_PER_PB, PB.SPECIALIZATION__TECHNIQUES, PB.SPECIALIZATION__WEAPONS});
+            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB), PB.SPECIALIZATION__TECHNIQUES, PB.SPECIALIZATION__WEAPONS});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DamagePercentageChange = calculatedPB,
-                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
+                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 100)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique) && damage.IsWeaponDamage && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Sharp sharp = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
-                        damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.DamagePercentageChange / 100;
+                        damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.DamagePercentageChange;
                     })
                 }
             };
@@ -1650,9 +1650,9 @@ public class EffectList
         }
         else if(effect_name == "BackstabsScaleWithOnslaughtSharpAndAnalysis") {
             
-            float calculatedPB1 = CalculatePB(power_budget * 0.333f, PB.PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.ONSLAUGHT_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS});
-            float calculatedPB2 = CalculatePB(power_budget * 0.333f, PB.PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.SHARP_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS});
-            float calculatedPB3 = CalculatePB(power_budget * 0.333f, PB.PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.ANALYSIS_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS});
+            float calculatedPB1 = CalculatePB(power_budget * 0.333f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.ONSLAUGHT_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS});
+            float calculatedPB2 = CalculatePB(power_budget * 0.333f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS});
+            float calculatedPB3 = CalculatePB(power_budget * 0.333f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.ANALYSIS_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
                     FirstParameter = calculatedPB1,
@@ -2008,7 +2008,7 @@ public class EffectList
             };
         }
         else if(effect_name == "AnalysisBoostsAllDamage") {
-            float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.ANALYSIS_PER_PB, PB.SPECIALIZATION__EVERYTHING_EXCEPT_TECHNIQUES});
+            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.ANALYSIS_PER_PB, PB.SPECIALIZATION__EVERYTHING_EXCEPT_TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
                     DamagePercentageChange = calculatedPB,  
@@ -2577,7 +2577,7 @@ public class EffectList
             };
         }
         else if(effect_name == "ApplySelfChainedToEnemies") {
-            float calculatedPB = CalculatePB(power_budget, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_CHAINED_ON_PLAYER});
+            float calculatedPB = CalculatePB(power_budget, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 

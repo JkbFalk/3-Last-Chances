@@ -13,8 +13,8 @@ public class PB
 
 
     // Skill Tree Node PB Values
-    public const float NON_SPECIALITY_SKILL_TREE_PB = 5;
-    public const float SPECIALITY_SKILL_TREE_PB = 7;
+    public const float NON_SPECIALITY_SKILL_TREE_PB = 8; // Final Intended is 5
+    public const float SPECIALITY_SKILL_TREE_PB = 10; // Final Intended is 7
     public const float ROW12_HEAL_POWER_UP_PB = 20;
     public const float ENERGY_LEVEL_1_MULTIPLIER = 1.2f;
     public const float ENERGY_LEVEL_2_MULTIPLIER = 1.5f;
@@ -159,7 +159,7 @@ public class PB
     public const float SPECIAL__TOTAL_STAGGER_BAR_AMOUNT_CONVERSION = 0.05714F;
     public const float SPECIAL__STAT_BONUS_CONVERSION = 1.0f;
     public const float SPECIAL__BONUS_FOR_AFFECTING_2_DIFFERENT_STACKING_EFFECTS = 1.25f;
-    public const float SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS = 1.5f;
+    public const float SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS = 1.5f; //It is much harder to extract full value from all 3 stacking effects at the same time compared to just 1
 
 
     //Multipliers for certain unique properties
@@ -180,8 +180,8 @@ public class PB
     public const float EXPECTED_AMOUNT_OF_DEBUFFS_ON_PLAYER = 3;
     public const float EXPECTED_AMOUNT_OF_DEBUFFS_ON_ENEMY = 3;
     public const float EXPECTED_AMOUNT_OF_SPECIFIC_ITEM_EQUIPPED = 3.0f;
-    private const float EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER = 30;
-    public const float EXPECTED_AMOUNT_OF_CHAINED_ON_PLAYER = EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * MULTIPLIER__CHAINED_PROPERTIES;
+    public const float EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER = 30;
+    public const float EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_PLAYER = 50;
 
 
     //Stat Percentage Increase per 1 PB
@@ -214,7 +214,6 @@ public class PB
     public const float PERCENTAGE_OF_MAX_HEALTH_RESTORED_FOR_EACH_SECOND_OF_CC_APPLIED_PER_PB = 0.1f;
     public const float CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB = 2;
     public const float PERCENTAGE_CONVERSION_OF_ONE_STACKING_EFFECT_SPENT_INTO_ANOTHER_PER_PB = 0.5f;
-    public const float PERCENTAGE_CONVERSION_OF_STACKING_EFFECT_INTO_DAMAGE_INCREASE_PER_PB = 20f;
     public const float PERCENTAGE_CONVERSION_OF_DAMAGING_EFFECT_INTO_EXTRA_DAMAGE_PER_PB = 20f;
     public const float REDUCE_ALL_REMAINING_COOLDOWNS_PERCENTAGE_PER_PB = 1f;
     public const float GAIN_FLAT_ENERGY_AFFECTED_BY_ENERGY_GAIN_PER_PB = 0.5f;
@@ -232,7 +231,7 @@ public class PB
     public const float ENEMY_STAGGER_BAR_PER_PB = 80f;
     public const float INJURY_SCALING_PER_PB = 100f;
     public const float STAGGER_SCALING_PER_PB = 100f;
-    private const float SCALING_STACKING_EFFECT_PER_PB = 0.5f;
+    private const float SCALING_STACKING_EFFECT_PER_PB = 1f;
     private const float DAMAGING_STACKING_EFFECT_PER_PB = 1f;
     public const float SECONDS_OF_STUN_PER_PB = 0.1f;
     public const float SECONDS_OF_INVINCIBILITY_PER_PB = 0.02f;

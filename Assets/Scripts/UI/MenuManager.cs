@@ -731,7 +731,7 @@ public class MenuManager : MonoBehaviour {
             desc += "{Effect_" + power_up_names[i] + "_Description" + ((show_detailed && Label.ContainsKey("{Effect_" + power_up_names[i] + "_DescriptionDetailed")) ? "Detailed" : "") + "}\n\n";
             if(SaveFile.Instance.UnlockedPowerUps.Contains(tile.Id) == false && effects[0].ShowCalculatedStatIncreasesBasedOnFirstStringParam != null) {
                 foreach(Stat stat in effects[0].ShowCalculatedStatIncreasesBasedOnFirstStringParam) {
-                    desc += "<sprite name=\"" + stat.ToString() + "\">" + stat.GetCalculatedIncrease(
+                    desc += "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease(
                         effects[0].IsFlatIncreaseStatIncrease ? 0 : float.Parse(effects[0].DescriptionParameters[0]), 
                         effects[0].IsFlatIncreaseStatIncrease ? float.Parse(effects[0].DescriptionParameters[0]) : 0) + "\n";
                 }

@@ -5075,7 +5075,13 @@
   {
     "Label": "Effect_Dodge_Description",
     "Category": "Effect",
-    "ENG": "[Dodge]Dodge: performed by pressing [DodgeBinding], it allows to dodge all attacks aside from those not [Counterable]Countered by dodge or [Unstoppable]Unstoppable.\n\nMoving while pressing [DodgeBinding] will result in a roll, countering enemy [Counterable]Special thrust attacks.\n\nStanding still while pressing [DodgeBinding] will result in a backstep, countering enemy [Counterable]Special swing, down-to-up attacks.\n\nEffects that trigger on [Dodge]Dodge only work if any [D]Damage is succesfully avoided.",
+    "ENG": "[Dodge]Dodge: performed by pressing [DodgeBinding], it allows to temporarily avoid all attacks aside from some [Counter]Counterable and all [Unstoppable]Unstoppable.\n\nMoving while pressing [DodgeBinding] will result in a roll, countering enemy [Counterable]Special thrust attacks.\n\nStanding still while pressing [DodgeBinding] will result in a backstep, countering enemy [Counterable]Special swinging, down-to-up attacks.\n\nEffects that trigger on [Dodge]Dodge only work if any [D]Damage is succesfully avoided",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_Unstoppable_Description",
+    "Category": "Effect",
+    "ENG": "[Unstoppable]Unstoppable: some enemy attacks are so powerful that they cannot be [Counter]Countered or [Dodge]Dodged. The only option is to run from the line of fire",
     "PL": ""
   },
   {
@@ -5087,7 +5093,7 @@
   {
     "Label": "Effect_Magic_Description",
     "Category": "Effect",
-    "ENG": "[Magic]Magic: some [Technique]Techniques deal [MD]Damage dependant on [Magic]Magic instead of [Weapons]Weapon stats. [Proprius]Power Without Limit and [Proprius]Mind Over Matter stances allow to use [BasicAttack]Basic Attacks that scale with [Magic]Magic instead of currently equipped weapon",
+    "ENG": "[Magic]Magic: some [Technique]Techniques deal [MD]Damage dependant on [Magic]Magic instead of [Weapons]Weapon stats. [Proprius]Power Without Limit and [Proprius]Mind Over Matter stances allow to use [BasicAttack]Basic Attacks that scale with [Magic]Magic instead of currently equipped weapon.\n\n[Magic]Magic [AS]Attack Speed is capped at 2.0",
     "PL": ""
   },
   {
@@ -5123,7 +5129,7 @@
   {
     "Label": "Effect_Ranged_Description",
     "Category": "Effect",
-    "ENG": "[Ranged]Ranged Weapons: Guns, Bows, Cannons.\n\nRequire [Ammo]Ammo to perform [BasicAttack]Basic Attacks (but not [Technique]Technique).\n\n[Ammo]Ammo is restored at the end of combat, by defeating enemies and through various special [Effect]Effects.\n\n[Ranged]Ranged Weapons [AS]Attack Speed is capped at 2.0",
+    "ENG": "[Ranged]Ranged Weapons: Guns, Bows, Cannons.\n\nRequire [Ammo]Ammo to perform [BasicAttack]Basic Attacks (but not [Technique]Techniques).\n\n[Ammo]Ammo is restored at the end of combat, by defeating enemies or through various special [Effect]Effects.\n\n[Ranged]Ranged Weapons [AS]Attack Speed is capped at 2.0",
     "PL": ""
   },
 
@@ -5216,7 +5222,7 @@
   {
     "Label": "Effect_Barrier_Description",
     "Category": "Effect",
-    "ENG": "[Barrier]Barrier: all [D]Damage target takes is first absorbed by the effect's value. [S]Stagger does not deplete [Barrier]Barrier unless it would cause the target to be [Staggered]Staggered (stackable)",
+    "ENG": "[Barrier]Barrier: all [D]Damage taken is first absorbed by the effect's value (stackable).\n\n[S]Stagger does not deplete [Barrier]Barrier unless to prevent [Staggered]Staggered",
     "PL": "[Barrier]Bariera: wszystkie otrzymane przez cel [D]Obrażenia są najpierw pochłonięte przez wartość [Barrier]Bariery. Ten efekt się kumuluje."
   },
   {
@@ -5228,7 +5234,7 @@
   {
     "Label": "Effect_Incision_Description",
     "Category": "Effect",
-    "ENG": "[Incision]Incision: target takes given [I]Injury each second. Cannot lower target's [H]Health below 1 (stackable)",
+    "ENG": "[Incision]Incision: target takes given [I]Injury each second (stackable).\n\nCannot lower target's [H]Health below 1",
     "PL": "[Incision]Nacięcie: cel otrzymuje dane [I]Zranienie co sekundę. Ten efekt się kumuluje."
   },
   {
@@ -5240,7 +5246,7 @@
   {
     "Label": "Effect_Supercharge_Description",
     "Category": "Effect",
-    "ENG": "[Supercharge]Supercharge: every hit consumes 20% of the effect's value to deal extra [I]Injury equal to amount spent (stackable)",
+    "ENG": "[Supercharge]Supercharge: hits consume 20% of the effect's value to deal extra [I]Injury equal to amount spent (stackable)",
     "PL": "[Supercharge]Naładowanie: każde udane trafienie zadaje dodatkowo [I]Zranienie równe podanej ilości. Ten efekt się kumuluje."
   },
   {
@@ -5273,7 +5279,7 @@
   {
     "Label": "Effect_Staggered_Description",
     "Category": "Effect",
-    "ENG": "[Staggered]Staggered: caused by filling enemy [SB]Stagger Bar. Target cannot take any actions until this effect ends.",
+    "ENG": "[Staggered]Staggered: unable to perform any actions and [DR]Damage Reduction is ineffective.\n\nCaused by filling up the [SB]Stagger Bar",
     "PL": "[Staggered]Przełamanie: spowodowane wypełnieniem [SB]Paska Zachwiania."
   },
   {
@@ -5285,7 +5291,7 @@
   {
     "Label": "Effect_Flinching_Description",
     "Category": "Effect",
-    "ENG": "[Stun]Flinching: target cannot take actions until this effect ends, caused by taking too much of your %[StaggerBar]Stagger Bar in one hit.",
+    "ENG": "[Stun]Flinching: unable to perform any actions.\n\nCaused by taking more than [PURPLE]20%[/PURPLE] of one's maximum [StaggerBar]Stagger Bar in one hit",
     "PL": "[Stun]Oszołomienie: cel nie może nic robić."
   },
   {
@@ -5297,8 +5303,14 @@
   {
     "Label": "Effect_Stun_Description",
     "Category": "Effect",
-    "ENG": "[Stun]Stun: target cannot take actions until this effect ends.",
+    "ENG": "[Stun]Stun: unable to perform any actions",
     "PL": "[Stun]Ogłuszenie: cel nie może nic robić."
+  },
+  {
+    "Label": "Effect_CrowdControl_Description",
+    "Category": "Effect",
+    "ENG": "[CrowdControl]CrowdControl: any enemy who is under an [Effect]Effect that makes them unable to perform any actions.\n\n[CrowdControl]Crowd-Control [Effect]Effects include [Stun]Stunned, [Stun]Flinching, [Stun]Knocked Back, [Freeze]Frozen In Place, [Staggered]Staggered and [Sleep]Asleep.\n\n[Backstab]Backstabbed, [Riposte]Riposted and [Counter]Countered also count as [CrowdControl]Crowd-Control, but both the attacker and the attacked are unable to perform any actions during the animation",
+    "PL": "[CrowdControl]Ogłuszenie: cel nie może nic robić."
   },
   {
     "Label": "Effect_Onslaught",
@@ -5321,7 +5333,7 @@
   {
     "Label": "Effect_Prone_Description",
     "Category": "Effect",
-    "ENG": "[Prone]Prone: target takes increased [D]Damage based on the effect's value (stackable)",
+    "ENG": "[Prone]Prone: take more %[D]Damage based on the effect's value (stackable)",
     "PL": "[Prone]Podatny: cel otrzymuje zwiększone %[D]Obrażenia ze wszystkich źródeł. Ten efekt się kumuluje."
   },
   {
@@ -5333,7 +5345,7 @@
   {
     "Label": "Effect_ImmuneToBackstabs_Description",
     "Category": "Effect",
-    "ENG": "[ImmunityToBackstabs]Backstab Immunity: cannot Backstab given target.",
+    "ENG": "[ImmunityToBackstabs]Backstab Immunity: cannot be [Backstab]Backstabbed",
     "PL": "[ImmunityToBackstabs]Odporność na Cios w Plecy: nie da się używać Ataku w Plecy przeciwko celowi z tym efektem."
   },
   {
@@ -5345,7 +5357,7 @@
   {
     "Label": "Effect_Empowered_Description",
     "Category": "Effect",
-    "ENG": "[Empowered]Empowered: deal more %[D]Damage based on the effect's value (stackable).",
+    "ENG": "[Empowered]Empowered: deal more %[D]Damage based on the effect's value (stackable)",
     "PL": "[Empowered]Wzmocniony: zadawaj zwiększone %[D]Obrażenia równe wartości efektu. Ten efekt się kumuluje."
   },
   {
@@ -5357,7 +5369,7 @@
   {
     "Label": "Effect_Sleep_Description",
     "Category": "Effect",
-    "ENG": "[Sleep]Sleep: target stays in place without doing anything and restores 1% [H]Health every second. Receiving [I]Injury ends the effect.",
+    "ENG": "[Sleep]Sleep: unable to perform any actions and regain 1% [H]Health every second.\n\nReceiving any [I]Injury ends the effect",
     "PL": "[Sleep]Uśpienie: cel bezczynnie leży w miejscu i regeneruje 1% [H]Życia co sekundę. Otrzymanie [I]Zranienia kończy ten efekt."
   },
   {
@@ -5369,7 +5381,7 @@
   {
     "Label": "Effect_Chained_Description",
     "Category": "Effect",
-    "ENG": "[Chained]Chained: all attacks deal more %[D]Damage based on the effect's value, but target also loses [EG]Energy Gain, [DR]Damage Reduction and [AS]Attack Speed equal to 15% of the effect's value (stackable)",
+    "ENG": "[Chained]Chained: deal more %[D]Damage based on the effect's value, but also lose [EG]Energy Gain, [DR]Damage Reduction and [AS]Attack Speed equal to 15% of the effect's value (stackable)",
     "PL": "[Chained]Kajdany: Zadawaj więcej [D]Obrażeń o podaną ilość, ale także zmniejsz [DR], [AS] i [EG] o 10% podanej ilości. Jest liczone jako 3 negatywne efekty. Ten efekt się kumuluje."
   },
   {
@@ -5381,7 +5393,7 @@
   {
     "Label": "Effect_Poison_Description",
     "Category": "Effect",
-    "ENG": "[Poison]Poison: when applied to player makes them lose specified percentage of [E]Energy every second. When applied to enemy increases their cooldowns and lowers aggressivness based on percentage.",
+    "ENG": "[Poison]Poison: when applied to player, causes [E]Energy loss every second.\n\nWhen applied to enemy, lowers their [CDR]Cooldown Reduction and makes them attack less frequently based on percentage.",
     "PL": ""
   },
   {
@@ -5393,7 +5405,7 @@
   {
     "Label": "Effect_Invincible_Description",
     "Category": "Effect",
-    "ENG": "[Invincible]Invincible: target is immune to [D]Damage and negative Effects.",
+    "ENG": "[Invincible]Invincible: immune to [D]Damage and [Debuff]Debuffs",
     "PL": "[Invincible]Niezniszczalny: cel jest odporny na [D]Obrażenia i negatywne Efekty."
   },
   {
@@ -5405,7 +5417,7 @@
   {
     "Label": "Effect_Immovable_Description",
     "Category": "Effect",
-    "ENG": "[Immovable]Immovable: target is immune to knock-backs.",
+    "ENG": "[Immovable]Immovable: immune to [Technique]Knock-backs",
     "PL": "[Immovable]Nieruchomy: cel jest odporny na odepchnięcia."
   },
   {
@@ -5417,7 +5429,7 @@
   {
     "Label": "Effect_Unkillable_Description",
     "Category": "Effect",
-    "ENG": "[Unkillable]Unkillable: target cannot be brought below 1 [H]Health (if on last Health Bar).",
+    "ENG": "[Unkillable]Unkillable: cannot be brought below [RED]1[/RED][H]Health",
     "PL": "[Unkillable]Niezabijalny: cel nie może być sprowadzony poniżej 1 [H]Życia (jeśli to jego ostatni Pasek Życia)."
   },
   {
@@ -5429,7 +5441,7 @@
   {
     "Label": "Effect_Unstunnable_Description",
     "Category": "Effect",
-    "ENG": "[Unstunnable]Unstunnable: target is immune to negative Effects.",
+    "ENG": "[Unstunnable]Unstunnable: immune to [Stun]Crowd-Control",
     "PL": "[Unstunnable]Nie-do-ogłuszenia: cel jest odporny na negatywne Efekty."
   },
   {
@@ -5441,7 +5453,7 @@
   {
     "Label": "Effect_Slow_Description",
     "Category": "Effect",
-    "ENG": "[Slow]Slow: target has lowered [SP]Movement Speed by given percent. Effect lasts 5 seconds and decays quickly (stackable)",
+    "ENG": "[Slow]Slow: lowered [SP]Movement Speed by given percent (stackable).\n\nLasts only 5 seconds and decays much quicker",
     "PL": "[Slow]Spowolnienie: cel ma zmniejszoną [SP]Prędkość Ruchu o podany procent. Ten efekt się kumuluje, trwa tylko 5 sekund i szybko się zmniejsza."
   },
   {
@@ -5453,8 +5465,32 @@
   {
     "Label": "Effect_Acceleration_Description",
     "Category": "Effect",
-    "ENG": "[Acceleration]Acceleration: target has increased [AS]Attack Speed by given amount, up to +100% (stackable)",
+    "ENG": "[Acceleration]Acceleration: increased [AS]Attack Speed by given amount (stackable)",
     "PL": "[Acceleration]Przyspieszenie: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
+  },
+  {
+    "Label": "Effect_Lethargy",
+    "Category": "Effect",
+    "ENG": "[Acceleration]Acceleration",
+    "PL": "[Acceleration]Przyspieszenie"
+  },
+  {
+    "Label": "Effect_Lethargy_Description",
+    "Category": "Effect",
+    "ENG": "[Lethargy]Lethargy: lowered [AS]Attack Speed by given amount (stackable)",
+    "PL": "[Lethargy]Letarg: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
+  },
+  {
+    "Label": "Effect_Feeble",
+    "Category": "Effect",
+    "ENG": "[Feeble]Feeble",
+    "PL": "[Feeble]Osłabiony"
+  },
+  {
+    "Label": "Effect_Feeble_Description",
+    "Category": "Effect",
+    "ENG": "[Feeble]Feeble: deal less %[D]Damage based on the effect's value (stackable)",
+    "PL": "[Feeble]Osłabiony: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
   },
   {
     "Label": "Effect_Stealth",
@@ -5465,7 +5501,7 @@
   {
     "Label": "Effect_Stealth_Description",
     "Category": "Effect",
-    "ENG": "[Stealth]Stealth: enemies cannot target you. Attacking, using Techniques or Tools will end the effect.",
+    "ENG": "[Stealth]Stealth: untargettable to enemies.\n\nUsing [BasicAttack]Basic Attacks, [Technique]Techniques and [Tool]Tools will cause [Stealth]Stealth to end prematurely",
     "PL": "[Stealth]Ukrycie:"
   },
 
@@ -5995,7 +6031,7 @@
   {
     "Label": "Effect_DamageReductionAgainstCounterable_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs counterable ([Counter]Green Sign)",
+    "ENG": "+{0}%[DR]Damage Reduction vs [Counter]Counterable",
     "PL": ""
   },
   {
@@ -6097,7 +6133,7 @@
   {
     "Label": "Effect_DamageReductionAgainstUnstoppable_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs unstoppable ([Unstoppable]Red Sign)",
+    "ENG": "+{0}%[DR]Damage Reduction vs [Unstoppable]Unstoppable",
     "PL": ""
   },
   {
@@ -6157,7 +6193,7 @@
   {
     "Label": "Effect_StrongBasicAttackDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][WD]Strong Basic Attack Damage",
+    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Strong Basic Attack Damage",
     "PL": ""
   },
   {
@@ -6181,7 +6217,7 @@
   {
     "Label": "Effect_RestoreStaggerBarOnSuccesfulRiposteOrCounterWhileStaggered_Description",
     "Category": "Effect",
-    "ENG": "While you're [Staggered]Staggered, [Riposte]Ripostes restore [PURPLE]{0}%[/PURPLE][SB]Stagger Bar and [Counter]Counters restore [PURPLE]{1}%[/PURPLE][SB]",
+    "ENG": "While you're [Staggered]Staggered, [Riposte]Ripostes restore [PURPLE]{0}%[/PURPLE] of your maximum [SB]Stagger Bar and [Counter]Counters restore [PURPLE]{1}%[/PURPLE][SB]",
     "PL": ""
   },
   {
@@ -6193,7 +6229,7 @@
   {
     "Label": "Effect_HealFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "Heal [RED]{0}%[/RED][WD]Basic Attack Damage",
+    "ENG": "Heal for [RED]{0}%[/RED] of [BasicAttack]Basic Attack Damage",
     "PL": ""
   },
   {
@@ -6205,7 +6241,7 @@
   {
     "Label": "Effect_HealFromRipostesAndCounters_Description",
     "Category": "Effect",
-    "ENG": "Heal [RED]{0}%[/RED][Riposte]Riposte and [Counter]Counter Damage",
+    "ENG": "Heal for [RED]{0}%[/RED] of [Riposte]Riposte and [Counter]Counter Damage",
     "PL": ""
   },
 
@@ -6251,7 +6287,7 @@
   {
     "Label": "Effect_DamageToStaggered_Description",
     "Category": "Effect",
-    "ENG": "Deal [GREEN]{0}%[/GREEN] more [D]Damage to [Staggered]Staggered enemies.",
+    "ENG": "+[GREEN]{0}%[/GREEN][D]Damage vs [Staggered]Staggered",
     "PL": ""
   },
   {
@@ -6263,7 +6299,7 @@
   {
     "Label": "Effect_BasicAttackStagger_Description",
     "Category": "Effect",
-    "ENG": "You deal [PURPLE]{0}%[/PURPLE] more [S]Stagger with [BasicAttack]Basic Attacks.",
+    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger with [BasicAttack]Basic Attacks",
     "PL": ""
   },
   {
@@ -6275,7 +6311,7 @@
   {
     "Label": "Effect_TechniqueStagger_Description",
     "Category": "Effect",
-    "ENG": "Deal [PURPLE]{0}%[/PURPLE] more [S]Stagger with Techniques.",
+    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger with [Technique]Techniques",
     "PL": ""
   },
   {
@@ -6311,7 +6347,7 @@
   {
     "Label": "Effect_BurnDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "You have up to {0}% extra [DR]Damage Reduction against [Burn]Burning enemies (depending on [Burn]Burn amount).",
+    "ENG": "Up to +{0}%[DR]Damage Reduction based on enemy [Burn]Burn",
     "PL": ""
   },
   {
@@ -6323,7 +6359,7 @@
   {
     "Label": "Effect_HeavyStrongBasicAttackStagger_Description",
     "Category": "Effect",
-    "ENG": "You deal [PURPLE]{0}%[/PURPLE] more [S]Stagger with [Heavy]Heavy Weapon [BasicAttack]Basic Attacks.",
+    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger with [Heavy]Heavy Weapon [BasicAttack]Strong Basic Attacks",
     "PL": ""
   },
   {
@@ -6335,7 +6371,7 @@
   {
     "Label": "Effect_ExtraMagicStaggerToEmptyStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "Your [Magic]Magic deals [PURPLE]{0}%[/PURPLE] more [MS]Stagger to enemies with an empty [SB]Stagger Bar.",
+    "ENG": "+[PURPLE]{0}%[/PURPLE][MS]Magic Stagger vs enemies with empty [SB]Stagger Bar",
     "PL": ""
   },
   {
@@ -6347,7 +6383,7 @@
   {
     "Label": "Effect_BurnAmountToNonBurning_Description",
     "Category": "Effect",
-    "ENG": "You apply {0}% more [Burn]Burn to enemies who are not [Burn]Burning.",
+    "ENG": "+{0}% [Burn]Burn applied vs NOT-[Burn]Burning",
     "PL": ""
   },
   {
@@ -6359,7 +6395,7 @@
   {
     "Label": "Effect_DamageReductionAgainstBosses_Description",
     "Category": "Effect",
-    "ENG": "You have extra +{0}%[DR]Damage Reduction against Boss enemies.",
+    "ENG": "+{0}%[DR]Damage Reduction vs Bosses",
     "PL": ""
   },
   {
@@ -6371,7 +6407,13 @@
   {
     "Label": "Effect_BurnEmpowersStagger_Description",
     "Category": "Effect",
-    "ENG": "Damaging [Burn]Burning enemies inflicts extra [S]Stagger equal to {0}% of their current [Burn]Burn amount.",
+    "ENG": "Extra [PURPLE]{0}%[Burn]Burn[/PURPLE][S]Stagger dealt when damaging [Burn]Burning enemies",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_BurnEmpowersStagger_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "When [D]Damaging enemies who are [Burn]Burning, inflict extra [S]Stagger equal to [PURPLE]{0}%[/PURPLE] of [Burn]Burn applied to that enemy",
     "PL": ""
   },
   {
@@ -6383,7 +6425,7 @@
   {
     "Label": "Effect_BurnExplosionDamage_Description",
     "Category": "Effect",
-    "ENG": "Explosion caused by [Staggered]Staggering with a [Burn]Burn applied deals [GREEN]{0}%[/GREEN] more [D]Damage.",
+    "ENG": "+[GREEN]{0}%[/GREEN][Burn]Burn Explosion [D]Damage",
     "PL": ""
   },
   {
@@ -6395,7 +6437,7 @@
   {
     "Label": "Effect_DamageReductionAgainstNonBosses_Description",
     "Category": "Effect",
-    "ENG": "You have extra +{0}%[DR]Damage Reduction against enemies who are not Bosses.",
+    "ENG": "+{0}%[DR]Damage Reduction vs NOT-Bosses",
     "PL": ""
   },
   {
@@ -6407,7 +6449,7 @@
   {
     "Label": "Effect_HealFromStackingEffects_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [D]Damage you deal through [Burn]Burn, [Freeze]Freeze and [Incision]Incision.",
+    "ENG": "Heal for [RED]{0}%[/RED] of [D]Damage from [Burn]Burn, [Freeze]Freeze and [Incision]Incision",
     "PL": ""
   },
   {
@@ -6419,7 +6461,7 @@
   {
     "Label": "Effect_HealFromStaggerToNonStaggered_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger you deal to enemies who are not [Staggered]Staggered.",
+    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger dealt to NOT-[Staggered]Staggered",
     "PL": ""
   },
 
@@ -6498,7 +6540,7 @@
   {
     "Label": "Effect_RangedDamageLowersTenacity_Description",
     "Category": "Effect",
-    "ENG": "Dealing [RD]Ranged Damage lowers the enemy's [T]Tenacity by {0}% for 10 seconds. Does not stack.",
+    "ENG": "[RD]Ranged Damage reduces [T]Tenacity by {0}% for 10 seconds (refreshes without stacking)",
     "PL": ""
   },
   {
@@ -6510,7 +6552,7 @@
   {
     "Label": "Effect_MagicDamageLowersTenacity_Description",
     "Category": "Effect",
-    "ENG": "Dealing [MD]Magic Damage lowers the enemy's [T]Tenacity by {0}% for 10 seconds. Does not stack.",
+    "ENG": "[MD]Magic Damage reduces [T]Tenacity by {0}% for 10 seconds (refreshes without stacking)",
     "PL": ""
   },
   {
@@ -6522,7 +6564,7 @@
   {
     "Label": "Effect_StaggeringLowersTenacity_Description",
     "Category": "Effect",
-    "ENG": "[Staggered]Staggering an enemy lowers their [T]Tenacity by {0}% for 30 seconds. Does not stack.",
+    "ENG": "[Staggered]Staggering reduces [T]Tenacity by {0}% for 30 seconds (refreshes without stacking)",
     "PL": ""
   },
   {
@@ -6534,7 +6576,7 @@
   {
     "Label": "Effect_MovementSpeedWhileInRangedStance_Description",
     "Category": "Effect",
-    "ENG": "While in [Ranged]Ranged Stance, you have +{0}%[SPEED]Movement Speed.",
+    "ENG": "+{0}%[SPEED]Movement Speed in [Ranged]Ranged stance",
     "PL": ""
   },
   {
@@ -6546,7 +6588,7 @@
   {
     "Label": "Effect_StaggeringEnemyGivesAmmo_Description",
     "Category": "Effect",
-    "ENG": "[Staggered]Staggering an enemy gives you {0}[Ammo]Ammo.",
+    "ENG": "[Staggered]Staggering gives {0}[Ammo]Ammo",
     "PL": ""
   },
   {
@@ -6558,7 +6600,7 @@
   {
     "Label": "Effect_ControlWhileNoAmmo_Description",
     "Category": "Effect",
-    "ENG": "While at 0[Ammo]Ammo, you have +{0}%[C]Control.",
+    "ENG": "+{0}%[C]Control while at 0[Ammo]Ammo",
     "PL": ""
   },
   {
@@ -6570,7 +6612,7 @@
   {
     "Label": "Effect_ControlWhileLowHealth_Description",
     "Category": "Effect",
-    "ENG": "While below [RED]25%[/RED][H]Health, you have +{0}%[C]Control.",
+    "ENG": "+{0}%[C]Control while below [RED]25%[/RED][H]Health",
     "PL": ""
   },
   {
@@ -6582,7 +6624,7 @@
   {
     "Label": "Effect_DamageToCrowdControlled_Description",
     "Category": "Effect",
-    "ENG": "Deal [GREEN]{0}%[/GREEN] more [D]Damage to [Stun]Hard Crowd-controlled enemies ([Stun]Stunned, [Freeze]Frozen, [Staggered]Staggered etc).",
+    "ENG": "+[GREEN]{0}%[/GREEN][D]Damage vs [Stun]Crowd-Controlled",
     "PL": ""
   },
   {

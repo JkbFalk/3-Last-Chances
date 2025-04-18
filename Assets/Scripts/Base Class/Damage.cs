@@ -333,7 +333,7 @@ public class Damage {
     private void CheckIfTargetShouldFlinch()
     {
         if (CanCauseFlinching && !TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Block)) && TargetOfDamage.Actions.CurrentActionBeingPerformed != Constants.ActionType.UnderHardCrowdControl && 
-            ((TargetOfDamage is Player && StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_PLAYER_FLINCH / 100) || (TargetOfDamage is not Player && !TargetOfDamage.IsBoss && StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_REGULAR_FLINCH / 100) || (TargetOfDamage is not Player && TargetOfDamage.IsBoss &&  StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_BOSS_FLINCH / 100)) &&
+            ((TargetOfDamage is Player && StaggerDealt > TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_PLAYER_FLINCH / 100) || (TargetOfDamage is not Player && !TargetOfDamage.IsBoss && StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_REGULAR_FLINCH / 100) || (TargetOfDamage is not Player && TargetOfDamage.IsBoss &&  StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_BOSS_FLINCH / 100)) &&
             (TargetOfDamage.Actions.CurrentAbilityBeingPerformed == null ||
             (TargetOfDamage.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.ImmuneToFlinch) && !TargetOfDamage.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Counter) && !TargetOfDamage.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Unstoppable))))
         {
