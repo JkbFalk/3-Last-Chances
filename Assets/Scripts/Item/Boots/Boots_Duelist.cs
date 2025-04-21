@@ -10,7 +10,7 @@ public class Boots_Duelist : Item
     {
         Set = ItemSetEnum.Duelist;
         Type = Constants.ItemType.Boots;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionAfterRiposteOrCounter")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AttackSpeed", 0.5f), new ItemEffect("MovementSpeed", 0.5f)};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("RestoreHealthOnRiposteOrCounter")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionAfterRiposteOrCounter")};
     }
 }

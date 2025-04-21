@@ -9,7 +9,7 @@ public class EventManager {
     public static UnityEvent<Damage> AfterHitDamageCalculation = new UnityEvent<Damage>();
     public static UnityEvent<Damage> AboutToHandleFatalBlow = new UnityEvent<Damage>();
     public static UnityEvent<Damage> DamageDealt = new UnityEvent<Damage>();
-    public static UnityEvent<Damage> DamageWasDodged = new UnityEvent<Damage>();
+    public static UnityEvent<Damage, Ability> DamageWasDodged = new UnityEvent<Damage, Ability>();
     public static UnityEvent<Ability> AbilityUsed = new UnityEvent<Ability>();
     public static UnityEvent<Ability, float> AbilityEnergyConsumed = new UnityEvent<Ability, float>();
     public static UnityEvent<Ability> AbilityEnded = new UnityEvent<Ability>();

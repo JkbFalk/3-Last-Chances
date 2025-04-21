@@ -46,7 +46,6 @@ public class PB
 
 
     //Multipliers for only affecting certain subset
-    public const float SPECIALIZATION__DODGES_RIPOSTE_COUNTERS = 2.2f;
     public const float SPECIALIZATION__RIPOSTES_COUNTERS = 3f;
     public const float SPECIALIZATION__RIPOSTES = 5f;
     public const float SPECIALIZATION__COUNTERS = 5f;
@@ -89,7 +88,7 @@ public class PB
 
 
     //Multipliers for requiring certain event to happen to activate
-    public const float REQUIREMENT__DODGE = 1.5f;
+    public const float REQUIREMENT__DODGE = 1.75f;
     public const float REQUIREMENT__RIPOSTE = 2f;
     public const float REQUIREMENT__COUNTER = 4f;
     public const float REQUIREMENT__WEAPON_DAMAGE = 1.5f;
@@ -118,7 +117,7 @@ public class PB
 
 
     //Multipliers for special rules limiting effectivness
-    public const float RESTRICTION__ONE_TIME_ONLY = 1.5f;
+    public const float RESTRICTION__ONE_TIME_ONLY = 2.5f;
     public const float RESTRICTION__5_SECONDS_AFTER_RIPOSTE_OR_10_SECONDS_AFTER_COUNTER = 2.5f;
     public const float RESTRICTION__PLAYER_BASIC_ATTACKING = 2.1f;
     public const float RESTRICTION__PLAYER_CROWD_CONTROLLED = 4f;

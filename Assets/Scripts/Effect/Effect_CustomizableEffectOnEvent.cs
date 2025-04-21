@@ -15,8 +15,8 @@ public class Effect_CustomizableEffectOnEvent : Effect
     public Action<Ability, Effect_CustomizableEffectOnEvent> ActionOnAbilityUsed;
     public Func<Ability, bool> ConditionCheckForAbilityEnded;
     public Action<Ability, Effect_CustomizableEffectOnEvent> ActionOnAbilityEnded;
-    public Func<Damage, bool> ConditionCheckForDamageWasDodged;
-    public Action<Damage, Effect_CustomizableEffectOnEvent> ActionOnDamageWasDodged;
+    public Func<Damage, Ability, bool> ConditionCheckForDamageWasDodged;
+    public Action<Damage, Ability, Effect_CustomizableEffectOnEvent> ActionOnDamageWasDodged;
     public Func<Projectile, bool> ConditionCheckForProjectileCreated;
     public Action<Projectile, Effect_CustomizableEffectOnEvent> ActionOnProjectileCreated;
     public Func<Effect, bool> ConditionCheckForEffectStarted;
@@ -115,11 +115,11 @@ public class Effect_CustomizableEffectOnEvent : Effect
         }
     }
 
-    public override void OnInvokeDamageWasDodged(Damage damage){
-        base.OnInvokeDamageWasDodged(damage);
-        if (ConditionCheckForDamageWasDodged != null && ConditionCheckForDamageWasDodged.Invoke(damage) && ActionOnDamageWasDodged != null)
+    public override void OnInvokeDamageWasDodged(Damage damage, Ability dodge){
+        base.OnInvokeDamageWasDodged(damage, dodge);
+        if (ConditionCheckForDamageWasDodged != null && ConditionCheckForDamageWasDodged.Invoke(damage, dodge) && ActionOnDamageWasDodged != null)
         {
-            ActionOnDamageWasDodged.Invoke(damage, this);
+            ActionOnDamageWasDodged.Invoke(damage, dodge, this);
         }
     }
 

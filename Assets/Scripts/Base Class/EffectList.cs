@@ -2195,32 +2195,44 @@ public class EffectList
 
 
         //Duelist
-        else if(effect_name == "GainSharpOnCounterOrDodge") {
-            float calculatedPB = CalculatePB(power_budget, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.SHARP_PER_PB, PB.SPECIALIZATION__DODGES_RIPOSTE_COUNTERS});
+        else if(effect_name == "GainSharpOnRiposteCounterOrDodge") {
+            float calculatedPB1 = CalculatePB(power_budget * 0.3f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.SHARP_PER_PB, PB.REQUIREMENT__RIPOSTE});
+            float calculatedPB2 = CalculatePB(power_budget * 0.4f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.SHARP_PER_PB, PB.REQUIREMENT__COUNTER});
+            float calculatedPB3 = CalculatePB(power_budget * 0.3f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.SHARP_PER_PB, PB.REQUIREMENT__DODGE});
             return new List<Effect> { 
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
-                    DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB, 1)}, 
-                    FlatAmount = calculatedPB, 
+                    DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2), Utils.GetFormattedFloat(calculatedPB3)}, 
+                    FirstParameter = calculatedPB1, 
+                    SecondParameter = calculatedPB2, 
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
                         ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount, new(effect_name)));
+                        Player.Instance.AddEffect(new Effect_Sharp(ability.Is(Ability.AbilityProperty.Riposte) ? effect.FirstParameter : effect.SecondParameter, new(effect_name)));
                     })
                 },
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     TriggersOncePerAbility=true, 
-                    FlatAmount = calculatedPB, 
-                    ConditionCheckForDamageWasDodged = new Func<Damage, bool>((damage) => 
+                    FlatAmount = calculatedPB3, 
+                    ConditionCheckForDamageWasDodged = new Func<Damage, Ability, bool>((damage, dodge) => 
                         damage.TargetOfDamage == Player.Instance
                     ), 
-                    ActionOnDamageWasDodged = new Action<Damage, Effect_CustomizableEffectOnEvent> ((damage, effect) =>  {
+                    ActionOnDamageWasDodged = new Action<Damage, Ability, Effect_CustomizableEffectOnEvent> ((damage, dodge, effect) =>  {
                         Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount, new(effect_name)));
                     })
                 }
             };
         }
-        else if(effect_name == "GainSharpOnBasicAttacksAndOnslaughtOnCounter") {
+        else if(effect_name == "SharpDamageReductionWithoutLimit") {
+            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB)});
+            return new List<Effect> {
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Sharp), Player.Instance.DamageReduction, calculatedPB, new(effect_name)) {
+                    DescriptionParameters = new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
+                    IncreaseBasedOnEffectLevel = false
+                },
+            };
+        }
+        else if(effect_name == "GainSharpOnBasicAttacksAndOnslaughtOnRipostesAndCounters") {
             float calculatedPB1 = CalculatePB(power_budget * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.SHARP_PER_PB, PB.REQUIREMENT__BASIC_ATTACK});
             float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.ONSLAUGHT_PER_PB, PB.SPECIALIZATION__RIPOSTES_COUNTERS});
             return new List<Effect> {
@@ -2246,8 +2258,8 @@ public class EffectList
                 },
             };
         }
-        else if(effect_name == "RestoreHealthOnCounter") {
-            float calculatedPB = CalculatePB(power_budget, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.SPECIALIZATION__RIPOSTES_COUNTERS});
+        else if(effect_name == "RestoreHealthOnRiposteOrCounter") {
+            float calculatedPB = CalculatePB(power_budget, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.REQUIREMENT__RIPOSTE_COUNTER_OR_DODGE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
@@ -2275,6 +2287,28 @@ public class EffectList
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                         Player.Instance.AddEffect(new Effect_Invincible(new(effect_name)) {ShowsInUI = true}, ability.Is(Ability.AbilityProperty.Counter) ? effect.FlatAmount : effect.FirstParameter);
+                    })
+                }
+            };
+        }
+        else if(effect_name == "EmpowerNextAttackAfterRiposteOrCounter") {
+            float calculatedPB1 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__RIPOSTE, PB.RESTRICTION__ONE_TIME_ONLY});
+            float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__COUNTER, PB.RESTRICTION__ONE_TIME_ONLY});
+            return new List<Effect> {
+                new Effect_CustomizableEffectOnEvent(new(effect_name)) {
+                    DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}, 
+                    FirstParameter = calculatedPB1, 
+                    SecondParameter = calculatedPB2,
+                    ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
+                        ability.User == Player.Instance && (ability.Is(Ability.AbilityProperty.Counter) || ability.Is(Ability.AbilityProperty.Riposte))
+                    ), 
+                    ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
+                        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(effect_name)) {
+                            DamagePercentageChange = ability.Is(Ability.AbilityProperty.Riposte) ? effect.FirstParameter : effect.SecondParameter,
+                            ShowsInUI = true,
+                            PathToEffectGraphic = "Effect/Empowered",
+                            EffectIndicatorText = ability.Is(Ability.AbilityProperty.Riposte) ? (Utils.GetFormattedFloat(effect.FirstParameter, 0) + "%") : (Utils.GetFormattedFloat(effect.SecondParameter, 0) + "%")
+                        });
                     })
                 }
             };

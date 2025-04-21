@@ -10,7 +10,7 @@ public class Gloves_Duelist : Item
     {
         Set = ItemSetEnum.Duelist;
         Type = Constants.ItemType.Gloves;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainSharpOnBasicAttacksAndOnslaughtOnCounter")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RestoreHealthOnCounter")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainSharpOnBasicAttacksAndOnslaughtOnRipostesAndCounters")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("SharpAmount")};
     }
 }

@@ -13,7 +13,7 @@ public class TwinBlades_GaleforgedRapier : Item
         WeaponClass = Constants.WeaponClass.TwinBlades;
         SetBaseWeaponStats(20, 135, 1.05f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainInvincibleOnRiposteOrCounter")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RiposteDamage", 0.5f), new ItemEffect("CounterDamage", 0.5f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EmpowerNextAttackAfterRiposteOrCounter")};
     }
 }
 

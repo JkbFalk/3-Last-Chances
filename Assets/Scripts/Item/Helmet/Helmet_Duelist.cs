@@ -9,7 +9,7 @@ public class Helmet_Duelist : Item
     {
         Set = ItemSetEnum.Duelist;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainSharpOnCounterOrDodge")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainSharpOnRiposteCounterOrDodge")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("SharpDecay")};
     }
 }

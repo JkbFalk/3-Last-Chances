@@ -92,7 +92,7 @@
   {
     "Label": "Ability_TempestStrikes_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "Increase maximum stacks to 10. 10th strike deals triple [D]Damage.",
+    "ENG": "Increase max stacks to 10. 10th strike deals triple [D]Damage.",
     "PL": "Zwiększ maksymalną ilość ładunków do 10. 10-te uderzenie zadaje 3x [D]Obrażeń."
   },
   {
@@ -2410,7 +2410,7 @@
   {
     "Label": "Stance_PowerWithoutLimit_Upgrade3_Description",
     "Category": "Stance",
-    "ENG": "When you spend [E]Energy, your maximum [E]Energy is increased by 20% of amount spent until end of combat.",
+    "ENG": "When you spend [E]Energy, your max [E]Energy is increased by 20% of amount spent until end of combat.",
     "PL": "Kiedy używasz [E]Energii, twoja maksymalna [E]Energia zwiększa się o 20% zużytej ilości do końca walki."
   },
   {
@@ -5202,6 +5202,18 @@
     "PL": "[Burn]Podpalenie: cel otrzymuje dane [S]Zachwianie co sekundę. Zadaje podwójne [D]Obrażenia gdy wróg jest [Staggered]Zachwiany. Ten efekt się kumuluje."
   },
   {
+    "Label": "Effect_FrozenInPlace",
+    "Category": "Effect",
+    "ENG": "[Freeze]Frozen In Place",
+    "PL": "[Freeze]Zamrożenie"
+  },
+  {
+    "Label": "Effect_FrozenInPlace_Description",
+    "Category": "Effect",
+    "ENG": "[Freeze]Frozen In Place: unable to perform any actions.\n\nOccurrs when enemy with [Freeze]Freeze applied to them becomes [Staggered]Staggered.\n\nDuration is calculated based on [Freeze]Freeze amount vs enemy's max [SB]Stagger Bar",
+    "PL": "[Freeze]Zamrożenie: cel ma zmniejszoną [SPEED]Prędkość Ruchu i [AS]Prędkość Ataku. Po osiągnięciu 100% wróg zostaje zamrożony i następne zadane mu [D]Obrażenia są potrójne i usuwają efekt. Efektywność jest zależna od maksymalnego [SB]Pasku Zachwiania wroga. Ten efekt się kumuluje."
+  },
+  {
     "Label": "Effect_Freeze",
     "Category": "Effect",
     "ENG": "[Freeze]Freeze",
@@ -5210,7 +5222,7 @@
   {
     "Label": "Effect_Freeze_Description",
     "Category": "Effect",
-    "ENG": "[Freeze]Freeze: target takes given [S]Stagger each second (stackable).\n\nWhen [Staggered]Staggered, consumes all stacks and cause the target to be [Freeze]Frozen In Place.\n\n[Freeze]Frozen In Place duration is calculated based on [Freeze]Freeze amount vs enemy's maximum [SB]Stagger Bar",
+    "ENG": "[Freeze]Freeze: receive given [S]Stagger each second (stackable).\n\nWhen [Staggered]Staggered, consumes all stacks and cause the target to be [Freeze]Frozen In Place.\n\n[Freeze]Frozen In Place duration is calculated based on [Freeze]Freeze amount vs enemy's max [SB]Stagger Bar",
     "PL": "[Freeze]Zamrożenie: cel ma zmniejszoną [SPEED]Prędkość Ruchu i [AS]Prędkość Ataku. Po osiągnięciu 100% wróg zostaje zamrożony i następne zadane mu [D]Obrażenia są potrójne i usuwają efekt. Efektywność jest zależna od maksymalnego [SB]Pasku Zachwiania wroga. Ten efekt się kumuluje."
   },
   {
@@ -5291,7 +5303,7 @@
   {
     "Label": "Effect_Flinching_Description",
     "Category": "Effect",
-    "ENG": "[Stun]Flinching: unable to perform any actions.\n\nCaused by taking more than [PURPLE]20%[/PURPLE] of one's maximum [StaggerBar]Stagger Bar in one hit",
+    "ENG": "[Stun]Flinching: unable to perform any actions.\n\nCaused by taking more than [PURPLE]20%[/PURPLE] of one's max [StaggerBar]Stagger Bar in one hit",
     "PL": "[Stun]Oszołomienie: cel nie może nic robić."
   },
   {
@@ -5465,7 +5477,7 @@
   {
     "Label": "Effect_Acceleration_Description",
     "Category": "Effect",
-    "ENG": "[Acceleration]Acceleration: increased [AS]Attack Speed by given amount (stackable)",
+    "ENG": "[Acceleration]Acceleration: increased %[AS]Attack Speed by given amount (stackable)",
     "PL": "[Acceleration]Przyspieszenie: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
   },
   {
@@ -5477,7 +5489,7 @@
   {
     "Label": "Effect_Lethargy_Description",
     "Category": "Effect",
-    "ENG": "[Lethargy]Lethargy: lowered [AS]Attack Speed by given amount (stackable)",
+    "ENG": "[Lethargy]Lethargy: lowered %[AS]Attack Speed by given amount (stackable)",
     "PL": "[Lethargy]Letarg: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
   },
   {
@@ -5501,7 +5513,7 @@
   {
     "Label": "Effect_Stealth_Description",
     "Category": "Effect",
-    "ENG": "[Stealth]Stealth: untargettable to enemies.\n\nUsing [BasicAttack]Basic Attacks, [Technique]Techniques and [Tool]Tools will cause [Stealth]Stealth to end prematurely",
+    "ENG": "[Stealth]Stealth: untargettable to enemies.\n\nUsing [BasicAttack]Basic Attacks, [Technique]Techniques or [Tool]Tools will cause [Stealth]Stealth to end prematurely",
     "PL": "[Stealth]Ukrycie:"
   },
 
@@ -5533,7 +5545,7 @@
   {
     "Label": "Effect_Damage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][D]Damage",
+    "ENG": "+{0}%[D]Damage",
     "PL": ""
   },
   {
@@ -5545,7 +5557,7 @@
   {
     "Label": "Effect_Stagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger",
+    "ENG": "+{0}%[S]Stagger",
     "PL": ""
   },
   {
@@ -5557,7 +5569,7 @@
   {
     "Label": "Effect_Injury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][I]Injury",
+    "ENG": "+{0}%[I]Injury",
     "PL": ""
   },
   {
@@ -5569,7 +5581,7 @@
   {
     "Label": "Effect_HeavyInjury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][HI]Heavy Injury",
+    "ENG": "+{0}%[HI]Heavy Injury",
     "PL": ""
   },
   {
@@ -5581,7 +5593,7 @@
   {
     "Label": "Effect_HeavyStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][HS]Heavy Stagger",
+    "ENG": "+{0}%[HS]Heavy Stagger",
     "PL": ""
   },
   {
@@ -5593,7 +5605,7 @@
   {
     "Label": "Effect_HeavyDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][HD]Heavy Damage",
+    "ENG": "+{0}%[HD]Heavy Damage",
     "PL": ""
   },
   {
@@ -5617,7 +5629,7 @@
   {
     "Label": "Effect_LightInjury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][LI]Light Injury",
+    "ENG": "+{0}%[LI]Light Injury",
     "PL": ""
   },
   {
@@ -5629,7 +5641,7 @@
   {
     "Label": "Effect_LightStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][LS]Light Stagger",
+    "ENG": "+{0}%[LS]Light Stagger",
     "PL": ""
   },
   {
@@ -5641,7 +5653,7 @@
   {
     "Label": "Effect_LightDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][LD]Light Damage",
+    "ENG": "+{0}%[LD]Light Damage",
     "PL": ""
   },
   {
@@ -5665,7 +5677,7 @@
   {
     "Label": "Effect_RangedInjury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][RI]Ranged Injury.",
+    "ENG": "+{0}%[RI]Ranged Injury.",
     "PL": ""
   },
   {
@@ -5677,7 +5689,7 @@
   {
     "Label": "Effect_RangedStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][RS]Ranged Stagger.",
+    "ENG": "+{0}%[RS]Ranged Stagger.",
     "PL": ""
   },
   {
@@ -5689,7 +5701,7 @@
   {
     "Label": "Effect_RangedDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][RD]Ranged Damage.",
+    "ENG": "+{0}%[RD]Ranged Damage.",
     "PL": ""
   },
   {
@@ -5713,7 +5725,7 @@
   {
     "Label": "Effect_MagicInjury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][MI]Magic Injury",
+    "ENG": "+{0}%[MI]Magic Injury",
     "PL": ""
   },
   {
@@ -5725,7 +5737,7 @@
   {
     "Label": "Effect_MagicStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][MS]Magic Stagger",
+    "ENG": "+{0}%[MS]Magic Stagger",
     "PL": ""
   },
   {
@@ -5737,7 +5749,7 @@
   {
     "Label": "Effect_MagicDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][MD]Magic Damage",
+    "ENG": "+{0}%[MD]Magic Damage",
     "PL": ""
   },
   {
@@ -5761,7 +5773,7 @@
   {
     "Label": "Effect_Health_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][H]Health",
+    "ENG": "+{0}%[H]Health",
     "PL": ""
   },
   {
@@ -5773,7 +5785,7 @@
   {
     "Label": "Effect_StaggerBar_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][SB]Stagger Bar",
+    "ENG": "+{0}%[SB]Stagger Bar",
     "PL": ""
   },
   {
@@ -5929,49 +5941,6 @@
 
 
 
-  {
-    "Label": "Effect_GainPercentageOfStatAsAnotherStat_Description",
-    "Category": "Effect",
-    "ENG": "Gain {4}{0}</color>% of maximum {1} as maximum {2} (up to +{5}{3}</color>{2}).",
-    "PL": "Otrzymaj {4}{0}</color>% maksymalnego {1} jako maksymalne {2} (do max +{5}{3}</color>{2})."
-  },
-  {
-    "Label": "Effect_TemporarilyIncreaseStatBelowHealthThreshold_Description",
-    "Category": "Effect",
-    "ENG": "Upon falling below {0}%[H]Health, gain {1}%{2} for {3} seconds ({4}[CD]).",
-    "PL": "Po spadku poniżej {0}%[H]Życia otrzymaj {1}%{2} na {3} sekund ({4}[CD])."
-  },
-  {
-    "Label": "Effect_AbilitiesForWeaponCategoryDealMoreDamageHealth_Description",
-    "Category": "Effect",
-    "ENG": "Techniques ({0}) deal [RED]{1}%[/RED] increased {3}Injury.",
-    "PL": "Techniki ({0}) zadają [RED]{1}%[/RED] więcej {3}Zranienia."
-  },
-  {
-    "Label": "Effect_AbilitiesForWeaponCategoryDealMoreDamageStagger_Description",
-    "Category": "Effect",
-    "ENG": "Techniques ({0}) deal [PURPLE]{2}%[/PURPLE] increased {4}Stagger.",
-    "PL": "Techniki ({0}) zadają [PURPLE]{2}%[/PURPLE] więcej {4}Zachwiania."
-  },
-  {
-    "Label": "Effect_AbilitiesForWeaponCategoryDealMoreDamage_Description",
-    "Category": "Effect",
-    "ENG": "Techniques ({0}) deal [RED]{1}%[/RED] increased {3}Injury and [PURPLE]{2}%[/PURPLE] increased {4}Stagger.",
-    "PL": "Techniki ({0}) zadają [RED]{1}%[/RED] więcej {3}Zranienia i [PURPLE]{2}%[/PURPLE] więcej {4}Zachwiania."
-  },
-  {
-    "Label": "Effect_AbilitiesForWeaponCategoryDealMoreDamage_DescriptionDetailed",
-    "Category": "Effect",
-    "ENG": "Techniques performed using {0} deal [RED]{1}%[/RED] increased {3}Injury and [PURPLE]{2}%[/PURPLE] increased {4}Stagger.",
-    "PL": "Techniki wykonane przy użyciu '{0}' zadają [RED]{1}%[/RED] więcej {3}Zranienia i [PURPLE]{2}%[/PURPLE] więcej {4}Zachwiania.."
-  },
-  {
-    "Label": "Effect_GainPortionOfStackingEffectAsStat_Description",
-    "Category": "Effect",
-    "ENG": "You gain {0}%{1} for each 10{2} currently applied to you (up to {3}%{1}).",
-    "PL": ""
-  },
-
 
 
 
@@ -6007,7 +5976,7 @@
   {
     "Label": "Effect_WeaponInjury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][WI]Weapon Injury",
+    "ENG": "+{0}%[WI]Weapon Injury",
     "PL": ""
   },
   {
@@ -6019,7 +5988,7 @@
   {
     "Label": "Effect_WeaponStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][WS]Weapon Stagger",
+    "ENG": "+{0}%[WS]Weapon Stagger",
     "PL": ""
   },
   {
@@ -6049,7 +6018,7 @@
   {
     "Label": "Effect_BasicAttackDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][WD]Basic Attack Damage",
+    "ENG": "+{0}%[WD]Basic Attack Damage",
     "PL": ""
   },
   {
@@ -6061,7 +6030,7 @@
   {
     "Label": "Effect_WeaponTechniqueDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][Weapons]Weapon [TD]Technique Damage",
+    "ENG": "+{0}%[WD]Weapon [TD]Technique Damage",
     "PL": ""
   },
   {
@@ -6073,7 +6042,7 @@
   {
     "Label": "Effect_WeaponDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][WD]Weapon Damage",
+    "ENG": "+{0}%[WD]Weapon Damage",
     "PL": ""
   },
   {
@@ -6109,7 +6078,7 @@
   {
     "Label": "Effect_SharpDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "Up to +{0}%[DR]Damage Reduction based on current [Sharp]Sharp",
+    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Sharp]Sharp level 1/2/3",
     "PL": ""
   },
   {
@@ -6217,7 +6186,7 @@
   {
     "Label": "Effect_RestoreStaggerBarOnSuccesfulRiposteOrCounterWhileStaggered_Description",
     "Category": "Effect",
-    "ENG": "While you're [Staggered]Staggered, [Riposte]Ripostes restore [PURPLE]{0}%[/PURPLE] of your maximum [SB]Stagger Bar and [Counter]Counters restore [PURPLE]{1}%[/PURPLE][SB]",
+    "ENG": "While you're [Staggered]Staggered, [Riposte]Ripostes restore [PURPLE]{0}%[/PURPLE] of your max [SB]Stagger Bar and [Counter]Counters restore {1}%[SB]",
     "PL": ""
   },
   {
@@ -6229,7 +6198,7 @@
   {
     "Label": "Effect_HealFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [BasicAttack]Basic Attack Damage",
+    "ENG": "Heal for [RED]{0}%[/RED] of [BasicAttack]Basic Attack [D]Damage",
     "PL": ""
   },
   {
@@ -6241,7 +6210,7 @@
   {
     "Label": "Effect_HealFromRipostesAndCounters_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [Riposte]Riposte and [Counter]Counter Damage",
+    "ENG": "Heal for [RED]{0}%[/RED] of [Riposte]Riposte and [Counter]Counter [D]Damage",
     "PL": ""
   },
 
@@ -6287,7 +6256,7 @@
   {
     "Label": "Effect_DamageToStaggered_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][D]Damage vs [Staggered]Staggered",
+    "ENG": "+{0}%[D]Damage vs [Staggered]Staggered",
     "PL": ""
   },
   {
@@ -6299,7 +6268,7 @@
   {
     "Label": "Effect_BasicAttackStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger with [BasicAttack]Basic Attacks",
+    "ENG": "+{0}%[BasicAttack]Basic Attack [S]Stagger",
     "PL": ""
   },
   {
@@ -6311,7 +6280,7 @@
   {
     "Label": "Effect_TechniqueStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger with [Technique]Techniques",
+    "ENG": "+{0}%[TS]Technique Stagger",
     "PL": ""
   },
   {
@@ -6347,7 +6316,19 @@
   {
     "Label": "Effect_BurnDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "Up to +{0}%[DR]Damage Reduction based on enemy [Burn]Burn",
+    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at enemy [Burn]Burn level 1/2/3",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_BurnDamageReductionWithoutLimit",
+    "Category": "Effect",
+    "ENG": "Debilitating Embers",
+    "PL": "Redukcja Obrażeń od Podpalonych"
+  },
+  {
+    "Label": "Effect_BurnDamageReductionWithoutLimit_Description",
+    "Category": "Effect",
+    "ENG": "+[DR]Damage Reduction ({0}% of enemy current [Burn]Burn)",
     "PL": ""
   },
   {
@@ -6359,7 +6340,7 @@
   {
     "Label": "Effect_HeavyStrongBasicAttackStagger_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][S]Stagger with [Heavy]Heavy Weapon [BasicAttack]Strong Basic Attacks",
+    "ENG": "+{0}%[S]Stagger with [Heavy]Heavy Weapon [BasicAttack]Strong Basic Attacks",
     "PL": ""
   },
   {
@@ -6371,7 +6352,7 @@
   {
     "Label": "Effect_ExtraMagicStaggerToEmptyStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "+[PURPLE]{0}%[/PURPLE][MS]Magic Stagger vs enemies with empty [SB]Stagger Bar",
+    "ENG": "+{0}%[MS]Magic Stagger vs enemies with empty [SB]Stagger Bar",
     "PL": ""
   },
   {
@@ -6407,7 +6388,7 @@
   {
     "Label": "Effect_BurnEmpowersStagger_Description",
     "Category": "Effect",
-    "ENG": "Extra [PURPLE]{0}%[Burn]Burn[/PURPLE][S]Stagger dealt when damaging [Burn]Burning enemies",
+    "ENG": "[D]Damaging inflicts extra [S]Stagger ([PURPLE]{0}%[/PURPLE] of [Burn]Burn)",
     "PL": ""
   },
   {
@@ -6624,7 +6605,7 @@
   {
     "Label": "Effect_DamageToCrowdControlled_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][D]Damage vs [Stun]Crowd-Controlled",
+    "ENG": "+{0}%[D]Damage vs [CrowdControl]Crowd-Controlled",
     "PL": ""
   },
   {
@@ -6636,7 +6617,7 @@
   {
     "Label": "Effect_FinalAmmoDealsMoreDamage_Description",
     "Category": "Effect",
-    "ENG": "Deal [GREEN]{0}%[/GREEN] more [D]Damage with projectiles shot with your last [Ammo]Ammo.",
+    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [RD]Ranged Damage while at 1[Ammo]Ammo",
     "PL": ""
   },
   {
@@ -6648,7 +6629,7 @@
   {
     "Label": "Effect_DamageToFrozen_Description",
     "Category": "Effect",
-    "ENG": "Deal [GREEN]{0}%[/GREEN] more [D]Damage to [Freeze]Frozen enemies ([Staggered]Staggered while under effect of [Freeze]Freeze).",
+    "ENG": "+{0}%[D]Damage vs [Freeze]Frozen In Place",
     "PL": ""
   },
   {
@@ -6660,7 +6641,7 @@
   {
     "Label": "Effect_DealMoreStaggerBasedOnEnemyDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "Deal {0}% more [S]Stagger for each 1[DR]Damage Reduction on the enemy.",
+    "ENG": "+{0}%[S]Stagger per 1[DR]Damage Reduction on enemy",
     "PL": ""
   },
   {
@@ -6672,7 +6653,7 @@
   {
     "Label": "Effect_HealFromApplyingCrowdControl_Description",
     "Category": "Effect",
-    "ENG": "Heal [RED]{0}%[/RED] of your maximum [H]Health for each second of [Stun]Hard Crowd-control you apply.",
+    "ENG": "Heal [RED]{0}%[/RED] max [H]Health for each second of [CrowdControl]Crowd-Control you apply",
     "PL": ""
   },
   {
@@ -6684,7 +6665,7 @@
   {
     "Label": "Effect_HealFromDamageToStaggered_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [D]Damage you deal to [Staggered]Staggered enemies.",
+    "ENG": "Heal for [RED]{0}%[/RED] of [D]Damage to [Staggered]Staggered",
     "PL": ""
   },
 
@@ -6716,7 +6697,7 @@
   {
     "Label": "Effect_FlatHealth_Description",
     "Category": "Effect",
-    "ENG": "Increase your base [H]Health by [RED]{0}[/RED] (affecting all % increases).",
+    "ENG": "+{0}[H]Base Health (affects all % increases)",
     "PL": ""
   },
   {
@@ -6728,7 +6709,7 @@
   {
     "Label": "Effect_FlatStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "Increase your base [SB]Stagger Bar by [PURPLE]{0}[/PURPLE] (affecting all % increases).",
+    "ENG": "+{0}[SB]Base Stagger Bar (affects all % increases)",
     "PL": ""
   },
   {
@@ -6740,7 +6721,7 @@
   {
     "Label": "Effect_BarrierDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "You have up to {0}% extra [DR]Damage Reduction depending on amount of [Barrier]Barrier applied to you.",
+    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Barrier]Barrier level 1/2/3",
     "PL": ""
   },
   {
@@ -6758,7 +6739,7 @@
   {
     "Label": "Effect_ConvertStaggerBarToHealth_Description",
     "Category": "Effect",
-    "ENG": "Increase your total [H]Health by [RED]{0}%[/RED] ([PURPLE]{1}%[/PURPLE] of your total [SB]Stagger Bar).",
+    "ENG": "+{0}%[H]Health ([PURPLE]{1}%[/PURPLE] of your [SB]Stagger Bar)",
     "PL": ""
   },
   {
@@ -6770,7 +6751,7 @@
   {
     "Label": "Effect_ConvertHealthToStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "Increase your total [SB]Stagger Bar by [PURPLE]{0}%[/PURPLE] ([RED]{1}%[/RED] of your total [H]Health).",
+    "ENG": "+{0}%[SB]Stagger Bar ([RED]{1}%[/RED] of your [H]Health)",
     "PL": ""
   },
   {
@@ -6782,7 +6763,7 @@
   {
     "Label": "Effect_ConvertDamageReductionToTenacity_Description",
     "Category": "Effect",
-    "ENG": "Increase your [T]Tenacity by {0}% ({1}% of your bonus [DR]Damage Reduction).",
+    "ENG": "+{0}%[T]Tenacity ({1}% of your [DR]Damage Reduction)",
     "PL": ""
   },
   {
@@ -6794,7 +6775,7 @@
   {
     "Label": "Effect_ConvertTenacityToDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "Increase your [DR]Damage Reduction by {0}% ({1}% of your bonus [T]Tenacity).",
+    "ENG": "+{0}%[DR]Damage Reduction ({1}% of your [T]Tenacity)",
     "PL": ""
   },
   {
@@ -6842,7 +6823,7 @@
   {
     "Label": "Effect_MoreTenacityWhileBarrier_Description",
     "Category": "Effect",
-    "ENG": "You have +{0}%[T]Tenacity while under effect of [Barrier]Barrier.",
+    "ENG": "+{0}%[T]Tenacity while [Barrier]Barriered",
     "PL": ""
   },
   {
@@ -6854,7 +6835,7 @@
   {
     "Label": "Effect_MoreDamageReductionWhileCCed_Description",
     "Category": "Effect",
-    "ENG": "You have +{0}%[DR]Damage Reduction while under effect of any [Stun]Hard Crowd-control.",
+    "ENG": "+{0}%[DR]Damage while [CrowdControl]Crowd-Controlled",
     "PL": ""
   },
   {
@@ -6866,7 +6847,7 @@
   {
     "Label": "Effect_ConvertHealthToInjury_Description",
     "Category": "Effect",
-    "ENG": "Increase your [I]Injury by [RED]{0}%[/RED] ([RED]{1}%[/RED] of your total [H]Health).",
+    "ENG": "+{0}%[I]Injury ([RED]{1}%[/RED] of your [H]Health)",
     "PL": ""
   },
   {
@@ -6878,7 +6859,13 @@
   {
     "Label": "Effect_EnergyGainFromHealthLost_Description",
     "Category": "Effect",
-    "ENG": "Losing [H]Health generates [BLUE]{0}%[/BLUE] more [E]Energy (+{1}[E] for each [RED]10%[/RED] of maximum [H]Health lost).",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [H]Health lost",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EnergyGainFromHealthLost_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [H]Health lost (+{1}[E] for each [RED]10%[/RED] of max [H]Health lost)",
     "PL": ""
   },
   {
@@ -6890,7 +6877,7 @@
   {
     "Label": "Effect_HealthRegenWhileBarrier_Description",
     "Category": "Effect",
-    "ENG": "You heal [RED]{0}[/RED][H]Health each second while under effect of [Barrier]Barrier.",
+    "ENG": "+{0}[H]Health regen while [Barrier]Barriered",
     "PL": ""
   },
   {
@@ -6902,7 +6889,7 @@
   {
     "Label": "Effect_DamageReductionWhileLowHealth_Description",
     "Category": "Effect",
-    "ENG": "You have +{0}%[DR]Damage Reduction while below [RED]50%[/RED] maximum [H]Health.",
+    "ENG": "+{0}%[DR]Damage Reduction while below [RED]50%[/RED] max [H]Health",
     "PL": ""
   },
   {
@@ -6914,7 +6901,7 @@
   {
     "Label": "Effect_ConvertStaggerBarToStagger_Description",
     "Category": "Effect",
-    "ENG": "Increase your [S]Stagger by [PURPLE]{0}%[/PURPLE] ([PURPLE]{1}%[/PURPLE] of your total [SB]Stagger Bar).",
+    "ENG": "+{0}%[S]Stagger ([PURPLE]{1}%[/PURPLE] of your [SB]Stagger Bar)",
     "PL": ""
   },
   {
@@ -6926,7 +6913,13 @@
   {
     "Label": "Effect_EnergyGainFromBlocking_Description",
     "Category": "Effect",
-    "ENG": "Losing [SB]Stagger Bar due to Blocking generates [BLUE]{0}%[/BLUE] more [E]Energy (+{1}[E] for each [PURPLE]10%[/PURPLE] of maximum [SB]Stagger Bar lost).",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from Blocking",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EnergyGainFromBlocking_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from Blocking (+{1}[E] for each [PURPLE]10%[/PURPLE] of max [SB]Stagger Bar lost)",
     "PL": ""
   },
   {
@@ -6938,7 +6931,7 @@
   {
     "Label": "Effect_StaggerBarRegenWhileBarrier_Description",
     "Category": "Effect",
-    "ENG": "You restore extra [PURPLE]{0}[/PURPLE][SB]Stagger Bar each second while under effect of [Barrier]Barrier.",
+    "ENG": "+{0}[SB]Stagger Bar regen while [Barrier]Barriered",
     "PL": ""
   },
   {
@@ -6950,7 +6943,7 @@
   {
     "Label": "Effect_DamageReductionWhileHighStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "You have +{0}%[DR]Damage Reduction while above [PURPLE]50%[/PURPLE] maximum [SB]Stagger Bar.",
+    "ENG": "+{0}%[DR]Damage Reduction while above [PURPLE]50%[/PURPLE] max [SB]Stagger Bar",
     "PL": ""
   },
   {
@@ -6962,7 +6955,7 @@
   {
     "Label": "Effect_HealMissingHealth_Description",
     "Category": "Effect",
-    "ENG": "Heal [RED]{0}%[/RED] of your missing [H]Health each second.",
+    "ENG": "Heal [RED]{0}%[/RED] of your missing [H]Health each second",
     "PL": ""
   },
   {
@@ -6974,9 +6967,16 @@
   {
     "Label": "Effect_HealFromStaggerTaken_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger you take while not [Staggered]Staggered ([DR]Damage Reduction does not decrease this healing).",
+    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger you take while NOT-[Staggered]Staggered",
     "PL": ""
   },
+  {
+    "Label": "Effect_HealFromStaggerTaken_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger you take while NOT-[Staggered]Staggered ([DR]Damage Reduction does not decrease this healing)",
+    "PL": ""
+  },
+
 
 
 
@@ -7027,7 +7027,7 @@
   {
     "Label": "Effect_SalutisTechniqueCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "Your [Salutis]Salutis [Technique]Techniques have +{0}%[CDR]Cooldown Reduction.",
+    "ENG": "+{0}%[CDR]Cooldown Reduction for [Salutis]Salutis [Technique]Techniques",
     "PL": ""
   },
   {
@@ -7039,7 +7039,7 @@
   {
     "Label": "Effect_TechniqueCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "Your [Technique]Techniques have +{0}%[CDR]Cooldown Reduction.",
+    "ENG": "+{0}%[CDR]Cooldown Reduction for [Technique]Techniques",
     "PL": ""
   },
   {
@@ -7051,7 +7051,7 @@
   {
     "Label": "Effect_ToolCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "Your [Tool]Tools have +{0}%[CDR]Cooldown Reduction.",
+    "ENG": "+{0}%[CDR]Cooldown Reduction for [Tool]Tools",
     "PL": ""
   },
   {
@@ -7063,7 +7063,13 @@
   {
     "Label": "Effect_EffectCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "Your [Effect]Effects (special properties of some Equipment or Stances) have +{0}%[CDR]Cooldown Reduction.",
+    "ENG": "+{0}%[CDR]Cooldown Reduction for [Effect]Effects",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EffectCooldownReduction_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+{0}%[CDR]Cooldown Reduction for [Effect]Effects (special properties of some Equipment or Stances)",
     "PL": ""
   },
   {
@@ -7075,7 +7081,7 @@
   {
     "Label": "Effect_InjuryToIncised_Description",
     "Category": "Effect",
-    "ENG": "You deal +{0}%[I]Injury to enemies under effect of [Incision]Incision.",
+    "ENG": "+{0}%[I]Injury vs [Incision]Incised",
     "PL": ""
   },
   {
@@ -7111,7 +7117,7 @@
   {
     "Label": "Effect_BackstabInjury_Description",
     "Category": "Effect",
-    "ENG": "You deal [RED]{0}%[/RED] more [I]Injury with [Backstab]Backstabs.",
+    "ENG": "+[RED]{0}%[/RED][Backstab]Backstab [I]Injury",
     "PL": ""
   },
   {
@@ -7123,7 +7129,7 @@
   {
     "Label": "Effect_TechniqueInjury_Description",
     "Category": "Effect",
-    "ENG": "You deal [RED]{0}%[/RED] more [I]Injury with [Technique]Techniques.",
+    "ENG": "+{0}%[TI]Technique Injury",
     "PL": ""
   },
   {
@@ -7135,7 +7141,7 @@
   {
     "Label": "Effect_BackstabsReduceCooldowns_Description",
     "Category": "Effect",
-    "ENG": "When you perform a [Backstab]Backstab, reduce all your remaining [CD]Cooldows by [GREY]{0}[/GREY]%.",
+    "ENG": "[Backstab]Backstabs reduce remaining [CD]Cooldows by [GREY]{0}[/GREY]%",
     "PL": ""
   },
   {
@@ -7147,7 +7153,7 @@
   {
     "Label": "Effect_BackstabsGiveEnergy_Description",
     "Category": "Effect",
-    "ENG": "When you perform a [Backstab]Backstab, gain {0}[E]Energy (affected by [EG]Energy Gain).",
+    "ENG": "[Backstab]Backstabs give {0}[E]Energy (affected by [EG]Energy Gain)",
     "PL": ""
   },
   {
@@ -7159,7 +7165,13 @@
   {
     "Label": "Effect_BackstabsDealMoreDamageBasedOnIncision_Description",
     "Category": "Effect",
-    "ENG": "Backstabbing an enemy inflicts extra [I]Injury equal to {0}% of their current [Incision]Incision amount.",
+    "ENG": "[Backstab]Backstab inflict extra [I]Injury ({0}% of [Incision]Incision)",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_BackstabsDealMoreDamageBasedOnIncision_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "When [Backstab]Backstabbing enemies who are [Incision]Incised, inflict extra [I]Injury equal to [RED]{0}%[/RED] of [Incision]Incision applied to that enemy",
     "PL": ""
   },
   {
@@ -7171,7 +7183,7 @@
   {
     "Label": "Effect_BasicAttackInjury_Description",
     "Category": "Effect",
-    "ENG": "You deal [RED]{0}%[/RED] more [I]Injury with [BasicAttack]Basic Attacks.",
+    "ENG": "+[RED]{0}%[/RED][BasicAttack]Basic Attack [I]Injury",
     "PL": ""
   },
   {
@@ -7183,7 +7195,13 @@
   {
     "Label": "Effect_InjuryDamageReductionPenetration_Description",
     "Category": "Effect",
-    "ENG": "Your [I]Injury ignores {0}% of enemy's total [DR]Damage Reduction.",
+    "ENG": "+{0}%[I]Injury [DR]Damage Reduction Penetration",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_InjuryDamageReductionPenetration_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "When dealing [I]Injury, it ignores {0}% of enemy's [DR]Damage Reduction",
     "PL": ""
   },
   {
@@ -7195,7 +7213,13 @@
   {
     "Label": "Effect_BackstabsScaleWithOnslaughtSharpAndAnalysis_Description",
     "Category": "Effect",
-    "ENG": "When you perform a [Backstab]Backstab, your current [Onslaught]Onslaught, [Sharp]Sharp and [Analysis]Analysis increase the [D]Damage by {0}%, {1}%, and {2}% of their value respectively.",
+    "ENG": "+[GREEN]{0}%[/GREEN][Backstab]Backstab [D]Damage based on [Onslaught]Onslaught\n\n+[GREEN]{1}%[/GREEN][Backstab]Backstab [D]Damage based on [Sharp]Sharp\n\n+[GREEN]{2}%[/GREEN][Backstab]Backstab [D]Damage based on [Analysis]Analysis",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_BackstabsScaleWithOnslaughtSharpAndAnalysis_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "When you perform a [Backstab]Backstab, your current [Onslaught]Onslaught, [Sharp]Sharp and [Analysis]Analysis increase the [D]Damage at {0}%, {1}%, and {2}% effectivness respectively",
     "PL": ""
   },
   {
@@ -7207,7 +7231,7 @@
   {
     "Label": "Effect_BackstabsApplyIncision_Description",
     "Category": "Effect",
-    "ENG": "When you perform a [Backstab]Backstab, apply extra [Incision]Incision equal to [GREEN]{0}%[/GREEN] of [D]Damage dealt.",
+    "ENG": "[Backstab]Backstabbing applies [Incision]Incision ([GREEN]{0}%[/GREEN] of [D]Damage dealt)",
     "PL": ""
   },
   {
@@ -7219,7 +7243,7 @@
   {
     "Label": "Effect_HealFromBackstabs_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [D]Damage you deal with [Backstab]Backstabs.",
+    "ENG": "Heal for [RED]{0}%[/RED] of [Backstab]Backstab [D]Damage",
     "PL": ""
   },
   {
@@ -7231,7 +7255,7 @@
   {
     "Label": "Effect_HealFromTakedowns_Description",
     "Category": "Effect",
-    "ENG": "Whenever a Takedown occurs (an enemy is defeated or their [H]Health Bar is broken), heal for [RED]{0}%[/RED] of your maximum [H]Health.",
+    "ENG": "Heal for [RED]{0}%[/RED] of your max [H]Health upon defeating an enemy",
     "PL": ""
   },
   
@@ -7300,7 +7324,7 @@
   {
     "Label": "Effect_SuperchargeMovementSpeed_Description",
     "Category": "Effect",
-    "ENG": "You have extra [SPEED]Movement Speed equal to {0}% of your [Supercharge]Supercharge.",
+    "ENG": "+[SPEED]Movement Speed ({0}% of [Supercharge]Supercharge)",
     "PL": ""
   },
   {
@@ -7312,7 +7336,7 @@
   {
     "Label": "Effect_SuperchargeDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "You have up to {0}% extra [DR]Damage Reduction depending on amount of [Supercharge]Supercharge applied to you.",
+    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Supercharge]Supercharge level 1/2/3",
     "PL": ""
   },
   {
@@ -7324,7 +7348,7 @@
   {
     "Label": "Effect_DealExtraInjuryBasedOnMovementSpeed_Description",
     "Category": "Effect",
-    "ENG": "All [I]Injury you deal is increased by {0}% of your current [MS]Movement Speed.",
+    "ENG": "+[I]Injury ({0}% of bonus [MS]Movement Speed)",
     "PL": ""
   },
   {
@@ -7336,7 +7360,7 @@
   {
     "Label": "Effect_SuperchargeInjuryDealt_Description",
     "Category": "Effect",
-    "ENG": "Your [Supercharge]Supercharge extra [I]Injury dealt is increased by [RED]{0}%[/RED].",
+    "ENG": "+[RED]{0}%[/RED][Supercharge]Supercharge [I]Injury",
     "PL": ""
   },
   {
@@ -7348,7 +7372,7 @@
   {
     "Label": "Effect_SpendingSuperchargeGeneratesBarrier_Description",
     "Category": "Effect",
-    "ENG": "When you spend [Supercharge]Supercharge stacks to inflict [I]Injury, {0}% of amount spent is converted into [Barrier]Barrier.",
+    "ENG": "+[Barrier]Barrier ({0}% of [Supercharge]Supercharge stacks spent)",
     "PL": ""
   },
   {
@@ -7366,7 +7390,7 @@
   {
     "Label": "Effect_SuperchargeInjuryFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "Your [BasicAttack]Basic Attack [Supercharge]Supercharge extra [I]Injury dealt is increased by [RED]{0}%[/RED].",
+    "ENG": "+[RED]{0}%[/RED][BasicAttack]Basic Attack [Supercharge]Supercharge [I]Injury",
     "PL": ""
   },
   {
@@ -7378,7 +7402,7 @@
   {
     "Label": "Effect_ExtraDamageReductionBasedOnMovementSpeed_Description",
     "Category": "Effect",
-    "ENG": "You have extra [DR]Damage Reduction equal to {0}% of your bonus [SPEED]Movement Speed.",
+    "ENG": "+[DR]Damage Reduction ({0}% of bonus [SPEED]Movement Speed)",
     "PL": ""
   },
   {
@@ -7390,7 +7414,7 @@
   {
     "Label": "Effect_HealFromDistanceTravelled_Description",
     "Category": "Effect",
-    "ENG": "Heal [RED]{0}%[/RED] of your maximum [H]Health for each 1m you travel.",
+    "ENG": "Heal for [RED]{0}%[/RED] of max [H]Health for each 1m travelled",
     "PL": ""
   },
   {
@@ -7402,7 +7426,7 @@
   {
     "Label": "Effect_HealMoreFromHealthPotions_Description",
     "Category": "Effect",
-    "ENG": "When you use a [H]Health Potion, additionally restore [RED]{0}%[/RED] of your maximum [H]Health over next 2 seconds.",
+    "ENG": "+[RED]{0}%[/RED] max [H]Health restored over 2 sec upon using [H]Health Potion",
     "PL": ""
   },
 
@@ -7428,8 +7452,14 @@
   {
     "Label": "Effect_EnergyGainFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "Basic Attacks generate {0}% more [E]Energy (+{1}[E] for each attack, doubled for bosses).",
-    "PL": "Podstawowe Ataki generują {0}% więcej [E]Energii (+{1}[E] za każdy atak, podwójnie za bossy)."
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [BasicAttack]Basic Attacks",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EnergyGainFromBasicAttacks_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [BasicAttack]Basic Attacks (+{1}[E] for each attack)",
+    "PL": ""
   },
   {
     "Label": "Effect_EnergyGainFromRipostesAndCounters",
@@ -7440,8 +7470,14 @@
   {
     "Label": "Effect_EnergyGainFromRipostesAndCounters_Description",
     "Category": "Effect",
-    "ENG": "Ripostes and Counters generate {0}% more [E]Energy (+{1}[E]/+{2}[E] respectively, doubled for bosses).",
-    "PL": "Riposty i Kontry generują {0}% więcej [E]Energii (odpowiednio +{1}[E]/+{2}[E], podwójnie za bossy)."
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [Riposte]Ripostes and [Counter]Counters",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EnergyGainFromRipostesAndCounters_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [Riposte]Ripostes and [Counter]Counters (+{1}[E]/+{2}[E] respectively)",
+    "PL": ""
   },
   {
     "Label": "Effect_EnergyGainFromDodges",
@@ -7452,8 +7488,14 @@
   {
     "Label": "Effect_EnergyGainFromDodges_Description",
     "Category": "Effect",
-    "ENG": "Dodging attacks generates {0}% more [E]Energy (+{1}[E] per dodge, doubled for bosses).",
-    "PL": "Unikanie ataków generuje {0}% więcej [E]Energii (+{1}[E] za unik, podwójnie za bossy)."
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [Dodge]Dodging",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EnergyGainFromDodges_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [Dodge]Dodging (+{1}[E] per dodge)",
+    "PL": ""
   },
   {
     "Label": "Effect_EnergyGainFromStaggering",
@@ -7464,8 +7506,14 @@
   {
     "Label": "Effect_EnergyGainFromStaggering_Description",
     "Category": "Effect",
-    "ENG": "Inflicting [Staggered]Staggered generates {0}% more [E]Energy (+{1}[E] for each [Staggered]Staggered, doubled for bosses).",
-    "PL": "Nałożenie [Staggered]Przełamania generuje {0}% więcej [E]Energii (+{1}[E] za każde [Staggered]Przełamanie, podwójnie za bossy)."
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [Staggered]Staggering",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EnergyGainFromStaggering_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [Staggered]Staggering  (+{1}[E] for each [Staggered]Staggered)",
+    "PL": ""
   },
   {
     "Label": "Effect_TechniqueDamage",
@@ -7476,7 +7524,7 @@
   {
     "Label": "Effect_TechniqueDamage_Description",
     "Category": "Effect",
-    "ENG": "You deal [GREEN]{0}%[/GREEN] more [D]Damage with [Technique]Techniques.",
+    "ENG": "+{0}%[TD]Technique Damage",
     "PL": ""
   },
   {
@@ -7512,7 +7560,7 @@
   {
     "Label": "Effect_AnalysisBoostsAllDamage_Description",
     "Category": "Effect",
-    "ENG": "Your [Analysis]Analysis also increases non-Technique [D]Damage at {0}% effectivness.",
+    "ENG": "+%[D]Damage of NOT-[Technique]Techniques ({0}% of [Analysis]Analysis)",
     "PL": ""
   },
   {
@@ -7524,7 +7572,7 @@
   {
     "Label": "Effect_UltimateTechniqueDamage_Description",
     "Category": "Effect",
-    "ENG": "You deal [GREEN]{0}%[/GREEN] more [D]Damage with [Technique]Ultimate Techniques.",
+    "ENG": "+{0}%[TD]Ultimate Technique Damage",
     "PL": ""
   },
   {
@@ -7536,7 +7584,7 @@
   {
     "Label": "Effect_PropriusTechniqueCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "Your [Proprius]Proprius [Technique]Techniques have +{0}%[CDR]Cooldown Reduction.",
+    "ENG": "+{0}%[CDR]Cooldown Reduction for [Proprius]Proprius [Technique]Techniques",
     "PL": ""
   },
   {
@@ -7548,7 +7596,7 @@
   {
     "Label": "Effect_AnalysisEnergyGain_Description",
     "Category": "Effect",
-    "ENG": "You have extra [EG]Energy Gain equal to {0}% of your [Analysis]Analysis.",
+    "ENG": "+[EG]Energy Gain ({0}% of [Analysis]Analysis)",
     "PL": ""
   },
   {
@@ -7560,7 +7608,7 @@
   {
     "Label": "Effect_AnalysisDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "You have up to {0}% extra [DR]Damage Reduction depending on amount of [Analysis]Analysis applied to you.",
+    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Analysis]Analysis level 1/2/3",
     "PL": ""
   },
   {
@@ -7572,7 +7620,7 @@
   {
     "Label": "Effect_PropriusUltimateTechniqueDamage_Description",
     "Category": "Effect",
-    "ENG": "You deal [GREEN]{0}%[/GREEN] more [D]Damage with [Technique]Ultimate Techniques from the [Proprius]Proprius Skill Tree.",
+    "ENG": "+[GREEN]{0}%[/GREEN][Proprius]Proprius [TD]Ultimate Technique Damage",
     "PL": ""
   },
   {
@@ -7584,7 +7632,7 @@
   {
     "Label": "Effect_TechniqueDamageGivesAnalysis_Description",
     "Category": "Effect",
-    "ENG": "Dealing [D]Damage with a [Technique]Technique gives you {0}[Analysis]Analysis.",
+    "ENG": "+{0}[Analysis]Analysis each time [TD]Technique Damage is dealt",
     "PL": ""
   },
   {
@@ -7596,7 +7644,7 @@
   {
     "Label": "Effect_ConvertEnergyGainIntoHealthAndStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "Increase your [H]Health by {1}% of your [EG]Energy Gain.\n\nIncrease your [SB]Stagger Bar by {2}% of your [EG]Energy Gain.",
+    "ENG": "+[H]Health ([RED]{0}%[/RED] of [EG]Energy Gain)\n\n+[SB]Stagger Bar ([PURPLE]{0}%[/PURPLE] of [EG]Energy Gain)",
     "PL": ""
   },
   {
@@ -7608,7 +7656,7 @@
   {
     "Label": "Effect_HealFromTechniqueDamage_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [D]Damage you deal with [Technique]Techniques.",
+    "ENG": "Heal for [RED]{0}%[/RED] of [TD]Technique Damage",
     "PL": ""
   },
   {
@@ -7620,10 +7668,96 @@
   {
     "Label": "Effect_HealFromEnergyUsed_Description",
     "Category": "Effect",
-    "ENG": "Restore [RED]{0}%[/RED] of your maximum [H]Health for each {1}[E]Energy spent on [Technique]Techniques.",
+    "ENG": "Heal [RED]{0}%[/RED] of max [H]Health for each {1}[E]Energy spent on [Technique]Techniques",
     "PL": ""
   },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "Label": "Effect_GainSharpOnRiposteCounterOrDodge_Description",
+    "Category": "Effect",
+    "ENG": "+{0}[Sharp]Sharp upon [Riposte]Riposting\n\n+{1}[Sharp]Sharp upon [Counter]Countering\n\n+{2}[Sharp]Sharp upon [Dodge]Dodging",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_SharpDamageReductionWithoutLimit_Description",
+    "Category": "Effect",
+    "ENG": "+[DR]Damage Reduction ({0}% of your current [Sharp]Sharp)",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_GainSharpOnBasicAttacksAndOnslaughtOnRipostesAndCounters_Description",
+    "Category": "Effect",
+    "ENG": "+{0}[Sharp]Sharp for each [BasicAttack]Basic Attack\n\n+{1}[Onslaught]Onslaught for each [Riposte]Riposte and [Counter]Counter",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_RestoreHealthOnRiposteOrCounter_Description",
+    "Category": "Effect",
+    "ENG": "+{0}[H]Heal when [Riposte]Riposting or [Counter]Countering",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_ExtraEffectiveButConsumableSharp_Description",
+    "Category": "Effect",
+    "ENG": "+{0}% [Sharp]Sharp gained, but {1}% faster decay\n\n[Riposte]Ripostes and [Counter]Counters consume all [Sharp]Sharp",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_ReceiveSharpWhileInProximity_Description",
+    "Category": "Effect",
+    "ENG": "+{1}[Sharp]Sharp/sec while enemy is within {0}m",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_GainInvincibleOnRiposteOrCounter_Description",
+    "Category": "Effect",
+    "ENG": "+{0} sec [Invincible]Invincible upon [Riposte]Riposting\n\n+{1} sec [Invincible]Invincible upon [Counter]Countering",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_EmpowerNextAttackAfterRiposteOrCounter_Description",
+    "Category": "Effect",
+    "ENG": "+{0}%[D]Damage dealt by next attack after [Riposte]Riposting\n\n+{0}%[D]Damage dealt by next attack after [Counter]Countering",
+    "PL": ""
+  },
 
 
 
@@ -7646,94 +7780,40 @@
   {
     "Label": "Effect_WeaponTechniquesEmpowerNextBasicAttackAndViceVersa_Description",
     "Category": "Effect",
-    "ENG": "[Weapons]Weapon [Technique]Techniques empower your next [BasicAttack]Basic Attack by [GREEN]{1}%[/GREEN], and vice versa by [GREEN]{2}%[/GREEN].",
+    "ENG": "+[GREEN]{1}%[/GREEN][BasicAttack]Basic Attack [D]Damage for {0} sec after dealing [WD]Weapon [TD]Technique Damage\n\n+[GREEN]{2}%[/GREEN][WD]Weapon [TD]Technique Damage for {0} sec after dealing [BasicAttack]Basic Attack [D]Damage",
     "PL": ""
   },
   {
     "Label": "Effect_WeaponTechniquesEmpowerNextBasicAttackAndViceVersa_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Dealing damage with [Weapons]Weapon-based [Technique]Techniques causes your next [BasicAttack]Basic Attack within next {0} seconds to deal [GREEN]{1}%[/GREEN] more [D]Damage.\n\nDealing damage with [BasicAttack]Basic Attacks causes your next [Weapons]Weapon-based [Technique]Technique [D]Damage within next {0} seconds to deal [GREEN]{2}%[/GREEN] more [D]Damage.",
+    "ENG": "Dealing damage with [Weapons]Weapon-based [Technique]Techniques causes your next [BasicAttack]Basic Attack within next {0} seconds to deal [GREEN]{1}%[/GREEN] more [D]Damage\n\nDealing damage with [BasicAttack]Basic Attacks causes your next [Weapons]Weapon-based [TD]Technique Damage within next {0} seconds to deal [GREEN]{2}%[/GREEN] more [D]Damage",
     "PL": ""
   },
   {
     "Label": "Effect_BlademastersGarb_Description",
     "Category": "Effect",
-    "ENG": "When equipped with a bladed weapon, your [BasicAttack]Basic Attacks deal [GREEN]{0}%[/GREEN] more [D]Damage but you have {1}%[DR].\n\nIf not, you have +{2}%[DR], but deal [GREEN]{3}%[/GREEN] less [D]Damage with [BasicAttack]Basic Attacks.",
+    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [D]Damage with bladed weapon equipped\n\n{1}%[DR] with bladed weapon equipped\n\n+{1}%[DR] with NOT-bladed weapon equipped\n\n[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [D]Damage with NOT-bladed weapon equipped",
     "PL": ""
   },
   {
     "Label": "Effect_BlademastersGarb_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "When you have a bladed weapon equipped (Longblade, Greatsword, Twin Blades, Daggers), your [BasicAttack]Basic Attacks deal [GREEN]{0}%[/GREEN] more [D]Damage, but you have {1}%[DR]Damage Reduction.\n\nWhen you have a non-bladed weapon equipped (Polearm, Gauntlets, Gun, Bow, Cannon), you have +{2}%[DR]Damage Reduction, but your [BasicAttack]Basic Attacks deal [GREEN]{3}%[/GREEN] less [D]Damage.",
+    "ENG": "When you have a bladed weapon equipped (Longblade, Greatsword, Twin Blades, Daggers), your [BasicAttack]Basic Attacks deal [GREEN]{0}%[/GREEN] more [D]Damage, but you have {1}%[DR]Damage Reduction\n\nWhen you have a non-bladed weapon equipped (Polearm, Gauntlets, Gun, Bow, Cannon), you have +{2}%[DR]Damage Reduction, but your [BasicAttack]Basic Attacks deal [GREEN]{3}%[/GREEN] less [D]Damage",
     "PL": ""
   },
   {
     "Label": "Effect_RestoreHealthOnWeaponDamage_Description",
     "Category": "Effect",
-    "ENG": "You heal {0}[H]Health whenever you deal [D]Damage with a weapon (once per attack).",
+    "ENG": "+{0}[H]Heal whenever [WD]Weapon Damage dealt (once per attack)",
     "PL": ""
   },
   {
     "Label": "Effect_IncreasedWeaponDamageButDecreasedMagicDamage_Description",
     "Category": "Effect",
-    "ENG": "You deal {0}% more [D]Damage with Weapons, but {0}% less [D]Damage with [Magic]Magic.",
+    "ENG": "+{0}%[WD]Weapon Damage, but {0}%[MD]Magic Damage",
     "PL": ""
   },
 
-
-
-
-
-
-
-  {
-    "Label": "Effect_GainSharpOnCounterOrDodge_Description",
-    "Category": "Effect",
-    "ENG": "[Counter]Counters, [Riposte]Ripostes and [Dodge]Dodges give {0}[Sharp]Sharp",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_GainSharpOnBasicAttacksAndOnslaughtOnCounter_Description",
-    "Category": "Effect",
-    "ENG": "Basic Attacks grant {0}[Sharp]Sharp. Ripostes and Counters grant {1}[Onslaught]Onslaught.",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_GainSharpOnBasicAttacksAndOnslaughtOnCounter_DescriptionDetailed",
-    "Category": "Effect",
-    "ENG": "Your [BasicAttack]Basic Attacks grant you {0}[Sharp]Sharp (once per attack). Ripostes and Counters you perform grant you {1}[Onslaught]Onslaught.",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_RestoreHealthOnCounter_Description",
-    "Category": "Effect",
-    "ENG": "You heal {0}[H]Health whenever you deal [D]Damage with a [Riposte]Riposte or [Counter]Counter.",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_ExtraEffectiveButConsumableSharp_Description",
-    "Category": "Effect",
-    "ENG": "You gain {0}% more [Sharp]Sharp, but it decays {0}% faster and Ripostes/Counters consume all [Sharp]Sharp.",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_RiposteAndCounterDamage_Description",
-    "Category": "Effect",
-    "ENG": "Your Ripostes and Counters deal {0}% more [D]Damage.",
-    "PL": "Twoje Riposty i Kontry zadają {0}% więcej [D]Obrażeń."
-  },
-  {
-    "Label": "Effect_ReceiveSharpWhileInProximity_Description",
-    "Category": "Effect",
-    "ENG": "While an enemy is in {0}m range, you receive {1}[Sharp] each second.",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_GainInvincibleOnRiposteOrCounter_Description",
-    "Category": "Effect",
-    "ENG": "Upon performing a [Riposte]Riposte, gain [Invincible]Invincible for {0} seconds, and twice as long after a [Counter]Counter.",
-    "PL": ""
-  },
 
 
 
@@ -7747,97 +7827,97 @@
   {
     "Label": "Effect_DealingOrTakingDamageAppliesChainedToYou_Description",
     "Category": "Effect",
-    "ENG": "Every time you take or deal [D]Damage, {0}[Chained]Chained is applied to you.",
+    "ENG": "+{0}[Chained]Chained on you upon dealing [D]Damage",
     "PL": ""
   },
   {
     "Label": "Effect_GainDamageAndDamageReductionForEachDebuff_Description",
     "Category": "Effect",
-    "ENG": "You gain extra {0}%[D]Damage and {1}%[DR]Damage Reduction for each [Debuff]Debuff currently applied to you (max at {2} [Debuff]Debuffs).",
+    "ENG": "+{0}%[D]Damage and +{1}%[DR]Damage Reduction for each [Debuff]Debuff (max at {2}[Debuff]Debuffs)",
     "PL": ""
   },
   {
     "Label": "Effect_ChainedDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "You have up to {0}% extra [DR]Damage Reduction depending on amount of [Chained]Chained applied to you.\n\nYou also have up to {0}% extra [DR]Damage Reduction against [Chained]Chained enemies (depending on [Chained]Chained amount).",
+    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at your [Chained]Chained level 1/2/3\n\n+{3}%[DR]/+{4}%[DR]/+{5}%[DR]Damage Reduction at enemy [Chained]Chained level 1/2/3",
     "PL": ""
   },
   {
     "Label": "Effect_DodgingAndCounteringAppliesChained_Description",
     "Category": "Effect",
-    "ENG": "Every time you perform a [Riposte]Riposte, [Counter]Counter or a successful Dodge, {0}[Chained]Chained is applied to you.",
+    "ENG": "+{0}[Chained]Chained on you upon [Riposte]Riposting, [Counter]Countering or [Dodge]Dodging",
     "PL": ""
   },
   {
     "Label": "Effect_RestoreStaggerFromDebuffs_Description",
     "Category": "Effect",
-    "ENG": "Restore {0}[SB]Stagger Bar whenever a [Debuff]Debuff is applied to you ({1}[CD]).",
+    "ENG": "Restore {0}[SB]Stagger Bar upon receiving a [Debuff]Debuff ({1}[CD])",
     "PL": ""
   },
   {
     "Label": "Effect_HealFromBeingDamagedByStackingEffects_Description",
     "Category": "Effect",
-    "ENG": "Heal for {0}% of [D]Damage taken from [Burn]Burn, [Freeze]Freeze and [Incision]Incision (before [DR]Damage Reduction mitigation).",
+    "ENG": "Heal for {0}% of [D]Damage taken from [Debuff]Debuffs",
+    "PL": ""
+  },
+  {
+    "Label": "Effect_HealFromBeingDamagedByStackingEffects_DescriptionDetailed",
+    "Category": "Effect",
+    "ENG": "Heal for {0}% of [D]Damage taken from [Burn]Burn, [Freeze]Freeze and [Incision]Incision (before [DR]Damage Reduction mitigation)",
     "PL": ""
   },
   {
     "Label": "Effect_ApplySelfChainedToEnemies_Description",
     "Category": "Effect",
-    "ENG": "[HeavyDamage]Heavy Damage applies {0}% of your [Chained]Chained to enemies.",
+    "ENG": "[HeavyDamage]Heavy Damage applies {0}% of your [Chained]Chained to enemies",
     "PL": ""
   },
   {
     "Label": "Effect_ApplySelfChainedToEnemies_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "[HeavyDamage]Heavy Damage applies {0}% of your current [Chained]Chained to enemies hit, but without the [D]Damage increase (once per attack).",
+    "ENG": "[HeavyDamage]Heavy Damage applies {0}% of your current [Chained]Chained to enemies hit\n\nEnemy does not benefit from [Chained]Chained [D]Damage increase",
     "PL": ""
   },
   {
     "Label": "Effect_GainChainedOnHeavyDamage_Description",
     "Category": "Effect",
-    "ENG": "[HeavyDamage]Heavy Damage gives you {0}[Chained]Chained.",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_GainChainedOnHeavyDamage_DescriptionDetailed",
-    "Category": "Effect",
-    "ENG": "Inflicting [HeavyDamage]Heavy Damage applies {0}[Chained]Chained to you (once per attack).",
+    "ENG": "+{0}[Chained]Chained on you upon dealing [HD]Heavy Damage",
     "PL": ""
   },
   {
     "Label": "Effect_ConvertCurrentHealthIntoChained_Description",
     "Category": "Effect",
-    "ENG": "While in combat, lose {0}% current [H]Health every second, and gain {1}[Chained]Chained for every 100[H]Health lost.",
+    "ENG": "Lose {0}% current [H]Health/sec. Gain {1}[Chained]Chained for each 100[H]Health lost",
     "PL": ""
   },
   {
     "Label": "Effect_BasicAttacksRestoreHealth_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Basic Attacks restore {0}[H]Health.",
+    "ENG": "+{0}[H]Heal upon [BasicAttack]Basic Attacking",
     "PL": "[BasicAttack]Podstawowe Ataki odnawiają {0}[H]Życia."
   },
   {
     "Label": "Effect_ConvertChainedIntoHealth_Description",
     "Category": "Effect",
-    "ENG": "Dealing [LightDamage]Light Damage consumes {0}% of your [Chained]Chained and restores {1}[H]Health for every 10[Chained]Chained lost.",
+    "ENG": "[LightDamage]Light Damage consumes {0}% of your [Chained]Chained. {1}[H]Heal for every 10[Chained]Chained lost",
     "PL": ""
   },
   {
     "Label": "Effect_ConvertedChainedGeneratesBarrier_Description",
     "Category": "Effect",
-    "ENG": "[Chained]Chained consumed with the weapon's first effect also generates {0}[Barrier]Barrier for every 10[Chained]Chained lost.",
+    "ENG": "[Chained]Chained consumed with the weapon's first effect also gives {0}[Barrier]Barrier for every 10[Chained]Chained lost",
     "PL": ""
   },
   {
     "Label": "Effect_GainBurnOnBasicAttackAndIncreaseDamageBasedOnBurn_Description",
     "Category": "Effect",
-    "ENG": "Performing a [BasicAttack]Basic Attack applies {0}[Burn]Burn to you.\n\nYour [RD]Ranged Damage is increased by {0}[D] for every 10[Burn]Burn currently applied to you.",
+    "ENG": "+{0}[Burn]Burn on you upon [BasicAttack]Basic Attacking\n\n+{0}%[RD]Ranged Damage for every 10[Burn]Burn currently on you",
     "PL": ""
   },
   {
     "Label": "Effect_CleanseBurnOnWeaponSwitch_Description",
     "Category": "Effect",
-    "ENG": "Switching away from this weapon removes up to {0}[Burn]Burn from yourself ({1}[CD]).",
+    "ENG": "Switching from this weapon removes up to {0}[Burn]Burn ({1}[CD])",
     "PL": ""
   },
 
@@ -7852,37 +7932,37 @@
   {
     "Label": "Effect_AncientGauntlets_Description",
     "Category": "Effect",
-    "ENG": "When wearing Boots 'Ancient Greaves', gain extra +{0}%[EG]Energy Gain.",
+    "ENG": "+{0}%[EG]Energy Gain with 'Ancient Greaves' equipped",
     "PL": "Kiedy nosisz Buty 'Antyczne Buty', posiadasz +{0}%[EG]."
   },
   {
     "Label": "Effect_AncientCrown_Description",
     "Category": "Effect",
-    "ENG": "When wearing Gloves 'Ancient Gauntlets', gain extra +{0}%[CDR]Cooldown Reduction.",
+    "ENG": "+{0}%[CDR]Cooldown Reduction with'Ancient Gauntlets' equipped",
     "PL": "Kiedy nosisz Rękawice 'Antyczne Rękawice', posiadasz +{0}%[CDR]."
   },
   {
     "Label": "Effect_AncientBreastplate_Description",
     "Category": "Effect",
-    "ENG": "When wearing Helmet 'Ancient Crown', gain extra +{0}%[D]Damage.",
+    "ENG": "+{0}%[D]Damage with 'Ancient Crown' equipped",
     "PL": "Kiedy nosisz Hełm 'Antyczna Korona', posiadasz +{0}%[I] i +{0}%[S]."
   },
   {
     "Label": "Effect_AncientGreaves_Description",
     "Category": "Effect",
-    "ENG": "When wearing Armor 'Ancient Breastplate', gain extra +{0}%[AS]Attack Speed.",
+    "ENG": "+{0}%[AS]Attack Speed with 'Ancient Breastplate' equipped",
     "PL": "Kiedy nosisz Zbroję 'Antyczny Napierśnik', posiadasz +{0}%[AS]."
   },
   {
     "Label": "Effect_AncientFirearmsDamage_Description",
     "Category": "Effect",
-    "ENG": "Gain +{0}%[D]Damage for each item from the 'Ancient' set currently equipped, including this one.",
+    "ENG": "+{0}%[D]Damage for each 'Ancient' item equipped",
     "PL": ""
   },
   {
     "Label": "Effect_AncientFirearmsDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "Gain +{0}%[DR]Damage Reduction for each item from the 'Ancient' set currently equipped, including this one.",
+    "ENG": "+{0}%[DR]Damage Reduction for each 'Ancient' item equipped",
     "PL": ""
   },
 
@@ -7898,73 +7978,73 @@
   {
     "Label": "Effect_GainAttackSpeedAsHealthLowers_Description",
     "Category": "Effect",
-    "ENG": "You gain up to {0}%[AS]Attack Speed the lower your current [H]Health is.",
+    "ENG": "Up to +{0}%[AS]Attack Speed (based on your missing [H]Health)",
     "PL": ""
   },
   {
     "Label": "Effect_TakingDamageGivesBarrierBasedOnMissingHealth_Description",
     "Category": "Effect",
-    "ENG": "When taking [D]Damage, gain up to {0}[Barrier]Barrier based on your missing [H]Health.",
+    "ENG": "Up to +{0}[Barrier]Barrier upon taking [D]Damage (based on your missing [H]Health)",
     "PL": ""
   },
   {
     "Label": "Effect_LoseHealthWhileAboveHalfAndRegenWhileBelow_Description",
     "Category": "Effect",
-    "ENG": "While above 50%[H]Health, you lose {0}% of your current [H]Health each second. While below 50%[H]Health, you regain {1}% of your missing [H]Health each second.",
+    "ENG": "Heal {1}% missing [H]Health/sec while below 50%[H]\n\nLose {0}% current [H]Health/sec while above 50%[H]",
     "PL": ""
   },
   {
     "Label": "Effect_GainDamageReductionAsHealthLowers_Description",
     "Category": "Effect",
-    "ENG": "You gain up to {0}%[DR]Damage Reduction based on your missing [H]Health.",
+    "ENG": "Up to +{0}%[DR]Damage Reduction (based on your missing [H]Health)",
     "PL": ""
   },
   {
     "Label": "Effect_ResistDeathAndGainDamageAgainstAttacker_Description",
     "Category": "Effect",
-    "ENG": "Upon receiving a fatal blow, instead heal to {0}% maximum [H]Health and gain +{1}%[D]Damage against the enemy who delivered the fatal blow ({2}[CD]).",
+    "ENG": "Prevent death once, then heal {0}% [H]Health and gain +{1}%[D]Damage against the killer ({2}[CD])",
     "PL": ""
   },
   {
     "Label": "Effect_HeavyDamageAppliesBurn_Description",
     "Category": "Effect",
-    "ENG": "Dealing [HD]Heavy Damage also applies {0}[Burn]Burn ({1}[CD]).",
+    "ENG": "+{0}[Burn]Burn upon dealing [HD]Heavy Damage ({1}[CD])",
     "PL": ""
   },
   {
     "Label": "Effect_BurnAmountWhileBelowNHealth_Description",
     "Category": "Effect",
-    "ENG": "You apply {0}% more [Burn]Burn while below {1}% [H]Health.",
+    "ENG": "+{0}% [Burn]Burn applied while below {1}%[H]Health",
     "PL": "Nakładasz {0} więcej [Burn]Podpalenia gdy masz poniżej {1}% [H]Życia."
   },
   {
     "Label": "Effect_BlazingShadowWatchesYourBack_Description",
     "Category": "Effect",
-    "ENG": "You have extra +{0}%[DR]Damage Reduction against enemy [Backstab]Backstabs, and being [Backstab]Backstabbed triggers an explosion dealing {1}[D]Damage.",
+    "ENG": "+{0}%[DR]Damage Reduction vs [Backstab]Backstabs\n\nUpon getting [Backstab]Backstabbed, inflict {1}[Burn]Burn ({2}[CD])",
     "PL": "Uderzenia w plecy dokonane na tobie zadają {0} mniej [D]Obrażeń i wywołują eksplozję."
   },
   {
     "Label": "Effect_BlazingShadowWatchesYourBack_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Enemy melee attacks that hit your back deal {0} less [D]Damage and create an explosion that deals inflicts {1}[Burn]Burn",
+    "ENG": "+{0}%[DR]Damage Reduction vs [Backstab]Backstabs ([D]Damage dealt by enemies who are behind you)\n\nUpon getting [Backstab]Backstabbed, inflict {1}[Burn]Burn ({2}[CD])",
     "PL": "Wrogie ataki w zwarciu które uderzają cię w plecy zadają {0} mniej [D]Obrażeń i tworzą eksplozję nakładającą {1}[Burn]Podpalenia."
   },
   {
     "Label": "Effect_BasicAttacksRestoreHealBasedOnMissingHealth_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Basic Attacks heal up to {0}[H]Health based on your missing [H]Health.",
+    "ENG": "+{0}[H]Heal upon [BasicAttack]Basic Attac (based on your missing [H]Health)",
     "PL": ""
   },
   {
     "Label": "Effect_BasicAttacksDealMoreDamageBasedOnMissingHealth_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Basic Attacks deal up to +{0}%[D]Damage based on your missing [H]Health.",
+    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [D]Damage (based on your missing [H]Health)",
     "PL": ""
   },
   {
     "Label": "Effect_GainDamageBasedOnMissingHealth_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "You gain up to {0}%[D]Damage based on your missing [H]Health.",
+    "ENG": "+[GREEN]{0}%[/GREEN][D]Damage (based on your missing [H]Health)",
     "PL": ""
   },
 
@@ -7994,37 +8074,37 @@
   {
     "Label": "Effect_GainKnightTenacityAfterHit_Description",
     "Category": "Effect",
-    "ENG": "You have +{0}%[Tenacity]Tenacity if you have been [D]Damaged in last {1} seconds.",
+    "ENG": "+{0}%[T]Tenacity (if [D]Damaged in last {1} sec)",
     "PL": ""
   },
   {
     "Label": "Effect_GainKnightDRAfterHit_Description",
     "Category": "Effect",
-    "ENG": "You have +{0}%[DR]Damage Reduction if you have been [D]Damaged in last {1} seconds.",
+    "ENG": "+{0}%[DR]Damage Reduction (if [D]Damaged in last {1} sec)",
     "PL": ""
   },
   {
     "Label": "Effect_BlockXAmountOfDamageOnceEveryNSeconds_Description",
     "Category": "Effect",
-    "ENG": "You block {0}[D]Damage from enemy attacks ({1}[CD])",
+    "ENG": "{0}[D]Damage reduced from enemy attacks ({1}[CD])",
     "PL": ""
   },
   {
     "Label": "Effect_PlundererEmpower_Description",
     "Category": "Effect",
-    "ENG": "Nearby enemy Family [Technique]Techniques empower your [Technique]Techniques from that Family.",
+    "ENG": "+[GREEN]{0}%[/GREEN][Anima]/[Ignis]/[Glacies]/[Molis]/[Salutis]/[Tonitrui]/[Proprius]Family [TD]Technique Damage when a nearby enemy uses [Technique]Technique from that family",
     "PL": ""
   },
   {
     "Label": "Effect_PlundererEmpower_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "When an enemy in 15m range uses a Family Technique ([Anima]Anima, [Ignis]Ignis, [Glacies]Glacies, [Molis]Molis, [Salutis]Salutis, [Tonitrui]Tonitrui or [Proprius]Proprius), for next {1} seconds you deal {0}% more [D]Damage with Techniques from that Family ({2}[CD]).",
+    "ENG": "When an enemy in 15m range uses a Family [Technique]Technique ([Anima]Anima, [Ignis]Ignis, [Glacies]Glacies, [Molis]Molis, [Salutis]Salutis, [Tonitrui]Tonitrui or [Proprius]Proprius), for next {1} seconds you have +[GREEN]{0}%[/GREEN][TD]Technique Damage for next [Technique]Technique from that Family ({2}[CD])",
     "PL": "Kiedy przeciwnik w zasięgu 15m używa Techniki z Energią (Anima, Ignis, Glacies, Molis, Salutis, Tonitrui lub Proprius), to przez następne {1} sekund zadajesz {0}% więcej [D]Obrażeń Technikami z tej Rodziny ({2}[CD])."
   },
   {
     "Label": "Effect_PlundererDamageReduction_Description",
     "Category": "Effect",
-    "ENG": "Dealing [D]Damage with a [Technique]Technique empowered by this weapon's first effect gives +{0}%[DR]Damage Reduction for {1} seconds.",
+    "ENG": "+{0}%[DR]Damage Reduction ({1} sec) upon using weapon's first effect [TD]Technique Damage amplifier",
     "PL": ""
   },
 
@@ -8283,19 +8363,19 @@
   {
     "Label": "Effect_StrongBAsDealStaggerBasedOnEnemyStaggerBar_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks deal extra {0}[HS] (at {2}[SB]) - {1}[HS] (at {3}[SB]) based on enemy maximum [SB]Stagger Bar.",
+    "ENG": "[BasicAttack]Strong Basic Attacks deal extra {0}[HS] (at {2}[SB]) - {1}[HS] (at {3}[SB]) based on enemy max [SB]Stagger Bar.",
     "PL": "[BasicAttack]Silne Podstawowe Ataki zadają dodatkowe {0}[HS] (przy {2}[SB]) - {1}[HS] (przy {3}[SB]) zależnie od maksymalnego [SB]Paska Zachwiania wroga."
   },
   {
     "Label": "Effect_ApplyIncisionWithCooldown_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks apply [RED]{0}[/RED] - [RED]{1}[/RED] [Incision]Incision based on enemy maximum [H]Health ({4}[CD]).",
+    "ENG": "[BasicAttack]Strong Basic Attacks apply [RED]{0}[/RED] - [RED]{1}[/RED] [Incision]Incision based on enemy max [H]Health ({4}[CD]).",
     "PL": "[BasicAttack]Silne Podstawowe Ataki nakładają [RED]{0}[/RED]  - [RED]{1}[/RED] [Incision]Nacięcia zależnie od maksymalnego [H]Życia wroga ({4}[CD])."
   },
   {
     "Label": "Effect_ApplyIncisionWithCooldown_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks apply [RED]{0}[/RED]  (at {2}[H]) - [RED]{1}[/RED] (at {3}[H]) [Incision]Incision based on enemy maximum [H]Health ({4}[CD]).",
+    "ENG": "[BasicAttack]Strong Basic Attacks apply [RED]{0}[/RED]  (at {2}[H]) - [RED]{1}[/RED] (at {3}[H]) [Incision]Incision based on enemy max [H]Health ({4}[CD]).",
     "PL": "[BasicAttack]Silne Podstawowe Ataki nakładają [RED]{0}[/RED]  (przy {2}[H]) - [RED]{1}[/RED] (przy {3}[H]) [Incision]Nacięcia zależnie od maksymalnego [H]Życia wroga ({4}[CD])."
   },
 
@@ -15903,7 +15983,7 @@
   {
     "Label": "IgnisManorOnFire_MuseumArmor_10",
     "Category": "Dialogue",
-    "ENG": "*Permanently lose 250 maximum [H]Health. Obtain <color=#FFF89C>Ultimate</color> Knight Helmet, Plate Armor, Iron Bracers, Iron Greaves.*",
+    "ENG": "*Permanently lose 250 max [H]Health. Obtain <color=#FFF89C>Ultimate</color> Knight Helmet, Plate Armor, Iron Bracers, Iron Greaves.*",
     "PL": "*Na stałe strać 250 maksymalnego [H]Życia. Otrzymaj <color=#FFF89C>Ostateczny</color> Hełm Rycerski, Zbroję Płytową, Żelazne Karwaszem, Żelazne Buty.*"
   },
   {
@@ -15915,7 +15995,7 @@
   {
     "Label": "IgnisManorOnFire_MuseumArmor_30",
     "Category": "Dialogue",
-    "ENG": "Lost 250 Maximum [H]Health.",
+    "ENG": "Lost 250 max [H]Health.",
     "PL": "Stracono 250 Maksymalnego [H]Życia."
   },
   {
@@ -19673,6 +19753,149 @@
 
 
 
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_0",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_10",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_20",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_30",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_40",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_50",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_60",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_70",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_80",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterStart_90",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_0",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_10",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_20",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_30",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_40",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_50",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_60",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_70",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_80",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_90",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+  {
+    "Label": "MolisBackstreets_Cycle1EncounterEnd_100",
+    "Category": "Dialogue",
+    "ENG": "",
+    "PL": ""
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -20729,7 +20952,7 @@
   {
     "Label": "Mission_FitnessTraining_Description",
     "Category": "Mission",
-    "ENG": "Gain +{0} maximum [H]Health that is lost upon entering new cycle. All future Fitness Training will give +10[H]Health (+200 max).\n\n<i>Training your body will help you withstand powerful blows, although the effects won't carry over to the next cycle.</i>",
+    "ENG": "Gain +{0} max [H]Health that is lost upon entering new cycle. All future Fitness Training will give +10[H]Health (+200 max).\n\n<i>Training your body will help you withstand powerful blows, although the effects won't carry over to the next cycle.</i>",
     "PL": "Otrzymaj +{0} maksymalnego [H]Życia, które zostanie utracone przy wejściu w nowy cykl. Wszystkie przyszłe Treningi Zdrowotne będą dawały +10[H]Życia (+200 maks).\n\n<i>Trening ciała pozwoli ci wytrzymać potężniejsze ciosy, ale efekt nie przetrwa przejścia do następnego cyklu.</i>"
   },
   {
@@ -20741,7 +20964,7 @@
   {
     "Label": "Mission_EnduranceTraining_Description",
     "Category": "Mission",
-    "ENG": "Gain +{0} maximum [SB]Stagger Bar that is lost upon entering new cycle. All future Endurance Training will give +10[SB]Stagger Bar (+200 max).\n\n<i>Training your body will help you withstand powerful blows, although the effects won't carry over to the next cycle.</i>",
+    "ENG": "Gain +{0} max [SB]Stagger Bar that is lost upon entering new cycle. All future Endurance Training will give +10[SB]Stagger Bar (+200 max).\n\n<i>Training your body will help you withstand powerful blows, although the effects won't carry over to the next cycle.</i>",
     "PL": "Otrzymaj +{0} maksymalnego [SB]Pasku Zachwiania, które zostanie utracone przy wejściu w nowy cykl. Wszystkie przyszłe Treningi Wytrzymałości będą dawały +10[SB]Pasku Zachwiania (+200 maks).\n\n<i>Trening ciała pozwoli ci wytrzymać potężniejsze ciosy, ale efekt nie przetrwa przejścia do następnego cyklu.</i>"
   },
   {
@@ -22970,7 +23193,7 @@
   {
     "Label": "CannotUseAtMaxEnergyWarning",
     "Category": "UI",
-    "ENG": "Cannot use while at maximum energy",
+    "ENG": "Cannot use while at max energy",
     "PL": "Nie można użyć na maksimum energii"
   },
   {
@@ -24299,7 +24522,7 @@
   {
     "Label": "Stat_HeavyAttackSpeed_Description",
     "Category": "UI",
-    "ENG": "[HAS]Heavy Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) used with [Heavy]Heavy Weapons (Greatswords, Polearms, Longblades).\n\nHeavy Weapons have maximum [AS]Attack Speed value of 1.5.",
+    "ENG": "[HAS]Heavy Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) used with [Heavy]Heavy Weapons (Greatswords, Polearms, Longblades).\n\nHeavy Weapons have max [AS]Attack Speed value of 1.5.",
     "PL": ""
   },
   {
@@ -24347,7 +24570,7 @@
   {
     "Label": "Stat_LightAttackSpeed_Description",
     "Category": "UI",
-    "ENG": "[LAS]Light Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) used with [Light]Light Weapons (Twin Blades, Daggers, Gauntlets).\n\nLight Weapons have maximum [AS]Attack Speed value of 2.5.",
+    "ENG": "[LAS]Light Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) used with [Light]Light Weapons (Twin Blades, Daggers, Gauntlets).\n\nLight Weapons have max [AS]Attack Speed value of 2.5.",
     "PL": ""
   },
   {
@@ -24395,7 +24618,7 @@
   {
     "Label": "Stat_RangedAttackSpeed_Description",
     "Category": "UI",
-    "ENG": "[RAS]Ranged Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) used with [Ranged]Ranged Weapons (Guns, Bows, Cannons).\n\nRanged Weapons have maximum [AS]Attack Speed value of 2.0.",
+    "ENG": "[RAS]Ranged Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) used with [Ranged]Ranged Weapons (Guns, Bows, Cannons).\n\nRanged Weapons have max [AS]Attack Speed value of 2.0.",
     "PL": ""
   },
   {
@@ -24443,7 +24666,7 @@
   {
     "Label": "Stat_MagicAttackSpeed_Description",
     "Category": "UI",
-    "ENG": "[MAS]Magic Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) performed while in [Proprius]Power Without Limit or [Proprius]Mind Over Matter stances.\n\nMagic has maximum [AS]Attack Speed value of 2.0.",
+    "ENG": "[MAS]Magic Attack Speed: Determines speed of Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques) performed while in [Proprius]Power Without Limit or [Proprius]Mind Over Matter stances.\n\nMagic has max [AS]Attack Speed value of 2.0.",
     "PL": ""
   },
   {

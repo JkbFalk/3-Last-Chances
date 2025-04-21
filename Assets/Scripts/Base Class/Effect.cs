@@ -583,7 +583,7 @@ public class Effect {
         }
     }
 
-    public virtual void OnInvokeDamageWasDodged(Damage damage) {
+    public virtual void OnInvokeDamageWasDodged(Damage damage, Ability dodge) {
         EventManager.EffectActivated.Invoke(this);
         if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
         {

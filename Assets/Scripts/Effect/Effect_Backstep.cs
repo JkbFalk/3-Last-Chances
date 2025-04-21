@@ -73,7 +73,7 @@ public class Effect_Backstep : Effect {
                 Player.Instance.Energy.GenerateEnergy(Constants.EnergyGainSource.Dodge, damage.SourceOfDamage.User.IsBoss);
                 UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
             }
-            EventManager.DamageWasDodged.Invoke(damage);
+            EventManager.DamageWasDodged.Invoke(damage, SourceOfEffect.SourceAbility);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
         else if(SaveFile.Instance.DifficultyLevel > 1 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))

@@ -10,7 +10,7 @@ public class Armor_Duelist : Item
     {
         Set = ItemSetEnum.Duelist;
         Type = Constants.ItemType.Armor;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("SharpDamageReduction", 0.75f), new ItemEffect("SharpAmount", 0.25f)};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("SharpDamageReductionWithoutLimit")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("RestoreStaggerBarOnSuccesfulRiposteOrCounterWhileStaggered")};
     }
 }
