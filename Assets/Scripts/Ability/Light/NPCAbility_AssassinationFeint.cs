@@ -12,6 +12,6 @@ public class NPCAbility_AssassinationFeint : Ability {
 
     public override void CallAbilityEvent1()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(150, 10, 5);
+        ChaseCurrentTargetAtGivenDegreeAngle(1, 10);
     }
 }

@@ -9,7 +9,7 @@ public class NPCAbility_TwinBladesWindBlade : Ability {
         AddCustomSound("Scrape", "Steel/SteelScrape1", 1);
         AddCustomSound("Wind", "Wind/WindWhoosh3", 0.75f);
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;
-        DamageSources.Add(new DamageSource(400, 0, Constants.DamageType.Light) {Knockback = 150});
+        DamageSources.Add(new DamageSource(400, 0, Constants.DamageType.Light) {KnockbackInMeters = 1.5f});
     }
 
     public override void CallAbilityEvent1()

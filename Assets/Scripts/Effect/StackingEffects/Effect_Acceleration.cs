@@ -13,7 +13,7 @@ public class Effect_Acceleration : Effect
         MaxDecayingAmount = 100;
         _initialDecayingAmount = speedup;
         ShowsInUI = true;
-        PathToEffectGraphic = "UI/AttackSpeed";
+        PathToUIGraphic = "UI/AttackSpeed";
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
     }
 
@@ -22,7 +22,7 @@ public class Effect_Acceleration : Effect
         if(ASBuffEffect == null) {
             return;
         }
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount) + "%";
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
         ASBuffEffect.PercentageModifier = DecayingAmount;
     }
 

@@ -40,7 +40,7 @@ public class Mission_TimeAttack : Mission
         Quest.StartQuest();
         SecondsLeft = 180;
         CountTime = true;
-        CanvasElements.UICanvas.Timer.gameObject.SetActive(true);
+        UIManager.Objects.Timer.gameObject.SetActive(true);
         AdvanceTimer();
         ExtraRewards = new() {
             new() {Amount = Experience, Graphic = "UI/Experience", Name = "MissionReward_ExperiencePerEnemy"},
@@ -49,11 +49,11 @@ public class Mission_TimeAttack : Mission
     }
 
     public void AdvanceTimer() {
-        CanvasElements.UICanvas.Timer.GetComponent<TextMeshProUGUI>().text = ((int)SecondsLeft / 60).ToString() + ":" + ((int)SecondsLeft % 60).ToString() + "." + ((SecondsLeft % 1).ToString().Length > 2 ? (SecondsLeft % 1).ToString()[2] : "0");
+        UIManager.Objects.TimerText.text = ((int)SecondsLeft / 60).ToString() + ":" + ((int)SecondsLeft % 60).ToString() + "." + ((SecondsLeft % 1).ToString().Length > 2 ? (SecondsLeft % 1).ToString()[2] : "0");
         if(SecondsLeft <= 0) {
             UIManager.Instance.ShowBlackScreen(0.5f);
-            CanvasElements.TransitionScreen.UpperText.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(0.5f);
-            CanvasElements.TransitionScreen.UpperText.GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("Quest_DefeatSpawningEnemies_Screen"), new string[] {Quest.DefeatedEnemyCount.ToString()});
+            GameController.Objects.TransitionUpperText.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(0.5f);
+            GameController.Objects.TransitionUpperText.GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("Quest_DefeatSpawningEnemies_Screen"), new string[] {Quest.DefeatedEnemyCount.ToString()});
             MoneyReward = Money * Quest.DefeatedEnemyCount;
             ExperienceReward = Experience * Quest.DefeatedEnemyCount;
             GameController.Instance.WaitAndRunMethod(2, HideText);
@@ -66,14 +66,14 @@ public class Mission_TimeAttack : Mission
     }
 
     public void HideText() {
-        CanvasElements.TransitionScreen.UpperText.GetComponent<HideOrShowOverTime>().HideOverTimeFromFull(1.5f);
+        GameController.Objects.TransitionUpperText.GetComponent<HideOrShowOverTime>().HideOverTimeFromFull(1.5f);
     }
 
     public override void OnEnd()
     {
         base.OnEnd();
         CountTime = false;
-        CanvasElements.UICanvas.Timer.gameObject.SetActive(false);
+        UIManager.Objects.Timer.gameObject.SetActive(false);
         Quest.CompleteQuest();
     }
 }

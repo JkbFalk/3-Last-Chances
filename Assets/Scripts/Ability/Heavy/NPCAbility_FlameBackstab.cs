@@ -9,7 +9,7 @@ public class NPCAbility_FlameBackstab : Ability {
     public NPCAbility_FlameBackstab(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.2f;
         AddCustomSound("Teleport", "Fire/FlameTeleport", 0.9f);
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CounteredByRoll, AbilityProperty.CounteredByRiposte, AbilityProperty.CountersBackstep});
+        Properties.AddRange(new List<Ability.Property> {Property.ImmuneToFlinch, Property.CounteredByRoll, Property.CounteredByRiposte, Property.CountersBackstep});
         DamageSources.Add(new DamageSource(300, 300, Constants.DamageType.Heavy));
     }
 

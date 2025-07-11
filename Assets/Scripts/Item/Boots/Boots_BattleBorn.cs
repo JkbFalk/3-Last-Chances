@@ -10,7 +10,7 @@ public class Boots_BattleBorn : Item
     {
         Set = ItemSetEnum.BattleBorn;
         Type = Constants.ItemType.Boots;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainDamageReductionBasedOnMissingHealth")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnMissingHealth")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health")};
     }
 }

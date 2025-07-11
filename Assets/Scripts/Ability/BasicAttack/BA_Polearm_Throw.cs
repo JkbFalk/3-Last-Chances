@@ -4,8 +4,8 @@ public class BA_Polearm_Throw : BasicAttack {
 
 
     public BA_Polearm_Throw(Unit ability_user) : base(ability_user) {
-        Properties.Add(AbilityProperty.StrongBasicAttack);
-        DamageSources.Add(new DamageSource(0, 250, Constants.DamageType.Heavy) {Knockback = 400});
+        Properties.Add(Property.StrongBasicAttack);
+        DamageSources.Add(new DamageSource(0, 250, Constants.DamageType.Heavy) {KnockbackInMeters = 4f});
         DamageSources.Add(new DamageSource(0, 50, Constants.DamageType.Heavy, "2"));
         AddCustomSound("Swing1", "Polearm/Polearm_Throw2", 1f);
         AddCustomSound("Swing2", "Polearm/Polearm_Throw1", 1f);

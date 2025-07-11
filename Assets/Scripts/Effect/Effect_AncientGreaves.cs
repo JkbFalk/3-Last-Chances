@@ -16,18 +16,18 @@ public class Effect_AncientGreaves : Effect {
 
     public override void OnStart() {
         base.OnStart();
-        if(SaveFile.Instance.EquippedArmor is Armor_Ancient && SaveFile.Instance.EquippedBoots is Boots_Ancient) {
+        if(SaveFile.Instance.EquippedOutfit is Outfit_Ancient && SaveFile.Instance.EquippedBoots is Boots_Ancient) {
             AddBuffs();
         }
     }
 
     public override void OnInvokeItemEquipped(Item item1, Item item2)
     {
-        if (AttackSpeedBuff != null && (item1 is Armor_Ancient || item1 is Boots_Ancient))
+        if (AttackSpeedBuff != null && (item1 is Outfit_Ancient || item1 is Boots_Ancient))
         {
             AttackSpeedBuff.EndThisEffect();
         }
-        else if ((item2 is Boots_Ancient && SaveFile.Instance.EquippedArmor is Armor_Ancient) || (item2 is Armor_Ancient && SaveFile.Instance.EquippedBoots is Boots_Ancient))
+        else if ((item2 is Boots_Ancient && SaveFile.Instance.EquippedOutfit is Outfit_Ancient) || (item2 is Outfit_Ancient && SaveFile.Instance.EquippedBoots is Boots_Ancient))
         {
             AddBuffs();
         }

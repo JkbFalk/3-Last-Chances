@@ -7,8 +7,6 @@ using UnityEngine.Events;
 
 public class Effect_CustomizableEffectOnEvent : Effect
 {
-    public float PercentageAmount = 0;
-    public float FlatAmount = 0;
     public Func<Item, Item, bool> ConditionCheckForItemEquipped;
     public Action<Item, Item, Effect_CustomizableEffectOnEvent> ActionOnItemEquipped;
     public Func<Ability, bool> ConditionCheckForAbilityUsed;
@@ -39,8 +37,8 @@ public class Effect_CustomizableEffectOnEvent : Effect
     public Action<Cooldown, Effect_CustomizableEffectOnEvent> ActionOnCooldownAdded;
     public Func<Ability, float, bool> ConditionCheckForAbilityEnergyConsumed;
     public Action<Ability, float, Effect_CustomizableEffectOnEvent> ActionOnAbilityEnergyConsumed;
-    public Func<bool> ConditionCheckForOneFifthSecondElapsedInGame;
-    public Action<Effect_CustomizableEffectOnEvent> ActionOnOneFifthSecondElapsedInGame;
+    public Func<bool> ConditionCheckForOneTenthSecondElapsedInGame;
+    public Action<Effect_CustomizableEffectOnEvent> ActionOnOneTenthSecondElapsedInGame;
 
     public Effect_CustomizableEffectOnEvent(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
@@ -59,11 +57,11 @@ public class Effect_CustomizableEffectOnEvent : Effect
         base.OnStart();
     }
 
-    public override void OnInvokeOneFifthSecondElapsedInGame(){
-        base.OnInvokeOneFifthSecondElapsedInGame();
-        if (ConditionCheckForOneFifthSecondElapsedInGame != null && ConditionCheckForOneFifthSecondElapsedInGame.Invoke() && ActionOnOneFifthSecondElapsedInGame != null)
+    public override void OnInvokeOneTenthSecondElapsedInGame(){
+        base.OnInvokeOneTenthSecondElapsedInGame();
+        if (ConditionCheckForOneTenthSecondElapsedInGame != null && ConditionCheckForOneTenthSecondElapsedInGame.Invoke() && ActionOnOneTenthSecondElapsedInGame != null)
         {
-            ActionOnOneFifthSecondElapsedInGame.Invoke(this);
+            ActionOnOneTenthSecondElapsedInGame.Invoke(this);
         }
     }
 

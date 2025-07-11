@@ -27,9 +27,9 @@ public static class Colors {
     public static string Energy = "#0073FF";
     public static string StaggerBar = "8000E6";
     public static Color UISelected = new Color(0.46f, 0.54f, 0.84f);
-    public static Color StaggerColor = new Color(0.6590239f, 0.2311321f, 1f);
+    public static Color StaggerColor = GetColorFromCode("#5C3499");
     public static string Staggered = "#6D2E8C";
-    public static Color StaggeredColor = new Color(1f, 0.475f, 0);
+    public static Color StaggeredColor = GetColorFromCode("#ffa511");
     public static string Analysis = "#6D2E8C";
     public static string Broken = "#FF6400";
     public static string Influence = "#FF6400";

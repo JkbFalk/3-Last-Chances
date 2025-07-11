@@ -13,7 +13,7 @@ public class BA_Gun_FF : BasicAttack {
 
     public override void CallAbilityEvent1()
     {
-        if (ButtonHoldDuration > 0.2f && ReleasedMainButton == false)
+        if (PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FS)))
             {
@@ -22,7 +22,7 @@ public class BA_Gun_FF : BasicAttack {
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_FS(User);
         }
-        else if (ButtonPressedCounter > 1)
+        else if (PlayerControls.BasicAttackButtonPressCounter > 1)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
             {
@@ -30,14 +30,13 @@ public class BA_Gun_FF : BasicAttack {
                 return;
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_FF(User);
-            ((BA_Gun_FF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
         }
         CanFollowUpAttack = true;
     }
 
-    public override void OnMainButtonPress()
+    public override void OnBasicAttackButtonPress()
     {
-        base.OnMainButtonPress();
+        base.OnBasicAttackButtonPress();
         if (CanFollowUpAttack)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
@@ -46,7 +45,6 @@ public class BA_Gun_FF : BasicAttack {
                 return;
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_FF(User);
-            ((BA_Gun_FF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
         }
     }
 

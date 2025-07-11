@@ -18,15 +18,13 @@ public class UIFloatController : MonoBehaviour {
     private TextMeshProUGUI _text;
 
     private void Start() {
-        if(DisappearAfter > 0) {
-            GameController.Instance.WaitAndRunMethod(DisappearAfter, Destroy);
-        }
         _text = GetComponent<TextMeshProUGUI>();
         originalPosition = transform.localPosition;
     }
 
     private void Update() {
         if (Time.timeScale > 0) {
+            DisappearAfter -= Time.deltaTime;
             float distance = Vector2.Distance(originalPosition, transform.localPosition);
             if(StartGoingInOppositeDirectionAfterDistance > 0 && bouncingBack == false && distance > StartGoingInOppositeDirectionAfterDistance) {
                 FloatBehavior = FloatBehavior == Behavior.FloatUpToDown ? Behavior.FloatDownToUp : FloatBehavior == Behavior.FloatDownToUp ? Behavior.FloatUpToDown : FloatBehavior == Behavior.FloatRightToLeft ? Behavior.FloatLeftToRight : Behavior.FloatRightToLeft;
@@ -35,9 +33,14 @@ public class UIFloatController : MonoBehaviour {
             if(bouncingBack && distance < StartGoingInOppositeDirectionAfterDistance * 0.1f) {
                 bouncingBack = false;
             }
-            if (IsDisappearing)
+            if (DisappearAfter < 0)
             {
-                _text.color =  new Color(_text.color.r, _text.color.g, _text.color.b, _text.color.a - (1 / DisappearTime) * Time.deltaTime);
+                _text.color = new Color(_text.color.r, _text.color.g, _text.color.b, _text.color.a - (1 / DisappearTime) * Time.deltaTime);
+                DisappearTime -= Time.deltaTime;
+                if (DisappearTime <= 0)
+                {
+                    MonoBehaviour.Destroy(gameObject);
+                }
             }
             if (FloatBehavior == Behavior.FloatUpToDown) {
                 gameObject.transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - FloatSpeed * Time.deltaTime);
@@ -51,16 +54,6 @@ public class UIFloatController : MonoBehaviour {
             else if (FloatBehavior == Behavior.FloatRightToLeft) {
                 gameObject.transform.localPosition = new Vector2(transform.localPosition.x - FloatSpeed * Time.deltaTime, transform.localPosition.y);
             }
-        }
-    }
-
-    public void Destroy() {
-        if (DisappearTime == 0) {
-            MonoBehaviour.Destroy(gameObject);
-        }
-        else
-        {
-            IsDisappearing = true;
         }
     }
 }

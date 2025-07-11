@@ -11,9 +11,9 @@ public class StaggerBar : Stat {
     public StaggerBar(Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         Owner = stat_owner;
         if (Owner is Player) {
-            HUDSlider = CanvasElements.UICanvas.ResourceBars.transform.Find("Stagger Bar Container/Stagger Bar").GetComponent<Slider>();
+            HUDSlider = UIManager.Objects.ResourceBars.transform.Find("Stagger Bar Container/Stagger Bar").GetComponent<Slider>();
             HUDFill = HUDSlider.transform.Find("Fill Area/Fill").GetComponent<Image>();
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find("StaggerBar/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find("StaggerBar/Value").GetComponent<TextMeshProUGUI>();
         }
         else if (Owner.IsBoss == false) {
             HUDSlider = Owner.transform.Find("World Space Canvas/Stagger Bar").GetComponent<Slider>();
@@ -53,7 +53,7 @@ public class StaggerBar : Stat {
             }
             else {
                 Owner.CurrentStaggerBars--;
-                Owner.StaggerBar.Maximum = Owner.StaggerBars[Owner.StaggerBars.Count - Owner.CurrentStaggerBars]* (Owner.IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1);
+                Owner.StaggerBar.Maximum = Owner.StaggerBars[Owner.StaggerBars.Count - Owner.CurrentStaggerBars]* (Owner.IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
                 Owner.AddEffect(new Effect_SoftStaggered(new(damage.SourceOfDamage)), Constants.DEFAULT_SOFT_STAGGERED_DURATION);
             }
             if(Owner.IsHostile) {

@@ -5001,10 +5001,11 @@ MonoBehaviour:
   DeactivateNSecondsAfterStart: 0
   DeactivateTimer: 0
   AlwaysSameSimulationSpeed: 0
-  ParticleSystemRenderer: {fileID: 0}
   IsDisappearing: 0
   DisappearTimeInSeconds: 0.25
   WeaponSpriteRenderer: {fileID: 0}
+  IsDestroyed: 0
+  ParticleSystemRenderers: []
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -5016,6 +5017,10 @@ MonoBehaviour:
   DisappearsAfterNHits: 1
   SlowDownOverTime: 0.5
   HomingOntoUnit: {fileID: 0}
+  IgnoresWalls: 0
+  DurabilityDoesNotDecreaseOnDestructibleHit: 0
+  OnlyDestroyOnTargetHit: 0
+  IsFinalAmmo: 0
 --- !u!61 &3502572962312301054
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5177,6 +5182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c11701de7f86890499035b6d9f5ac56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IgnoreSpriteParent: 0
   Grey: {r: 0.16037738, g: 0.16037738, b: 0.16037738, a: 1}
   GreyBorder1: 0.5
   GreyBorder2: 0.5

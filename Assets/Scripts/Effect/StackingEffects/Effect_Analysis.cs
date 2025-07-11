@@ -18,7 +18,7 @@ public class Effect_Analysis : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
     public override void OnStart()
@@ -61,9 +61,9 @@ public class Effect_Analysis : Effect
     }
 
     public override void OnInvokeHitDealt(Damage damage) {
-        if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)) || (damage?.SourceOfDamage?.User is not Player && damage.DamageType == Constants.DamageType.Magic))) {
-            damage.ExtraInjuryDealtPercentage += DecayingAmount;
-            damage.ExtraStaggerDealtPercentage += DecayingAmount;
+        if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && damage.SourceOfDamage.Is(Ability.Property.Technique)) || (damage?.SourceOfDamage?.User is not Player && damage.DamageType == Constants.DamageType.Magic))) {
+            damage.InjuryDealtPercentageModifier += DecayingAmount;
+            damage.StaggerDealtPercentageModifier += DecayingAmount;
             base.OnInvokeHitDealt(damage);
         }
     }

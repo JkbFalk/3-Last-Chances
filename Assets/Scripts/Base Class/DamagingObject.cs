@@ -24,7 +24,7 @@ public class DamagingObject : TemporaryObject {
         {
             return;
         }
-        else if (other.gameObject.name == "Backstep Hitbox" && (SourceAbility == null || SourceAbility.IsNot(AbilityProperty.CounteredByBackstep)))
+        else if (other.gameObject.name == "Backstep Hitbox" && (SourceAbility == null || SourceAbility.IsNot(Property.CounteredByBackstep)))
         {
             return;
         }
@@ -32,15 +32,15 @@ public class DamagingObject : TemporaryObject {
         {
             HandleDestructibleHit(other);
         }
-        else if (other != null && other.IsDestroyed() == false && other.GetComponent<Projectile>() != null && other.GetComponent<Projectile>().SourceAbility?.User != Owner && Owner != null && Owner.Actions.CurrentAbilityBeingPerformed != null && Owner.Actions.CurrentAbilityBeingPerformed.Is(AbilityProperty.BasicAttack) && other.GetComponent<Projectile>().DealingDamage && other.GetComponent<Projectile>().CanBeRiposted && ((BasicAttack)Owner.Actions.CurrentAbilityBeingPerformed).DealingDamage) {
+        else if (other != null && other.IsDestroyed() == false && other.GetComponent<Projectile>() != null && other.GetComponent<Projectile>().SourceAbility?.User != Owner && Owner != null && Owner.Actions.CurrentAbilityBeingPerformed != null && Owner.Actions.CurrentAbilityBeingPerformed.Is(Property.BasicAttack) && other.GetComponent<Projectile>().DealingDamage && other.GetComponent<Projectile>().CanBeRiposted && ((BasicAttack)Owner.Actions.CurrentAbilityBeingPerformed).DealingDamage) {
             Projectile projectile = other.GetComponent<Projectile>();
             Type riposteType = System.Type.GetType(Owner.CurrentWeaponClass.ToString() + "_Riposte");
             Riposte riposte = (Riposte)Activator.CreateInstance(riposteType, new object[] { Owner });
             riposte.Target = projectile.SourceAbility.User;
-            if (Owner.Actions.CurrentAbilityBeingPerformed.IsNot(AbilityProperty.AlreadyGeneratedEnergy))
+            if (Owner.Actions.CurrentAbilityBeingPerformed.IsNot(Property.AlreadyGeneratedEnergy))
             {
                 Owner.Energy.GenerateEnergy(Constants.EnergyGainSource.Riposte, projectile.SourceAbility.User.IsBoss);
-                Owner.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+                Owner.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
             }
             Damage attemptedDamage = new(Owner, projectile.SourceAbility, projectile);
             Utils.SendProjectileBackTowardsSource(attemptedDamage, Owner, riposte, true);

@@ -6,11 +6,11 @@ public class NPCAbility_ShieldSpike : Ability {
     public static float Cooldown = 15;
     public NPCAbility_ShieldSpike(Unit ability_user) : base(ability_user) {
         DamageSources.Add(new DamageSource(500, 0, Constants.DamageType.Heavy, "AoE Stronger"));
-        DamageSources.Add(new DamageSource(75, 250, Constants.DamageType.Heavy, "AoE Weaker") {Knockback = 850});
+        DamageSources.Add(new DamageSource(75, 250, Constants.DamageType.Heavy, "AoE Weaker") {KnockbackInMeters = 8.5f});
         WaitTimeBeforeNextAction = 0.5f;
         AddCustomSound("OnUse","Heavy Object/HeavyObject_Slam1", 0.85f);
-        Properties.Add(AbilityProperty.CounteredByRiposte);
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.CounteredByRiposte);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()

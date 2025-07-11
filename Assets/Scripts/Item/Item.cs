@@ -70,15 +70,15 @@ public abstract class Item
             }
             if (SaveFile.Instance.EquippedItem1 == this)
             {
-                CanvasElements.UICanvas.Items.transform.Find("1/Uses/Text").GetComponent<TextMeshProUGUI>().text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
+                UIManager.Objects.Items.transform.Find("1/Uses/Text").GetComponent<TextMeshProUGUI>().text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
                 MenuManager.Instance.Item1EquipmentSlot.AmountDisplay.text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
-                CanvasElements.UICanvas.Items.transform.Find("1/Disabled").gameObject.SetActive(_amount <= 0);
+                UIManager.Objects.Items.transform.Find("1/Disabled").gameObject.SetActive(_amount <= 0);
             }
             if (SaveFile.Instance.EquippedItem2 == this)
             {
-                CanvasElements.UICanvas.Items.transform.Find("2/Uses/Text").GetComponent<TextMeshProUGUI>().text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
+                UIManager.Objects.Items.transform.Find("2/Uses/Text").GetComponent<TextMeshProUGUI>().text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
                 MenuManager.Instance.Item2EquipmentSlot.AmountDisplay.text = Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[GetType()];
-                CanvasElements.UICanvas.Items.transform.Find("2/Disabled").gameObject.SetActive(_amount <= 0);
+                UIManager.Objects.Items.transform.Find("2/Disabled").gameObject.SetActive(_amount <= 0);
             }
             if(_amount == 0 && Type != ItemType.Tool) {
                 SaveFile.Instance.RemoveItem(this);
@@ -179,7 +179,7 @@ public abstract class Item
         get => _type;
         set {
             _type = value;
-            UpgradePrice = (_type == ItemType.Heavy || _type == ItemType.Light || _type == ItemType.Ranged || _type == ItemType.Armor) ? new int[]{ 12000, 40000, 120000, 500000 } : new int[]{ 6000, 20000, 60000, 250000 };
+            UpgradePrice = (_type == ItemType.Heavy || _type == ItemType.Light || _type == ItemType.Ranged || _type == ItemType.Outfit) ? new int[]{ 12000, 40000, 120000, 500000 } : new int[]{ 6000, 20000, 60000, 250000 };
             if(_type == ItemType.Tool)
             {
                 switch (Grade)
@@ -192,7 +192,7 @@ public abstract class Item
                     default: SellPrice = 0; break;
                 }
             } 
-            else if(_type == ItemType.Heavy || _type == ItemType.Light || _type == ItemType.Ranged || _type == ItemType.Armor) {
+            else if(_type == ItemType.Heavy || _type == ItemType.Light || _type == ItemType.Ranged || _type == ItemType.Outfit) {
                 switch(Grade)
                 {
                     case ItemGrade.Regular: SellPrice = 2000; break;
@@ -259,7 +259,7 @@ public abstract class Item
     }
 
     public bool IsMajorItem() {
-        return Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged || Type == ItemType.Armor;
+        return Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged || Type == ItemType.Outfit;
     }
 
     public string GetUpgradeMaterialIcon() {
@@ -338,7 +338,7 @@ public abstract class Item
 
     public bool CheckIfCanUpgrade()
     {
-        return (Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged || Type == ItemType.Gloves || Type == ItemType.Helmet || Type == ItemType.Armor || Type == ItemType.Boots || Type == ItemType.Tool) && Grade != ItemGrade.Ultimate;
+        return (Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged || Type == ItemType.Gloves || Type == ItemType.Helmet || Type == ItemType.Outfit || Type == ItemType.Boots || Type == ItemType.Tool) && Grade != ItemGrade.Ultimate;
     }
 
     public static float GetCooldown(Type tool_type, ItemGrade grade = ItemGrade.None) {
@@ -389,7 +389,7 @@ public abstract class Item
             case ItemType.Ranged: {SaveFile.Instance.EquippedRangedWeapon = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, this); break;}
             case ItemType.Gloves: {SaveFile.Instance.EquippedGloves = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, this); break;}
             case ItemType.Helmet: {SaveFile.Instance.EquippedHelmet = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, this); break;}
-            case ItemType.Armor: {SaveFile.Instance.EquippedArmor = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, this); break;}
+            case ItemType.Outfit: {SaveFile.Instance.EquippedOutfit = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedOutfit, this); break;}
             case ItemType.Boots: {SaveFile.Instance.EquippedBoots = this; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, this); break;}
         }
         if (Type == ItemType.Tool)
@@ -440,17 +440,20 @@ public abstract class Item
     }
 
     public void ActivateItemEffects() {
+        if(Type == ItemType.Tool || Type == ItemType.Quest) {
+            return;
+        }
         bool IsWeapon = Type == ItemType.Heavy || Type == ItemType.Light || Type == ItemType.Ranged;
         List<Effect> firstEffects = new List<Effect>();
         foreach(ItemEffect itemEffect in FirstItemEffects) {
-            firstEffects.Concat(EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * GetItemFirstEffectPB(), ToString())).ToList();
+            firstEffects = firstEffects.Concat(EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * GetItemFirstEffectPB(), ToString())).ToList();
         }
         foreach (Effect mod in firstEffects)
         {
             if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponType == Type) {
                 mod.PowerBudget = GetItemFirstEffectPB();
                 mod.IsRemovable = false;
-                mod.ShowsInMenu=false;
+                mod.ShowsInMenu = false;
                 Player.Instance.AddEffect(mod);
             }
         }
@@ -460,14 +463,14 @@ public abstract class Item
         }
         List<Effect> secondEffects = new List<Effect>();
         foreach(ItemEffect itemEffect in SecondItemEffects) {
-            secondEffects.Concat(EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * GetItemSecondEffectPB(), ToString())).ToList();
+            secondEffects = secondEffects.Concat(EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * GetItemSecondEffectPB(), ToString())).ToList();
         }
         foreach (Effect mod in secondEffects)
         {
             if(!IsWeapon || mod.RemainsActiveInOtherStances || Player.Instance?.CurrentStance?.WeaponType == Type) {
                 mod.PowerBudget = GetItemSecondEffectPB();
                 mod.IsRemovable = false;
-                mod.ShowsInMenu=false;
+                mod.ShowsInMenu = false;
                 Player.Instance.AddEffect(mod);
             }
         }
@@ -498,7 +501,7 @@ public abstract class Item
             case ItemType.Ranged: {SaveFile.Instance.EquippedRangedWeapon = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedRangedWeapon, null); break;}
             case ItemType.Gloves: {SaveFile.Instance.EquippedGloves = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedGloves, null); break;}
             case ItemType.Helmet: {SaveFile.Instance.EquippedHelmet = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedHelmet, null); break;}
-            case ItemType.Armor: {SaveFile.Instance.EquippedArmor = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedArmor, null); break;}
+            case ItemType.Outfit: {SaveFile.Instance.EquippedOutfit = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedOutfit, null); break;}
             case ItemType.Boots: {SaveFile.Instance.EquippedBoots = null; EventManager.ItemEquipped.Invoke(SaveFile.Instance.EquippedBoots, null); break;}
         }
         if(Type == ItemType.Tool)

@@ -9,6 +9,6 @@ public class Gloves_Enforcer : Item
         Set = ItemSetEnum.Enforcer;
         Type = Constants.ItemType.Gloves;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksGiveOnslaught")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionDuringBasicAttacks")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorDuringBasicAttacks")};
     }
 }

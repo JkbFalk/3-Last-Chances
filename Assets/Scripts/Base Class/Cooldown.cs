@@ -13,6 +13,7 @@ public class Cooldown {
     public Sprite CooldownGraphic;
     public Type Type;
     public Unit CooldownTarget;
+    public float NewCooldownIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
     public float TotalDuration;
     private float _remainingDuration;
     public float RemainingDuration {
@@ -26,29 +27,30 @@ public class Cooldown {
     }
     public string Identifier = "";
     public Image CooldownDisplay;
+    public GameObject TileInUI;
 
     public Cooldown(Type type, float total_duration, Unit target, string identifier = "") {
         Type = type;
         CooldownTarget = target;
         Identifier = identifier;
-        TotalDuration = total_duration * (100 / (100 + (CooldownTarget.CooldownReduction.Current + (ExtraCooldownReduction / 100) - 1) * 100));
+        TotalDuration = total_duration / (1 + (CooldownTarget.CooldownReduction.Current + ExtraCooldownReduction) / 100);
         RemainingDuration = TotalDuration;
         if(identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
             Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == identifier);
-            if(hiddenEffect != null && hiddenEffect.EffectIndicatorCooldownDisplay != null) {
-                MonoBehaviour.Destroy(hiddenEffect.EffectIndicatorCooldownDisplay.transform.parent.gameObject);
+            if(hiddenEffect != null && hiddenEffect.TileInUI != null) {
+                MonoBehaviour.Destroy(hiddenEffect.TileInUI);
             }
         }
     }
 
     public void OnEnd() {
-        if(ShowsInUI && CooldownDisplay != null) {
-            MonoBehaviour.Destroy(CooldownDisplay.transform.parent.gameObject);
+        if(ShowsInUI && TileInUI != null) {
+            MonoBehaviour.Destroy(TileInUI);
         }
         if(Identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
             Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == Identifier);
-            if(hiddenEffect != null && hiddenEffect.EffectIndicatorCooldownDisplay == null) {
-                hiddenEffect.DisplayEffectIndicatorAboveTarget();
+            if(hiddenEffect != null && hiddenEffect.UICooldownDisplay == null) {
+                hiddenEffect.ShowInUI();
             }
         }
     }

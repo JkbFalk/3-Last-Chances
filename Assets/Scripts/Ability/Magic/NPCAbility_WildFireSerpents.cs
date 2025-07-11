@@ -18,7 +18,7 @@ public class NPCAbility_WildFireSerpents : Ability {
         Snakes = new();
         DamageSources.Add(new DamageSource(15, 10, Constants.DamageType.Magic));
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         AddCustomSound("Use", "Fire/Fire5", 0.65f);
     }
 

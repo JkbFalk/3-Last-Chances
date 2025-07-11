@@ -17,7 +17,6 @@ using static Constants;
 
 [System.Serializable]
 public class Settings {
-
     private static Settings _instance = null;
     public static Settings Instance
     {
@@ -40,6 +39,7 @@ public class Settings {
         saveFile = Application.persistentDataPath + "/Settings.json";
     }
 
+    public string GamepadType = "Xbox";
     public string GameVersion = Application.version;
     public bool CreateAuditLogs = true;
     public bool _allowSkipUnreadDialogue = true;
@@ -47,7 +47,7 @@ public class Settings {
         get => _allowSkipUnreadDialogue;
         set {
             _allowSkipUnreadDialogue = value;
-            MenuManager.Instance.transform.Find("Settings Window/Gameplay/Items/SkipText").GetComponent<Toggle>().isOn = value;
+            MenuManager.Objects.OptionsAllowSkipUnreadDialogueToggle.GetComponent<Toggle>().isOn = value;
             if (GameController.Instance.AutoSaveSettings)
             {
                 Save();
@@ -60,25 +60,8 @@ public class Settings {
         get => _autoSkipReadDialogue;
         set {
             _autoSkipReadDialogue = value;
-            MenuManager.Instance.transform.Find("Settings Window/Gameplay/Items/AutoSkip").GetComponent<Toggle>().isOn = value;
+            MenuManager.Objects.OptionsSkipReadDialogueToggle.GetComponent<Toggle>().isOn = value;
             if (GameController.Instance.AutoSaveSettings)
-            {
-                Save();
-            }
-        }
-    }
-
-    public Constants.Difficulty _defaultDifficulty = Constants.Difficulty.Regular;
-
-    public Constants.Difficulty DefaultDifficulty
-    {
-        get => _defaultDifficulty;
-        set
-        {
-            _defaultDifficulty = value;
-            TMP_Dropdown difficulty = Utils.GetSceneRootObject("Start Screen").Find("Screen/Options/Difficulty/Dropdown").GetComponent<TMP_Dropdown>();
-            difficulty.value = value == Constants.Difficulty.Story ? 0 : value == Difficulty.Regular ? 1 : value == Difficulty.Challenge ? 2 : 3;
-            if(GameController.Instance.AutoSaveSettings)
             {
                 Save();
             }
@@ -91,16 +74,15 @@ public class Settings {
         get => _controlScheme;
         set {
             if (value == "Gamepad") {
-                CanvasElements.UICanvas.StanceDisplayKeyboard.GetComponent<CanvasGroup>().alpha = 0;
-                CanvasElements.UICanvas.StanceDisplayGamepad.GetComponent<CanvasGroup>().alpha = 1;
+                UIManager.Objects.StanceDisplayKeyboard.GetComponent<CanvasGroup>().alpha = 0;
+                UIManager.Objects.StanceDisplayGamepad.GetComponent<CanvasGroup>().alpha = 1;
             }
             else if (value == "Keyboard") {
-                CanvasElements.UICanvas.StanceDisplayKeyboard.GetComponent<CanvasGroup>().alpha = 1;
-                CanvasElements.UICanvas.StanceDisplayGamepad.GetComponent<CanvasGroup>().alpha = 0;
+                UIManager.Objects.StanceDisplayKeyboard.GetComponent<CanvasGroup>().alpha = 1;
+                UIManager.Objects.StanceDisplayGamepad.GetComponent<CanvasGroup>().alpha = 0;
             }
             _controlScheme = value;
-            TMP_Dropdown controls = Utils.GetSceneRootObject("Start Screen").Find("Screen/Options/Controls/Dropdown").GetComponent<TMP_Dropdown>();
-            controls.value = value == "Keyboard" ? 0 : 1;
+            MenuManager.Objects.OptionsControlsDropdown.value = value == "Keyboard" ? 0 : 1;
             if(Player.Instance != null && SaveFile.Instance.Stances != null)
             {
                 foreach (Stance stance in SaveFile.Instance.Stances)
@@ -109,13 +91,13 @@ public class Settings {
                     {
                         stance.Abilities[i].Reload();
                     }
-                    if(GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances").childCount == 3) {
-                        stance.UIStanceDisplay = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponType + "StanceDisplay").transform;
-                        stance.StanceCooldownDisplay = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponType + "StanceDisplay/Cooldown").GetComponent<Image>();
+                    if(GameController.Instance.transform.Find("UI/Stance Display " + Settings.Instance.ControlScheme + "/Stances").childCount == 3) {
+                        stance.UIStanceDisplay = GameController.Instance.transform.Find("UI/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponType + "StanceDisplay").transform;
+                        stance.StanceCooldownDisplay = GameController.Instance.transform.Find("UI/Stance Display " + Settings.Instance.ControlScheme + "/Stances/UI_" + stance.WeaponType + "StanceDisplay/Cooldown").GetComponent<Image>();
                     }
                 }
             }
-            foreach(Toggle toggle in CanvasElements.MenuCanvas.CategorySelection.GetComponentsInChildren<Toggle>(true))
+            foreach(Toggle toggle in MenuManager.Objects.MenuSelection.GetComponentsInChildren<Toggle>(true))
             {
                 toggle.interactable = _controlScheme == "Keyboard";
             }
@@ -172,11 +154,10 @@ public class Settings {
                     labelInit.LoadLabel();
                 }
             }
-            TMP_Dropdown language = Utils.GetSceneRootObject("Start Screen").Find("Screen/Options/Language/Dropdown").GetComponent<TMP_Dropdown>();
-            language.value = _currentLanguage == Language.ENG ? 0 : 1;
-            if(language.transform.Find("Label").GetComponent<LabelInitializer>() != null)
+            MenuManager.Objects.OptionsLanguageDropdown.value = _currentLanguage == Language.ENG ? 0 : 1;
+            if(MenuManager.Objects.OptionsLanguageLabel != null)
             {   
-                language.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel(_currentLanguage == Language.ENG ? "{LanguageEnglish}" : "{LanguagePolish}");
+                MenuManager.Objects.OptionsLanguageLabel.SetLabel(_currentLanguage == Language.ENG ? "{LanguageEnglish}" : "{LanguagePolish}");
             }
             if (GameController.Instance.AutoSaveSettings)
             {
@@ -185,17 +166,17 @@ public class Settings {
         }
     }
 
-    public int _inWorldDialogueBubbleSpeed = 10;
+    public float _inWorldDialogueBubbleSpeed = 1f;
 
-    public int InWorldDialogueBubbleSpeed
+    public float InWorldDialogueBubbleSpeed
     {
         get => _inWorldDialogueBubbleSpeed;
         set
         {
-            CanvasElements.InWorldDialogueSpeedSlider.GetComponent<Slider>().value = value;
-            int val = (int)(value * 10);
-            CanvasElements.InWorldDialogueSpeedSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{InGameDialogueSpeed}: " + val.ToString() + "%");
-            _inWorldDialogueBubbleSpeed = value == 0 ? 1 : value;
+            MenuManager.Objects.OptionsInWorldDialogueSpeedSlider.value = value * 100;
+            MenuManager.Objects.OptionsInWorldDialogueSpeedLabel.string_params = new List<string> {(value * 100).ToString()};
+            MenuManager.Objects.OptionsInWorldDialogueSpeedLabel.LoadLabel();
+            _inWorldDialogueBubbleSpeed = value;
             if (GameController.Instance.AutoSaveSettings)
             {
                 Save();
@@ -203,17 +184,17 @@ public class Settings {
         }
     }
 
-    public int _dialogueTextSpeed = 10;
+    public float _dialogueTextSpeed = 1f;
 
-    public int DialogueTextSpeed
+    public float DialogueTextSpeed
     {
         get => _dialogueTextSpeed;
         set
         {
-            CanvasElements.DialogueTextSpeedSlider.GetComponent<Slider>().value = value;
-            int val = (int)(value * 10);
-            CanvasElements.DialogueTextSpeedSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{DialogueTextSpeed}: " + val.ToString() + "%");
-            _dialogueTextSpeed = value == 0 ? 1 : value;
+            MenuManager.Objects.OptionsDialogueTextSpeedSlider.value = value * 100;
+            MenuManager.Objects.OptionsDialogueTextSpeedLabel.string_params = new List<string> {(value * 100).ToString()};
+            MenuManager.Objects.OptionsDialogueTextSpeedLabel.LoadLabel();
+            _dialogueTextSpeed = value;
             if (GameController.Instance.AutoSaveSettings)
             {
                 Save();
@@ -228,15 +209,45 @@ public class Settings {
         get => _damageNumbersSize;
         set
         {
-            /*AudioListener.volume = value;
-            CanvasElements.MasterVolumeSlider.GetComponent<Slider>().SetValueWithoutNotify(value * 100);
-            CanvasElements.MasterVolumeSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{MasterVolume}: " + value * 100);*/
+            MenuManager.Objects.OptionsDamageNumbersSizeSlider.value = value * 100;
+            MenuManager.Objects.OptionsDamageNumbersSizeLabel.string_params = new List<string> {(value * 100).ToString()};
+            MenuManager.Objects.OptionsDamageNumbersSizeLabel.LoadLabel();
             _damageNumbersSize = value;
             if (GameController.Instance.AutoSaveSettings)
             {
                 Save();
             }
         }
+    }
+
+    public float _uiSize = 1f;
+
+    public float UISize
+    {
+        get => _uiSize;
+        set
+        {
+            MenuManager.Objects.OptionsUISizeSlider.value = value * 100;
+            MenuManager.Objects.OptionsUISizeLabel.string_params = new List<string> {(value * 100).ToString()};
+            MenuManager.Objects.OptionsUISizeLabel.LoadLabel();
+            _uiSize = value;
+            if (GameController.Instance.AutoSaveSettings)
+            {
+                Save();
+            }
+            if((ShowExtraInfoInUI && UIManager.Instance.transform.Find("Extra Info") == null) || (!ShowExtraInfoInUI && UIManager.Instance.transform.Find("Pause Screen/Extra Info") == null)) {
+                GameController.Instance.WaitAndRunMethod(0.01f, RefreshUISize);
+            }
+            else {
+                foreach(GameObject uiElement in new List<GameObject> {UIManager.Objects.ExperienceBarSlider.gameObject, UIManager.Objects.Effects, UIManager.Objects.ResourceBars, UIManager.Objects.MissionInfo, UIManager.Objects.Notifications, UIManager.Objects.StanceDisplayKeyboard, UIManager.Objects.StanceDisplayGamepad, UIManager.Objects.ChargeBarSlider.gameObject, UIManager.Objects.CustomGaugeSlider.gameObject, UIManager.Objects.InteractIndicatorText.gameObject, UIManager.Objects.Timer, UIManager.Objects.InCombatIndicator}) {
+                    uiElement.transform.localScale = new Vector3(_uiSize, _uiSize, _uiSize);
+                }
+            }
+        }
+    }
+
+    private void RefreshUISize() {
+        UISize = UISize;
     }
 
     public float _masterVolume = 0.5f;
@@ -247,8 +258,8 @@ public class Settings {
         set
         {
             AudioListener.volume = value;
-            CanvasElements.MasterVolumeSlider.GetComponent<Slider>().SetValueWithoutNotify(value * 100);
-            CanvasElements.MasterVolumeSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{MasterVolume}: " + value * 100);
+            MenuManager.Objects.OptionsMasterVolumeSlider.SetValueWithoutNotify(value * 100);
+            MenuManager.Objects.OptionsMasterVolumeLabel.SetLabel("{MasterVolume}: " + value * 100);
             _masterVolume = value;
             if (GameController.Instance.AutoSaveSettings)
             {
@@ -265,10 +276,29 @@ public class Settings {
     public float MusicVolume {
         get => _musicVolume;
         set {
-            CanvasElements.Music.volume = value * 0.15f;
-            CanvasElements.MusicVolumeSlider.GetComponent<Slider>().SetValueWithoutNotify(value * 100);
-            CanvasElements.MusicVolumeSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{MusicVolume}: " + value * 100);
+            GameController.Objects.Music.volume = value * 0.15f;
+            MenuManager.Objects.OptionsMusicVolumeSlider.SetValueWithoutNotify(value * 100);
+            MenuManager.Objects.OptionsMusicVolumeLabel.SetLabel("{MusicVolume}: " + value * 100);
             _musicVolume = value;
+            if (GameController.Instance.AutoSaveSettings)
+            {
+                Save();
+            }
+        }
+    }
+
+    public bool _showExtraInfoInUI = true;
+    public bool ShowExtraInfoInUI {
+        get => _showExtraInfoInUI;
+        set {
+            _showExtraInfoInUI = value;
+            MenuManager.Objects.ShowExtraInfoInUIToggle.GetComponent<Toggle>().isOn = value;
+            if(_showExtraInfoInUI && UIManager.Instance.transform.Find("Extra Info") == null) {
+                UIManager.Instance.transform.Find("Pause Screen/Extra Info").transform.SetParent(UIManager.Instance.transform);
+            }
+            else if(!_showExtraInfoInUI && UIManager.Instance.transform.Find("Pause Screen/Extra Info") == null) {
+                UIManager.Instance.transform.Find("Extra Info").transform.SetParent(UIManager.Instance.transform.Find("Pause Screen"));
+            }
             if (GameController.Instance.AutoSaveSettings)
             {
                 Save();
@@ -283,8 +313,8 @@ public class Settings {
         get => _soundVolume;
         set
         {
-            CanvasElements.SoundVolumeSlider.GetComponent<Slider>().SetValueWithoutNotify(value * 100);
-            CanvasElements.SoundVolumeSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{SoundVolume}: " + value * 100);
+            MenuManager.Objects.OptionsSoundVolumeSlider.SetValueWithoutNotify(value * 100);
+            MenuManager.Objects.OptionsSoundVolumeLabel.SetLabel("{SoundVolume}: " + value * 100);
             _soundVolume = value;
             if(Area.ComponentInstance != null && Area.ComponentInstance.AudioSourceOriginalVolumes != null) {
                 foreach(AudioSource audioSource in Area.ComponentInstance.AudioSourceOriginalVolumes.Keys) {
@@ -307,9 +337,9 @@ public class Settings {
         get => _dialogueVolume;
         set
         {
-            CanvasElements.DialogueVolumeSlider.GetComponent<Slider>().SetValueWithoutNotify(value * 100);
-            CanvasElements.DialogueVolumeSlider.transform.Find("Label").GetComponent<LabelInitializer>().SetLabel("{DialogueVolume}: " + value * 100);
-            CanvasElements.AudioListener.volume = value * 0.35f;
+            MenuManager.Objects.OptionsDialogueVolumeSlider.SetValueWithoutNotify(value * 100);
+            MenuManager.Objects.OptionsDialogueVolumeLabel.SetLabel("{DialogueVolume}: " + value * 100);
+            GameController.Objects.AudioListener.volume = value * 0.35f;
             _dialogueVolume = value;
             if (GameController.Instance.AutoSaveSettings)
             {
@@ -325,7 +355,7 @@ public class Settings {
         get => _fieldOfView;
         set
         {
-            CanvasElements.FieldOfViewSlider.GetComponent<Slider>().value = value;
+            MenuManager.Objects.OptionsFieldOfViewSlider.value = value;
             _fieldOfView = value;
             float scaled_value = 2 + (value <= 20 ? value / 10 : 2 + (value - 20) / 5);
             if(Player.Instance != null)
@@ -340,12 +370,22 @@ public class Settings {
         }
     }
 
+    public List<Keybind> Keybinds = new List<Keybind>();
+
+    [Serializable]
+    public class Keybind {
+        public string ActionName;
+        public string KeyboardBinding1;
+        public string KeyboardBinding2;
+        public string GamepadBinding1;
+        public string GamepadBinding2;
+    }
+
     string saveFile;
 
     public void Save()  
     {
-        var TypeBlob = typeof(Settings).GetFields().ToDictionary(x => x.Name, x => x.GetValue(this));
-        string jsonString = JsonUtility.ToJson(Instance);
+        string jsonString = JsonUtility.ToJson(Instance, true);
         File.WriteAllText(saveFile, jsonString);
     }
 

@@ -66,10 +66,10 @@ public abstract class Mission
     }
 
     public virtual void OnStart() {
-        Utils.DestroyAllChildren(CanvasElements.MenuCanvas.MenuArchive.transform);
-        Utils.DestroyAllChildren(CanvasElements.DialogueArchive.transform);
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(CanAbandonMission);
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button/Text").GetComponent<LabelInitializer>().SetLabel(NumberOfWeeksConsumed == 0 ? "{FinishMission}" : "{AbandonMission}");
+        Utils.DestroyAllChildren(MenuManager.Objects.MenuArchive.transform);
+        Utils.DestroyAllChildren(GameController.Objects.DialogueArchive.transform);
+        UIManager.Objects.EscapeMissionButton.gameObject.SetActive(CanAbandonMission);
+        UIManager.Objects.EscapeMissionButtonLabel.SetLabel(NumberOfWeeksConsumed == 0 ? "{FinishMission}" : "{AbandonMission}");
         if(AutoSaveAfterCombat) {
             EventManager.FinishedLoadingArea.AddListener(SaveOnMissionStart);
         }
@@ -80,8 +80,8 @@ public abstract class Mission
     }
 
     public void MakeMissionFinishableUsingButton() {
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(true);
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button/Text").GetComponent<LabelInitializer>().SetLabel("{FinishMission}");
+        UIManager.Objects.EscapeMissionButton.gameObject.SetActive(true);
+        UIManager.Objects.EscapeMissionButtonLabel.SetLabel("{FinishMission}");
         SaveFile.Instance.CurrentMission.CanBeFinishedByPressingButton = true;
         SaveFile.Instance.Week += SaveFile.Instance.CurrentMission.NumberOfWeeksConsumed;
         SaveFile.Instance.CurrentMission.NumberOfWeeksConsumed = 0;

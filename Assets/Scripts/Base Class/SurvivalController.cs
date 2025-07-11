@@ -18,7 +18,7 @@ public class SurvivalController
     public static void StartSurvivalMode()
     {
         SaveFile.Instance.GameType = Constants.GameType.Survival;
-        GameObject questDisplay = CanvasElements.UICanvas.ObjectivesDisplay;
+        GameObject questDisplay = UIManager.Objects.ObjectivesDisplay;
         Utils.DestroyAllChildren(questDisplay.transform);
         LoadNextLevel();
     }
@@ -307,7 +307,7 @@ public class SurvivalController
 
     public static void CheckEnemyDefeatedCount(Damage damage)
     {
-        Utils.DestroyAllChildren(CanvasElements.UICanvas.ObjectivesDisplay.transform);
+        Utils.DestroyAllChildren(UIManager.Objects.ObjectivesDisplay.transform);
         int enemyCount = Utils.GetAllUnits(true, true).Count;
         if (enemyCount > 0)
         {

@@ -7,7 +7,7 @@ public class NPCAbility_WindupUpperCut : Ability {
     public NPCAbility_WindupUpperCut(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.2f;
         if(User.IsBoss) {
-            Properties.Add(AbilityProperty.CounteredByBackstep);
+            Properties.Add(Property.CounteredByBackstep);
             DamageSources.Add(new DamageSource(300, 500, Constants.DamageType.Heavy));
         }
         else {

@@ -8,11 +8,11 @@ public class NPCAbility_DownAndUp : Ability {
         WaitTimeBeforeNextAction = 0.5f;
         DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy));
         DamageSources.Add(new DamageSource(150, 100, Constants.DamageType.Heavy, "2"));
-        Properties.Add(AbilityProperty.CounteredByRiposte);
+        Properties.Add(Property.CounteredByRiposte);
     }
 
     public override void CallAbilityEvent1() {
         Properties.Clear();
-        Properties.Add(AbilityProperty.CounteredByBackstep);
+        Properties.Add(Property.CounteredByBackstep);
     }
 }

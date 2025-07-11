@@ -26,9 +26,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 350731394147886996}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8952445241720836764}
@@ -4948,7 +4948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CategoryHash: 3.898267e-13
-  m_labelHash: 8.1686124e-17
+  m_labelHash: 5.621607e-34
   m_SpriteKey: 0.4961644
   m_SpriteHash: 200352886
 --- !u!114 &4004914215477966859
@@ -5038,7 +5038,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7082771458320628475}
@@ -5072,6 +5072,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &8828706863694813048
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5143,9 +5144,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2949522455194655467}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6348443217727021245}
@@ -9976,7 +9977,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2864698532803778912}
@@ -10010,6 +10011,7 @@ MonoBehaviour:
   WasStopped: 0
   UpdateChildrenSortingOrder: 0
   WeaponTrail: {fileID: 0}
+  WeaponHitbox: {fileID: 0}
 --- !u!61 &5344160881929470250
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -10172,7 +10174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CategoryHash: 3.898267e-13
-  m_labelHash: 8.1686124e-17
+  m_labelHash: 5.621607e-34
   m_SpriteKey: 0.4961644
   m_SpriteHash: 200352886
 --- !u!114 &4291343549244083466

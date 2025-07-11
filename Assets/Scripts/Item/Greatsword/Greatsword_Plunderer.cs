@@ -13,6 +13,6 @@ public class Greatsword_Plunderer : Item
         WeaponClass = Constants.WeaponClass.Greatsword;
         SetBaseWeaponStats(110, 130, 0.75f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("PlundererEmpower")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("PlundererDamageReduction")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("PlundererArmor")};
     }
 }

@@ -69,7 +69,7 @@ public class Ability_TempestStrikes : Technique
     {
         base.OnAbilityStart();
         User.Actions.ConsumeEnergyAndCooldownForTheAbility();
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             Utils.PlaySoundEffect(Player.Instance.AudioSource, "Ability/Ability_Quickdraw_Counter", 0.9f);
         }
     }
@@ -85,15 +85,15 @@ public class Ability_TempestStrikes : Technique
     public override void CallAbilityEvent1()
     {
         CanAlwaysBeInterruptedBy.Clear();
-        if(User.Energy.Current >= EnergyCost && Player.Instance.CurrentTechniqueStacks[typeof(Ability_TempestStrikes)] > 0 && (_slashCounter < 4 || (UpgradeAUnlocked && _slashCounter < 9) || (Is(AbilityProperty.Ultimate) && _slashCounter < 19))) {
+        if(User.Energy.Current >= EnergyCost && Player.Instance.CurrentTechniqueStacks[typeof(Ability_TempestStrikes)] > 0 && (_slashCounter < 4 || (Is(Property.UpgradeA) && _slashCounter < 9) || (Is(Property.Ultimate) && _slashCounter < 19))) {
             _slashCounter++;
-            if(Is(AbilityProperty.Ultimate)) {
+            if(Is(Property.Ultimate)) {
                 User.Animator.SetFloat("Technique Speed", 1 + _slashCounter * UltimateSpeedIncrease / 100);
             }
-            if((UpgradeAUnlocked && _slashCounter == 9) || (Is(AbilityProperty.Ultimate) && _slashCounter == 19)) {
+            if((Is(Property.UpgradeA) && _slashCounter == 9) || (Is(Property.Ultimate) && _slashCounter == 19)) {
                 DamageSources.Clear();
-                DamageSources.Add(new DamageSource(InjuryScaling * (Is(AbilityProperty.Ultimate) ? 5 : 3), StaggerScaling * (Is(AbilityProperty.Ultimate) ? 5 : 3), User.CurrentWeaponDamageType));
-                User.Animator.SetFloat("Technique Speed", Is(AbilityProperty.Ultimate) ? 0.4f : 0.25f);
+                DamageSources.Add(new DamageSource(InjuryScaling * (Is(Property.Ultimate) ? 5 : 3), StaggerScaling * (Is(Property.Ultimate) ? 5 : 3), User.CurrentWeaponDamageType));
+                User.Animator.SetFloat("Technique Speed", Is(Property.Ultimate) ? 0.4f : 0.25f);
             }
             User.Actions.ConsumeEnergyAndCooldownForTheAbility();
             _mostRecentAttack = GetNextAnimationNumber();
@@ -104,10 +104,10 @@ public class Ability_TempestStrikes : Technique
     public override void CallAbilityEvent2()
     {
         PlayCustomSound("Random" + UnityEngine.Random.Range(1, 5));
-        if(UpgradeAUnlocked && _slashCounter == 9) {
+        if(Is(Property.UpgradeA) && _slashCounter == 9) {
             User.Animator.SetFloat("Technique Speed", 1f);
         }
-        else if(Is(AbilityProperty.Ultimate) && _slashCounter == 19) {
+        else if(Is(Property.Ultimate) && _slashCounter == 19) {
             User.Animator.SetFloat("Technique Speed", 2f);
         }
     } 
@@ -142,7 +142,7 @@ public class Ability_TempestStrikes : Technique
 
     public override void ExtraBehaviourOnHit(Damage damage)
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             User.AddEffect(new Effect_Analysis(UltimateAnalysisApplied, new(this)));
         }
     }

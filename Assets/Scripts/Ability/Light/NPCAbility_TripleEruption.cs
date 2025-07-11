@@ -8,7 +8,7 @@ public class NPCAbility_TripleEruption : Ability {
     private List<GameObject> _aoeList;
     private int _areaIncreaseCounter = 0;
     public NPCAbility_TripleEruption(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(20, 60, Constants.DamageType.Light) {Knockback = 70});
+        DamageSources.Add(new DamageSource(20, 60, Constants.DamageType.Light) {KnockbackInMeters = 0.7f});
         AddCustomSound("Crack", "Earth/Earth_Crack2", 0.6f);
         WaitTimeBeforeNextAction = 0.2f;
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;

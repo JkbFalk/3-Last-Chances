@@ -16,7 +16,9 @@ public class Area_AnimaIsland
         EventManager.DestructibleDestroyed.AddListener(CheckDestructibleDestroyed);
         Area.Instance.transform.Find("Cycle" + SaveFile.Instance.Cycle).gameObject.SetActive(true);
         if(SaveFile.Instance.Cycle == 1) {
-            Utils.GetUnit("Iris1").AddEffect(new Effect_CannotBeDefeated(false, new(Utils.GetUnit("Iris1"))) {IsRemovable=false});
+            Utils.GetUnit("Iris1").AddEffect(new Effect_CannotBeDefeated(false, new(Utils.GetUnit("Iris1"))) {
+                IsRemovable = false
+            });
             Area.ComponentInstance.AutoRestAfterCombat = true;
             StartAllDuels();
             EventManager.AbilityWasRipostedOrCountered.AddListener(CheckAbilityCountered);
@@ -43,7 +45,7 @@ public class Area_AnimaIsland
     public static void StartAllDuels() {
         foreach(Unit u in Utils.GetAllUnits()) {
             if(u.Faction == Constants.Faction.DuelingEachOther) {
-                u.AddEffect(new Effect_ChangeStat(u.Health, new(u)) {RegenerationPercentageModifier = 15, Identifier="DuelRegeneration"});
+                u.AddEffect(new Effect_ChangeStat(u.Health, new(u)) {RegenerationPercentageAmount = 15, Identifier="DuelRegeneration"});
                 u.CurrentTarget = u.GetClosestValidTarget();
             }
         }
@@ -238,11 +240,11 @@ public class Area_AnimaIsland
         Utils.GetUnit("Unit_AnimaHound_2").gameObject.SetActive(false);
         Utils.GetUnit("Unit_AnimaHound_3").gameObject.SetActive(false);
         Utils.GetUnit("Unit_AnimaHound_4").gameObject.SetActive(false);
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.Health, new (Iris)) {PercentageModifier = 60});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.StaggerBar, new (Iris)) {PercentageModifier = 40});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightInjury, new (Iris)) {PercentageModifier = 50});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightStagger, new (Iris)) {PercentageModifier = 50});
-        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightAttackSpeed, new (Iris)) {PercentageModifier = 20});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.Health, new (Iris)) {PercentageAmount = 60});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.StaggerBar, new (Iris)) {PercentageAmount = 40});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightInjury, new (Iris)) {PercentageAmount = 50});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightStagger, new (Iris)) {PercentageAmount = 50});
+        IrisBossBuffs.Add(new Effect_ChangeStat(Iris.LightAttackSpeed, new (Iris)) {PercentageAmount = 20});
         foreach(Effect_ChangeStat eff in IrisBossBuffs) {
             Iris.AddEffect(eff);
         }

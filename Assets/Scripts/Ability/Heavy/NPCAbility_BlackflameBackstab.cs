@@ -11,7 +11,7 @@ public class NPCAbility_BlackflameBackstab : Ability {
     public NPCAbility_BlackflameBackstab(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.2f;
         AddCustomSound("Teleport", "Fire/FlameTeleport", 0.9f);
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CounteredByBackstep, AbilityProperty.CounteredByRiposte, AbilityProperty.CounteredByBlock, AbilityProperty.CountersBackstep});
+        Properties.AddRange(new List<Ability.Property> {Property.ImmuneToFlinch, Property.CounteredByBackstep, Property.CounteredByRiposte, Property.CounteredByBlock, Property.CountersBackstep});
         DamageSources.Add(new DamageSource(400, 400, Constants.DamageType.Heavy));
     }
 
@@ -23,8 +23,8 @@ public class NPCAbility_BlackflameBackstab : Ability {
         }
         _attackFromRightSide = User.CurrentTarget.Actions.IsFlipped;
         if(SaveFile.Instance != null && SaveFile.Instance.CurrentMission != null && SaveFile.Instance.CurrentMission is Mission_Ignis3) {
-            _coltenSpeedUp = new(User.HeavyAttackSpeed, new(this)) {PercentageModifier = 50 - (SaveFile.Instance.IgnisEnergy / 20)};
-            _coltenPowerUp = new(User.HeavyInjury, new(this)) {PercentageModifier = 200 - (SaveFile.Instance.IgnisEnergy / 5)};
+            _coltenSpeedUp = new(User.HeavyAttackSpeed, new(this)) {PercentageAmount = 50 - (SaveFile.Instance.IgnisEnergy / 20)};
+            _coltenPowerUp = new(User.HeavyInjury, new(this)) {PercentageAmount = 200 - (SaveFile.Instance.IgnisEnergy / 5)};
             User.AddEffect(_coltenSpeedUp);
             User.AddEffect(_coltenPowerUp);
         }

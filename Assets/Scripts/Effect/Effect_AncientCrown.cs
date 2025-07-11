@@ -33,7 +33,7 @@ public class Effect_AncientCrown : Effect {
     }
 
     public void AddBuffs() {
-        CDRBuff = new Effect_ChangeStat(Player.Instance.CooldownReduction, SourceOfEffect) {PercentageModifier = FirstParameter};
+        CDRBuff = new Effect_ChangeStat(Player.Instance.CooldownReduction, SourceOfEffect) {PercentageAmount = FirstParameter};
         Player.Instance.AddEffect(CDRBuff);
     }
 }

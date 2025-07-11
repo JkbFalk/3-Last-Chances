@@ -12,18 +12,6 @@ using UnityEngine.UI;
 
 public class NotificationController : MonoBehaviour
 {
-    private static TextMeshProUGUI _inGameDialogueTextMeshPro;
-    public static TextMeshProUGUI InGameDialogueTextMeshPro
-    {
-        get
-        {
-            if (_inGameDialogueTextMeshPro == null)
-            {
-                _inGameDialogueTextMeshPro = CanvasElements.UICanvas.InGameDialogue.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-            }
-            return _inGameDialogueTextMeshPro;
-        }
-    }
     private static NotificationController _instance = null;
     public static NotificationController Instance
     {
@@ -50,7 +38,7 @@ public class NotificationController : MonoBehaviour
                 if(string_params != null) {
                     notification.transform.Find("Background/Text").GetComponent<LabelInitializer>().string_params = string_params;
                 }
-                notification.transform.SetParent(i == 1 ? CanvasElements.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? CanvasElements.MenuCanvas.Notifications.transform : CanvasElements.UICanvas.Notifications.transform);
+                notification.transform.SetParent(i == 1 ? GameController.Objects.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? MenuManager.Objects.Notifications.transform : UIManager.Objects.NotificationList.transform);
                 notification.transform.Find("Background/Text").GetComponent<LabelInitializer>().SetLabel(Label.ContainsKey(text) ? ("{" + text + "}") : text);
                 if(i == 0) {
                     MenuManager.Instance.AddHistoryEntry(notification.transform.Find("Background/Text").GetComponent<TextMeshProUGUI>().text);
@@ -84,8 +72,8 @@ public class NotificationController : MonoBehaviour
     }
 
     public static void RefreshNotificationsLayout(GameObject fill) {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(CanvasElements.MenuCanvas.Notifications.GetComponent<RectTransform>());
-        LayoutRebuilder.ForceRebuildLayoutImmediate(CanvasElements.UICanvas.Notifications.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(MenuManager.Objects.Notifications.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(UIManager.Objects.NotificationList.GetComponent<RectTransform>());
         if(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect && SceneManager.GetActiveScene().name == "MissionSelect") {
             LayoutRebuilder.ForceRebuildLayoutImmediate(Utils.GetSceneRootObject("Mission Select").Find("Notifications/List").GetComponent<RectTransform>());
         }
@@ -109,7 +97,7 @@ public class NotificationController : MonoBehaviour
             dialogue.SpeakerPortrait = String.IsNullOrWhiteSpace(dialogue.SpeakerPortrait) && dialogue.SpeakerUnit != null ? dialogue.SpeakerUnit.Portrait : dialogue.SpeakerPortrait;
             DialogueQueue.Add(dialogue);
         }
-        CanvasElements.UICanvas.InGameDialogue.SetActive(true);
+        UIManager.Objects.InGameDialogueHideOrShow.gameObject.SetActive(true);
         if(DialogueQueue.Count == 1) {
             DisplayDialogueNotification(DialogueQueue[0]);
         }
@@ -119,17 +107,17 @@ public class NotificationController : MonoBehaviour
     }
 
     private static void RevealExtraNotificationCharacter(string dialogue_id) {
-        if(DialogueQueue.Count == 0 || InGameDialogueTextMeshPro.maxVisibleCharacters >= InGameDialogueTextMeshPro.text.Length || dialogue_id != DialogueQueue[0].Id) {
+        if(DialogueQueue.Count == 0 || UIManager.Objects.InGameDialogueText.maxVisibleCharacters >= UIManager.Objects.InGameDialogueText.text.Length || dialogue_id != DialogueQueue[0].Id) {
             if(DialogueQueue.Count > 0 && dialogue_id == DialogueQueue[0].Id) {
-                InGameDialogueTextMeshPro.maxVisibleCharacters = InGameDialogueTextMeshPro.text.Length;
+                UIManager.Objects.InGameDialogueText.maxVisibleCharacters = UIManager.Objects.InGameDialogueText.text.Length;
             }
             return;
         }
-        InGameDialogueTextMeshPro.maxVisibleCharacters++;
-        string currentChar = Utils.ConvertCharacterFromForeignLanguages(InGameDialogueTextMeshPro.text[InGameDialogueTextMeshPro.maxVisibleCharacters - 1].ToString().ToUpper());
+        UIManager.Objects.InGameDialogueText.maxVisibleCharacters++;
+        string currentChar = Utils.ConvertCharacterFromForeignLanguages(UIManager.Objects.InGameDialogueText.text[UIManager.Objects.InGameDialogueText.maxVisibleCharacters - 1].ToString().ToUpper());
         if(Constants.VOWELS.Contains(currentChar)) {
-            CanvasElements.AudioListener.pitch = (DialogueQueue[0].SpeakerUnit == null ? 1 : DialogueQueue[0].SpeakerUnit.VoicePitch) + UnityEngine.Random.Range(-0.1f, 0.1f);
-            CanvasElements.AudioListener.PlayOneShot(GameController.Instance.SpeechBeepClips[(DialogueQueue[0].SpeakerUnit == null ? "Player" : DialogueQueue[0].SpeakerUnit is Player ? "Player" : DialogueQueue[0].SpeakerUnit.IsMale ? "Male" : "Female") + currentChar]);
+            GameController.Objects.AudioListener.pitch = (DialogueQueue[0].SpeakerUnit == null ? 1 : DialogueQueue[0].SpeakerUnit.VoicePitch) + UnityEngine.Random.Range(-0.1f, 0.1f);
+            GameController.Objects.AudioListener.PlayOneShot(GameController.Instance.SpeechBeepClips[(DialogueQueue[0].SpeakerUnit == null ? "Player" : DialogueQueue[0].SpeakerUnit is Player ? "Player" : DialogueQueue[0].SpeakerUnit.IsMale ? "Male" : "Female") + currentChar]);
         }
         GameController.Instance.WaitAndRunMethodRealtime(0.03f / Settings.Instance.DialogueTextSpeed * 10, RevealExtraNotificationCharacter, dialogue_id);
     }
@@ -138,7 +126,7 @@ public class NotificationController : MonoBehaviour
         if(DialogueQueue.Count > 0) {
             DialogueQueue[0].FramesRemaining--;
             if(DialogueQueue[0].FramesRemaining == 10) {
-                CanvasElements.UICanvas.InGameDialogue.GetComponent<HideOrShowOverTime>().HideOverTimeFromFull(0.15f);
+                UIManager.Objects.InGameDialogueHideOrShow.HideOverTimeFromFull(0.15f);
             }
             else if(DialogueQueue[0].FramesRemaining <= 0) {
                 DialogueQueue.RemoveAt(0);
@@ -146,7 +134,7 @@ public class NotificationController : MonoBehaviour
                     DisplayDialogueNotification(DialogueQueue[0]);
                 }
                 else {
-                    CanvasElements.UICanvas.InGameDialogue.SetActive(false);
+                    UIManager.Objects.InGameDialogueHideOrShow.gameObject.SetActive(false);
                 }
             }
         }
@@ -154,13 +142,13 @@ public class NotificationController : MonoBehaviour
 
     private static void DisplayDialogueNotification(InGameDialogue dialogue) {
         MenuManager.Instance.AddHistoryEntry(dialogue);
-        CanvasElements.UICanvas.InGameDialogue.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = Label.ContainsKey(dialogue.Id) ? Label.Get(dialogue.Id) : dialogue.Id;
-        dialogue.FramesRemaining = (int)(100 + CanvasElements.UICanvas.InGameDialogue.transform.Find("Text").GetComponent<TextMeshProUGUI>().text.Length * 4f / (Settings.Instance.DialogueTextSpeed * 0.2f));
-        CanvasElements.UICanvas.InGameDialogue.transform.Find("Portrait/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/Face Portrait/" + (dialogue.SpeakerPortrait == "Default" || String.IsNullOrWhiteSpace(dialogue.SpeakerPortrait) ? "Default_Male" : dialogue.SpeakerPortrait), typeof(Sprite)) as Sprite;
-        CanvasElements.UICanvas.InGameDialogue.transform.Find("Portrait/Title/Text").GetComponent<TextMeshProUGUI>().text = Utils.GetNameForUnit(dialogue.SpeakerUnit, dialogue.SpeakerName);
-        CanvasElements.UICanvas.InGameDialogue.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(0.4f);
+        UIManager.Objects.InGameDialogueText.text = Label.ContainsKey(dialogue.Id) ? Label.Get(dialogue.Id) : dialogue.Id;
+        dialogue.FramesRemaining = (int)(100 + UIManager.Objects.InGameDialogueText.text.Length * 4f / (Settings.Instance.DialogueTextSpeed * 0.2f));
+        UIManager.Objects.InGameDialoguePortraitImage.sprite = Resources.Load("Sprites/Face Portrait/" + (dialogue.SpeakerPortrait == "Default" || String.IsNullOrWhiteSpace(dialogue.SpeakerPortrait) ? "Default_Male" : dialogue.SpeakerPortrait), typeof(Sprite)) as Sprite;
+        UIManager.Objects.InGameDialoguePortraitTitle.text = Utils.GetNameForUnit(dialogue.SpeakerUnit, dialogue.SpeakerName);
+        UIManager.Objects.InGameDialogueHideOrShow.ShowOverTimeFromZero(0.4f);
         if(Settings.Instance.DialogueTextSpeed < Constants.MAX_DIALOGUE_SPEED) {
-            InGameDialogueTextMeshPro.maxVisibleCharacters = 0;
+            UIManager.Objects.InGameDialogueText.maxVisibleCharacters = 0;
             RevealExtraNotificationCharacter(DialogueQueue[0].Id);
         }
     }
@@ -174,7 +162,7 @@ public class NotificationController : MonoBehaviour
     public static void ShowNotificationWithGraphic(string label, Sprite graphic, List<string> string_params = null) {
         for(int i = 0; i < (GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene ? 2 : 1); i++) {
             GameObject notification = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_NotificationWithGraphic")) as GameObject;
-            notification.transform.SetParent(i == 1 ? CanvasElements.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? CanvasElements.MenuCanvas.Notifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect ? Utils.GetSceneRootObject("Mission Select").Find("Notifications/List").transform : CanvasElements.UICanvas.Notifications.transform);
+            notification.transform.SetParent(i == 1 ? GameController.Objects.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? MenuManager.Objects.Notifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect ? Utils.GetSceneRootObject("Mission Select").Find("Notifications/List").transform : UIManager.Objects.NotificationList.transform);
             if(string_params != null) {
                 notification.transform.Find("Background/Text").GetComponent<LabelInitializer>().string_params = string_params;
             }
@@ -205,7 +193,7 @@ public class NotificationController : MonoBehaviour
         {
             for(int i = 0; i < (GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene ? 2 : 1); i++) {
                 GameObject notification = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_NotificationWithGraphic")) as GameObject;
-                notification.transform.SetParent(i == 1 ? CanvasElements.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? CanvasElements.MenuCanvas.Notifications.transform : CanvasElements.UICanvas.Notifications.transform);
+                notification.transform.SetParent(i == 1 ? GameController.Objects.DialogueNotifications.transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? MenuManager.Objects.Notifications.transform : UIManager.Objects.NotificationList.transform);
                 string start_label = "{";
                 
                 if (item.Type == Constants.ItemType.Heavy || item.Type == Constants.ItemType.Light || item.Type == Constants.ItemType.Ranged)

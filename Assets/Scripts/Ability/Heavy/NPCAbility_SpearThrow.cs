@@ -6,7 +6,7 @@ public class NPCAbility_SpearThrow: Ability {
 
     public NPCAbility_SpearThrow(Unit ability_user) : base(ability_user) {
         AddCustomSound("Hit", "Explosion/Explosion1", 0.6f);
-        DamageSources.Add(new DamageSource(100, 500, Constants.DamageType.Ranged) {Knockback=1000});
+        DamageSources.Add(new DamageSource(100, 500, Constants.DamageType.Ranged) {KnockbackInMeters=10f});
     }
 
     public override void ExtraBehaviourOnHit(Damage damage)

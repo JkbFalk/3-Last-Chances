@@ -17,7 +17,7 @@ public class NPCAbility_TripleHeavySlash : Ability {
 
     public override void CallAbilityEvent1()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(_stage == 0 ? 100 : _stage == 1 ? 70 : 40, 45, 20);
+        ChaseCurrentTargetAtGivenDegreeAngle(_stage == 0 ? 2 : _stage == 1 ? 1.4f : 0.7f, 45);
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

@@ -8,10 +8,10 @@ public class NPCAbility_FireAwakening : Ability {
     public static AbilityFamily Family = AbilityFamily.Ignis;
     public NPCAbility_FireAwakening(Unit ability_user) : base(ability_user) {
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
-        DamageSources.Add(new DamageSource(100, 300, Constants.DamageType.Magic) {Knockback = 300});
+        DamageSources.Add(new DamageSource(100, 300, Constants.DamageType.Magic) {KnockbackInMeters = 3f});
         WaitTimeBeforeNextAction = 0.1f;
         AddCustomSound("Use", "Fire/Fire14", 0.55f);
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
     }
 

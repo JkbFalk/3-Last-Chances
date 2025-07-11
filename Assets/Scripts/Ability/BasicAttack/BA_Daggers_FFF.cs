@@ -7,27 +7,23 @@ public class BA_Daggers_FFF : BasicAttack {
     }
     public override void CallAbilityEvent1()
     {
-        if (HoldingMainButton && ButtonPressedCounter == 3 && BA_Daggers_S.CheckIfAnyValidTargetInRange())
+        if (PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS  && BA_Daggers_S.CheckIfAnyValidTargetInRange())
         {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Daggers_S(User);
         }
-        else if (ButtonPressedCounter > 3)
+        else if (PlayerControls.BasicAttackButtonPressCounter > 3)
         {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Daggers_FFFF(User);
-            ((BA_Daggers_FFFF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
-            ((BA_Daggers_FFFF)User.Actions.CurrentAbilityBeingPerformed).ButtonPressedCounter = ButtonPressedCounter;
         }
         CanFollowUpAttack = true;
     }
 
-    public override void OnMainButtonPress()
+    public override void OnBasicAttackButtonPress()
     {
-        base.OnMainButtonPress();
+        base.OnBasicAttackButtonPress();
         if (CanFollowUpAttack)
         {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Daggers_FFFF(User);
-            ((BA_Daggers_FFFF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
-            ((BA_Daggers_FFFF)User.Actions.CurrentAbilityBeingPerformed).ButtonPressedCounter = ButtonPressedCounter;
         }
     }
 }

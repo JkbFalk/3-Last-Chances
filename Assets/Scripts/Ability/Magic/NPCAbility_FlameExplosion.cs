@@ -9,9 +9,9 @@ public class NPCAbility_FlameExplosion : Ability {
     public NPCAbility_FlameExplosion(Unit ability_user) : base(ability_user) {
         AddCustomSound("Buildup", "Fire/DynamiteIgnite", 0.6f);
         AddCustomSound("Shot", "Fire/FireExplosion1", 1.0f);
-        DamageSources.Add(new DamageSource(350, 300, Constants.DamageType.Ranged, "Stronger AoE") {Knockback = 1250});
-        DamageSources.Add(new DamageSource(200, 150, Constants.DamageType.Ranged, "Weaker AoE") {Knockback = 500});
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.Unstoppable});
+        DamageSources.Add(new DamageSource(350, 300, Constants.DamageType.Ranged, "Stronger AoE") {KnockbackInMeters = 12.5f});
+        DamageSources.Add(new DamageSource(200, 150, Constants.DamageType.Ranged, "Weaker AoE") {KnockbackInMeters = 5f});
+        Properties.AddRange(new List<Ability.Property> {Property.ImmuneToFlinch, Property.Unstoppable});
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 1f;

@@ -10,6 +10,6 @@ public class Boots_Executioner : Item
         Set = ItemSetEnum.Executioner;
         Type = Constants.ItemType.Boots;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("TakedownsGrantEmpowered")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionAgainstNonBosses")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorAgainstNonBosses")};
     }
 }

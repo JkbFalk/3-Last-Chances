@@ -5,7 +5,7 @@ public class Daggers_BackstepCounter : Counter
 {
 
     public Daggers_BackstepCounter(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(Constants.INJURY_PERCENTAGE_FROM_COUNTER / 2, 0, Constants.DamageType.Light) {Knockback = 25});
+        DamageSources.Add(new DamageSource(Constants.INJURY_PERCENTAGE_FROM_COUNTER / 2, 0, Constants.DamageType.Light) {KnockbackInMeters = 0.25f});
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
     }
 

@@ -18,7 +18,10 @@ using UnityEngine.UI;
 
 public class GameController : WorldObject
 {
-    public int SaveSlotIndexToDelete;
+    
+    public bool ConfirmPromptActive = false;
+    public Action FunctionToExecuteOnConfirm;
+    public Action<int> ActionToExecuteOnPromptConfirm;
     public Dictionary<string, AudioClip> SpeechBeepClips;
     public bool PlayBossMusicDuringNextCombat = false;
     private bool _interrruptMusicOnDeath = true;
@@ -28,6 +31,7 @@ public class GameController : WorldObject
             _interrruptMusicOnDeath = value;
         }
     }
+    public AudioSource AudioSource;
     public List<SortingOrder> DynamicSortingOrders = new();
     private static GameController _instance = null;
     public static GameController Instance
@@ -77,6 +81,11 @@ public class GameController : WorldObject
     public void WaitAndRunMethodRealtime(float seconds, Action<string[]> nameOfMethodToRun, string[] string_params)
     {
         StartCoroutine(WaitAndRunMethodCoroutineRealtime(seconds, () => nameOfMethodToRun(string_params)));
+    }
+
+    public void WaitAndRunMethodRealtime(float seconds, Action<object[]> nameOfMethodToRun, object[] any_params)
+    {
+        StartCoroutine(WaitAndRunMethodCoroutineRealtime(seconds, () => nameOfMethodToRun(any_params)));
     }
 
 
@@ -146,6 +155,12 @@ public class GameController : WorldObject
     {
         yield return new WaitForSecondsRealtime(seconds);
         nameOfMethodToRun(string_params);
+    }
+
+    private IEnumerator WaitAndRunMethodCoroutineRealtime(float seconds, Action<object[]> nameOfMethodToRun, object[] any_params)
+    {
+        yield return new WaitForSecondsRealtime(seconds);
+        nameOfMethodToRun(any_params);
     }
 
     private IEnumerator WaitAndRunMethodCoroutineRealtime(float seconds, Action<int> nameOfMethodToRun, int param)
@@ -250,14 +265,16 @@ public class GameController : WorldObject
             }
             Utils.CreateAuditLog("Changing gameplay mode: " + _gameplayMode + " -> " + value);
             _gameplayMode = value;
-            CanvasElements.SetActiveOnCanvasGroup(CanvasElements.UICanvasObject, false);
-            CanvasElements.SetActiveOnCanvasGroup(CanvasElements.MenuCanvasObject, false);
-            CanvasElements.SetActiveOnCanvasGroup(CanvasElements.ShopCanvasObject, false);
+            bool isInMissionSelect = SceneManager.GetActiveScene().name == "MissionSelect";
+            Utils.SetActiveOnCanvasGroup(Utils.CanvasType.UI, false);
+            Utils.SetActiveOnCanvasGroup(Utils.CanvasType.Menu, false);
+            Utils.SetActiveOnCanvasGroup(Utils.CanvasType.Shop, false);
+            UIManager.Objects.PauseScreen.gameObject.SetActive(false);
             if (_gameplayMode == Constants.GameplayMode.Regular)
             {
                 Time.timeScale = DefaultTimeSpeed;
-                CanvasElements.SetActiveOnCanvasGroup(CanvasElements.UICanvasObject, true);
-                GameController.Instance.PlayerInput.SwitchCurrentActionMap("Regular");
+                Utils.SetActiveOnCanvasGroup(Utils.CanvasType.UI, true);
+                PlayerInput.SwitchCurrentActionMap("Regular");
                 CameraController.Instance.CenteredOnObject = null;
                 CameraController.Instance.transform.position = Player.Instance.transform.position;
                 ToggleScreenNotifications(true);
@@ -266,7 +283,7 @@ public class GameController : WorldObject
             {
                 DefaultTimeSpeed = 1;
                 Time.timeScale = 1;
-                GameController.Instance.PlayerInput.SwitchCurrentActionMap("Dialogue");
+                PlayerInput.SwitchCurrentActionMap("Dialogue");
                 ToggleScreenNotifications(true);
                 Player.Instance.Actions.TryingToMoveInDirection.Clear();
                 Player.Instance.Rigidbody2D.velocity = Vector2.zero;
@@ -275,48 +292,65 @@ public class GameController : WorldObject
                 {
                     Player.Instance.UnitAI.NavMeshAgent.enabled = true;
                 }
-                GameController.Instance.InterruptMusicOnDeath = true;
+                InterruptMusicOnDeath = true;
             }
             else if (_gameplayMode == Constants.GameplayMode.InMenu)
             {
                 Time.timeScale = 0;
-                CanvasElements.SetActiveOnCanvasGroup(CanvasElements.MenuCanvasObject, true);
+                Utils.SetActiveOnCanvasGroup(Utils.CanvasType.Menu, true);
                 MenuManager.Instance.SelectedSubMenu = MenuManager.Instance.SelectedSubMenu;
                 ToggleScreenNotifications(false);
-                GameController.Instance.PlayerInput.SwitchCurrentActionMap("Menu");
-                Utils.DestroyAllChildren(CanvasElements.MenuCanvas.Notifications.transform);
-                MenuManager.Instance.transform.Find("Overview Window/Effects").gameObject.SetActive(false);
+                PlayerInput.SwitchCurrentActionMap("Menu");
+                Utils.DestroyAllChildren(MenuManager.Objects.Notifications.transform);
+                MenuManager.Instance.transform.Find("Character Window/Effects").gameObject.SetActive(false);
                 int count = Player.Instance.CurrentEffects.Where(effect => effect.ShowsInMenu).ToArray().Length;
-                MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
-                MenuManager.Instance.transform.Find("Overview Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+                MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+                MenuManager.Instance.transform.Find("Character Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+                if(MenuManager.Instance.SelectedSubMenu == 0) {
+                    MenuManager.Objects.CharacterSheet.gameObject.SetActive(true);
+                } 
+            }
+            else if (_gameplayMode == Constants.GameplayMode.Paused)
+            {
+                Time.timeScale = 0;
+                PlayerInput.SwitchCurrentActionMap("Menu");
+                ToggleScreenNotifications(false);
+                if(isInMissionSelect) {
+                    Utils.GetSceneRootObject("Mission Select").Find("Pause Screen").gameObject.SetActive(true);
+                }
+                else {
+                    Utils.SetActiveOnCanvasGroup(Utils.CanvasType.UI, true);
+                    UIManager.Objects.PauseScreen.gameObject.SetActive(true);
+                }
             }
             else if (_gameplayMode == Constants.GameplayMode.InfoPrompt)
             {
                 Time.timeScale = 0;
                 ToggleScreenNotifications(false);
-                GameController.Instance.PlayerInput.SwitchCurrentActionMap("Menu");
+                PlayerInput.SwitchCurrentActionMap("Menu");
             }
             else if (_gameplayMode == Constants.GameplayMode.Shopping)
             {
                 Time.timeScale = 0;
-                CanvasElements.SetActiveOnCanvasGroup(CanvasElements.ShopCanvasObject, true);
+                Utils.SetActiveOnCanvasGroup(Utils.CanvasType.Shop, true);
                 ToggleScreenNotifications(false);
-                GameController.Instance.PlayerInput.SwitchCurrentActionMap("Menu");
+                PlayerInput.SwitchCurrentActionMap("Menu");
             }
             else if (_gameplayMode == Constants.GameplayMode.MissionSelect)
             {
                 ResetGameplay();
                 Time.timeScale = 1;
-                if (SceneManager.GetActiveScene().name != "MissionSelect")
+                if (!isInMissionSelect)
                 {
                     EventManager.FinishedLoadingArea.AddListener(FinishEnteringMissionSelect);
                     Utils.MoveIntoArea(true, "MissionSelect");
                 }
                 else
                 {
+                    Utils.GetSceneRootObject("Mission Select").Find("Pause Screen").gameObject.SetActive(false);
                     FinishEnteringMissionSelect();
                 }
-                GameController.Instance.InterruptMusicOnDeath = true;
+                InterruptMusicOnDeath = true;
             }
             else if (_gameplayMode == Constants.GameplayMode.OnStartScreen)
             {
@@ -331,7 +365,7 @@ public class GameController : WorldObject
                 {
                     FinishEnteringStartScreen();
                 }
-                GameController.Instance.InterruptMusicOnDeath = true;
+                InterruptMusicOnDeath = true;
             }
             if (Player.Instance.UnitAI != null)
             {
@@ -343,40 +377,39 @@ public class GameController : WorldObject
                     Player.Instance.GetComponent<NavMeshObstacle>().enabled = Player.Instance.InCombat && Player.Instance.CollisionTurnedOn;
                 }
             }
-            GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Save").GetComponent<Button>().interactable = SaveFile.Instance.CheckIfCurrentlyCanSave();
-            CameraController.Instance.Camera.enabled = _gameplayMode != Constants.GameplayMode.MissionSelect;
-            if(SceneManager.GetActiveScene().name == "MissionSelect") {
-                Utils.GetSceneRootObject("Mission Select").Find("Camera").GetComponent<Camera>().enabled = _gameplayMode == Constants.GameplayMode.MissionSelect;
+            transform.Find("UI/Pause Screen/Buttons/Save").GetComponent<Button>().interactable = SaveFile.Instance.CheckIfCurrentlyCanSave();
+            CameraController.Instance.Camera.enabled = !isInMissionSelect;
+            if(isInMissionSelect) {
+                Utils.GetSceneRootObject("Mission Select").Find("Camera").GetComponent<Camera>().enabled = isInMissionSelect;
                 Player.Instance.transform.position = new Vector2(-100, -100);
             }
-            CanvasElements.UICanvas.Notifications.transform.parent.GetComponent<CanvasGroup>().alpha = (_gameplayMode == Constants.GameplayMode.OnStartScreen ? 0 : 1);
+            UIManager.Objects.NotificationList.transform.parent.GetComponent<CanvasGroup>().alpha = (_gameplayMode == Constants.GameplayMode.OnStartScreen ? 0 : 1);
         }
     }
 
-    public void OneFifthSecondElapsedInGame() {
-        EventManager.OneFifthSecondElapsedInGame.Invoke();
-        WaitAndRunMethod(0.2f, OneFifthSecondElapsedInGame);
+    public void OneTenthSecondElapsedInGame() {
+        EventManager.OneTenthSecondElapsedInGame.Invoke();
+        WaitAndRunMethod(0.1f, OneTenthSecondElapsedInGame);
     }
 
-    public void OneFifthSecondElapsedRealtime() {
-        EventManager.OneFifthSecondElapsedRealtime.Invoke();
-        WaitAndRunMethodRealtime(0.2f, OneFifthSecondElapsedRealtime);
+    public void OneTenthSecondElapsedRealtime() {
+        EventManager.OneTenthSecondElapsedRealtime.Invoke();
+        WaitAndRunMethodRealtime(0.1f, OneTenthSecondElapsedRealtime);
     }
 
     public void ChooseSurvivalType(int option) {
         Mission_CompleteSurvival mission = null;
-        Constants.Difficulty difficulty = SurvivalController.StoryModeSurvival ? SaveFile.Instance.Difficulty : Settings.Instance.DefaultDifficulty;
         if(SurvivalController.StoryModeSurvival) {
             mission = (Mission_CompleteSurvival)SaveFile.Instance.CurrentMission;
         }
-        GameController.Instance.CurrentSaveFile = new SaveFile(SurvivalController.StoryModeSurvival ? SaveFile.Instance.Id : "StartScreen", SaveFile.SaveFileTypeEnum.Survival);
+        CurrentSaveFile = new SaveFile(SurvivalController.StoryModeSurvival ? SaveFile.Instance.Id : "StartScreen", SaveFile.SaveFileTypeEnum.Survival);
         if(SurvivalController.StoryModeSurvival) {
             SaveFile.Instance.CurrentMission = mission;   
         }
         if(option == 0) {
             SaveFile.Instance.SkillTreeSurvivalType = false;
         }
-        SaveFile.Instance.Difficulty = difficulty;
+        SaveFile.Instance.Difficulty = Constants.Difficulty.Regular;  
         if(SurvivalController.StoryModeSurvival) {
             Utils.GetSceneRootObject("Mission Select").transform.Find("Survival Type Selection").gameObject.SetActive(false);
         }
@@ -384,18 +417,17 @@ public class GameController : WorldObject
             Utils.GetSceneRootObject("Start Screen").transform.Find("Survival Type Selection").gameObject.SetActive(false);
         }
         SurvivalController.StartSurvivalMode();
-        GameController.Instance.CurrentSaveFile.InitializeSaveFile();
+        CurrentSaveFile.InitializeSaveFile();
     }
 
     public void FinishEnteringStartScreen()
     {
         ToggleScreenNotifications(false);
-        Utils.GetSceneRootObject("Start Screen").GetComponent<StartScreen>().ToggleStageSelect(false);
-        GameController.Instance.PlayerInput.SwitchCurrentActionMap("Menu");
-        Utils.DestroyAllChildren(CanvasElements.UICanvas.Notifications.transform);
-        CanvasElements.UICanvas.InGameDialogue.SetActive(false);
-        Utils.GetSceneRootObject("Start Screen").Find("Screen/Buttons/Continue Survival Mode").GetComponent<Button>().interactable = ES3.FileExists("Survival_StartScreen.es3");
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(false);
+        PlayerInput.SwitchCurrentActionMap("Menu");
+        Utils.DestroyAllChildren(UIManager.Objects.NotificationList.transform);
+        UIManager.Objects.InGameDialogueHideOrShow.gameObject.SetActive(false);
+        //Utils.GetSceneRootObject("Start Screen").Find("Screen/Buttons/Continue Survival Mode").GetComponent<Button>().interactable = ES3.FileExists("Survival_StartScreen.es3");
+        UIManager.Objects.EscapeMissionButton.gameObject.SetActive(false);
         Utils.GetSceneRootObject("Start Screen").GetComponent<StartScreen>().InitializeStartScreen();
         Utils.SetDefaultMusic("Start Screen");
     }
@@ -407,14 +439,14 @@ public class GameController : WorldObject
         Utils.GetSceneRootObject("Mission Select").Find("Level").GetComponent<Slider>().value = (float)SaveFile.Instance.ExperiencePoints / (float)SaveFile.Instance.GetExperiencePointsNeededToLevelUp();
         Utils.GetSceneRootObject("Mission Select").Find("Money").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedInteger(SaveFile.Instance.Money);
         Utils.GetSceneRootObject("Mission Select").Find("Week").GetComponent<LabelInitializer>().SetLabel(String.Format(Label.Get("SaveFileWeek"), new string[] { SaveFile.Instance.Week.ToString() }));
-        CanvasElements.UICanvasObject.transform.Find("Week").GetComponent<LabelInitializer>().SetLabel(String.Format(Label.Get("SaveFileWeek"), new string[] { SaveFile.Instance.Week.ToString() }));
+        UIManager.Objects.WeekDisplayLabel.SetLabel(String.Format(Label.Get("SaveFileWeek"), new string[] { SaveFile.Instance.Week.ToString() }));
         ToggleScreenNotifications(true);
-        GameController.Instance.PlayerInput.SwitchCurrentActionMap("Mission Select");
+        PlayerInput.SwitchCurrentActionMap("Mission Select");
         MenuManager.Instance.PlayMissionSelectMusic();
         Player.ResetPlayer();
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(false);
+        UIManager.Objects.EscapeMissionButton.gameObject.SetActive(false);
         MenuManager.Instance.UpdateMissionList();
-        GameController.Instance.WaitAndRunMethodRealtime(5f, MenuManager.Instance.SelectTopmostMission);
+        WaitAndRunMethodRealtime(5f, MenuManager.Instance.SelectTopmostMission);
         SaveFile.Instance.SetCorrectCycle();
     }
 
@@ -429,8 +461,8 @@ public class GameController : WorldObject
                 ((UnityEventBase)unityEvent.GetValue(null)).RemoveAllListeners();
             }
         }
-        OneFifthSecondElapsedRealtime();
-        OneFifthSecondElapsedInGame();
+        OneTenthSecondElapsedRealtime();
+        OneTenthSecondElapsedInGame();
     }
 
     public void ResetGameplay()
@@ -442,7 +474,7 @@ public class GameController : WorldObject
             Player.Instance.gameObject.tag = "Unit";
             MonoBehaviour.Destroy(Player.Instance.gameObject);
         }
-        foreach (Transform child in CanvasElements.UICanvas.ObjectivesDisplay.transform)
+        foreach (Transform child in UIManager.Objects.ObjectivesDisplay.transform)
         {
             MonoBehaviour.Destroy(child.gameObject);
         }
@@ -468,16 +500,16 @@ public class GameController : WorldObject
 
     public void Update()
     {
-        CanvasElements.AudioListener.transform.position = Player.Instance.transform.position;
+        Objects.AudioListener.transform.position = Player.Instance.transform.position;
         if (SaveFile.Instance?.TimePlayedInSeconds != null)
         {
             SaveFile.Instance.TimePlayedInSeconds += Time.unscaledDeltaTime;
         }
-        if (CanvasElements.UICanvas.FPSCounter.activeSelf)
+        if (UIManager.Objects.FPSCounter.activeSelf)
         {
             if (counter == null)
             {
-                counter = CanvasElements.UICanvas.FPSCounter.GetComponent<TextMeshProUGUI>();
+                counter = UIManager.Objects.FPSCounter.GetComponent<TextMeshProUGUI>();
             }
             if (checkIfUpdateFPS == 50)
             {
@@ -493,10 +525,10 @@ public class GameController : WorldObject
 
     public void ToggleScreenNotifications(bool show)
     {
-        CanvasElements.TransitionScreen.BlackScreen.SetActive(show);
-        CanvasElements.TransitionScreen.UpperText.SetActive(show);
-        CanvasElements.TransitionScreen.LowerText.SetActive(show);
-        CanvasElements.TransitionScreen.AreaName.SetActive(show);
+        Objects.TransitionBlackScreen.gameObject.SetActive(show);
+        Objects.TransitionUpperText.gameObject.SetActive(show);
+        Objects.TransitionLowerText.gameObject.SetActive(show);
+        Objects.TransitionAreaName.SetActive(show);
     }
 
     public void SelectObject(GameObject gameobject)
@@ -511,7 +543,7 @@ public class GameController : WorldObject
 
     public void ToggleSavePanel(bool open)
     {
-        GameController.Instance.transform.Find("Save or Load").gameObject.SetActive(open);
+        transform.Find("Save or Load").gameObject.SetActive(open);
         if (!open)
         {
             if(Settings.Instance.ControlScheme == "Gamepad") {
@@ -519,49 +551,66 @@ public class GameController : WorldObject
             }
             return;
         }
-        Utils.ScrollToTopOrBottom(GameController.Instance.transform.Find("Save or Load/Viewport"));
-        for (int i = 1; i < Constants.MAXIMUM_AMOUNT_OF_SAVE_FILES + 1; i++)
+        Utils.ScrollToTopOrBottom(transform.Find("Save or Load/Viewport"));
+        for (int i = -3; i < Constants.MAXIMUM_AMOUNT_OF_SAVE_FILES + 1; i++)
         {
-            GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/" + i + "/Background").GetComponent<Button>().interactable = true;
-            GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/" + i + "/Delete").GetComponent<Button>().interactable = true;
+            transform.Find("Save or Load/Viewport/Save Files/" + i + "/Confirm Button/Text").GetComponent<LabelInitializer>().SetLabel("{ButtonSaveFile}");
+            if(i < 1) {
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(false);
+            }
+            else{
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(true);
+                transform.Find("Save or Load/Viewport/Save Files/" + i + "/Delete Button").GetComponent<Button>().interactable = ES3.FileExists("SaveFile_" + i + ".es3");
+            }
         }
-        GameController.Instance.transform.Find("Save or Load/Confirm Prompt").gameObject.SetActive(false);
-        GameController.Instance.transform.Find("Save or Load/Save Title").gameObject.SetActive(true);
-        GameController.Instance.transform.Find("Save or Load/Load Title").gameObject.SetActive(false);
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/0").gameObject.SetActive(false);
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/-1").gameObject.SetActive(false);
+        transform.Find("Save or Load/Confirm Prompt").gameObject.SetActive(false);
+        Instance.transform.Find("Save or Load/Save Title").gameObject.SetActive(true);
+        Instance.transform.Find("Save or Load/Load Title").gameObject.SetActive(false);
         Saving = true;
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/1/Background").GetComponent<Button>().Select();
+            transform.Find("Save or Load/Viewport/Save Files/1/Background").GetComponent<Button>().Select();
         }
     }
 
     public void ToggleLoadPanel(bool open)
     {
-        GameController.Instance.transform.Find("Save or Load").gameObject.SetActive(open);
+        transform.Find("Save or Load").gameObject.SetActive(open);
         if (!open)
         {
             return;
         }
-        Utils.ScrollToTopOrBottom(GameController.Instance.transform.Find("Save or Load/Viewport"));
-        for (int i = 1; i < Constants.MAXIMUM_AMOUNT_OF_SAVE_FILES + 1; i++)
+        Utils.ScrollToTopOrBottom(transform.Find("Save or Load/Viewport"));
+        for (int i = -3; i < Constants.MAXIMUM_AMOUNT_OF_SAVE_FILES + 1; i++)
         {
-            GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/" + i + "/Background").GetComponent<Button>().interactable = ES3.FileExists("SaveFile_" + i + ".es3");
-            GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/" + i + "/Delete").GetComponent<Button>().interactable = ES3.FileExists("SaveFile_" + i + ".es3");
+            transform.Find("Save or Load/Viewport/Save Files/" + i + "/Confirm Button/Text").GetComponent<LabelInitializer>().SetLabel("{ButtonLoadFile}");
+            if(i == -3) {
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(ES3.FileExists("QuickSave.es3"));
+            }
+            else if(i == -2) {
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(ES3.FileExists("PreMissionAutoSave.es3"));
+            }
+            else if(i == -1) {
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(ES3.FileExists("MidMissionAutoSave.es3"));
+            }
+            else if(i == 0) {
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(ES3.FileExists("PostMissionAutoSave.es3"));
+            }
+            else{
+                transform.Find("Save or Load/Viewport/Save Files/" + i).gameObject.SetActive(ES3.FileExists("SaveFile_" + i + ".es3"));
+            }
         }
-        GameController.Instance.transform.Find("Save or Load/Confirm Prompt").gameObject.SetActive(false);
-        GameController.Instance.transform.Find("Save or Load/Save Title").gameObject.SetActive(false);
-        GameController.Instance.transform.Find("Save or Load/Load Title").gameObject.SetActive(true);
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/0").gameObject.SetActive(true);
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/-1").gameObject.SetActive(true);
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/0/Background").GetComponent<Button>().interactable = ES3.FileExists("MidMissionAutoSave.es3");
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/0/Delete").GetComponent<Button>().interactable = ES3.FileExists("MidMissionAutoSave.es3");
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/-1/Background").GetComponent<Button>().interactable = ES3.FileExists("PostMissionAutoSave.es3");
-        GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/-1/Delete").GetComponent<Button>().interactable = ES3.FileExists("PostMissionAutoSave.es3");
+        transform.Find("Save or Load/Confirm Prompt").gameObject.SetActive(false);
+        transform.Find("Save or Load/Save Title").gameObject.SetActive(false);
+        transform.Find("Save or Load/Load Title").gameObject.SetActive(true);
         Saving = false;
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            GameController.Instance.transform.Find("Save or Load/Viewport/Save Files/0/Background").GetComponent<Button>().Select();
+            transform.Find("Save or Load/Viewport/Save Files/-3/Background").GetComponent<Button>().Select();
         }
+    }
+
+    public int SaveSlotNumberCurrentlySelected;
+    public void ExecuteActionOnPromptConfirm() {
+        ActionToExecuteOnPromptConfirm.Invoke(SaveSlotNumberCurrentlySelected);
     }
 
     public void SaveOrLoadGame(int slot)
@@ -574,13 +623,21 @@ public class GameController : WorldObject
         else
         {
             SaveFile sf;
-            if (slot == -1)
+            if (slot == -3)
             {
-                sf = SaveFile.RetrieveSaveFile("PostMissionAutoSave.es3");
+                sf = SaveFile.RetrieveSaveFile("QuickSave.es3");
+            }
+            else if (slot == -2)
+            {
+                sf = SaveFile.RetrieveSaveFile("PreMissionAutoSave.es3");
+            }
+            else if (slot == -1)
+            {
+                sf = SaveFile.RetrieveSaveFile("MidMissionAutoSave.es3");
             }
             else if (slot == 0)
             {
-                sf = SaveFile.RetrieveSaveFile("MidMissionAutoSave.es3");
+                sf = SaveFile.RetrieveSaveFile("PostMissionAutoSave.es3");
             }
             else
             {
@@ -590,33 +647,50 @@ public class GameController : WorldObject
         }
     }
 
-    public void ShowDeleteSaveModal(int save_slot)
+    public void ShowSaveOrLoadModal(int save_slot)
     {
-        SaveSlotIndexToDelete = save_slot;
         transform.Find("Save or Load/Confirm Prompt").gameObject.SetActive(true);
-        transform.Find("Save or Load/Confirm Prompt/Description").GetComponent<LabelInitializer>().string_params = new List<string> {save_slot.ToString()};
-        transform.Find("Save or Load/Confirm Prompt/Description").GetComponent<LabelInitializer>().SetLabel("{" + (save_slot == -1 ? "DeletePostMissionAutoSaveConfirmation" : save_slot == 0 ? "DeleteMidMissionAutoSaveConfirmation" : "DeleteSaveConfirmation") + "}");
+        transform.Find("Save or Load/Confirm Prompt/Description").GetComponent<LabelInitializer>().string_params = new List<string> {save_slot == -3 ? Label.Get("SaveSlotQuickSave") : save_slot == -2 ? Label.Get("SaveSlotAutoSaveBeforeMission") : save_slot == -1 ? Label.Get("SaveSlotAutoSaveDuringMission") : save_slot == 0 ? Label.Get("SaveSlotAutoSaveAfterMission") : (Label.Get("SaveSlotRegular") + " " + save_slot.ToString())};
+        transform.Find("Save or Load/Confirm Prompt/Description").GetComponent<LabelInitializer>().SetLabel(Saving ? "{OverwriteSaveConfirmation}" : "{LoadSaveConfirmation}");
     }
 
-    public void DeleteSave()
+    public void ShowDeleteSaveModal(int save_slot)
+    {
+        transform.Find("Save or Load/Confirm Prompt").gameObject.SetActive(true);
+        transform.Find("Save or Load/Confirm Prompt/Description").GetComponent<LabelInitializer>().string_params = new List<string> {save_slot == -3 ? Label.Get("SaveSlotQuickSave") : save_slot == -2 ? Label.Get("SaveSlotAutoSaveBeforeMission") : save_slot == -1 ? Label.Get("SaveSlotAutoSaveDuringMission") : save_slot == 0 ? Label.Get("SaveSlotAutoSaveAfterMission") : (Label.Get("SaveSlotRegular") + " " + save_slot.ToString())};
+        transform.Find("Save or Load/Confirm Prompt/Description").GetComponent<LabelInitializer>().SetLabel("{DeleteSaveConfirmation}");
+    }
+
+
+    public void DeleteSave(int save_slot)
     {
         if(Settings.Instance.ControlScheme == "Gamepad") {
             transform.Find("Save or Load/Confirm Prompt/UI_Button").GetComponent<Button>().Select();
         }
-        if(SaveSlotIndexToDelete == -1 && ES3.FileExists("PostMissionAutoSave.es3")) {
-            ES3.DeleteFile("PostMissionAutoSave.es3");
-            ES3.DeleteFile("PostMissionAutoSave.png");
-            CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/-1").gameObject);
+        if(save_slot == -3 && ES3.FileExists("QuickSave.es3")) {
+            ES3.DeleteFile("QuickSave.es3");
+            ES3.DeleteFile("QuickSave.png");
+            CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/-3").gameObject);
         }
-        else if(SaveSlotIndexToDelete == 0 && ES3.FileExists("MidMissionAutoSave.es3")) {
+        else if(save_slot == -2 && ES3.FileExists("PreMissionAutoSave.es3")) {
+            ES3.DeleteFile("PreMissionAutoSave.es3");
+            ES3.DeleteFile("PreMissionAutoSave.png");
+            CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/-2").gameObject);
+        }
+        else if(save_slot == -1 && ES3.FileExists("MidMissionAutoSave.es3")) {
             ES3.DeleteFile("MidMissionAutoSave.es3");
             ES3.DeleteFile("MidMissionAutoSave.png");
+            CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/-1").gameObject);
+        }
+        else if(save_slot == 0 && ES3.FileExists("PostMissionAutoSave.es3")) {
+            ES3.DeleteFile("PostMissionAutoSave.es3");
+            ES3.DeleteFile("PostMissionAutoSave.png");
             CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/0").gameObject);
         }
-        else if(ES3.FileExists("SaveFile_" + SaveSlotIndexToDelete + ".es3")) {
-            ES3.DeleteFile("SaveFile_" + SaveSlotIndexToDelete + ".es3");
-            ES3.DeleteFile("SaveFile_" + SaveSlotIndexToDelete + ".png");
-            CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/" + SaveSlotIndexToDelete).gameObject);
+        else if(ES3.FileExists("SaveFile_" + save_slot + ".es3")) {
+            ES3.DeleteFile("SaveFile_" + save_slot + ".es3");
+            ES3.DeleteFile("SaveFile_" + save_slot + ".png");
+            CleanUpSaveSlotInformation(transform.Find("Save or Load/Viewport/Save Files/" + save_slot).gameObject);
         }
         if(SceneManager.GetActiveScene().name == "StartScreen") {
             Utils.GetSceneRootObject("Start Screen").GetComponent<StartScreen>().InitializeStartScreen();
@@ -632,14 +706,14 @@ public class GameController : WorldObject
     }
 
     public void CleanUpSaveSlotInformation(GameObject game_object) {
-        game_object.transform.Find("Delete").GetComponent<Button>().interactable = false;
-        game_object.transform.Find("Background").GetComponent<Button>().interactable = false;
+        /*game_object.transform.Find("Delete Button").GetComponent<Button>().interactable = false;
+        game_object.transform.Find("Confirm Button").GetComponent<Button>().interactable = true;
         game_object.transform.Find("Screenshot").GetComponent<Image>().color = Color.black;
         game_object.transform.Find("Empty").gameObject.SetActive(true);
-        game_object.transform.Find("Left-side Info/Cycle and Week/Image").GetComponent<Image>().enabled = false;
-        foreach(TextMeshProUGUI text in new List<TextMeshProUGUI>() {game_object.transform.Find("Left-side Info/Cycle and Week").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Left-side Info/Time Played").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Left-side Info/Current Mission").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Right-side Info/Level and Money").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Right-side Info/Skill Trees").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Right-side Info/Difficulty").GetComponent<TextMeshProUGUI>()}) {
+        game_object.transform.Find("Cycle, Week, Time/Image").GetComponent<Image>().enabled = false;
+        foreach(TextMeshProUGUI text in new List<TextMeshProUGUI>() {game_object.transform.Find("Cycle, Week, Time").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Level, Money, Skill Trees").GetComponent<TextMeshProUGUI>(), game_object.transform.Find("Difficulty, Mission").GetComponent<TextMeshProUGUI>()}) {
             text.text = "";
-        }
+        }*/
     }
 
     public void CancelDeleteSave()
@@ -764,7 +838,7 @@ public class GameController : WorldObject
                 if (SaveFile.Instance.MidMissionInformation.GameObjectPathsToUnits[path].IsActive && unit.gameObject.activeSelf && unit.gameObject.IsDestroyed() == false)
                 {
                     if(unit.Animator == null || unit.Animator.enabled == false) {
-                        GameController.Instance.WaitAndRunMethod(0.01f, FinishUnitLoad, unit);
+                        WaitAndRunMethod(0.01f, FinishUnitLoad, unit);
                     }
                     else {
                         FinishUnitLoad(unit);
@@ -798,17 +872,17 @@ public class GameController : WorldObject
                 }
             }
         }
-        CanvasElements.UICanvas.Items.transform.Find("Heal/Upgrade").GetComponent<TextMeshProUGUI>().text = "+" + SaveFile.Instance.HealUpgrades.ToString();
+        UIManager.Objects.HealingItemText.text = "+" + SaveFile.Instance.HealUpgrades.ToString();
         if(SaveFile.Instance.CurrentMission.CanBeFinishedByPressingButton) {
-            GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(true);
-            GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button/Text").GetComponent<LabelInitializer>().SetLabel("{FinishMission}");
+            UIManager.Objects.EscapeMissionButton.gameObject.SetActive(true);
+            UIManager.Objects.EscapeMissionButtonLabel.SetLabel("{FinishMission}");
         }
         UIManager.Instance.ToggleLoadingScreen(false);
         if(SaveFile.Instance.CurrentObjectiveDisplayed != null) {
             Utils.ShowMissionObjective(SaveFile.Instance.CurrentObjectiveDisplayed);
         }
         NotificationController.ShowNotificationWithGraphic("LoadMidMission", "UI/Save");
-        GameController.Instance.WaitAndRunMethod(0.01f, UpdatePlayerPostLoad);
+        WaitAndRunMethod(0.01f, UpdatePlayerPostLoad);
     }
 
     public bool ShouldSaveAfterCombat = false;
@@ -816,13 +890,16 @@ public class GameController : WorldObject
     public void SaveAfterCombat() {
         if(Player.Instance.InCombat == false && ShouldSaveAfterCombat) {
             ShouldSaveAfterCombat = false;
-            GameController.Instance.MakeAutoSave();
+            MakeAutoSave();
         }
     }
 
     public void TakeScreenshot(string path) {
         Camera cam = SceneManager.GetActiveScene().name == "MissionSelect" ? Utils.GetSceneRootObject("Mission Select").transform.Find("Camera").GetComponent<Camera>() : CameraController.Instance.Camera;
 
+        if(SceneManager.GetActiveScene().name == "MissionSelect") {
+            Utils.GetSceneRootObject("Mission Select").transform.Find("Pause Screen").gameObject.SetActive(false);
+        }
         var renderTexture = new RenderTexture(Screen.width, Screen.height, 16);
         var texture2D = new Texture2D(Screen.width, Screen.height);
 
@@ -843,6 +920,9 @@ public class GameController : WorldObject
 
     public void FinishTakingScreenshot(string path) {
         EventManager.FinishedTakingScreenshot.Invoke();
+        if(SceneManager.GetActiveScene().name == "MissionSelect") {
+            Utils.GetSceneRootObject("Mission Select").transform.Find("Pause Screen").gameObject.SetActive(true);
+        }
     }
 
     public void FinishUnitLoad(Unit unit) {
@@ -876,18 +956,23 @@ public class GameController : WorldObject
         Camera = transform.Find("Camera Container/Camera").GetComponent<Camera>();
         PlayerInput = GetComponent<PlayerInput>();
         PlayerControls = GetComponent<PlayerControls>();
-        GameController.Instance.GameplayMode = Constants.GameplayMode.OnStartScreen;
+        AudioSource = GetComponent<AudioSource>();
+        GameplayMode = Constants.GameplayMode.OnStartScreen;
         Utils.GetSceneRootObject("Start Screen").Find("Screen/Version").GetComponent<TextMeshProUGUI>().text = "ver " + Application.version;
         AutoSaveSettings = false;
         if (!Settings.Instance.Load())
         {
             Settings.Instance.MasterVolume = 0.5f;
-            Settings.Instance.SoundVolume = 0.5f;
+            Settings.Instance.SoundVolume = 0.5f; 
             Settings.Instance.MusicVolume = 0.5f;
             Settings.Instance.DialogueVolume = 0.5f;
-            Settings.Instance.DefaultDifficulty = Constants.Difficulty.Challenge;
+            Settings.Instance.FieldOfView = 20f;
             Settings.Instance.DialogueTextSpeed = 10;
             Settings.Instance.Save();
+            PlayerControls.SaveDefaultKeybindsToSettings();
+        }
+        else {
+            PlayerControls.LoadSettingsKeybinds();
         }
         AutoSaveSettings = true;
     }
@@ -912,5 +997,125 @@ public class GameController : WorldObject
             }
         }
         Area.Instance = null;
+    }
+
+    public void QuitGame() {
+        ShowPauseScreenModal(Label.Get("QuitPlayingConfirmation"), ConfirmedQuitGame);
+    }
+
+    public void ConfirmedQuitGame() {
+        Application.Quit();
+    }
+
+    public void ReturnToTitle() {
+        ShowPauseScreenModal(Label.Get("QuitPlayingConfirmation"), ConfirmedReturnToTitle);
+    }
+
+    public void ConfirmedReturnToTitle() {
+        GameController.Instance.GameplayMode = Constants.GameplayMode.OnStartScreen;
+    }
+
+    public void ShowPauseScreenModal(string description, Action function_to_execute_on_confirm, string special_confirm_button_label = "")
+    {
+        ConfirmPromptActive = true;
+        UIManager.Objects.PauseScreenConfirmPrompt.SetActive(true);
+        UIManager.Objects.PauseScreenConfirmPromptDescription.text = description;
+        FunctionToExecuteOnConfirm = function_to_execute_on_confirm;
+        if(Settings.Instance.ControlScheme == "Gamepad")
+        {
+            UIManager.Objects.PauseScreenConfirmPromptConfirmButton.Select();
+            EventManager.CancelButtonPressed.AddListener(ModalCanceled);
+            EventManager.ExitMenu.AddListener(ModalCanceled);
+        }
+        UIManager.Objects.PauseScreenConfirmPromptConfirmButtonText.text = special_confirm_button_label == "" ? Label.Get("ButtonConfirm") : Label.Get(special_confirm_button_label);
+    }
+
+    public void PauseScreenModalConfirmed()
+    {
+        FunctionToExecuteOnConfirm.Invoke();
+        UIManager.Objects.PauseScreenConfirmPrompt.SetActive(false);
+        ConfirmPromptActive = false;
+    }
+
+    public void PauseScreenModalCanceled()
+    {
+        EventManager.CancelButtonPressed.RemoveListener(ModalCanceled);
+        EventManager.ExitMenu.RemoveListener(ModalCanceled);
+        UIManager.Objects.PauseScreenConfirmPrompt.SetActive(false);
+        ConfirmPromptActive = false;
+    }
+    
+    public void ShowConfirmModal(string description, Action function_to_execute_on_confirm, string special_confirm_button_label = "")
+    {
+        ConfirmPromptActive = true;
+        Objects.ConfirmPrompt.SetActive(true);
+        Objects.ConfirmPromptDescription.text = description;
+        FunctionToExecuteOnConfirm = function_to_execute_on_confirm;
+        if(Settings.Instance.ControlScheme == "Gamepad")
+        {
+            Objects.ConfirmPromptConfirmButton.Select();
+            EventManager.CancelButtonPressed.AddListener(ModalCanceled);
+            EventManager.ExitMenu.AddListener(ModalCanceled);
+        }
+        Objects.ConfirmPromptConfirmButtonText.text = special_confirm_button_label == "" ? Label.Get("ButtonConfirm") : Label.Get(special_confirm_button_label);
+    }
+
+    public void ModalConfirmed()
+    {
+        FunctionToExecuteOnConfirm.Invoke();
+        Objects.ConfirmPrompt.SetActive(false);
+        ConfirmPromptActive = false;
+    }
+
+    public void ModalCanceled()
+    {
+        EventManager.CancelButtonPressed.RemoveListener(ModalCanceled);
+        EventManager.ExitMenu.RemoveListener(ModalCanceled);
+        Objects.ConfirmPrompt.SetActive(false);
+        ConfirmPromptActive = false;
+    }
+
+    public void AbandonMission()
+    {
+        if(SaveFile.Instance.CurrentMission.NumberOfWeeksConsumed == 0) {
+            SaveFile.Instance.CurrentMission.AbandonMission();
+        }
+        else {
+            ShowPauseScreenModal(Label.Get("AbandonMissionConfirmation"), ConfirmedAbandonMission);
+        }  
+    }
+
+    public void ConfirmedAbandonMission() {
+        SaveFile.Instance.CurrentMission.AbandonMission();
+    }
+
+    public static class Objects
+    {
+        public static GameObject SaveAndLoadPanel => Utils.GetGameObject("Save or Load");
+        public static GameObject DialogueLinesContainer => Utils.GetGameObject("Dialogue Window/Window/Scroll Rect/Viewport/Lines");
+        public static GameObject DialogueBoxLeft => Utils.GetGameObject("Dialogue Window/Window/Left Portrait");
+        public static GameObject DialogueBoxRight => Utils.GetGameObject("Dialogue Window/Window/Right Portrait");
+        public static TextMeshProUGUI DialogueMoneyDisplayText => (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Money", typeof(TextMeshProUGUI));
+        public static Slider DialogueExperienceBarSlider => (Slider)Utils.GetComponent("Dialogue Window/Level", typeof(Slider));
+        public static TextMeshProUGUI DialogueExperienceBarLeftLevel => (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Level/Left Level", typeof(TextMeshProUGUI));
+        public static TextMeshProUGUI DialogueExperienceBarRightLevel => (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Level/Right Level", typeof(TextMeshProUGUI));
+        public static GameObject DialogueNotifications => Utils.GetGameObject("Dialogue Window/Window/List");
+        public static GameObject DialogueArchive => Utils.GetGameObject("Dialogue Window/Dialogue History/Scroll Rect/Viewport/Content");
+        public static GameObject TransitionScreen => Utils.GetGameObject("Transition Screen");
+        public static CanvasGroup TransitionBlackScreen => (CanvasGroup)Utils.GetComponent("Transition Screen/Black Screen", typeof(CanvasGroup));
+        public static GameObject TransitionLoadingScreen => Utils.GetGameObject("Transition Screen/Loading Screen");
+        public static Slider TransitionLoadProgress => (Slider)Utils.GetComponent("Transition Screen/Loading Screen/Progress", typeof(Slider));
+        public static TextMeshProUGUI TransitionUpperText => (TextMeshProUGUI)Utils.GetComponent("Transition Screen/Upper Text", typeof(TextMeshProUGUI));
+        public static TextMeshProUGUI TransitionLowerText => (TextMeshProUGUI)Utils.GetComponent("Transition Screen/Lower Text", typeof(TextMeshProUGUI));
+        public static GameObject TransitionAreaName => Utils.GetGameObject("Transition Screen/Area Name");
+        public static GameObject Shop => Utils.GetGameObject("Shop");
+        public static GameObject ShopItems => Utils.GetGameObject("Shop/Items/Viewport/Items");
+        public static TextMeshProUGUI ShopMoneyText => (TextMeshProUGUI)Utils.GetComponent("Shop/Money", typeof(TextMeshProUGUI));
+        public static AudioSource Music => (AudioSource)Utils.GetComponent("Music", typeof(AudioSource));
+        public static AudioSource AudioListener => (AudioSource)Utils.GetComponent("Audio Listener", typeof(AudioSource));
+        public static GameObject ConfirmPrompt => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? Utils.GetGameObject("Menu/Confirm Prompt") : Utils.GetGameObject("UI/Pause Screen/Confirm Prompt");
+        public static TextMeshProUGUI ConfirmPromptDescription => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? (TextMeshProUGUI)Utils.GetComponent("Menu/Confirm Prompt/Description", typeof(TextMeshProUGUI)) : (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Description", typeof(TextMeshProUGUI));
+        public static Button ConfirmPromptConfirmButton => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? (Button)Utils.GetComponent("Menu/Confirm Prompt/Confirm Button", typeof(Button)) : (Button)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button", typeof(Button));
+        public static TextMeshProUGUI ConfirmPromptConfirmButtonText => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? (TextMeshProUGUI)Utils.GetComponent("Menu/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI)) : (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI));
     }
 }

@@ -217,9 +217,13 @@ public class Mission_FirstMission : Mission
         Area.Instance.transform.Find("Interactables/Dialogue (3)/Interact Indicator").gameObject.SetActive(true);
         Area.Instance.transform.Find("Interactables/Dialogue (5)").GetComponent<InteractableObject>().CannotInteractWithDuringCombat = false;
         Utils.GetUnit("Wall 1").PlayAnimation("ShieldGuard");
-        Utils.GetUnit("Wall 1").AddEffect(new Effect_Invincible(new(Utils.GetUnit("Wall 1"))) {ShowsInUI = false});
+        Utils.GetUnit("Wall 1").AddEffect(new Effect_Invincible(new(Utils.GetUnit("Wall 1"))) {
+            ShowsInUI = false
+        });
         Utils.GetUnit("Wall 2").PlayAnimation("ShieldGuard");
-        Utils.GetUnit("Wall 2").AddEffect(new Effect_Invincible(new (Utils.GetUnit("Wall 2"))) {ShowsInUI = false});
+        Utils.GetUnit("Wall 2").AddEffect(new Effect_Invincible(new (Utils.GetUnit("Wall 2"))) {
+            ShowsInUI = false
+        });
         Utils.GetUnit("ShieldGiant").AttackPlayer();
         Utils.GetUnit("ShieldGiant").Actions.UseAbility(typeof(NPCAbility_ShieldCharge));
         Utils.GetUnit("Criminal_Daggers").AttackPlayer();
@@ -257,7 +261,7 @@ public class Mission_FirstMission : Mission
     public static void FirstMission_Forest_0() {
         CameraController.Instance.transform.position = new Vector3(0, 0, -100);
         Player.Instance.UnitAI.NavMeshAgent.enabled = false;
-        Player.Instance.Actions.PushUnitForward(300);
+        Player.Instance.Actions.PushUnitForwardSpecifiedMeters(3);
         Utils.SetDefaultMusic("Action_72");
     }
 

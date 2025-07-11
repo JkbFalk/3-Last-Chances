@@ -8,10 +8,10 @@ public class Effect_RollSideways : Effect {
     }
 
     public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
-        if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfDamageWorksWithDefensiveAbilities() == false) {
+        if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfInteractsWithCounters() == false) {
             return;
         }
-        if(SaveFile.Instance.DifficultyLevel == 0 || damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter) == false)
+        if(SaveFile.Instance.DifficultyLevel == 0 || damage.SourceOfDamage.Is(Ability.Property.Counter) == false)
         {
             float multiplier = 
             !damage.TargetOfDamage.IsStaggered ? 0 : 
@@ -24,21 +24,21 @@ public class Effect_RollSideways : Effect {
 
             damage.DecreaseProjectileDurability = false;
 
-            if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.AlreadyGeneratedEnergy))
+            if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
             {
                 UnitCreatingTheEffect.Energy.GenerateEnergy(Constants.EnergyGainSource.Dodge, damage.SourceOfDamage.User.IsBoss);
-                UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+                UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
             }
             EventManager.DamageWasDodged.Invoke(damage, SourceOfEffect.SourceAbility);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
-        else if (SaveFile.Instance.DifficultyLevel > 0 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))
+        else if (SaveFile.Instance.DifficultyLevel > 0 && damage.SourceOfDamage.Is(Ability.Property.Counter))
         {
             damage.Injury *= 0.5f;
             damage.Stagger *= 0.5f;
 
             TargetOfEffect.AddEffect(new Effect_Stun(SourceOfEffect), SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
-            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
+            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {PercentageAmount = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
     }

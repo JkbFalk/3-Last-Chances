@@ -54,7 +54,7 @@ public class Effect_GainProjectileSpeedAndDamageWithDistanceTravelled : Effect
             return;
         }
         Projectile proj = (Projectile)damage.DamagingObject;
-        damage.ExtraInjuryDealtPercentage += DamageBuff * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
-        damage.ExtraStaggerDealtPercentage += DamageBuff * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
+        damage.InjuryDealtPercentageModifier += DamageBuff * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
+        damage.StaggerDealtPercentageModifier += DamageBuff * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
     }
 }

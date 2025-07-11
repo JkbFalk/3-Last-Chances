@@ -11,6 +11,6 @@ public class Boots_WeaponMaster : Item
         Set = ItemSetEnum.WeaponMaster;
         Type = Constants.ItemType.Boots;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncreasedWeaponDamageButDecreasedMagicDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionDuringBasicAttacks")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorDuringBasicAttacks")};
     }
 }

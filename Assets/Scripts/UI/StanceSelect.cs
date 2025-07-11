@@ -57,15 +57,15 @@ public class StanceSelect : MonoBehaviour, IPointerDownHandler, ISelectHandler
 
     public void OpenStanceSelection(string stance_being_changed) {
         MenuManager.Instance.ShowAbilityDetails(StanceType);
-        MenuManager.Instance.transform.Find("Overview Window/Stance Select").gameObject.SetActive(true);
+        MenuManager.Instance.transform.Find("Character Window/Stance Select").gameObject.SetActive(true);
         MenuManager.Instance.HideEnergySelection();
         MenuManager.Instance.HideAbilitySelection();
-        MenuManager.Instance.transform.Find("Overview Window/Effects").gameObject.SetActive(false);
+        MenuManager.Instance.transform.Find("Character Window/Effects").gameObject.SetActive(false);
         MenuManager.Instance.StanceBeingChanged = stance_being_changed;
         EventManager.CancelButtonPressed.AddListener(MenuManager.Instance.HideStanceSelection);
         EventManager.ExitMenu.AddListener(MenuManager.Instance.HideStanceSelection);
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            MenuManager.Instance.transform.Find("Overview Window/Stance Select/Stances/1-1").GetComponent<Button>().Select();
+            MenuManager.Instance.transform.Find("Character Window/Stance Select/Stances/1-1").GetComponent<Button>().Select();
         }
     }
 

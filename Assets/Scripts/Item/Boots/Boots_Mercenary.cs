@@ -9,6 +9,6 @@ public class Boots_Mercenary : Item
         Set = ItemSetEnum.Mercenary;
         Type = Constants.ItemType.Boots; 
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainPortionOfDamageTakenAsBarrier")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReduction")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Armor")};
     }
 }

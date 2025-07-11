@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 636789670605589172}
   - component: {fileID: 3848850754381328749}
   - component: {fileID: 3384867678338096629}
-  - component: {fileID: 4680283342489356877}
+  - component: {fileID: 8139686589190668793}
   m_Layer: 0
   m_Name: AreaOfEffect_SmallCircleAoE
   m_TagString: Untagged
@@ -86,16 +86,17 @@ MonoBehaviour:
   DeactivateNSecondsAfterStart: 0
   DeactivateTimer: 0
   AlwaysSameSimulationSpeed: 0
-  ParticleSystemRenderer: {fileID: 0}
   IsDisappearing: 0
   DisappearTimeInSeconds: 0
   WeaponSpriteRenderer: {fileID: 0}
+  IsDestroyed: 0
+  ParticleSystemRenderers: []
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
   WasStopped: 0
   DestroyAfterSourceAbilityEnds: 0
---- !u!114 &4680283342489356877
+--- !u!114 &8139686589190668793
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -109,4 +110,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DestroyAfterSeconds: 0.1
   DestroyTime: 0
-  DetachIfParentDestroyed: 0
+  DetachIfParentDestroyed: 1

@@ -102,7 +102,7 @@ public class Area_IgnisManorOnFire
         NotificationController.ShowTextNotification("IgnisManorOnFire_MuseumArmor_30");
         Area.Instance.transform.Find("Environment/Museum Display/ArmorSet").gameObject.SetActive(false);
         Area.Instance.transform.Find("Environment/Museum Display/Dialogue").gameObject.SetActive(false);
-        SaveFile.Instance.AddItem(typeof(Armor_Knight), Item.ItemGrade.Ultimate);
+        SaveFile.Instance.AddItem(typeof(Outfit_Knight), Item.ItemGrade.Ultimate);
         SaveFile.Instance.AddItem(typeof(Helmet_Knight), Item.ItemGrade.Ultimate);
         SaveFile.Instance.AddItem(typeof(Gloves_Knight), Item.ItemGrade.Ultimate);
         SaveFile.Instance.AddItem(typeof(Boots_Knight), Item.ItemGrade.Ultimate);
@@ -387,9 +387,9 @@ public class Area_IgnisManorOnFire
             }
         }
         GameController.Instance.InterruptMusicOnDeath = false;
-        CanvasElements.UICanvasObject.transform.Find("Ignis Energy").gameObject.SetActive(true);
-        CanvasElements.UICanvasObject.transform.Find("Ignis Energy/Amount").GetComponent<TextMeshProUGUI>().text = SaveFile.Instance.IgnisEnergy.ToString();
-        CanvasElements.UICanvasObject.transform.Find("Ignis Energy").GetComponent<Slider>().value = SaveFile.Instance.IgnisEnergy / 2000;
+        UIManager.Objects.CustomGaugeSlider.gameObject.SetActive(true);
+        UIManager.Objects.CustomGaugeAmountText.text = SaveFile.Instance.IgnisEnergy.ToString();
+        UIManager.Objects.CustomGaugeSlider.value = SaveFile.Instance.IgnisEnergy / 2000;
         PlayerBuffEffect = new Effect_PlundererAbilityAmplify(SaveFile.Instance.IgnisEnergy / 10, new(Utils.GetUnit("Colten"))) {AmplifiedFamily = Ability.AbilityFamily.Ignis};
         Player.Instance.AddEffect(PlayerBuffEffect);
     }
@@ -410,10 +410,10 @@ public class Area_IgnisManorOnFire
     }
 
     public static void CheckAbilityUsed(Ability ability) {
-        if(ability.User is Player && ability.Is(Ability.AbilityProperty.Riposte)) {
+        if(ability.User is Player && ability.Is(Ability.Property.Riposte)) {
             SaveFile.Instance.ChangeIgnisEnergy(50);
         }
-        if(ability.User is Player && ability.Is(Ability.AbilityProperty.Counter)) {
+        if(ability.User is Player && ability.Is(Ability.Property.Counter)) {
             SaveFile.Instance.ChangeIgnisEnergy(100);
         }
     }

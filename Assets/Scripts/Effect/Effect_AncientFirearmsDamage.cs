@@ -36,7 +36,7 @@ public class Effect_AncientFirearmsDamage : Effect {
         if(SaveFile.Instance.EquippedHelmet is Helmet_Ancient) {
             ancientCount++;
         }
-        if(SaveFile.Instance.EquippedArmor is Armor_Ancient) {
+        if(SaveFile.Instance.EquippedOutfit is Outfit_Ancient) {
             ancientCount++;
         }
         if(SaveFile.Instance.EquippedGloves is Gloves_Ancient) {

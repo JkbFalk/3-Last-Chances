@@ -18,7 +18,7 @@ public class Effect_Prone : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
     public override void OnStart()
@@ -62,8 +62,8 @@ public class Effect_Prone : Effect
 
     public override void OnInvokeHitDealt(Damage damage) {
         if(damage?.TargetOfDamage == TargetOfEffect) {
-            damage.ExtraInjuryDealtPercentage += DecayingAmount;
-            damage.ExtraStaggerDealtPercentage += DecayingAmount;
+            damage.InjuryDealtPercentageModifier += DecayingAmount;
+            damage.StaggerDealtPercentageModifier += DecayingAmount;
             base.OnInvokeHitDealt(damage);
         }
     }

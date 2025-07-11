@@ -17,9 +17,9 @@ public class Effect_PlundererAbilityAmplify : Effect
 
     public override void OnStart()
     {
-        PathToEffectGraphic = "UI/" + AmplifiedFamily;
+        PathToUIGraphic = "UI/" + AmplifiedFamily;
         base.OnStart();
-        EffectIndicatorText = Utils.GetFormattedFloat(FirstParameter) + "%";
+        UIText = Utils.GetFormattedFloat(FirstParameter, 0);
         if(FirstParameter <= 0) {
             return;
         }
@@ -39,14 +39,14 @@ public class Effect_PlundererAbilityAmplify : Effect
     public override void OnInvokeHitDealt(Damage damage) {
         FieldInfo family = damage.SourceOfDamage.GetType().GetField("Family", BindingFlags.Public | BindingFlags.Static);
         if(damage.SourceOfDamage.User == TargetOfEffect && family != null && family.GetValue(null).ToString() == AmplifiedFamily.ToString()) {
-            damage.ExtraDamageDealtPercentage = FirstParameter;
-            Effect extraDR = TargetOfEffect.GetEffect(new System.Func<Effect, bool> (effect => effect.Identifier == "PlundererDamageReduction"));
-            if(extraDR != null) {
+            damage.DamageDealtPercentageModifier = FirstParameter;
+            Effect extraArmor = TargetOfEffect.GetEffect(new System.Func<Effect, bool> (effect => effect.Identifier == "PlundererArmor"));
+            if(extraArmor != null) {
                 TargetOfEffect.AddEffect(
-                    new Effect_ChangeStat(TargetOfEffect.DamageReduction, SourceOfEffect) {
-                        PercentageModifier = extraDR.FirstParameter,
+                    new Effect_ChangeStat(TargetOfEffect.Armor, SourceOfEffect) {
+                        PercentageAmount = extraArmor.FirstParameter,
                     }
-                , extraDR.SecondParameter); 
+                , extraArmor.SecondParameter); 
             }
             EndThisEffect();
             base.OnInvokeHitDealt(damage);

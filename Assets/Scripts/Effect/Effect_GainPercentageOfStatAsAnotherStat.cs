@@ -22,7 +22,7 @@ public class Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat : Effect
     {
         base.OnStart();
         _extraIncreases = new Effect_ChangeStat(StatToApplyIncreasesTo, SourceOfEffect) {
-            PercentageModifier = PercentageOfStatConverted / 100 * StatToTakeIncreasesFrom.Maximum,
+            PercentageAmount = PercentageOfStatConverted / 100 * StatToTakeIncreasesFrom.Maximum,
         };
         TargetOfEffect.AddEffect(_extraIncreases);
     }
@@ -38,7 +38,7 @@ public class Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat : Effect
         if(stat.ShouldInvoke && stat == StatToTakeIncreasesFrom)
         {
             stat.ShouldInvoke = false;
-            _extraIncreases.PercentageModifier = PercentageOfStatConverted / 100 * StatToTakeIncreasesFrom.Maximum;
+            _extraIncreases.PercentageAmount = PercentageOfStatConverted / 100 * StatToTakeIncreasesFrom.Maximum;
             stat.ShouldInvoke = true;
         }
     }

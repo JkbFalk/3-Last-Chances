@@ -15,6 +15,25 @@ public class DebugTools : EditorWindow {
     public DebugTools() {
         EditorApplication.delayCall += ()=> SetPlayModeStartScene("Assets/Scenes/StartScreen.unity");
     }
+    public GameObject gameObjectToGetPath;
+    public string pathToGameObject = "";
+    private string _pathValue = "";
+
+    
+    [MenuItem("Tools/3LC Tools")]
+    static void Open()
+    {
+        GetWindow<DebugTools>();
+    }
+    public static void Init() {
+        DebugTools window = (DebugTools)GetWindow(typeof(DebugTools));
+        window.Show();
+        window.Initialize();
+    }
+
+    public void Initialize() {
+        EditorApplication.delayCall += ()=> SetPlayModeStartScene("Assets/Scenes/StartScreen.unity");
+    }
 
     void OnGUI()
     {
@@ -33,9 +52,13 @@ public class DebugTools : EditorWindow {
         if (GUILayout.Button("Check Dialogue Word Count (PL)")) {
             Debug.Log("PL word count: " + Label.CheckWordCount("PL"));
         }
-        /*if (GUILayout.Button("Equip Item On Player")) {
-            Utils.CopyItemAppearanceForPlayer()
-        }*/
+        if (GUILayout.Button("Get Path to GameObject as String")) {
+            _pathValue = Utils.GetGameObjectPath(gameObjectToGetPath);
+        }
+        gameObjectToGetPath = (GameObject) EditorGUILayout.ObjectField("Target GameObject", gameObjectToGetPath, typeof(GameObject), true);
+        if(_pathValue != null) {
+            pathToGameObject = (string) EditorGUILayout.TextField(_pathValue.Replace("/GameController/", ""));
+        }
     }
 
     void SetPlayModeStartScene(string scenePath)
@@ -78,12 +101,6 @@ public class DebugTools : EditorWindow {
                 GatherGameObjects(child);
             }
         }
-    }
-
-    [MenuItem("Custom/Debug Tools")]
-    static void Open()
-    {
-        GetWindow<DebugTools>();
     }
 
     private string GetCleanedGameObjectName(string name) {

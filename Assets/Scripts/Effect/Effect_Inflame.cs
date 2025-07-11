@@ -12,7 +12,7 @@ public class Effect_Inflame : Effect {
         ShowsInUI = true;
         DamageCategory = weapon_category;
         Type = EffectType.Buff;
-        PathToEffectGraphic = "UI/Ignis";
+        PathToUIGraphic = "UI/Ignis";
         Listeners.Add(EventManager.DamageDealt);
     }
 

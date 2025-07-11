@@ -19,7 +19,7 @@ public class NPCAbility_Kick : Ability {
     }
 
     public override void CallAbilityEvent1() {
-        ChaseCurrentTargetAtGivenDegreeAngle(150, 15, 25);
+        ChaseCurrentTargetAtGivenDegreeAngle(3, 15);
         AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "SmallCircleAoE");
         aoe.AddComponent<AttachObjectToBodyPart>();
         aoe.GetComponent<AttachObjectToBodyPart>().BodyPartName = "Left Foot";

@@ -6514,6 +6514,7 @@ MonoBehaviour:
   - 10,DashStab
   - 15,FlameBackstab
   - 10,BladeSlash
+  - 50,Inflame
   ActionsAfter1HBarBroken: []
   ActionsAfter2HBarsBroken: []
   BaseAggressiveness: 1
@@ -6579,7 +6580,7 @@ MonoBehaviour:
   BaseTenacity: 0.8
   BaseControl: 0.65
   BaseCooldownReduction: 1
-  BaseDamageReduction: 1.3
+  BaseArmor: 1
 --- !u!1 &3928306060700987270
 GameObject:
   m_ObjectHideFlags: 0

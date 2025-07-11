@@ -10,7 +10,7 @@ public class NPCAbility_ThrowRandomExplosives : Ability {
         AddCustomSound("Use", "Fire/DynamiteIgnite", 0.6f);
         AddCustomSound("Explosion", "Explosion/Explosion1", 0.8f);
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
-        DamageSources.Add(new DamageSource(120, 100, Constants.DamageType.Magic) {Knockback = 300});
+        DamageSources.Add(new DamageSource(120, 100, Constants.DamageType.Magic) {KnockbackInMeters = 3f});
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
     }
 

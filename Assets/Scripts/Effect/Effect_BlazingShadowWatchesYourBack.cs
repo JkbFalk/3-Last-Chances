@@ -7,7 +7,7 @@ using UnityEngine;
 public class Effect_BlazingShadowWatchesYourBack : Effect
 {
     public float BurnScalingInflictedToBackstabbers;
-    public float ExtraDamageReductionAgainstBackstabs;
+    public float ExtraArmorAgainstBackstabs;
     public Effect_BlazingShadowWatchesYourBack(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
         Listeners.Add(EventManager.HitDealt);
@@ -24,7 +24,7 @@ public class Effect_BlazingShadowWatchesYourBack : Effect
         &&
         damage.SourceOfCollision.GetComponentInParent<Projectile>() == null)
         {
-            damage.ExtraDamageReduction = ExtraDamageReductionAgainstBackstabs;
+            damage.ArmorModifier = ExtraArmorAgainstBackstabs;
             Utils.PlaySoundEffect(Player.Instance.AudioSource, "Fire/Fire11", 0.5f);
             GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "BlazingShadowRetaliation", Player.Instance.transform.position.x, Player.Instance.transform.position.y);
             damage.SourceOfDamage.User.AddEffect(new Effect_Burn(BurnScalingInflictedToBackstabbers, SourceOfEffect));

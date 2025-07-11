@@ -10,6 +10,6 @@ public class Gloves_Executioner : Item
         Set = ItemSetEnum.Executioner;
         Type = Constants.ItemType.Gloves;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealIncreasedDamageToEnemiesBelow25PHealth")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionAgainstBosses")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorAgainstBosses")};
     }
 }

@@ -34,7 +34,6 @@ public class HideOrShowOverTime : MonoBehaviour {
             }
         }
         else if (_hiding) {
-            Debug.Log("HIDING " + Time.unscaledDeltaTime + " result: " + CanvasGroup.alpha + " -> " +  (CanvasGroup.alpha -  (1 / (_seconds / Time.unscaledDeltaTime))));
             CanvasGroup.alpha = CanvasGroup.alpha -  (1 / (_seconds / (Time.unscaledDeltaTime > 0.05f ? 0.05f : Time.unscaledDeltaTime)));
             if (CanvasGroup.alpha <= 0) {
                 _hiding = false;

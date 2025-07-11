@@ -12,11 +12,11 @@ public class NPCAbility_FlameLance : Ability {
 
     public NPCAbility_FlameLance(Unit ability_user) : base(ability_user) {
         AddCustomSound("Use", "Fire/FlamethrowerLoop1", 0.4f);
-        DamageSources.Add(new DamageSource(150, 100, Constants.DamageType.Heavy) {Knockback = 600});
+        DamageSources.Add(new DamageSource(150, 100, Constants.DamageType.Heavy) {KnockbackInMeters = 6f});
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.5f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
     }

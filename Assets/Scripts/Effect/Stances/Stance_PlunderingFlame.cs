@@ -24,7 +24,9 @@ public class Stance_PlunderingFlame : Effect_Stance
 
     public override void OnStanceActivated()
     {
-        IncreaseBurn = new(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, 30, SourceOfEffect) {ShowsInMenu=false};
+        IncreaseBurn = new(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, 30, SourceOfEffect) {
+            ShowsInMenu = false
+        };
         Player.Instance.AddEffect(IncreaseBurn);
     }
 

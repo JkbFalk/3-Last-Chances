@@ -12,7 +12,7 @@ public class NPCAbility_Quickdraw: Ability {
         AddCustomSound("Draw2", "Ability/Ability_SeverVitality_Swing", 1f);
         AddCustomSound("Indicator", "Ability/QuickdrawIndicator", 0.8f);
         AddCustomSound("Wind", "Ability/Ability_WindBlast_Dash", 0.8f);
-        _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageModifier = UnityEngine.Random.Range(0, 25)};
+        _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageAmount = UnityEngine.Random.Range(0, 25)};
         EffectsAffectingUserDuringAbility = new() {_randomAS};
     }
 
@@ -34,6 +34,6 @@ public class NPCAbility_Quickdraw: Ability {
     public override void CallAbilityEvent2()
     {
         DamageSources.Add(new DamageSource(50 + _powerUps * 20, 200 + _powerUps * 60, Constants.DamageType.Heavy));
-        ChaseCurrentTargetAtGivenDegreeAngle(200, 75, 20);
+        ChaseCurrentTargetAtGivenDegreeAngle(3, 75);
     }
 }

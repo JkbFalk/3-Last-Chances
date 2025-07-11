@@ -9,7 +9,7 @@ public class NPCAbility_GreatswordWindmill : Ability {
         AddCustomSound("Swing1", "Greatsword/Greatsword_Swing23", 0.6f);
         AddCustomSound("Swing2", "Greatsword/Greatsword_Swing22", 0.6f);
         AddCustomSound("Explosion", "Explosion/Ground Explosion", 0.2f);
-        Properties.Add(AbilityProperty.CounteredByRiposte);
+        Properties.Add(Property.CounteredByRiposte);
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)

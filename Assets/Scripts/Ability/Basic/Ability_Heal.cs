@@ -35,7 +35,7 @@ public class Ability_Heal : Ability
             SaveFile.Instance.HealUpgrades >= 6 ? 900 :
             SaveFile.Instance.HealUpgrades >= 4 ? 550 :
             SaveFile.Instance.HealUpgrades >= 2 ? 250 : 0;
-        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new(this)) {RegenerationFlatModifier = 
+        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new(this)) {RegenerationFlatAmount = 
             (500 + extraHealAmount) / 2 }, 2);
     }
 

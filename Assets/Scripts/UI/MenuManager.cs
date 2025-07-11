@@ -14,6 +14,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
@@ -21,7 +23,6 @@ using static Item;
 using static MenuManager;
 
 public class MenuManager : MonoBehaviour {
-    public bool ConfirmPromptActive = false;
     private static MenuManager _instance = null;
     public bool ShopDetailsWindowOpen = false;
     public bool InventoryDetailsWindowOpen = false;
@@ -54,7 +55,7 @@ public class MenuManager : MonoBehaviour {
     public InventoryTile RangedEquipmentSlot;
     public InventoryTile GlovesEquipmentSlot;
     public InventoryTile HelmetEquipmentSlot;
-    public InventoryTile ArmorEquipmentSlot;
+    public InventoryTile OutfitEquipmentSlot;
     public InventoryTile BootsEquipmentSlot;
     public InventoryTile Item1EquipmentSlot;
     public InventoryTile Item2EquipmentSlot;
@@ -78,7 +79,7 @@ public class MenuManager : MonoBehaviour {
     public List<Item> EquippedItems {
         get {
             List<Item> items = new List<Item>();
-            foreach(Item item in new List<Item> {SaveFile.Instance.EquippedHeavyWeapon, SaveFile.Instance.EquippedLightWeapon, SaveFile.Instance.EquippedRangedWeapon, SaveFile.Instance.EquippedGloves, SaveFile.Instance.EquippedHelmet, SaveFile.Instance.EquippedArmor, SaveFile.Instance.EquippedBoots, SaveFile.Instance.EquippedItem1, SaveFile.Instance.EquippedItem2}) {
+            foreach(Item item in new List<Item> {SaveFile.Instance.EquippedHeavyWeapon, SaveFile.Instance.EquippedLightWeapon, SaveFile.Instance.EquippedRangedWeapon, SaveFile.Instance.EquippedGloves, SaveFile.Instance.EquippedHelmet, SaveFile.Instance.EquippedOutfit, SaveFile.Instance.EquippedBoots, SaveFile.Instance.EquippedItem1, SaveFile.Instance.EquippedItem2}) {
                 if(item != null) {
                     items.Add(item);
                 }
@@ -89,7 +90,32 @@ public class MenuManager : MonoBehaviour {
 
     public int SelectedSkillTree = 0;
 
-    private List<string> _subMenus = new List<string> { "Overview", "Inventory", "Skill Tree", "History", "Guide", "Settings", "Other" };
+    private List<string> _optionsSubMenus = new List<string> { "Gameplay", "Keybinds", "Display", "Audio", "ReportBug",};
+    private int _selectedOptionsSubMenu = 0;
+    public int SelectedOptionsSubMenu
+    {
+        get
+        {
+            return _selectedOptionsSubMenu;
+        }
+        set
+        {
+            if(_selectedOptionsSubMenu == value) {
+                return;
+            }
+            int formatted_value = value < 0 ? _optionsSubMenus.Count - 1 : value > _optionsSubMenus.Count - 1 ? 0 : value;
+            transform.Find("Options Window/Options/Category Selection/" + _optionsSubMenus[_selectedOptionsSubMenu] + "/Background/Checkmark (Selected)").gameObject.SetActive(false);
+            transform.Find("Options Window/Options/Category Selection/" + _optionsSubMenus[_selectedOptionsSubMenu] + "/Background/Checkmark").gameObject.SetActive(true);
+            transform.Find("Options Window/Options/" + _optionsSubMenus[_selectedOptionsSubMenu]).gameObject.SetActive(false);
+            _selectedOptionsSubMenu = formatted_value;
+            transform.Find("Options Window/Options/Category Selection/" + _optionsSubMenus[_selectedOptionsSubMenu] + "/Background/Checkmark (Selected)").gameObject.SetActive(true);
+            transform.Find("Options Window/Options/Category Selection/" + _optionsSubMenus[_selectedOptionsSubMenu] + "/Background/Checkmark").gameObject.SetActive(false);
+            transform.Find("Options Window/Options/" + _optionsSubMenus[_selectedOptionsSubMenu]).gameObject.SetActive(true);
+            PlayerControls.GamepadSelectObjectClosestToCenter();
+        }
+    }
+
+    private List<string> _subMenus = new List<string> { "Character", "Inventory", "Skill Tree", "Archive", "Tutorials", "Options", };
     private int _selectedSubMenu = 0;
     public int SelectedSubMenu
     {
@@ -103,23 +129,19 @@ public class MenuManager : MonoBehaviour {
                 return;
             }
             int formatted_value = value < 0 ? _subMenus.Count - 1 : value > _subMenus.Count - 1 ? 0 : value;
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Label").gameObject.SetActive(false);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Image").gameObject.SetActive(true);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Menu Active").gameObject.SetActive(false);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Menu Inactive").gameObject.SetActive(true);
+            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark (Selected)").gameObject.SetActive(false);
+            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark").gameObject.SetActive(true);
             transform.Find(_subMenus[_selectedSubMenu] + " Window").gameObject.SetActive(false);
             _selectedSubMenu = formatted_value;
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Label").gameObject.SetActive(true);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Image").gameObject.SetActive(false);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Menu Active").gameObject.SetActive(true);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Menu Inactive").gameObject.SetActive(false);
+            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark (Selected)").gameObject.SetActive(true);
+            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark").gameObject.SetActive(false);
             transform.Find(_subMenus[_selectedSubMenu] + " Window").gameObject.SetActive(true);
             if(_selectedSubMenu == 0)
             {
                 MenuManager.Instance.HideEffects();
                 int count = Player.Instance.CurrentEffects.Where(effect => effect.ShowsInMenu).ToArray().Length;
-                transform.Find("Overview Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
-                transform.Find("Overview Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+                transform.Find("Character Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+                transform.Find("Character Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
             }
             if(_selectedSubMenu == 1 && SaveFile.Instance.Inventory.Count > 0)
             {
@@ -131,30 +153,29 @@ public class MenuManager : MonoBehaviour {
                     transform.Find("Skill Tree Window/Skill Tree").GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
                 }
             }
-            if(_selectedSubMenu == 4 && CanvasElements.MenuCanvas.MenuArchive.transform.childCount > 0) {
-                CanvasElements.MenuCanvas.MenuArchive.transform.parent.Find("Scrollbar").GetComponent<Scrollbar>().value = 0;
+            if(_selectedSubMenu == 4 && Objects.MenuArchive.transform.childCount > 0) {
+                Objects.MenuArchive.transform.parent.Find("Scrollbar").GetComponent<Scrollbar>().value = 0;
                 for(int i = 0; i < 5; i++) {
                     GameController.Instance.WaitAndRunMethodRealtime(0.05f * i, UpdateHistoryScrollbarPosition);
                 }
             }
             if(_selectedSubMenu == 5)
             {
-                transform.Find("Guide Window/UI_Window/Viewport/Items/UI_TutorialItem").GetComponent<Button>().Select();
+                transform.Find("Tutorials Window/UI_Window/Viewport/Items/UI_TutorialItem").GetComponent<Button>().Select();
             }
-            CanvasElements.MenuCanvas.GamepadIndicator.SetActive(false);
             PlayerControls.GamepadSelectObjectClosestToCenter();
         }
     }
 
     public void ResetAndRefreshAllMenus() {
-        Utils.DestroyAllChildren(CanvasElements.UICanvas.StanceGaugeContainer.transform);
+        Utils.DestroyAllChildren(UIManager.Objects.StanceGaugeContainer.transform);
         SaveFile.Instance.MakeSureAllCorrectTechniquesAndStancesAreUnlocked();
         Tooltip.transform.parent.gameObject.SetActive(false);
-        transform.Find("Overview Window/Ability Select").gameObject.SetActive(false);
-        transform.Find("Overview Window/Stance Select").gameObject.SetActive(false);
-        transform.Find("Overview Window/Energy Select").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details").gameObject.SetActive(false);
-        transform.Find("Overview Window/Effects").gameObject.SetActive(false);
+        transform.Find("Character Window/Ability Select").gameObject.SetActive(false);
+        transform.Find("Character Window/Stance Select").gameObject.SetActive(false);
+        transform.Find("Character Window/Energy Select").gameObject.SetActive(false);
+        transform.Find("Character Window/Details").gameObject.SetActive(false);
+        transform.Find("Character Window/Effects").gameObject.SetActive(false);
         transform.Find("Inventory Window/Details").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details").gameObject.SetActive(false);
         SelectedSubMenu = 0;
@@ -166,14 +187,12 @@ public class MenuManager : MonoBehaviour {
             SaveFile.Instance.ReloadItems();
         }
         SaveFile.Instance.ReloadAbilities();
-        UpdateDifficultyDisplay();
-        CanvasElements.UICanvasObject.transform.Find("Ignis Energy").gameObject.SetActive(false);
     }
 
     public void AddHistoryEntry(string entry) {
         GameObject item = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ArchivedLineText")) as GameObject;
         item.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel(entry);
-        item.transform.SetParent(CanvasElements.MenuCanvas.MenuArchive.transform);
+        item.transform.SetParent(Objects.MenuArchive.transform);
         GameController.Instance.WaitAndRunMethodRealtime(0.01f, UpdateHistoryScrollbarPosition);
     }
 
@@ -181,13 +200,13 @@ public class MenuManager : MonoBehaviour {
         GameObject item = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ArchivedLineGraphic")) as GameObject;
         item.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel(entry);
         item.transform.Find("Image/Graphic").GetComponent<Image>().sprite = graphic;
-        item.transform.SetParent(CanvasElements.MenuCanvas.MenuArchive.transform);
+        item.transform.SetParent(Objects.MenuArchive.transform);
         GameController.Instance.WaitAndRunMethodRealtime(0.01f, UpdateHistoryScrollbarPosition);
         item.transform.localScale = new Vector3(1, 1, 1);
     }
 
     public void AddHistoryEntry(NotificationController.InGameDialogue dialogue, bool is_choice = false, List<string> string_params = null) {
-        foreach(Transform parent in new List<Transform> {CanvasElements.DialogueArchive.transform, CanvasElements.MenuCanvas.MenuArchive.transform}) {
+        foreach(Transform parent in new List<Transform> {GameController.Objects.DialogueArchive.transform, Objects.MenuArchive.transform}) {
             GameObject item = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ArchivedLineDialogue")) as GameObject;
             item.transform.Find("Text").GetComponent<LabelInitializer>().string_params = string_params;
             item.transform.Find("Text").GetComponent<LabelInitializer>().SetLabel((is_choice ? "{DialogueSelectedChoice}" : "") + "{" + dialogue.Id + "}");
@@ -205,12 +224,12 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void UpdateHistoryScrollbarPosition() {
-        CanvasElements.MenuCanvas.MenuArchive.transform.parent.Find("Scrollbar").GetComponent<Scrollbar>().value = 0;
-        CanvasElements.MenuCanvas.MenuArchive.transform.GetChild(CanvasElements.MenuCanvas.MenuArchive.transform.childCount - 1).GetComponent<Button>().Select();
-        CanvasElements.MenuCanvas.MenuArchive.transform.GetChild(CanvasElements.MenuCanvas.MenuArchive.transform.childCount - 1).GetComponent<CenterScrollRectOnItemWhenSelected>().CenterOnItem();
+        Objects.MenuArchive.transform.parent.Find("Scrollbar").GetComponent<Scrollbar>().value = 0;
+        Objects.MenuArchive.transform.GetChild(Objects.MenuArchive.transform.childCount - 1).GetComponent<Button>().Select();
+        Objects.MenuArchive.transform.GetChild(Objects.MenuArchive.transform.childCount - 1).GetComponent<CenterScrollRectOnItemWhenSelected>().CenterOnItem();
     }
 
-    public void ToggleAllowReadingUnreadDialogue(bool is_checked) {
+    public void ToggleAllowSkippingUnreadDialogue(bool is_checked) {
         Settings.Instance.AllowSkipUnreadDialogue = is_checked;
     }
 
@@ -218,21 +237,25 @@ public class MenuManager : MonoBehaviour {
         Settings.Instance.AutoSkipReadDialogue = is_checked;
     }
 
+    public void ToggleShowExtraInfoInUI(bool is_checked) {
+        Settings.Instance.ShowExtraInfoInUI = is_checked;
+    }
+
+
     public void ScrollToBottomOfHistory() {
         /*GameController.Instance.transform.Find("Dialogue Window/Dialogue History/Scroll Rect").GetComponent<ScrollRect>().verticalScrollbar.SetValueWithoutNotify(0);
         GameController.Instance.transform.Find("Dialogue Window/Dialogue History/Scroll Rect/Viewport/Content").GetComponent<RectTransform>().localPosition = new Vector2(0, 999999);
-        GameController.Instance.transform.Find("Menu Canvas/History Window/Dialogue History/Scroll Rect").GetComponent<ScrollRect>().verticalScrollbar.SetValueWithoutNotify(0);
-        GameController.Instance.transform.Find("Menu Canvas/History Window/Dialogue History/Scroll Rect/Viewport/Content").GetComponent<RectTransform>().localPosition = new Vector2(0, 999999);*/
+        GameController.Instance.transform.Find("Archive Window/Dialogue History/Scroll Rect").GetComponent<ScrollRect>().verticalScrollbar.SetValueWithoutNotify(0);
+        GameController.Instance.transform.Find("Archive Window/Dialogue History/Scroll Rect/Viewport/Content").GetComponent<RectTransform>().localPosition = new Vector2(0, 999999);*/
     }
 
     public void Start()
     {
-        
         Tooltip = transform.Find("Tooltip/Text").GetComponent<LabelInitializer>();
         TooltipDisplay =  transform.Find("Tooltip").GetComponent<HideOrShowOverTime>();
         TooltipTransformChange = transform.Find("Tooltip").GetComponent<ChangeTransformOverTime>();
-        transform.Find("Settings Window/Graphics/Items/FullScreenMode/Dropdown").GetComponent<TMP_Dropdown>().value = Screen.fullScreenMode == FullScreenMode.FullScreenWindow ? 0 : (Screen.fullScreenMode == FullScreenMode.Windowed ? 1 : (Screen.fullScreenMode == FullScreenMode.MaximizedWindow ? 2 : 0));
-        TMP_Dropdown resolution = transform.Find("Settings Window/Graphics/Items/Resolution/Dropdown").GetComponent<TMP_Dropdown>();
+        transform.Find("Options Window/Options/Display/Items/FullScreenMode/Dropdown").GetComponent<TMP_Dropdown>().value = Screen.fullScreenMode == FullScreenMode.FullScreenWindow ? 0 : (Screen.fullScreenMode == FullScreenMode.Windowed ? 1 : (Screen.fullScreenMode == FullScreenMode.MaximizedWindow ? 2 : 0));
+        TMP_Dropdown resolution = transform.Find("Options Window/Options/Display/Items/Resolution/Dropdown").GetComponent<TMP_Dropdown>();
         TMP_Dropdown.OptionData current_res = resolution.options.FirstOrDefault(item => item.text.Split("x")[0] == Screen.width.ToString() && item.text.Split("x")[1] == Screen.height.ToString());
         if (current_res != null)
         {
@@ -244,7 +267,7 @@ public class MenuManager : MonoBehaviour {
         RangedEquipmentSlot = equipment.Find("Left Panel/Ranged").GetComponent<InventoryTile>();
         GlovesEquipmentSlot = equipment.Find("Right Panel/Gloves").GetComponent<InventoryTile>();
         HelmetEquipmentSlot = equipment.Find("Right Panel/Helmet").GetComponent<InventoryTile>();
-        ArmorEquipmentSlot = equipment.Find("Right Panel/Armor").GetComponent<InventoryTile>();
+        OutfitEquipmentSlot = equipment.Find("Right Panel/Outfit").GetComponent<InventoryTile>();
         BootsEquipmentSlot = equipment.Find("Right Panel/Boots").GetComponent<InventoryTile>();
         Item2EquipmentSlot = equipment.Find("Item 2").GetComponent<InventoryTile>();
         Item1EquipmentSlot = equipment.Find("Left Panel/Item 1").GetComponent<InventoryTile>();
@@ -276,45 +299,37 @@ public class MenuManager : MonoBehaviour {
         foreach(PassivePowerUpTile unlock in MenuManager.Instance.GetComponentsInChildren<PassivePowerUpTile>(true)) {
             PowerUpTiles.Add(unlock);
         }
-        foreach(string submenu in new List<string> {"Skill Tree", "Inventory", "History", "Guide", "Settings", "Other"}) {
+        foreach(string submenu in new List<string> {"Character", "Inventory", "Skill Tree", "Archive", "Tutorials", "Options"}) {
             transform.Find(submenu + " Window").gameObject.SetActive(false);
         }
     }
 
     public void OpenEnergySelection() {
-        MenuManager.Instance.transform.Find("Overview Window/Energy Select").gameObject.SetActive(true);
+        MenuManager.Instance.transform.Find("Character Window/Energy Select").gameObject.SetActive(true);
         HideAbilitySelection();
         HideStanceSelection();
-        MenuManager.Instance.transform.Find("Overview Window/Effects").gameObject.SetActive(false);
+        MenuManager.Instance.transform.Find("Character Window/Effects").gameObject.SetActive(false);
         EventManager.CancelButtonPressed.AddListener(MenuManager.Instance.HideEnergySelection);
         EventManager.ExitMenu.AddListener(MenuManager.Instance.HideStanceSelection);
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            MenuManager.Instance.transform.Find("Overview Window/Energy Select/Energies/None/1").GetComponent<Button>().Select();
+            MenuManager.Instance.transform.Find("Character Window/Energy Select/Energies/None/1").GetComponent<Button>().Select();
         }
     }
 
     public void HideEnergySelection() {
-        MenuManager.Instance.transform.Find("Overview Window/Energy Select").gameObject.SetActive(false);
+        MenuManager.Instance.transform.Find("Character Window/Energy Select").gameObject.SetActive(false);
     }
 
-    public void DecreaseStoryModeDifficulty() {
-        ShowConfirmModal(Label.Get("LowerDifficultyConfirmation"), ConfirmedDecreaseDifficulty);
-    }
-
-    public void ConfirmedDecreaseDifficulty() {
-        SaveFile.Instance.Difficulty = Constants.Difficulty.Story;
-        UpdateDifficultyDisplay();
-    }
-
-    public void UpdateDifficultyDisplay() {
-        transform.Find("Settings Window/Gameplay/Items/Difficulty/Difficulty").GetComponent<LabelInitializer>().SetLabel("{" + SaveFile.Instance.Difficulty.ToString() +  "CombatType}");
-        transform.Find("Settings Window/Gameplay/Items/Difficulty/UI_Button").gameObject.SetActive(SaveFile.Instance.SaveFileType == SaveFile.SaveFileTypeEnum.Story && SaveFile.Instance.Difficulty != Constants.Difficulty.Story);
+    public void ChangeDifficulty() {
+        int value = transform.Find("Options Window/Options/Gameplay/Items/Difficulty/Dropdown").GetComponent<Dropdown>().value;
+        SaveFile.Instance.Difficulty = value == 0 ? Constants.Difficulty.Story : value == 1 ? Constants.Difficulty.Regular : value == 2 ? Constants.Difficulty.Challenge : Constants.Difficulty.Ultimate;
+        transform.Find("Options Window/Options/Gameplay/Items/Difficulty/Dropdown/Label").GetComponent<LabelInitializer>().SetLabel("{" + SaveFile.Instance.Difficulty.ToString() +  "CombatType}");
     }
 
     public void AddItemToGrid(Item item)
     {
         GameObject item_tile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_InventoryTile")) as GameObject;
-        Transform itemGroup = CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Inventory/Viewport/Items/" + item.Type.ToString() + "/Items");
+        Transform itemGroup = Objects.InventoryItems.transform.Find(item.Type.ToString() + "/Items");
         item_tile.name = itemGroup.childCount.ToString();
         InventoryTile tile = item_tile.GetComponent<InventoryTile>();
         SetRegularImage(item_tile.transform.Find("Image").gameObject, item);
@@ -347,7 +362,7 @@ public class MenuManager : MonoBehaviour {
             item.ClearFromInventory();
         }
         SaveFile.Instance.Inventory = new List<Item>();
-        foreach(InventoryTile tile in CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Equipment").GetComponentsInChildren<InventoryTile>(true))
+        foreach(InventoryTile tile in Objects.InventoryEquipment.GetComponentsInChildren<InventoryTile>(true))
         {
             if(tile.Item != null && EquippedItems.Contains(tile.Item))
             {
@@ -359,26 +374,12 @@ public class MenuManager : MonoBehaviour {
                 tile.transform.Find("Amount").GetComponent<TextMeshProUGUI>().text = "";
             }
         }
-        foreach (Transform child in CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Inventory/Viewport/Items"))
+        foreach (Transform child in Objects.InventoryItems.transform)
         {
             if(child.gameObject.name != "Empty Filler (Gamepad)") {
                 Utils.DestroyAllChildren(child.transform.Find("Items"));
             }
         }
-    }
-
-    private Vector2 GamepadIndicatorAdjustment;
-
-    public void SetGamepadIndicator(GameObject object_being_pointed_at, float x_adjustment = -50, float y_adjustment = 0) {
-        if(Settings.Instance.ControlScheme == "Gamepad") {
-            GamepadIndicatorAdjustment = new Vector2(x_adjustment, y_adjustment);
-            CanvasElements.MenuCanvas.GamepadIndicator.SetActive(true);
-            GameController.Instance.WaitAndRunMethodRealtime(0.01f, SetGamepadIndicatorPosition, object_being_pointed_at);
-        }
-    }
-
-    public void SetGamepadIndicatorPosition(GameObject object_being_pointed_at) {
-        CanvasElements.MenuCanvas.GamepadIndicator.transform.position = new Vector2(object_being_pointed_at.transform.position.x + GamepadIndicatorAdjustment.x, object_being_pointed_at.transform.position.y + GamepadIndicatorAdjustment.y);
     }
 
     public void SetRegularImage(GameObject image, Item item)
@@ -397,27 +398,35 @@ public class MenuManager : MonoBehaviour {
 
     public void ChangeLanguage()
     {
-        TMP_Dropdown language = transform.Find("Settings Window/Gameplay/Items/Language/Dropdown").GetComponent<TMP_Dropdown>();
+        TMP_Dropdown language = transform.Find("Options Window/Options/Gameplay/Items/Language/Dropdown").GetComponent<TMP_Dropdown>();
         Settings.Instance.CurrentLanguage = language.value == 0 ? Settings.Language.ENG : Settings.Language.PL;
-        Utils.GetSceneRootObject("Start Screen").Find("Sandbox Arena").GetComponent<SandboxArenaController>().Clean();
-        Utils.GetSceneRootObject("Start Screen").Find("Sandbox Arena").GetComponent<SandboxArenaController>().Start();
+        if(SceneManager.GetActiveScene().name == "StartScreen") {
+            Utils.GetSceneRootObject("Start Screen").Find("Sandbox Arena").GetComponent<SandboxArenaController>().Clean();
+            Utils.GetSceneRootObject("Start Screen").Find("Sandbox Arena").GetComponent<SandboxArenaController>().Start();
+        }
     }
 
     public void ChangeControls()
     {
-        TMP_Dropdown controls = transform.Find("Settings Window/Gameplay/Items/Controls/Dropdown").GetComponent<TMP_Dropdown>();
+        TMP_Dropdown controls = transform.Find("Options Window/Options/Gameplay/Items/Controls/Dropdown").GetComponent<TMP_Dropdown>();
         Settings.Instance.ControlScheme = controls.value == 0 ? "Keyboard" : "Gamepad";
+    }
+
+    public void SetInWorldDialogueBubbleSpeed()
+    {
+        float sliderValue = Objects.OptionsInWorldDialogueSpeedSlider.GetComponent<Slider>().value;
+        Settings.Instance.InWorldDialogueBubbleSpeed = sliderValue / 100;
     }
 
     public void ChangeDisplayedTutorial(string tutorial_name)
     {
-        if(CanvasElements.MenuCanvas.TutorialWindowDescription.transform.parent.gameObject.activeSelf == false)
+        if(Objects.TutorialsWindowDescriptionLabel.transform.parent.gameObject.activeSelf == false)
         {
-            CanvasElements.MenuCanvas.TutorialWindowDescription.transform.parent.gameObject.SetActive(true);
+            Objects.TutorialsWindowDescriptionLabel.transform.parent.gameObject.SetActive(true);
         }
-        CanvasElements.MenuCanvas.TutorialWindowTitle.GetComponent<LabelInitializer>().SetLabel("{TutorialTitle" + tutorial_name + "}");
-        CanvasElements.MenuCanvas.TutorialWindowImage.GetComponent<Image>().sprite = Resources.Load("Sprites/Tutorial/" + tutorial_name, typeof(Sprite)) as Sprite;
-        CanvasElements.MenuCanvas.TutorialWindowDescription.GetComponent<LabelInitializer>().SetLabel("{TutorialDescription" + tutorial_name + "}");
+        Objects.TutorialsWindowTitleLabel.SetLabel("{TutorialTitle" + tutorial_name + "}");
+        Objects.TutorialsWindowImage.sprite = Resources.Load("Sprites/Tutorial/" + tutorial_name, typeof(Sprite)) as Sprite;
+        Objects.TutorialsWindowDescriptionLabel.SetLabel("{TutorialDescription" + tutorial_name + "}");
     }
 
     public void EndTypingBugReport()
@@ -425,35 +434,9 @@ public class MenuManager : MonoBehaviour {
         transform.Find("Report Bug Window/Buttons/UI_Button_1").GetComponent<Button>().Select();
     }
 
-    public void AbandonMission()
-    {
-        if(SaveFile.Instance.CurrentMission.NumberOfWeeksConsumed == 0) {
-            SaveFile.Instance.CurrentMission.AbandonMission();
-        }
-        else {
-            ShowConfirmModal(Label.Get("AbandonMissionConfirmation"), ConfirmedAbandonMission);
-        }  
-    }
-
-    public void ConfirmedAbandonMission() {
-        SaveFile.Instance.CurrentMission.AbandonMission();
-    }
-
-    public void ShowReportBugWindow()
-    {
-        transform.Find("Other Window/Report Bug Window").gameObject.SetActive(true);
-        transform.Find("Other Window/Window").gameObject.SetActive(false);
-    }
-
-    public void HideReportBugWindow()
-    {
-        transform.Find("Other Window/Report Bug Window").gameObject.SetActive(false);
-        transform.Find("Other Window/Window").gameObject.SetActive(true);
-    }
-
     public void SendBugReport()
     {
-        transform.Find("Other Window/Report Bug Window/UI_Spinner").gameObject.SetActive(true);
+        transform.Find("Options Window/Options/ReportBug/Items/UI_Spinner").gameObject.SetActive(true);
         try
         {
             MailMessage mail = new MailMessage();
@@ -468,7 +451,7 @@ public class MenuManager : MonoBehaviour {
             mail.From = new MailAddress("darven.games.bugreport@gmail.com", "3LC Bug Report");
             mail.To.Add(new MailAddress("waterfowl.games.supp@gmail.com", "Waterfowl Games Support"));
             mail.Subject = "3LC Bug";
-            mail.Body = transform.Find("Other Window/Report Bug Window/Input/Text").GetComponent<TextMeshProUGUI>().text + "\n\n(" + log_path + "):\n\n" + System.Text.Encoding.UTF8.GetString(GetBytesFromFilePath(log_path));
+            mail.Body = transform.Find("Options Window/Options/ReportBug/Items/Input/Text").GetComponent<TextMeshProUGUI>().text + "\n\n(" + log_path + "):\n\n" + System.Text.Encoding.UTF8.GetString(GetBytesFromFilePath(log_path));
 
             smtpServer.Credentials = new NetworkCredential("darven.games.bugreport@gmail.com", "dvkeuwwfuabqxipz");
             ServicePointManager.ServerCertificateValidationCallback = delegate (object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -478,15 +461,15 @@ public class MenuManager : MonoBehaviour {
 
             mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
             smtpServer.Send(mail);
-            transform.Find("Other Window/Report Bug Window/Description").GetComponent<LabelInitializer>().SetLabel("{DescriptionReportBugSuccess}");
+            transform.Find("Options Window/Options/ReportBug/Items/Description").GetComponent<LabelInitializer>().SetLabel("{DescriptionReportBugSuccess}");
         }
         catch (Exception ex)
         {
-            transform.Find("Other Window/Report Bug Window/Description").GetComponent<LabelInitializer>().SetLabel("{DescriptionReportBugError}" + ex.Message + ", " + ex.StackTrace);
+            transform.Find("Options Window/Options/ReportBug/Items/Description").GetComponent<LabelInitializer>().SetLabel("{DescriptionReportBugError}" + ex.Message + ", " + ex.StackTrace);
         }
-        transform.Find("Other Window/Report Bug Window/UI_Spinner").gameObject.SetActive(false);
-        transform.Find("Other Window/Report Bug Window/Input").gameObject.SetActive(false);
-        transform.Find("Other Window/Report Bug Window/Buttons/Send Report Button").GetComponent<Button>().interactable = false;
+        transform.Find("Options Window/Options/ReportBug/Items/UI_Spinner").gameObject.SetActive(false);
+        transform.Find("Options Window/Options/ReportBug/Items/Input").gameObject.SetActive(false);
+        transform.Find("Options Window/Options/ReportBug/Items/Buttons/Send Report Button").GetComponent<Button>().interactable = false;
         GameController.Instance.WaitAndRunMethodRealtime(300, UnlockSendReport);
     }
 
@@ -502,11 +485,11 @@ public class MenuManager : MonoBehaviour {
         }
     }
 
-        public void UnlockSendReport()
+    public void UnlockSendReport()
     {
-        transform.Find("Other Window/Report Bug Window/Description").GetComponent<LabelInitializer>().SetLabel("{DescriptionReportBug}");
-        transform.Find("Other Window/Report Bug Window/Input").gameObject.SetActive(true);
-        transform.Find("Other Window/Report Bug Window/Buttons/Send Report Button").GetComponent<Button>().interactable = true;
+        transform.Find("Options Window/Options/ReportBug/Items/Description").GetComponent<LabelInitializer>().SetLabel("{DescriptionReportBug}");
+        transform.Find("Options Window/Options/ReportBug/Items/Input").gameObject.SetActive(true);
+        transform.Find("Options Window/Options/ReportBug/Items/Buttons/Send Report Button").GetComponent<Button>().interactable = true;
     }
 
     public static string CombinePaths(string path1, params string[] paths)
@@ -522,59 +505,54 @@ public class MenuManager : MonoBehaviour {
         return paths.Aggregate(path1, (acc, p) => Path.Combine(acc, p));
     }
 
-    public void QuitGame() {
-        ShowConfirmModal(Label.Get("QuitPlayingConfirmation"), ConfirmedQuitGame);
-    }
-
-    public void ConfirmedQuitGame() {
-        Application.Quit();
-    }
-
-    public void ReturnToTitle() {
-        ShowConfirmModal(Label.Get("QuitPlayingConfirmation"), ConfirmedReturnToTitle);
-    }
-
-    public void ConfirmedReturnToTitle() {
-        GameController.Instance.GameplayMode = Constants.GameplayMode.OnStartScreen;
-    }
-
     public void CloseMenu() {
         GameController.Instance.GameplayMode = Constants.GameplayMode.Regular;
     }
 
     public void SetFieldOfView() {
-        Settings.Instance.FieldOfView = transform.Find("Settings Window/Graphics/Items/Field of View").GetComponent<Slider>().value;
+        float sliderValue = Objects.OptionsFieldOfViewSlider.GetComponent<Slider>().value;
+        Settings.Instance.FieldOfView = sliderValue;
+    }
+
+    public void SetUISize() {
+        float sliderValue = Objects.OptionsUISizeSlider.GetComponent<Slider>().value;
+        Settings.Instance.UISize = sliderValue / 100;
+    }
+
+    public void SetDamageNumbersSize() {
+        float sliderValue = Objects.OptionsDamageNumbersSizeSlider.GetComponent<Slider>().value;
+        Settings.Instance.DamageNumbersSize = sliderValue / 100;
     }
 
     public void SetMasterVolume() {
-        float sliderValue = transform.Find("Settings Window/Audio/Items/Master Volume").GetComponent<Slider>().value;
+        float sliderValue = Objects.OptionsMasterVolumeSlider.GetComponent<Slider>().value;
         Settings.Instance.MasterVolume = sliderValue / 100;
     }
 
     public void SetDialogueTextSpeed() {
-        float sliderValue = transform.Find("Settings Window/Gameplay/Items/Dialogue Text Speed").GetComponent<Slider>().value;
-        Settings.Instance.DialogueTextSpeed = (int)sliderValue;
+        float sliderValue = Objects.OptionsDialogueTextSpeedSlider.GetComponent<Slider>().value;
+        Settings.Instance.DialogueTextSpeed = sliderValue / 100;
     }
 
     public void SetMusicVolume() {
-        float sliderValue = transform.Find("Settings Window/Audio/Items/Music Volume").GetComponent<Slider>().value;
+        float sliderValue = Objects.OptionsMusicVolumeSlider.GetComponent<Slider>().value;
         Settings.Instance.MusicVolume = sliderValue / 100;
     }
 
     public void SetSoundVolume() {
-        float sliderValue = transform.Find("Settings Window/Audio/Items/Sound Volume").GetComponent<Slider>().value;
+        float sliderValue = Objects.OptionsSoundVolumeSlider.GetComponent<Slider>().value;
         Settings.Instance.SoundVolume = sliderValue / 100;
     }
 
     public void SetDialogueVolume() {
-        float sliderValue = transform.Find("Settings Window/Audio/Items/Dialogue Volume").GetComponent<Slider>().value;
+        float sliderValue = Objects.OptionsDialogueVolumeSlider.GetComponent<Slider>().value;
         Settings.Instance.DialogueVolume = sliderValue / 100;
     }
 
     public void SetFullScreenMode()
     {
         
-        TMP_Dropdown fullscreen_mode = transform.Find("Settings Window/Graphics/Items/FullScreenMode/Dropdown").GetComponent<TMP_Dropdown>();
+        TMP_Dropdown fullscreen_mode = transform.Find("Options Window/Options/Display/Items/FullScreenMode/Dropdown").GetComponent<TMP_Dropdown>();
         switch (fullscreen_mode.value)
         {
             case 0: { Screen.fullScreenMode = FullScreenMode.FullScreenWindow; break; }
@@ -587,7 +565,7 @@ public class MenuManager : MonoBehaviour {
     public void SetResolution()
     {
         Vector2 resolution = Vector2.zero;
-        TMP_Dropdown resolutionDropdown = transform.Find("Settings Window/Graphics/Items/Resolution/Dropdown").GetComponent<TMP_Dropdown>();
+        TMP_Dropdown resolutionDropdown = transform.Find("Options Window/Options/Display/Items/Resolution/Dropdown").GetComponent<TMP_Dropdown>();
         switch (resolutionDropdown.value)
         {
             case 0: { resolution = new Vector2(1280, 720); break; }
@@ -654,28 +632,28 @@ public class MenuManager : MonoBehaviour {
         }
         CurrentAbilityDescription = ability_type;
         AbilityDetailsWindowOpen = true;
-        transform.Find("Overview Window/Details").gameObject.SetActive(true);
+        transform.Find("Character Window/Details").gameObject.SetActive(true);
         bool is_stance = ability_type.ToString().Contains("Stance_");
-        transform.Find("Overview Window/Details/Image").gameObject.SetActive(!is_stance);
-        transform.Find("Overview Window/Details/Stance").gameObject.SetActive(is_stance);
-        transform.Find("Overview Window/Details/Energy").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Stat").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Description/Image/Energy Description").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Image").gameObject.SetActive(!is_stance);
+        transform.Find("Character Window/Details/Stance").gameObject.SetActive(is_stance);
+        transform.Find("Character Window/Details/Energy").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Stat").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Description/Image/Energy Description").gameObject.SetActive(false);
         FieldInfo family = ability_type.GetField("Family", BindingFlags.Public | BindingFlags.Static);
         if(is_stance) {
-            transform.Find("Overview Window/Details/Stance/Stance Border").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + ability_type.ToString(), typeof(Sprite)) as Sprite;
-            transform.Find("Overview Window/Details/Stance/Border Upper").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
-            transform.Find("Overview Window/Details/Stance/Border Lower").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
-            transform.Find("Overview Window/Details/Stance").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
+            transform.Find("Character Window/Details/Stance/Stance Border").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + ability_type.ToString(), typeof(Sprite)) as Sprite;
+            transform.Find("Character Window/Details/Stance/Border Upper").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
+            transform.Find("Character Window/Details/Stance/Border Lower").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
+            transform.Find("Character Window/Details/Stance").GetComponent<Image>().color = Colors.GetFamilyColor(family.GetValue(null).ToString());
         }
         else {
-            transform.Find("Overview Window/Details/Image/Icon").GetComponent<Image>().sprite = Utils.GetGraphicForAbility(ability_type != null ? ability_type.ToString() : null);
+            transform.Find("Character Window/Details/Image/Icon").GetComponent<Image>().sprite = Utils.GetGraphicForAbility(ability_type != null ? ability_type.ToString() : null);
         }
         MethodInfo desc = ability_type.GetMethod("GetDescriptionValues", BindingFlags.Public | BindingFlags.Static);
         if (desc != null)
         {
-            transform.Find("Overview Window/Details/Description/Image/Description").gameObject.SetActive(true);
-            transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().string_params = Utils.RoundAllNumbers((List<string>)desc.Invoke(null, null));
+            transform.Find("Character Window/Details/Description/Image/Description").gameObject.SetActive(true);
+            transform.Find("Character Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().string_params = Utils.RoundAllNumbers((List<string>)desc.Invoke(null, null));
         }
         if(ability_type.ToString().Contains("Stance_")) {
             string stance_desc = "{" + ability_type.ToString() + "_Description}\n";
@@ -688,28 +666,28 @@ public class MenuManager : MonoBehaviour {
             if(SaveFile.Instance.StanceUpgrades.Contains(ability_type.ToString().Replace("Stance_", "") + "3")) {
                 stance_desc += "\n{StanceUpgrade3}";
             }
-            transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(stance_desc);
+            transform.Find("Character Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel(stance_desc);
         }
         else {
-            transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "_Description}");
+            transform.Find("Character Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "_Description}");
         }
-        transform.Find("Overview Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "}");
+        transform.Find("Character Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{" + ability_type.ToString() + "}");
         FieldInfo isUltimate = ability_type.GetField("IsUltimate", BindingFlags.Public | BindingFlags.Static);
-        transform.Find("Overview Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{TechniqueFamily_" + family.GetValue(null) + "_Colored} " + (isUltimate != null ? "{UltimateTechnique} " : "") + (ability_type.ToString().Contains("Stance_") ? "{Stance}" : "{Technique}") + (SaveFile.Instance.AbilitiesMasteryA.Contains(ability_type) ? " ({TechniqueUpgradeA})" : SaveFile.Instance.AbilitiesMasteryB.Contains(ability_type) ? " ({TechniqueUpgradeB})" : ""));
+        transform.Find("Character Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{TechniqueFamily_" + family.GetValue(null) + "_Colored} " + (isUltimate != null ? "{UltimateTechnique} " : "") + (ability_type.ToString().Contains("Stance_") ? "{Stance}" : "{Technique}") + (SaveFile.Instance.AbilitiesMasteryA.Contains(ability_type) ? " ({TechniqueUpgradeA})" : SaveFile.Instance.AbilitiesMasteryB.Contains(ability_type) ? " ({TechniqueUpgradeB})" : ""));
     }
 
     public void ShowStatDetails(string stat) {
-        transform.Find("Overview Window/Details").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Image").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Stance").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Energy").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Stat").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Description/Image/Energy Description").gameObject.SetActive(false);
-        transform.Find("Overview Window/Details/Description/Image/Description").gameObject.SetActive(true);
-        transform.Find("Overview Window/Details/Stat").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + stat, typeof(Sprite)) as Sprite;
-        transform.Find("Overview Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{Stat_" + stat + "_Description}");
-        transform.Find("Overview Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{Stat_" + stat + "}");
-        transform.Find("Overview Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{MenuStatLabel_Stat}");
+        transform.Find("Character Window/Details").gameObject.SetActive(true);
+        transform.Find("Character Window/Details/Image").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Stance").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Energy").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Stat").gameObject.SetActive(true);
+        transform.Find("Character Window/Details/Description/Image/Energy Description").gameObject.SetActive(false);
+        transform.Find("Character Window/Details/Description/Image/Description").gameObject.SetActive(true);
+        transform.Find("Character Window/Details/Stat").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + stat, typeof(Sprite)) as Sprite;
+        transform.Find("Character Window/Details/Description/Image/Description").GetComponent<LabelInitializer>().SetLabel("{Stat_" + stat + "_Description}");
+        transform.Find("Character Window/Details/Name/Text").GetComponent<LabelInitializer>().SetLabel("{Stat_" + stat + "}");
+        transform.Find("Character Window/Details/Category/Text").GetComponent<LabelInitializer>().SetLabel("{MenuStatLabel_Stat}");
     }
 
     public void ShowPowerUpDetails(PassivePowerUpTile tile, bool refresh = false, bool show_detailed = false) {
@@ -731,9 +709,8 @@ public class MenuManager : MonoBehaviour {
             desc += "{Effect_" + power_up_names[i] + "_Description" + ((show_detailed && Label.ContainsKey("{Effect_" + power_up_names[i] + "_DescriptionDetailed")) ? "Detailed" : "") + "}\n\n";
             if(SaveFile.Instance.UnlockedPowerUps.Contains(tile.Id) == false && effects[0].ShowCalculatedStatIncreasesBasedOnFirstStringParam != null) {
                 foreach(Stat stat in effects[0].ShowCalculatedStatIncreasesBasedOnFirstStringParam) {
-                    desc += "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease(
-                        effects[0].IsFlatIncreaseStatIncrease ? 0 : float.Parse(effects[0].DescriptionParameters[0]), 
-                        effects[0].IsFlatIncreaseStatIncrease ? float.Parse(effects[0].DescriptionParameters[0]) : 0) + "\n";
+                    desc += 
+                        "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease( effects[0].FlatAmount != 0 ? 0 : float.Parse(effects[0].DescriptionParameters[0]), effects[0].FlatAmount != 0 ? float.Parse(effects[0].DescriptionParameters[0]) : 0) + "\n";
                 }
                 desc += "\n";
             }
@@ -761,8 +738,6 @@ public class MenuManager : MonoBehaviour {
             transform.Find("Skill Tree Window/Details/Power-up/Icon2").gameObject.SetActive(false);
         }
         transform.Find("Skill Tree Window/Details/Power-up/Icon").gameObject.SetActive(true);
-        transform.Find("Skill Tree Window/Details/Power-up/Ancient Upgrade").gameObject.SetActive(false);
-        transform.Find("Skill Tree Window/Details/Power-up/Battleborn Upgrade").gameObject.SetActive(false);
         transform.Find("Skill Tree Window/Details/Power-up/Icon").GetComponent<Image>().sprite = tile.transform.Find("Icon").GetComponent<Image>().sprite;
         transform.Find("Skill Tree Window/Details/Power-up/Icon").GetComponent<Image>().color = tile.transform.Find("Icon").GetComponent<Image>().color;
         RectTransform tileRectTransform = tile.transform.Find("Icon").GetComponent<RectTransform>();
@@ -834,13 +809,12 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void OpenEffectsOverview() {
-        CanvasElements.MenuCanvas.EffectsOverview.gameObject.SetActive(true);
-        Transform items = CanvasElements.MenuCanvas.EffectsOverview.transform.Find("Viewport/Items");
-        Utils.DestroyAllChildren(items);
+        Objects.CharacterEffects.gameObject.SetActive(true);
+        Utils.DestroyAllChildren(Objects.CharacterEffectList.transform);
         foreach(Effect effect in Player.Instance.CurrentEffects.Where(effect => effect.ShowsInMenu).ToList()) {
             GameObject effectDescription = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MenuOverviewEffectDescription")) as GameObject;
-            effectDescription.transform.SetParent(items);
-            effectDescription.transform.Find("Background/Text/Grid/Image").GetComponent<Image>().sprite = effect.EffectGraphic != null ? effect.EffectGraphic : !String.IsNullOrWhiteSpace(effect.PathToEffectGraphic) ? Resources.Load("Sprites/" + (effect.PathToEffectGraphic), typeof(Sprite)) as Sprite : Resources.Load("Sprites/UI/Danger Sign", typeof(Sprite)) as Sprite;
+            effectDescription.transform.SetParent(Objects.CharacterEffectList.transform);
+            effectDescription.transform.Find("Background/Text/Grid/Image").GetComponent<Image>().sprite = effect.UIGraphic != null ? effect.UIGraphic : !String.IsNullOrWhiteSpace(effect.PathToUIGraphic) ? Resources.Load("Sprites/" + (effect.PathToUIGraphic), typeof(Sprite)) as Sprite : Resources.Load("Sprites/UI/Danger Sign", typeof(Sprite)) as Sprite;
             if(effect.BaseDuration == 0) {
                 effectDescription.transform.Find("Background/Text/Grid/Duration").gameObject.SetActive(false);
             }
@@ -879,16 +853,17 @@ public class MenuManager : MonoBehaviour {
     }
 
     public string GetModifierDescriptions(Item item, bool detailed = false)
-    {    
+    {
+        if(item.Type == Constants.ItemType.Tool || item.Type == Constants.ItemType.Quest) {
+            return "";
+        }    
         string desc = "";
         foreach (Item.ItemEffect itemEffect in item.FirstItemEffects)
         {  
             List<Effect> ef = EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * item.GetItemFirstEffectPB());
             desc += string.Format((detailed && Label.ContainsKey("Effect_" + itemEffect.EffectName + "_DescriptionDetailed")) ? Label.Get("Effect_" + itemEffect.EffectName + "_DescriptionDetailed") + "\n\n" : Label.Get("Effect_" + itemEffect.EffectName + "_Description") + (Label.ContainsKey("Effect_" + itemEffect.EffectName + "_DescriptionDetailed") ? " <link=\"FirstItemEffects\"><sprite name=\"Detailed\"></link>" : "") + "\n\n", ef[0].DescriptionParameters.ToArray());
             foreach(Stat stat in ef[0].ShowCalculatedStatIncreasesBasedOnFirstStringParam) {
-                desc += "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease(
-                    ef[0].IsFlatIncreaseStatIncrease ? 0 : float.Parse(ef[0].DescriptionParameters[0]), 
-                    ef[0].IsFlatIncreaseStatIncrease ? float.Parse(ef[0].DescriptionParameters[0]) : 0) + "\n";
+                desc += "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease(ef[0].FlatAmount != 0 ? 0 : float.Parse(ef[0].DescriptionParameters[0]), ef[0].FlatAmount != 0 ? float.Parse(ef[0].DescriptionParameters[0]) : 0) + "\n";
             }
             desc += "\n";
         }
@@ -900,9 +875,7 @@ public class MenuManager : MonoBehaviour {
             List<Effect> ef = EffectList.GetEffect(itemEffect.EffectName, itemEffect.PortionOfPowerBudget * item.GetItemSecondEffectPB());
             desc += string.Format((detailed && Label.ContainsKey("Effect_" + itemEffect.EffectName + "_DescriptionDetailed")) ? Label.Get("Effect_" + itemEffect.EffectName + "_DescriptionDetailed") + "\n\n" : Label.Get("Effect_" + itemEffect.EffectName + "_Description") + (Label.ContainsKey("Effect_" + itemEffect.EffectName + "_DescriptionDetailed") ? " <link=\"SecondItemEffects\"><sprite name=\"Detailed\"></link>" : "") + "\n\n", ef[0].DescriptionParameters.ToArray());
             foreach(Stat stat in ef[0].ShowCalculatedStatIncreasesBasedOnFirstStringParam) {
-                desc += "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease(
-                    ef[0].IsFlatIncreaseStatIncrease ? 0 : float.Parse(ef[0].DescriptionParameters[0]), 
-                    ef[0].IsFlatIncreaseStatIncrease ? float.Parse(ef[0].DescriptionParameters[0]) : 0) + "\n";
+                desc += "<link=\"Stat_" + stat.ToString() + "_Description\"><sprite name=\"" + stat.ToString() + "\"></link>" + stat.GetCalculatedIncrease(ef[0].FlatAmount != 0 ? 0 : float.Parse(ef[0].DescriptionParameters[0]), ef[0].FlatAmount != 0 ? float.Parse(ef[0].DescriptionParameters[0]) : 0) + "\n";
             }
         }
         return desc;
@@ -990,7 +963,7 @@ public class MenuManager : MonoBehaviour {
                     sortedItems = nonWeaponItems.Concat(weaponItems).ToList();
                 }
                 else {
-                    sortedItems = consideredItems.OrderBy(item => item.Type).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
+                    sortedItems = consideredItems.OrderBy(item => item.Type).ThenBy(item => item.Set).ThenByDescending(item => item.Grade).ToList();
                 } 
                 for(int i = 0; i < sortedItems.Count; i++) {
                     sortedItems[i].TileInInventory.transform.SetSiblingIndex(i);
@@ -1019,46 +992,13 @@ public class MenuManager : MonoBehaviour {
         }
     }
 
-    public Action FunctionToExecuteOnConfirm;
-    
-    public void ShowConfirmModal(string description, Action function_to_execute_on_confirm, string special_confirm_button_label = "")
-    {
-        ConfirmPromptActive = true;
-        transform.Find("Confirm Prompt").gameObject.SetActive(true);
-        transform.Find("Confirm Prompt/Description").GetComponent<TextMeshProUGUI>().text = description;
-        FunctionToExecuteOnConfirm = function_to_execute_on_confirm;
-        if(Settings.Instance.ControlScheme == "Gamepad")
-        {
-            CanvasElements.MenuCanvas.GamepadIndicator.gameObject.SetActive(false);
-            transform.Find("Confirm Prompt/UI_Button").GetComponent<Button>().Select();
-            EventManager.CancelButtonPressed.AddListener(ModalCanceled);
-            EventManager.ExitMenu.AddListener(ModalCanceled);
-        }
-        transform.Find("Confirm Prompt/UI_Button_1/Text").GetComponent<TextMeshProUGUI>().text = special_confirm_button_label == "" ? Label.Get("ButtonConfirm") : Label.Get(special_confirm_button_label);
-    }
-
-    public void ModalConfirmed()
-    {
-        FunctionToExecuteOnConfirm.Invoke();
-        transform.Find("Confirm Prompt").gameObject.SetActive(false);
-        ConfirmPromptActive = false;
-    }
-
-    public void ModalCanceled()
-    {
-        EventManager.CancelButtonPressed.RemoveListener(ModalCanceled);
-        EventManager.ExitMenu.RemoveListener(ModalCanceled);
-        transform.Find("Confirm Prompt").gameObject.SetActive(false);
-        ConfirmPromptActive = false;
-    }
-
     public void EquipAbility(Type ability) {
         string[] stanceAndSlot = AbilityBeingChanged.Split("-");
         Stance stance = SaveFile.Instance.Stances[stanceAndSlot[0] == "Heavy" ? 0 : stanceAndSlot[0] == "Light" ? 1 : 2];
         HandleAbilityEquipInvokes(stance, ability, stanceAndSlot);
         AbilityBeingChanged = null;
-        transform.Find("Overview Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + int.Parse(stanceAndSlot[1])).GetComponent<AbilitySelect>().AbilityType = ability;
-        transform.Find("Overview Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + int.Parse(stanceAndSlot[1])).GetComponent<AbilitySelect>().Ability = ability.ToString();
+        transform.Find("Character Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + int.Parse(stanceAndSlot[1])).GetComponent<AbilitySelect>().AbilityType = ability;
+        transform.Find("Character Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + int.Parse(stanceAndSlot[1])).GetComponent<AbilitySelect>().Ability = ability.ToString();
         foreach(AbilitySelect abilitySelect in MenuManager.Instance.AbilityLoadout) {
             abilitySelect.UpdateUnlockedStatus();
         }
@@ -1111,7 +1051,7 @@ public class MenuManager : MonoBehaviour {
             SaveFile.Instance.Stances[int.Parse(StanceBeingChanged)].StanceEffect = (Effect_Stance)Activator.CreateInstance(ability, new object[] { null });
             SaveFile.Instance.Stances[int.Parse(StanceBeingChanged)].StanceEffect.OnStanceEquipped();
         }
-        foreach(Image img in new List<Image> {transform.Find("Overview Window/Abilities/Stances").GetChild(int.Parse(StanceBeingChanged)).Find("UI_StanceTile").GetComponent<Image>(), SaveFile.Instance.Stances[int.Parse(StanceBeingChanged)].UIStanceDisplay.GetComponent<Image>()}) {
+        foreach(Image img in new List<Image> {transform.Find("Character Window/Abilities/Stances").GetChild(int.Parse(StanceBeingChanged)).Find("UI_StanceTile").GetComponent<Image>(), SaveFile.Instance.Stances[int.Parse(StanceBeingChanged)].UIStanceDisplay.GetComponent<Image>()}) {
             if(img.GetComponent<Button>() != null) {
                 img.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + ability.ToString(), typeof(Sprite)) as Sprite;
                 img.GetComponent<Image>().color = ability == typeof(Stance_None) ? Color.grey : Colors.GetFamilyColor(family);
@@ -1124,8 +1064,8 @@ public class MenuManager : MonoBehaviour {
             img.transform.Find("Border Upper").GetComponent<Image>().color = Colors.GetFamilyColor(family);
             img.transform.Find("Border Lower").GetComponent<Image>().color = Colors.GetFamilyColor(family);
         }
-        transform.Find("Overview Window/Abilities/Stances").GetChild(int.Parse(StanceBeingChanged)).Find("UI_StanceTile").GetComponent<StanceSelect>().StanceType = ability;
-        transform.Find("Overview Window/Abilities/Stances").GetChild(int.Parse(StanceBeingChanged)).Find("UI_StanceTile").GetComponent<StanceSelect>().Stance = ability.ToString();
+        transform.Find("Character Window/Abilities/Stances").GetChild(int.Parse(StanceBeingChanged)).Find("UI_StanceTile").GetComponent<StanceSelect>().StanceType = ability;
+        transform.Find("Character Window/Abilities/Stances").GetChild(int.Parse(StanceBeingChanged)).Find("UI_StanceTile").GetComponent<StanceSelect>().Stance = ability.ToString();
         HideStanceSelection();
         foreach(StanceSelect stanceSelect in MenuManager.Instance.StanceLoadout) {
             stanceSelect.UpdateUnlockedStatus();
@@ -1157,7 +1097,7 @@ public class MenuManager : MonoBehaviour {
         }
         for(int i = 1; i <= 4; i++) {
             for(int j = 0; j < 3; j++) {
-                AbilitySelect abilitySelect = MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + (j == 0 ? "Heavy" : j == 1 ? "Light" : "Ranged") + "/" + i).GetComponent<AbilitySelect>();
+                AbilitySelect abilitySelect = MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + (j == 0 ? "Heavy" : j == 1 ? "Light" : "Ranged") + "/" + i).GetComponent<AbilitySelect>();
                 if(abilitySelect.AbilityType == null) {
                     continue;
                 }
@@ -1194,24 +1134,24 @@ public class MenuManager : MonoBehaviour {
         int unusedPoints = SaveFile.Instance.MaxUpgradePoints - spentPoints < 0 ? 0 : SaveFile.Instance.MaxUpgradePoints - spentPoints;
         int invalidPoints = spentPoints - SaveFile.Instance.MaxUpgradePoints < 0 ? 0 : spentPoints - SaveFile.Instance.MaxUpgradePoints;
         for(int i = 0; i < usedPoints; i++, counter++) {
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(true);
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeUnlocked", typeof(Sprite)) as Sprite;
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(true);
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeUnlocked", typeof(Sprite)) as Sprite;
         }
         for(int i = 0; i < unusedPoints; i++, counter++) {
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(true);
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotUnlocked", typeof(Sprite)) as Sprite;
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(true);
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotUnlocked", typeof(Sprite)) as Sprite;
         }
         for(int i = 0; i < invalidPoints; i++, counter++) {
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(true);
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotActive", typeof(Sprite)) as Sprite;
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(true);
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotActive", typeof(Sprite)) as Sprite;
         }
         for(; counter < 34; counter++) {
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(false);
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/AvailableUpgradePoints/" + counter).gameObject.SetActive(false);
         }
     }
 
     public void HideAbilitySelection() {
-        transform.Find("Overview Window/Ability Select").gameObject.SetActive(false);
+        transform.Find("Character Window/Ability Select").gameObject.SetActive(false);
         EventManager.CancelButtonPressed.RemoveListener(HideAbilitySelection);
         EventManager.ExitMenu.RemoveListener(MenuManager.Instance.HideAbilitySelection);
         if(!String.IsNullOrWhiteSpace(AbilityBeingChanged)) {
@@ -1230,21 +1170,21 @@ public class MenuManager : MonoBehaviour {
                 }
             }
             stance.Abilities[int.Parse(stanceAndSlot[1]) - 1].Type = null;
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + stanceAndSlot[1] + "/UI_UpgradesLoadout/1").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotUnlocked", typeof(Sprite)) as Sprite;
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + stanceAndSlot[1] + "/UI_UpgradesLoadout/2").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotUnlocked", typeof(Sprite)) as Sprite;
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + stanceAndSlot[1] + "/UI_UpgradesLoadout/1").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotUnlocked", typeof(Sprite)) as Sprite;
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + stanceAndSlot[0] + "/" + stanceAndSlot[1] + "/UI_UpgradesLoadout/2").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + "UpgradeNotUnlocked", typeof(Sprite)) as Sprite;
             UpdateLoadoutUpgradePoints();
         }
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/Heavy/UI_StanceTile").GetComponent<Button>().Select();
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/Heavy/UI_StanceTile").GetComponent<Button>().Select();
         }
     }
 
     public void HideStanceSelection() {
-        transform.Find("Overview Window/Stance Select").gameObject.SetActive(false);
+        transform.Find("Character Window/Stance Select").gameObject.SetActive(false);
         EventManager.CancelButtonPressed.RemoveListener(HideStanceSelection);
         EventManager.ExitMenu.RemoveListener(HideStanceSelection);
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/Heavy/UI_StanceTile").GetComponent<Button>().Select();
+            MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/Heavy/UI_StanceTile").GetComponent<Button>().Select();
         }
     }
 
@@ -1252,11 +1192,11 @@ public class MenuManager : MonoBehaviour {
         MenuManager.Instance.HideEnergySelection();
         MenuManager.Instance.HideAbilitySelection();
         MenuManager.Instance.HideStanceSelection();
-        MenuManager.Instance.transform.Find("Overview Window/Effects").gameObject.SetActive(true);
+        MenuManager.Instance.transform.Find("Character Window/Effects").gameObject.SetActive(true);
     }
 
     public void HideEffects() {
-        CanvasElements.MenuCanvas.EffectsOverview.gameObject.SetActive(false);
+        Objects.CharacterEffects.gameObject.SetActive(false);
     }
 
     public int MoneyReward = 0;
@@ -1265,7 +1205,7 @@ public class MenuManager : MonoBehaviour {
 
     public void ShowTransitionIntoMissionSelect(bool instant = false) {
         if(instant == false && GameController.Instance.GameplayMode != Constants.GameplayMode.MissionSelect) {
-            if(CanvasElements.TransitionScreen.BlackScreen.GetComponent<CanvasGroup>().alpha != 1) {
+            if(GameController.Objects.TransitionBlackScreen.alpha != 1) {
                 UIManager.Instance.ShowBlackScreen(Constants.DEFAULT_BLACK_SCREEN_TRANSITION_DURATION);
             }
             if(GameController.Instance.GameplayMode == Constants.GameplayMode.OnStartScreen) {
@@ -1545,9 +1485,9 @@ public class MenuManager : MonoBehaviour {
         SaveFile.Instance.WeeksAndInvestments.Clear();
         MenuManager.Instance.InitializeMissionList();
         Utils.GetSceneRootObject("Mission Select").Find("Cycle").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + SaveFile.Instance.Cycle, typeof(Sprite)) as Sprite;
-        CanvasElements.UICanvasObject.transform.Find("Cycle").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + SaveFile.Instance.Cycle, typeof(Sprite)) as Sprite;
+        UIManager.Objects.CycleDisplayImage.sprite = Resources.Load("Sprites/UI/Cycle" + SaveFile.Instance.Cycle, typeof(Sprite)) as Sprite;
         SaveFile.Instance.EquippedHelmet = null;
-        SaveFile.Instance.EquippedArmor = null;
+        SaveFile.Instance.EquippedOutfit = null;
         SaveFile.Instance.EquippedGloves = null;
         SaveFile.Instance.EquippedBoots = null;
         SaveFile.Instance.EquippedItem1 = null;
@@ -1588,7 +1528,7 @@ public class MenuManager : MonoBehaviour {
 
     public void OpenShop(List<Item> items, string shop_name = "GenericShop") {
         GameController.Instance.GameplayMode = Constants.GameplayMode.Shopping;
-        Transform itemContainer = CanvasElements.ShopItems.transform;
+        Transform itemContainer = GameController.Objects.ShopItems.transform;
         foreach(Item item in items) {
             if(item.BuyPrice == 0) {
                 item.BuyPrice = item.SellPrice * 2;
@@ -1615,6 +1555,63 @@ public class MenuManager : MonoBehaviour {
 
     public void CloseShop() {
         GameController.Instance.GameplayMode = Constants.GameplayMode.Regular;
-        Utils.DestroyAllChildren(CanvasElements.ShopItems.transform);
+        Utils.DestroyAllChildren(GameController.Objects.ShopItems.transform);
+    }
+
+    public void CloseStartScreenOptionsMenu() {
+        transform.Find("Options Window/StartScreenOptions").gameObject.SetActive(false);
+        transform.Find("Options Window/Options/Gameplay/Items/Difficulty").gameObject.SetActive(true);
+        Utils.SetActiveOnCanvasGroup(Utils.CanvasType.StartScreen, true);
+        GameController.Instance.GameplayMode = Constants.GameplayMode.OnStartScreen;
+    }
+
+    public static class Objects {
+        public static GameObject MenuSelection => Utils.GetGameObject("Menu/Menu Selection");
+        public static GameObject Notifications => Utils.GetGameObject("Menu/Notifications/List");
+        public static LabelInitializer InventoryItemDescriptionLabel => (LabelInitializer)Utils.GetComponent("Menu/Inventory Window/Details/Description/Image/Description", typeof(LabelInitializer));
+        public static GameObject SkillTreeDescription => Utils.GetGameObject("Menu/Skill Tree Window/Details/Description/Image/Description");
+        public static LabelInitializer SkillTreeDescriptionLabel => (LabelInitializer)Utils.GetComponent("Menu/Skill Tree Window/Details/Description/Image/Description", typeof(LabelInitializer));
+        public static GameObject SkillTreeFlavorText => Utils.GetGameObject("Menu/Skill Tree Window/Details/Description/Image/Flavor Text");
+        public static GameObject SkillTreeLongDescription => Utils.GetGameObject("Menu/Skill Tree Window/Details/Description/Image/Description (No Flavor)");
+        public static LabelInitializer SkillTreeLongDescriptionLabel => (LabelInitializer)Utils.GetComponent("Menu/Skill Tree Window/Details/Description/Image/Description (No Flavor)", typeof(LabelInitializer));
+        public static LabelInitializer TutorialsWindowTitleLabel => (LabelInitializer)Utils.GetComponent("Menu/Tutorials Window/Description Window/Title/Text", typeof(LabelInitializer));
+        public static Image TutorialsWindowImage => (Image)Utils.GetComponent("Menu/Tutorials Window/Description Window/Image/Image", typeof(Image));
+        public static LabelInitializer TutorialsWindowDescriptionLabel => (LabelInitializer)Utils.GetComponent("Menu/Tutorials Window/Description Window/Description", typeof(LabelInitializer));
+        public static GameObject InventoryEquipment => Utils.GetGameObject("Menu/Inventory Window/Equipment");
+        public static GameObject InventoryItems => Utils.GetGameObject("Menu/Inventory Window/Inventory/Viewport/Items");
+        public static GameObject InventoryItemsTools => Utils.GetGameObject("Menu/Inventory Window/Inventory/Viewport/Items/Tool/Items");
+        public static GameObject CharacterSheet => Utils.GetGameObject("Menu/Character Window");
+        public static GameObject CharacterStatList => Utils.GetGameObject("Menu/Character Window/Stats/Stats");
+        public static GameObject MenuArchive => Utils.GetGameObject("Menu/Archive Window/Dialogue History/Scroll Rect/Viewport/Content");
+        public static GameObject CharacterEffects => Utils.GetGameObject("Menu/Character Window/Effects");
+        public static GameObject CharacterEffectList => Utils.GetGameObject("Menu/Character Window/Effects/Viewport/Items");
+        public static Slider OptionsInWorldDialogueSpeedSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/InGame Dialogue Speed/Slider", typeof(Slider));
+        public static LabelInitializer OptionsInWorldDialogueSpeedLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/InGame Dialogue Speed/Label", typeof(LabelInitializer));
+        public static Slider OptionsDialogueTextSpeedSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Dialogue Text Speed/Slider", typeof(Slider));
+        public static LabelInitializer OptionsDialogueTextSpeedLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Dialogue Text Speed/Label", typeof(LabelInitializer));
+        public static Slider OptionsMasterVolumeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Master Volume/Slider", typeof(Slider));
+        public static LabelInitializer OptionsMasterVolumeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Master Volume/Label", typeof(LabelInitializer));
+        public static Slider OptionsMusicVolumeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Music Volume/Slider", typeof(Slider));
+        public static LabelInitializer OptionsMusicVolumeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Music Volume/Label", typeof(LabelInitializer));
+        public static Slider OptionsSoundVolumeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Sound Volume/Slider", typeof(Slider));
+        public static LabelInitializer OptionsSoundVolumeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Sound Volume/Label", typeof(LabelInitializer));
+        public static Slider OptionsDialogueVolumeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Dialogue Volume/Slider", typeof(Slider));
+        public static LabelInitializer OptionsDialogueVolumeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Dialogue Volume/Label", typeof(LabelInitializer));
+        public static Slider OptionsFieldOfViewSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Display/Items/Field of View/Slider", typeof(Slider));
+        public static LabelInitializer OptionsFieldOfViewLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Display/Items/Field of View/Label", typeof(LabelInitializer));
+        public static Slider OptionsUISizeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Display/Items/UI Size/Slider", typeof(Slider));
+        public static LabelInitializer OptionsUISizeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Display/Items/UI Size/Label", typeof(LabelInitializer));
+        public static Slider OptionsDamageNumbersSizeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Display/Items/Damage Numbers Size/Slider", typeof(Slider));
+        public static LabelInitializer OptionsDamageNumbersSizeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Display/Items/Damage Numbers Size/Label", typeof(LabelInitializer));
+        public static Toggle OptionsSkipReadDialogueToggle => (Toggle)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/AutoSkip/Background", typeof(Toggle));
+        public static Toggle OptionsAllowSkipUnreadDialogueToggle => (Toggle)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/SkipText/Background", typeof(Toggle));
+        public static Toggle ShowExtraInfoInUIToggle => (Toggle)Utils.GetComponent("Menu/Options Window/Options/Display/Items/ShowExtraInfoInUI/Background", typeof(Toggle));
+        public static TMP_Dropdown OptionsLanguageDropdown => (TMP_Dropdown)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Language/Dropdown", typeof(TMP_Dropdown));
+        public static LabelInitializer OptionsLanguageLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Language/Dropdown/Label", typeof(LabelInitializer));
+        public static TMP_Dropdown OptionsDifficultyDropdown => (TMP_Dropdown)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Difficulty/Dropdown", typeof(TMP_Dropdown));
+        public static LabelInitializer OptionsDifficultyLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Difficulty/Dropdown/Label", typeof(LabelInitializer));
+        public static TMP_Dropdown OptionsControlsDropdown => (TMP_Dropdown)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Controls/Dropdown", typeof(TMP_Dropdown));
+        public static LabelInitializer OptionsControlsLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Controls/Dropdown/Label", typeof(LabelInitializer));
+        public static TextMeshProUGUI InventoryMoneyText => (TextMeshProUGUI)Utils.GetComponent("Menu/Inventory Window/Equipment/Money/Amount", typeof(TextMeshProUGUI));
     }
 }

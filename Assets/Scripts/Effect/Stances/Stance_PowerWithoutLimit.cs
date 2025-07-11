@@ -60,8 +60,8 @@ public class Stance_PowerWithoutLimit : Effect_Stance
                 Player.Instance.AddEffect(new Effect_CustomizableDamageChange(SourceOfEffect) { ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                         (damage.SourceOfDamage == ability)),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.ExtraInjuryDealtPercentage += 200;
-                        damage.ExtraStaggerDealtPercentage += 200;
+                        damage.InjuryDealtPercentageModifier += 200;
+                        damage.StaggerDealtPercentageModifier += 200;
                     })});
             }
             else {
@@ -70,13 +70,13 @@ public class Stance_PowerWithoutLimit : Effect_Stance
                 Player.Instance.AddEffect(new Effect_CustomizableDamageChange(SourceOfEffect) { ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                         (damage.SourceOfDamage == ability)),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.ExtraInjuryDealtPercentage = energyConsumed * 4;
-                        damage.ExtraStaggerDealtPercentage = energyConsumed * 4;
+                        damage.InjuryDealtPercentageModifier = energyConsumed * 4;
+                        damage.StaggerDealtPercentageModifier = energyConsumed * 4;
                     })});
             }
         }
         if(IsActive && UnlockedUpgrade3) {
-                IncreasedMaxEnergy.BaseModifier += energy / 5f;
+                IncreasedMaxEnergy.FlatAmount += energy / 5f;
                 if(!IncreasedMaxEnergy.IsTurnedOn) {
                     Player.Instance.AddEffect(IncreasedMaxEnergy);
                 }
@@ -95,7 +95,7 @@ public class Stance_PowerWithoutLimit : Effect_Stance
     public void OnInvokeExitCombat(Unit unit) {
         if(UnlockedUpgrade3 && unit is Player) {
             Player.Instance.EndEffect(IncreasedMaxEnergy);
-            IncreasedMaxEnergy.BaseModifier = 0;
+            IncreasedMaxEnergy.FlatAmount = 0;
         }
     }
 }

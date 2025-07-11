@@ -84,9 +84,9 @@ public class Stance {
             get => _type;
             set {
                 _type = value;
-                MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + Category.ToString() + "/" + Index).GetComponent<AbilitySelect>().AbilityType = _type;
-                MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + Category.ToString() + "/" + Index + "/Mask/Icon").GetComponent<Image>().sprite = Utils.GetGraphicForAbility(_type != null ? _type.ToString() : null);
-                MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + Category.ToString() + "/" + Index + "/Mask/Icon").GetComponent<Image>().color = _type != null ? Color.white : Color.black;
+                MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + Category.ToString() + "/" + Index).GetComponent<AbilitySelect>().AbilityType = _type;
+                MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + Category.ToString() + "/" + Index + "/Mask/Icon").GetComponent<Image>().sprite = Utils.GetGraphicForAbility(_type != null ? _type.ToString() : null);
+                MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + Category.ToString() + "/" + Index + "/Mask/Icon").GetComponent<Image>().color = _type != null ? Color.white : Color.black;
                 if(Player.Instance?.CurrentStance?.DamageType != null && Player.Instance.CurrentStance.DamageType == Category) {
                     RefreshDisplayForEquippedAbility();
                 }
@@ -111,7 +111,7 @@ public class Stance {
             Category = category;
             Index = number;
             Type = ability_type;
-            AbilityGraphic = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Abilities/" + Index).GetComponent<Image>();
+            AbilityGraphic = GameController.Instance.transform.Find("UI/Stance Display " + Settings.Instance.ControlScheme + "/Abilities/" + Index).GetComponent<Image>();
             Icon = AbilityGraphic.transform.Find("Image").GetComponent<Image>();
             CooldownDisplay = AbilityGraphic.transform.Find("Cooldown").GetComponent<Image>();
             CooldownCounter = AbilityGraphic.transform.Find("Cooldown Counter").GetComponent<TextMeshProUGUI>();
@@ -121,7 +121,7 @@ public class Stance {
         
         public void Reload()
         {
-            AbilityGraphic = GameController.Instance.transform.Find("UI Canvas/Stance Display " + Settings.Instance.ControlScheme + "/Abilities/" + Index).GetComponent<Image>();
+            AbilityGraphic = GameController.Instance.transform.Find("UI/Stance Display " + Settings.Instance.ControlScheme + "/Abilities/" + Index).GetComponent<Image>();
             Icon = AbilityGraphic.transform.Find("Image").GetComponent<Image>();
             CooldownDisplay = AbilityGraphic.transform.Find("Cooldown").GetComponent<Image>();
             CooldownCounter = AbilityGraphic.transform.Find("Cooldown Counter").GetComponent<TextMeshProUGUI>();

@@ -7,8 +7,8 @@ public class NPCAbility_ReverseScissors: Ability {
     public NPCAbility_ReverseScissors(Unit ability_user) : base(ability_user) {
         AddCustomSound("Swing1", "TwinBlades/TwinBlades_Swing1", 0.9f);
         AddCustomSound("Swing2", "TwinBlades/TwinBlades_Swing7", 0.9f);
-        DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Light) {Knockback = 50});
-        DamageSources.Add(new DamageSource(200, 50, Constants.DamageType.Light, "2") {Knockback = 50});
+        DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Light) {KnockbackInMeters = 0.5f});
+        DamageSources.Add(new DamageSource(200, 50, Constants.DamageType.Light, "2") {KnockbackInMeters = 0.5f});
     }
 
     public override void CallAbilityEvent1()

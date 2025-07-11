@@ -9,9 +9,9 @@ public class NPCAbility_GroundEruption : Ability {
     private float _stunDuration = 2f;
     public NPCAbility_GroundEruption(Unit ability_user) : base(ability_user) {
         TransitionOutOfAnimationDuration = 0.05f;
-        DamageSources.Add(new DamageSource(80, 150, Constants.DamageType.Magic, "AoE 1") {Knockback = 75});
-        DamageSources.Add(new DamageSource(0, 400, Constants.DamageType.Magic, "AoE 2") {Knockback = 75});
-        DamageSources.Add(new DamageSource(250, 0, Constants.DamageType.Magic, "AoE 3") {Knockback = 75});
+        DamageSources.Add(new DamageSource(80, 150, Constants.DamageType.Magic, "AoE 1") {KnockbackInMeters = 0.75f});
+        DamageSources.Add(new DamageSource(0, 400, Constants.DamageType.Magic, "AoE 2") {KnockbackInMeters = 0.75f});
+        DamageSources.Add(new DamageSource(250, 0, Constants.DamageType.Magic, "AoE 3") {KnockbackInMeters = 0.75f});
         AddCustomSound("Explosion1", "Explosion/Explosion4", 0.5f);
         AddCustomSound("Explosion2", "Explosion/Explosion5", 0.5f);
         AddCustomSound("Explosion3", "Explosion/Explosion6", 0.5f);
@@ -20,7 +20,7 @@ public class NPCAbility_GroundEruption : Ability {
         
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this))};
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()

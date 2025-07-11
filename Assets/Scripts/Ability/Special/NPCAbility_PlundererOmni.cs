@@ -5,11 +5,11 @@ using UnityEngine;
 public class NPCAbility_PlundererOmni : Ability {
     public NPCAbility_PlundererOmni(Unit ability_user) : base(ability_user) {
         HitSoundType = Constants.HitSoundTypeEnum.Magic;
-        DamageSources.Add(new DamageSource(250, 300, Constants.DamageType.Heavy) {Knockback = 1500});
+        DamageSources.Add(new DamageSource(250, 300, Constants.DamageType.Heavy) {KnockbackInMeters = 15f});
         WaitTimeBeforeNextAction = 0.1f;
         AddCustomSound("Use", "Impact/Impact 11", 0.4f);
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.Unstoppable, AbilityProperty.ImmuneToFlinch});
+        Properties.AddRange(new List<Ability.Property> {Property.Unstoppable, Property.ImmuneToFlinch});
         TransitionIntoAnimationDuration = 0;
     }
 

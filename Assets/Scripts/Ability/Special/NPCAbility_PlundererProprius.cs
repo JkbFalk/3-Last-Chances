@@ -7,10 +7,10 @@ public class NPCAbility_PlundererProprius : Ability {
     private AreaOfEffect _aoe;
     public NPCAbility_PlundererProprius(Unit ability_user) : base(ability_user) {
         HitSoundType = Constants.HitSoundTypeEnum.Magic;
-        DamageSources.Add(new DamageSource(200, 400, Constants.DamageType.Heavy) {Knockback = 300});
+        DamageSources.Add(new DamageSource(200, 400, Constants.DamageType.Heavy) {KnockbackInMeters = 3f});
         WaitTimeBeforeNextAction = 0.1f;
         AddCustomSound("Rotate", "Greatsword/Greatsword_Swing21", 0.4f);
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
         TransitionIntoAnimationDuration = 0;
     }

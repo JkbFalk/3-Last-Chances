@@ -128,14 +128,16 @@ public class Unit : PermanentObject {
             if (value < 0) {
                 _ammo = 0;
             }
-            else if (value > 99) {
-                _ammo = 99;
+            else if (value > 20) {
+                _ammo = 20;
             }
             else {
                 _ammo = value;
             }
             if (this is Player) {
-                CanvasElements.UICanvas.AmmoDisplay.transform.Find("Ammo Count").GetComponent<TextMeshProUGUI>().text = _ammo.ToString();
+                for(int i = 1; i < 21; i++) {
+                    UIManager.Objects.AmmoDisplayImage.transform.Find(i.ToString()).gameObject.SetActive(_ammo >= i);
+                }
             }
             if(prevValue != _ammo) {
                 EventManager.AmmoAmountChanged.Invoke();
@@ -218,18 +220,19 @@ public class Unit : PermanentObject {
                     Slider[] sliders = UIManager.Instance.DisplayResourceBarsOnScreen(this);
                     if(sliders != null)
                     {
-                        OnScreenBars = sliders[0].transform.parent.gameObject;
-                        _eliteEnemyIndicator = sliders[0];
-                        Health.HUDSlider = sliders[0];
-                        Health.HealthBars = sliders[0].transform.Find("Extra Health Bars").gameObject;
-                        StaggerBar.HUDSlider = sliders[1];
-                        StaggerBar.HUDFill = sliders[1].transform.Find("Fill Area/Fill").GetComponent<Image>();
-                        StaggerBar.StaggerBars = sliders[1].transform.Find("Extra Stagger Bars").gameObject;
-                        DamageReduction.DamageReductionDisplay = sliders[0].transform.Find("DamageReduction").GetComponent<Image>();
-                        DamageReduction.DamageReductionLabel = sliders[0].transform.Find("DamageReduction/Label").GetComponent<TextMeshProUGUI>();
-                        if(DamageReduction.Current != 1) {
-                            DamageReduction.DamageReductionDisplay.gameObject.SetActive(true);
-                            DamageReduction.DamageReductionLabel.text = Utils.GetFormattedFloat((DamageReduction.Current - 1) * 100, 0);
+                        
+                        Health.FollowUpHealthBarSlider = sliders[0];
+                        OnScreenBars = sliders[1].transform.parent.gameObject;
+                        _eliteEnemyIndicator = sliders[1];
+                        Health.HUDSlider = sliders[1];
+                        Health.HealthBar = sliders[1].transform.Find("Extra Health Bars").gameObject;
+                        StaggerBar.HUDSlider = sliders[2];
+                        StaggerBar.HUDFill = sliders[2].transform.Find("Fill Area/Fill").GetComponent<Image>();
+                        StaggerBar.StaggerBars = sliders[2].transform.Find("Extra Stagger Bars").gameObject;
+                        foreach(Effect e in CurrentEffects) {
+                            if(e.ShowsInUI) {
+                                e.ShowInUI();
+                            }
                         }
                         InitializeDisplays();
                         AdjustUIResourceBarsSize();
@@ -261,7 +264,10 @@ public class Unit : PermanentObject {
                             e.EndThisEffect();
                         }
                     }
-                    Player.Instance.AddEffect(new Effect_Invincible(new(Player.Instance)) {ShowsInUI = false, IsRemovable = false}, 1f);
+                    Player.Instance.AddEffect(new Effect_Invincible(new(Player.Instance)) {
+                        ShowsInUI = false, 
+                        IsRemovable = false
+                    }, 1f);
                     if(SaveFile.Instance.CurrentMission != null && SaveFile.Instance.CurrentMission.AutoSaveAfterCombat) {
                         GameController.Instance.ShouldSaveAfterCombat = true;
                         GameController.Instance.WaitAndRunMethod(1, GameController.Instance.SaveAfterCombat);
@@ -340,15 +346,6 @@ public class Unit : PermanentObject {
 
     public bool RightArmInFrontOfWeapon { get; set; } = true;
     public bool LeftArmInFrontOfWeapon { get; set; } = true;
-    public bool RightArmInFrontOfLeftArm { get; set; } = true;
-
-    public void ToggleSetting(string setting_name) {
-        switch (setting_name) {
-            case "LeftArmInFrontOfWeapon": LeftArmInFrontOfWeapon = !LeftArmInFrontOfWeapon; break;
-            case "RightArmInFrontOfWeapon": RightArmInFrontOfWeapon = !RightArmInFrontOfWeapon; break;
-            case "RightArmInFrontOfLeftArm": RightArmInFrontOfLeftArm = !RightArmInFrontOfLeftArm; break;
-        }
-    }
 
     public void OnEnable() {
         if(DefaultAnimation != null && !InCombat) {
@@ -431,8 +428,6 @@ public class Unit : PermanentObject {
     public GameObject WorldSpaceDebugAbility => Utils.GetGameObjectIfNull(ref _worldSpaceDebugAbility, "World Space Canvas/UI_DebugWorldspaceDisplay/Ability", this);
     private GameObject _worldSpaceDebugAnimation;
     public GameObject WorldSpaceDebugAnimation => Utils.GetGameObjectIfNull(ref _worldSpaceDebugAnimation, "World Space Canvas/UI_DebugWorldspaceDisplay/Animation", this);
-    private GameObject _effectDisplay;
-    public GameObject EffectDisplay => Utils.GetGameObjectIfNull(ref _effectDisplay, "World Space Canvas/Effects", this);
     private GameObject _rankDisplay;
     public GameObject RankDisplay => Utils.GetGameObjectIfNull(ref _rankDisplay, "World Space Canvas/Rank Display", this);
     private GameObject _visualEffects;
@@ -573,8 +568,7 @@ public class Unit : PermanentObject {
     public MovementSpeed MovementSpeed { get; set; }
     public Tenacity Tenacity { get; set; }
     public Control Control { get; set; }
-    public DamageReduction DamageReduction { get; set; }
-    public Penetration Penetration { get; set; }
+    public Armor Armor { get; set; }
     public CooldownReduction CooldownReduction { get; set; }
 
     public List<Effect> CurrentEffects { get; private set; } = new List<Effect>();
@@ -711,15 +705,15 @@ public class Unit : PermanentObject {
                 return;
             }
             _currentHealthBars = value;
-            if (Health.HealthBars != null) {
-                for (int i = Health.HealthBars.transform.childCount - 1; i >= 0; i--) {
-                    Health.HealthBars.transform.GetChild(i).Find("Active").gameObject.SetActive(i + 1 < _currentHealthBars);
-                    Health.HealthBars.transform.GetChild(i).Find("Broken").gameObject.SetActive(i + 1 >= _currentHealthBars);
+            if (Health.HealthBar != null) {
+                for (int i = Health.HealthBar.transform.childCount - 1; i >= 0; i--) {
+                    Health.HealthBar.transform.GetChild(i).Find("Active").gameObject.SetActive(i + 1 < _currentHealthBars);
+                    Health.HealthBar.transform.GetChild(i).Find("Broken").gameObject.SetActive(i + 1 >= _currentHealthBars);
                 }
             }
             if(CurrentHealthBars > 0)
             {
-                Health.Maximum = HealthBars[HealthBars.Count - CurrentHealthBars] * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1);
+                Health.Maximum = HealthBars[HealthBars.Count - CurrentHealthBars] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
                 Health.Current = HealthBars[HealthBars.Count - CurrentHealthBars];
             }
         }
@@ -751,11 +745,11 @@ public class Unit : PermanentObject {
     public float BaseInjury = 100;
     public float BaseStagger = 100;
     public float BaseAttackSpeed = 1;
-    public float BaseMovementSpeed = 1;
-    public float BaseTenacity = 1;
-    public float BaseControl = 1;
-    public float BaseCooldownReduction = 1;
-    public float BaseDamageReduction = 1;
+    public float BaseMovementSpeed = 0;
+    public float BaseTenacity = 0;
+    public float BaseControl = 0;
+    public float BaseCooldownReduction = 0;
+    public float BaseArmor = 0;
 
     public void Awake() {
         InitializeComponents();
@@ -872,10 +866,10 @@ public class Unit : PermanentObject {
         }
         else {
             CurrentHealthBars = HealthBars.Count;
-            Health.Maximum = HealthBars[0] * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1);
+            Health.Maximum = HealthBars[0] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
             Health.Current = HealthBars[0];
             CurrentStaggerBars = StaggerBars.Count;
-            StaggerBar.Maximum = StaggerBars[0]* (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1);
+            StaggerBar.Maximum = StaggerBars[0]* (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
             StaggerBar.Current = 0;
             UnitAI.CurrentAIBehavior = Constants.AIBehavior.None;
         }
@@ -955,12 +949,20 @@ public class Unit : PermanentObject {
         return CurrentEffects.FirstOrDefault(effect => effect.GetType() == under_effect && effect.SourceOfEffect.GetType() == ability_type) != null;
     }
 
-    public void ToggleLeftArmInFrontOfWeapon() {
-        LeftArmInFrontOfWeapon = !LeftArmInFrontOfWeapon;
+    public void SetLeftArmInFrontOfWeapon() {
+        LeftArmInFrontOfWeapon = true;
     }
 
-    public void ToggleRightArmInFrontOfWeapon() {
-        RightArmInFrontOfWeapon = !RightArmInFrontOfWeapon;
+    public void SetLeftArmBehindOfWeapon() {
+        LeftArmInFrontOfWeapon = false;
+    }
+
+    public void SetRightArmInFrontOfWeapon() {
+        RightArmInFrontOfWeapon = true;
+    }
+
+    public void SetRightArmBehindOfWeapon() {
+        RightArmInFrontOfWeapon = false;
     }
 
     private void InitializeComponents() {
@@ -1002,32 +1004,29 @@ public class Unit : PermanentObject {
             }
             CurrentStaggerBars = StaggerBars.Count;
         }
-        if (HealthBars.Count > 1 && Health.HealthBars != null) {
+        if (HealthBars.Count > 1 && Health.HealthBar != null) {
             for (int i = 0; i < HealthBars.Count - 1; i++) {
                 GameObject health_bar = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ExtraHealthBar")) as GameObject;
-                health_bar.transform.SetParent(Health.HealthBars.transform, false);
+                health_bar.transform.SetParent(Health.HealthBar.transform, false);
             }
             CurrentHealthBars = HealthBars.Count;
         }
     }
 
     public void AdjustUIResourceBarsSize() {
-        if(Health == null || StaggerBar == null || Health.HUDSlider == null || StaggerBar.HUDSlider == null) {
+        if(Health == null || StaggerBar == null || Health.HUDSlider == null || StaggerBar.HUDSlider == null || Health.FollowUpHealthBarSlider == null) {
             return;
         }
         if(this is Player) {
-            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 1000, 10000, Screen.width / 10, Screen.width / 2), 60);
-            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 1000, 10000, Screen.width / 10, Screen.width / 2), 25);
+            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 1000, 10000, Screen.width / 12, Screen.width / 2), 30);
+            Health.FollowUpHealthBarSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 1000, 10000, Screen.width / 12, Screen.width / 2), 30);
+            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 1000, 10000, Screen.width / 14, Screen.width / 2.5f), 30);
         }
-        else if (IsBoss)
+        else if (!IsBoss)
         {
-            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 500 * Utils.GetExpectedPowerForLevel(Level), 3000 * Utils.GetExpectedPowerForLevel(Level), Screen.width / 16, Screen.width / 6), 10);
-            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 500 * Utils.GetExpectedPowerForLevel(Level), 3000 * Utils.GetExpectedPowerForLevel(Level), Screen.width / 16, Screen.width / 6), 10);
-        }
-        else {
-            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 2000 * Utils.GetExpectedPowerForLevel(Level), 100, 500), 10);
-            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 2000 * Utils.GetExpectedPowerForLevel(Level), 100, 500), 10);
-            
+            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 2000 * Utils.GetExpectedPowerForLevel(Level), 50, 300), 20);
+            Health.FollowUpHealthBarSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 2000 * Utils.GetExpectedPowerForLevel(Level), 50, 300), 20);
+            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 1500 * Utils.GetExpectedPowerForLevel(Level), 30, 180), 10);
         }
     }
 
@@ -1150,6 +1149,8 @@ public class Unit : PermanentObject {
 
     public void RecalculateSortingOrder() {
         List<string> new_order = new List<string>();
+        if (SpriteRenderers["Left Arm"].IsInFront == false && LeftArmInFrontOfWeapon == false) { new_order.Add("Left Arm"); new_order.Add("Left Hand"); }
+        if (SpriteRenderers["Right Arm"].IsInFront == false && RightArmInFrontOfWeapon == false) { new_order.Add("Right Arm"); new_order.Add("Right Hand"); ;}
         if (SpriteRenderers.ContainsKey("Heavy") && SpriteRenderers["Heavy"].IsInFront == false)
             { new_order.Add("Heavy"); }
         if (SpriteRenderers.ContainsKey("Light Right") && SpriteRenderers["Light Right"].IsInFront == false)
@@ -1162,8 +1163,8 @@ public class Unit : PermanentObject {
             { new_order.Add("Projectile"); }
         if (SpriteRenderers.ContainsKey("Consumable") && SpriteRenderers["Consumable"].IsInFront == false)
             { new_order.Add("Consumable"); }  
-        if (SpriteRenderers["Left Arm"].IsInFront == false) { new_order.Add("Left Arm"); new_order.Add("Left Hand"); }
-        if (SpriteRenderers["Right Arm"].IsInFront == false) { new_order.Add("Right Arm"); new_order.Add("Right Hand"); }
+        if (SpriteRenderers["Left Arm"].IsInFront == false && LeftArmInFrontOfWeapon == true) { new_order.Add("Left Arm"); new_order.Add("Left Hand"); }
+        if (SpriteRenderers["Right Arm"].IsInFront == false && RightArmInFrontOfWeapon == true) { new_order.Add("Right Arm"); new_order.Add("Right Hand"); }
         new_order.Add("Lower Body");
         if (SpriteRenderers["Left Leg"].IsInFront == false) { new_order.Add("Left Leg"); new_order.Add("Left Foot"); }
         if (SpriteRenderers["Right Leg"].IsInFront == false) { new_order.Add("Right Leg"); new_order.Add("Right Foot"); }
@@ -1197,8 +1198,8 @@ public class Unit : PermanentObject {
         if(this is Player) {
             DefaultStaggerBarRegenPercentage = 4;
         }
-        Health = new Health(this, this is Player ? 1000 + SaveFile.Instance.HealthGainedFromTraining : HealthBars[0] * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1));
-        StaggerBar = new StaggerBar(this, this is Player ? 1000 + SaveFile.Instance.StaggerBarGainedFromTraining : StaggerBars[0] * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1));
+        Health = new Health(this, this is Player ? 1000 + SaveFile.Instance.HealthGainedFromTraining : HealthBars[0] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1));
+        StaggerBar = new StaggerBar(this, this is Player ? 1000 + SaveFile.Instance.StaggerBarGainedFromTraining : StaggerBars[0] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1));
         Energy = new Energy(this, 100);
         AdjustUIResourceBarsSize();
 
@@ -1228,27 +1229,28 @@ public class Unit : PermanentObject {
             Effect_ChangeStat hp_regen_outside_combat = new Effect_ChangeStat( Health, new ("Cheat"))
             {
                 IsRemovable = false,
-                RegenerationPercentageModifier = 5,
+                RegenerationPercentageAmount = 5,
                 DependenceOnCombatStatus = Effect_ChangeStat.DependenceOnCombatStatusEnum.OnlyWorksOutOfCombat
             };
             AddEffect(hp_regen_outside_combat);
         }
         MovementSpeed = new MovementSpeed(this, BaseMovementSpeed);
-        Tenacity = new Tenacity(this, BaseTenacity * (IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1));
+        Tenacity = new Tenacity(this, BaseTenacity * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1));
         Control = new Control(this, BaseControl);
-        Penetration = new Penetration(this, 1);
         CooldownReduction = new CooldownReduction(this, BaseCooldownReduction);
-        DamageReduction = new DamageReduction(this, BaseDamageReduction);
-        if(this is not Player && IsBoss == false && BaseDamageReduction != 1) {
-            DamageReduction.DamageReductionDisplay.gameObject.SetActive(true);
-            DamageReduction.DamageReductionLabel.gameObject.SetActive(true);
-            DamageReduction.DamageReductionLabel.GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedFloat((BaseDamageReduction - 1) * 100, 0);
+        Armor = new Armor(this, BaseArmor);
+        if(this is not Player && BaseArmor > 0) {
+            AddEffect(new Effect_ChangeStat(Armor, new("BaseStat")) {
+                PercentageAmount = BaseArmor,
+                IsRemovable = false,
+                ShowsInUI = true
+            });
         }
 
         CurrentHealthBars = HealthBars.Count;
         CurrentStaggerBars = StaggerBars.Count;
 
-        Stats.AddRange(new List<Stat> { Health, StaggerBar, Energy, HeavyInjury, LightInjury, RangedInjury, MagicInjury, HeavyStagger, LightStagger, RangedStagger, MagicStagger, HeavyAttackSpeed, LightAttackSpeed, RangedAttackSpeed, MagicAttackSpeed, MovementSpeed, Tenacity, Control, CooldownReduction, DamageReduction, Penetration});
+        Stats.AddRange(new List<Stat> { Health, StaggerBar, Energy, HeavyInjury, LightInjury, RangedInjury, MagicInjury, HeavyStagger, LightStagger, RangedStagger, MagicStagger, HeavyAttackSpeed, LightAttackSpeed, RangedAttackSpeed, MagicAttackSpeed, MovementSpeed, Tenacity, Control, CooldownReduction, Armor});
     }
 
     private void FixedUpdate() {
@@ -1275,6 +1277,14 @@ public class Unit : PermanentObject {
     }
 
     private void CalculateRegeneration() {
+        if (Health?.FollowUpHealthBarSlider?.value != null && Health?.HUDSlider?.value != null && Health.FollowUpHealthBarSlider.value != Health.HUDSlider.value) {
+            if(Health?.FollowUpHealthBarFreezeTimer > 0) {
+                Health.FollowUpHealthBarFreezeTimer -= Time.deltaTime;
+            }
+            else {
+                Health.FollowUpHealthBarSlider.value = (Health.FollowUpHealthBarSlider.value - Constants.FOLLOW_UP_HEALTH_BAR_DECREASE_SPEED < Health.HUDSlider.value) ? Health.HUDSlider.value : Health.FollowUpHealthBarSlider.value - Constants.FOLLOW_UP_HEALTH_BAR_DECREASE_SPEED;
+            }
+        }
         if (Health != null && Health.Current < Health.Maximum && Health.Regeneration != 0) {
             Health.Current += Health.Regeneration * Time.deltaTime;
         }
@@ -1315,6 +1325,8 @@ public class Unit : PermanentObject {
         }
         foreach (Effect effect in CurrentEffects.ToList()) {
             effect.OnUpdate();
+            effect.NewEffectIndicatorExtraScaleTimer -= Time.deltaTime;
+            Utils.UpdateIndicatorScaleBasedOnTime(effect.TileInUI, effect.NewEffectIndicatorExtraScaleTimer);
             if (effect.BaseDuration > 0) {
                 effect.RemainingDuration -= Time.deltaTime;
                 if (effect.RemainingDuration <= 0) {
@@ -1326,8 +1338,8 @@ public class Unit : PermanentObject {
                         }
                     }
                 }
-                else if (effect.EffectIndicatorCooldownDisplay != null) {
-                    effect.EffectIndicatorCooldownDisplay.fillAmount = 1f - (effect.RemainingDuration / effect.BaseDuration);
+                else if (effect.UICooldownDisplay != null) {
+                    effect.UICooldownDisplay.fillAmount = 1f - (effect.RemainingDuration / effect.BaseDuration);
                 }
             }
         }
@@ -1362,25 +1374,27 @@ public class Unit : PermanentObject {
         foreach (Cooldown cooldown in EffectCooldowns.ToArray())
         {
             cooldown.RemainingDuration -= Time.deltaTime;
+            cooldown.NewCooldownIndicatorExtraScaleTimer -= Time.deltaTime;
+            Utils.UpdateIndicatorScaleBasedOnTime(cooldown.TileInUI, cooldown.NewCooldownIndicatorExtraScaleTimer);
             if(cooldown.RemainingDuration <= 0) {
                 _effectCooldowns.Remove(cooldown);
                 cooldown.OnEnd();
             }
             else if(cooldown.ShowsInUI && cooldown.CooldownDisplay == null) {
-                Transform effectsDisplay = CanvasElements.UICanvas.Effects.transform;
-                GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
-                effectIndicator.GetComponent<Image>().sprite = Resources.Load("Sprites/UI/CooldownEffectIcon", typeof(Sprite)) as Sprite;
-                effectIndicator.transform.SetParent(effectsDisplay, false);
-                effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = cooldown.CooldownGraphic != null ? cooldown.CooldownGraphic : Resources.Load("Sprites/" + cooldown.PathToCooldownGraphic, typeof(Sprite)) as Sprite;
-                cooldown.CooldownDisplay = effectIndicator.transform.Find("CooldownDisplay").GetComponent<Image>();
+                Transform effectsDisplay = UIManager.Objects.Effects.transform;
+                cooldown.TileInUI = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_CooldownUIIndicator")) as GameObject;
+                cooldown.TileInUI.transform.SetParent(effectsDisplay, false);
+                cooldown.TileInUI.transform.Find("CooldownImage").GetComponent<Image>().sprite = cooldown.CooldownGraphic != null ? cooldown.CooldownGraphic : Resources.Load("Sprites/" + cooldown.PathToCooldownGraphic, typeof(Sprite)) as Sprite;
+                cooldown.CooldownDisplay = cooldown.TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>();
                 cooldown.CooldownDisplay.fillAmount = 0;
+                cooldown.TileInUI.transform.localScale = new Vector3(Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, 1);
+                cooldown.NewCooldownIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
             }
             else if(cooldown.ShowsInUI){
                 cooldown.CooldownDisplay.fillAmount = 1f - (cooldown.RemainingDuration / cooldown.TotalDuration);
             }
         }
         if(ToolCooldown != null) {
-            ToolCooldown.RemainingDuration -= Time.deltaTime;
             if(ToolCooldown.RemainingDuration <= 0) {
                 ToolCooldown = null;
             }
@@ -1518,13 +1532,13 @@ public class Unit : PermanentObject {
             return;
         }
         if (effect_to_add.SourceOfEffect == null) {
-            effect_to_add = effect_to_add.SetAbilityCreatingThisEffect(Actions.CurrentAbilityBeingPerformed);
+            effect_to_add.SourceOfEffect = new SourceOfEffect(Actions.CurrentAbilityBeingPerformed);
         }
         if (effect_to_add.UnitCreatingTheEffect == null) {
-            effect_to_add = effect_to_add.SetSourceOfEffect(effect_to_add.SourceOfEffect != null ? effect_to_add.SourceOfEffect.User : this);
+            effect_to_add.SourceOfEffect = new SourceOfEffect(effect_to_add.SourceOfEffect != null ? effect_to_add.SourceOfEffect.User : this);
         }
         if (effect_to_add.TargetOfEffect == null) {
-            effect_to_add = effect_to_add.SetTargetOfEffect(this);
+            effect_to_add.TargetOfEffect = this;
             effect_to_add.AdditionalActionsOnSettingTargetOfEffect(this);
         }
         effect_to_add.BaseDuration = seconds;
@@ -1585,7 +1599,7 @@ public class Unit : PermanentObject {
     public void ApplyForce(Vector2 vector, Ability source) {
         if(!CheckIfUnderEffect(typeof(Effect_Immovable)) || (source != null && source.User == this))
         {
-            Rigidbody2D.AddForce(vector, ForceMode2D.Force);
+            Rigidbody2D.AddForce(vector * Constants.FORCE_REQUIRED_TO_PUSH_1M, ForceMode2D.Force);
         }
     }
 

@@ -86,7 +86,7 @@
   {
     "Label": "Ability_TempestStrikes_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Attack enemies in front, dealing {0}[I]Injury ({1}%[I]) and {2}[S]Stagger ({3}%[S]) based on current weapon. Repeat up to 5 times total based on accumulated stacks, costing {4}[E]Energy for each strike.",
+    "ENG": "Stacks-based Technique ({0} max). Attack enemies in front, dealing {0}[I]Injury ({1}%[I]) and {2}[S]Stagger ({3}%[S]) based on current weapon. Repeat up to 5 times total based on accumulated stacks, costing {4}[E]Energy for each strike.",
     "PL": "Zaatakuj wrogów przed sobą, zadając {0}[I]Zranienia ({1}%[I]) i {2}[S]Zachwiania ({3}%[S]) w zależności od obecnej broni. Może być powtórzone aż do w sumie 5 razy w zależności od zakumulowanych ładunków, zużywając {4}[E]Energii za każde uderzenie."
   },
   {
@@ -116,7 +116,7 @@
   {
     "Label": "Ability_TempestStrikes_Ultimate_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Attack enemies in front, dealing {0}[I]Injury ({1}%[I]) and {2}[S]Stagger ({3}%[S]) based on current weapon. Repeat up to 20 times total based on accumulated stacks. Generates extra 1 stack upon Riposte, and 2 stacks upon Counter. 20th strike deals 5x[D]Damage. Each strike increases technique's speed by {5}% and gives {6}[Analysis]Analysis.",
+    "ENG": "Stacks-based Technique ({0} max). Attack enemies in front, dealing {0}[I]Injury ({1}%[I]) and {2}[S]Stagger ({3}%[S]) based on current weapon. Repeat up to 20 times total based on accumulated stacks. Generates extra 1 stack upon Riposte, and 2 stacks upon Counter. 20th strike deals 5x[D]Damage. Each strike increases technique's speed by {5}% and gives {6}[Analysis]Analysis.",
     "PL": "Zaatakuj wrogów przed sobą, zadając {0}[I]Zranienia ({1}%[I]) i {2}[S]Zachwiania ({3}%[S]) w zależności od obecnej broni. Może być powtórzone aż do w sumie 20 razy w zależności od zakumulowanych ładunków. Generuje dodatkowy 1 ładunek za Ripostę, oraz 2 ładunki za Kontrę. 20-te uderzenie zadaje 5x[D]Obrażenia. Każde uderzenie zwiększa prędkość techniki o {5}% i daje {6}[Analysis]Analizy."
   },
   {
@@ -140,7 +140,7 @@
   {
     "Label": "Ability_Quickdraw_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Charged Technique ({0} sec). Release a wind slash that deals up to {1}[I]Injury ({2}%[I]) and {3}[S]Stagger ({4}%[S]) based on current weapon (only 25% effective without any charging).\n\nFirst hit from a melee weapon received while charging immediately ends the technique and instead of a releasing a wind slash, counter the attack and deal {5}[I]Injury ({6}%[I]) and {7}[S]Stagger ({8}%[S]) to that enemy.",
+    "ENG": "Charge-time Technique ({0} sec). Release a wind slash that deals up to {1}[I]Injury ({2}%[I]) and {3}[S]Stagger ({4}%[S]) based on current weapon (only 25% effective without any charging).\n\nFirst hit from a melee weapon received while charging immediately ends the technique and instead of a releasing a wind slash, counter the attack and deal {5}[I]Injury ({6}%[I]) and {7}[S]Stagger ({8}%[S]) to that enemy.",
     "PL": ""
   },
   {
@@ -182,68 +182,62 @@
   {
     "Label": "Ability_Quickdraw_Ultimate_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Charged Technique ({0} sec). Slow down time to {1}% and prepare to release a wind slash that deals {0}[I]Injury ([1]%[I]) and {2}[S] ([3]%[S]) based on current weapon. First hit received while charging immediately finishes the technique, countering and restoring [H]Health and [SB]Stagger Bar based on enemy attack's base [I]Injury and [S]Stagger.",
+    "ENG": "Charge-time Technique ({0} sec). Slow down time to {1}% and prepare to release a wind slash that deals {0}[I]Injury ([1]%[I]) and {2}[S] ([3]%[S]) based on current weapon. First hit received while charging immediately finishes the technique, countering and restoring [H]Health and [SB]Stagger Bar based on enemy attack's base [I]Injury and [S]Stagger.",
+    "PL": ""
+  },
+{
+    "Label": "Ability_Deconstruction",
+    "Category": "Technique",
+    "ENG": "Deconstruction",
     "PL": ""
   },
   {
-    "Label": "Ability_CuttingWind",
+    "Label": "Ability_Deconstruction_FlavorText",
     "Category": "Technique",
-    "ENG": "Cutting Wind",
-    "PL": "Tnący Wiatr"
-  },
-  {
-    "Label": "Ability_CuttingWind_FlavorText",
-    "Category": "Technique",
-    "ENG": "This technique united every single Anima tribe and every single kind of weapon. After all, energy can be channeled through any steel, no matter the shape.",
-    "PL": "Ta technika połączyła wszystkie plemiona Anima, wraz z ich przeróżnymi typami broni. Koniec końców, energią można wypełnić każdą stal, bez różnicą jaką przyjmuje formę."
-  },
-  {
-    "Label": "Ability_CuttingWind_Description",
-    "Category": "Technique",
-    "ENG": "Your next non-Technique hit with current weapon deals +{1}[S].",
-    "PL": "Twoje następne uderzenie obecną bronią, które nie jest techniką zadaje +{1}[S]."
-  },
-  {
-    "Label": "Ability_CuttingWind_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "Instantly gain 'Cutting Wind' Effect ({0} sec), causing your next [BasicAttack]Basic Attack, [Riposte]Riposte, [Counter]Counter or [Backstab]Backstabs with current weapon to deal extra {1}[S]Stagger ({2}%[I] + {3}%[S]). You also gain {4}%[AS]Attack Speed for current Weapon. Technique can be used even while performing other attacks.",
-    "PL": "Natychmiast otrzymaj Efekt 'Tnący Wiatr' ({0} sek), sprawiając że następny [BasicAttack]Podstawowy Atak,[Riposte] Riposta, [Counter]Kontra lub [Backstab]Atak w Plecy zadaje dodatkowe {1}[S]Zachwiania ({2}%[I] + {3}%[S]). Poza tym także zyskujesz {4}%[AS]Prędkości Ataku dla obecnej Broni. Technika może być użyta nawet w trakcie wykonywania innych ataków."
-  },
-  {
-    "Label": "Ability_CuttingWind_MasteryA_Description",
-    "Category": "Technique",
-    "ENG": "[H]Heal for {0}% of [D]Damage dealt by the empowered attack.",
-    "PL": "[H]Ulecz się o {0}% [D]Obrażeń zadanych przez wzmocniony atak."
-  },
-  {
-    "Label": "Ability_CuttingWind_MasteryB_Description",
-    "Category": "Technique",
-    "ENG": "Gain [Unstunnable] and {1}%[DR] for {0} sec.",
-    "PL": "Zyskaj efekt [Unstunnable] i {1}%[DR] na {0} sek."
-  },
-  {
-    "Label": "Ability_CuttingWind_MasteryB_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "Upon using the Technique, gain [Unstunnable]Unstunnable and {1}%[DR]Damage Reduction for {0} sec.",
-    "PL": "Po użyciu Techniki otrzymaj [Unstunnable]Nie-do-ogłuszenia i {1}%[DR]Redukcji Obrażeń przez {0} sek."
-  },
-  {
-    "Label": "Ability_CuttingWind_Ultimate",
-    "Category": "Technique",
-    "ENG": "Spirit Weapon",
+    "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_CuttingWind_Ultimate_Description",
+    "Label": "Ability_Deconstruction_Description",
     "Category": "Technique",
-    "ENG": "For {0} seconds your weapon has increased range, speed and deals +{1}[I] and +{3}[S].",
-    "PL": "Przez {0} sekund twoja broń ma zwiększony zasięg, prędkość i zadaje +{1}[I] i +{3}[S]."
+    "ENG": "Gain 'Deconstruction' against target's current attack.\n\n[Riposting]Ripostes and [Counter]Counters against that attack have their [D]Damage multiplied and further increases the multiplier (up to {0} max).",
+    "PL": ""
   },
   {
-    "Label": "Ability_CuttingWind_Ultimate_DescriptionDetailed",
+    "Label": "Ability_Deconstruction_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "For next {0} seconds, current Weapon has greatly increased range, +{1}%[AS]Attack Speed and all [BasicAttack]Basic Attacks, [Riposte]Ripostes, [Counter]Counters and [Backstab]Backstabs performed with it deal extra {2}[I]Injury ({3}%[I]) and {4}[S]Stagger ({5}%[S]).",
-    "PL": "Przez następne {0} sekund, obecna Broń ma ogromnie zwiększony zasięg, +{1}%[AS]Prędkości Ataku i wszystkie [BasicAttack]Podstawowe Ataki, [Riposte]Riposty, [Counter]Kontry i [Backstab]Ataki w Plecy wykonane z jej pomocą zadają dodatkowe {2}[I]Zranienia ({3}%[I]) i {4}[S]Zachwiania ({5}%[S])."
+    "ENG": "On use, gain 1 'Deconstruction' stack against target's current attack.\n\n[Riposte]Riposting or [Counter]Countering that specific attack (even from a different enemy) gives 1 extra Deconstruction stack (up to {0} max).\n\nDeconstruction causes your [Riposte]Ripostes and [Counter]Counters against targeted attack to have their [D]Damage multiplied by current amount of stacks.\n\nUsing Deconstruction on a different attack resets the stacks back to 1.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Deconstruction_MasteryA_Description",
+    "Category": "Technique",
+    "ENG": "For each unique attack Deconstructed, gain +{0}%[D]Damage until end of combat.\n\nIncrease Deconstruction max stacks to {1}.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Deconstruction_MasteryB_Description",
+    "Category": "Technique",
+    "ENG": "For each Deconstruction stack, gain extra {0}[A]Armor against that attack.\n\nDeconstructing an [Unstoppable]Unstoppable attack gives max stacks from the start.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Deconstruction_Ultimate",
+    "Category": "Technique",
+    "ENG": "Target Weakness",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Deconstruction_Ultimate_Description",
+    "Category": "Technique",
+    "ENG": "Perform a strike that deals {0}[I] and {2}[S].\n\nIf hitting an enemy attack that has {4} Deconstruction stacks, permanently disable it from being used.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Deconstruction_Ultimate_DescriptionDetailed",
+    "Category": "Technique",
+    "ENG": "Perform a strike that deals {0}[I]({1}%[I] of current weapon) and {2}[S]({3}%[S] of current weapon).\n\nIf enemy hit was performing an attack that was targeted by 'Deconstruction', and you currently have at least {4} Deconstruction stacks, then disable that attack from being used by that enemy until end of combat (does not work on [Unstoppable]Unstoppable attacks).",
+    "PL": ""
   },
   {
     "Label": "Ability_HeavySlash",
@@ -266,7 +260,7 @@
   {
     "Label": "Ability_HeavySlash_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Charged Technique ({0} sec). Slash in front, dealing {1}[HI]Injury ({2}%[HI]), {3}[HS]Stagger ({4}%[HS]) and causing enemies to flinch. If fully charged, release a wave of flames that inflicts {5}[MI]Injury ({6}%[MI]) and {7}[Burn]Burn ({8}%[MS]) to all enemies hit.",
+    "ENG": "Charge-time Technique ({0} sec). Slash in front, dealing {1}[HI]Injury ({2}%[HI]), {3}[HS]Stagger ({4}%[HS]) and causing enemies to flinch. If fully charged, release a wave of flames that inflicts {5}[MI]Injury ({6}%[MI]) and {7}[Burn]Burn ({8}%[MS]) to all enemies hit.",
     "PL": "Ładowana Technika ({0} sek). Uderz przed siebie, zadając {1}[HI]Zranienia ({2}%[HI]), {3}[HS]Zachwiania ({4}%[HS]) i przerywając obecną akcję wrogów. W pełni naładowana technika dodatkowo tworzy wachlarz płomieni zadających {5}[MI]Zranienia ({6}%[MI]) i {7}[Burn]Podpalenia ({8}%[MS]) wszystkim wrogom."
   },
   {
@@ -308,7 +302,7 @@
   {
     "Label": "Ability_HeavySlash_Ultimate_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Charged Technique ({0} sec). Perform a slash with a blade of conjured flames, dealing at least {1}[HI]Injury ({2}%[HI]), {3}[HS]Stagger ({4}%[HS]) and {5}[Burn]Burn ({6}%[MS]). All [D]Damage and [Burn]Burn is increased based on charge time, up to 300% value.",
+    "ENG": "Charge-time Technique ({0} sec). Perform a slash with a blade of conjured flames, dealing at least {1}[HI]Injury ({2}%[HI]), {3}[HS]Stagger ({4}%[HS]) and {5}[Burn]Burn ({6}%[MS]). All [D]Damage and [Burn]Burn is increased based on charge time, up to 300% value.",
     "PL": "Ładowana Technika ({0} sek). Wykonaj cięcie przy użyciu stworzonych płomieni, zadając co najmniej {1}[HI]Zranienia ({2}%[HI]), {3}[HS]Zachwiania ({4}%[HS]) i {5}[Burn]Podpalenia ({6}%[MS]). Całe [D]Obrażenia i [Burn]Podpalenie jest zwiększone w zależności od czasu ładowania, aż do max 300% wartości."
   },
   {
@@ -386,13 +380,13 @@
   {
     "Label": "Ability_Flamethrower_Description",
     "Category": "Technique",
-    "ENG": "Shoot flames at enemies ahead, dealing {0}[MI] and {2}[Burn] / sec. Lasts up to 10 seconds based on accumulated stacks. ",
+    "ENG": "Shoot flames at enemies ahead, dealing {0}[MI] and {2}[Burn] / sec.",
     "PL": "Strzel płomieniami przed siebie, zadając {0}[MI] i {2}[Burn] / sek. Trwa do maks 10 sekund w zależności od zebranych ładunków."
   },
   {
     "Label": "Ability_Flamethrower_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Stand in place and shoot flames ahead of you, dealing {0}[MI]Injury ({1}%[MI]) and applying {2}[Burn]Burn ({3}%[MS]) with each second. Consumes 10 stacks per second, and accumulates up to 100 stacks total. Generate 1 extra stack each time you apply [Burn]Burn to an enemy.",
+    "ENG": "Stacks-based Technique ({0} max). Stand in place and shoot flames ahead of you, consuming 10 stacks per second, dealing {0}[MI]Injury ({1}%[MI]) and applying {2}[Burn]Burn ({3}%[MS]). Generate 1 extra stack each time you apply [Burn]Burn to an enemy.",
     "PL": "Stój w miejscu i miotaj płomieniami przed siebie, zadając {0}[MI]Zranienia ({1}%[MI]) i nakładając {2}[Burn]Podpalenia ({3}%[MS]) z każdą sekundą. Zużywa 10 ładunków na sekundę i pozwala zebrać w sumie max 100 ładunków. Generuj 1 dodatkowy ładunek za każdym razem, gdy nakładasz [Burn]Popalenie na wroga."
   },
   {
@@ -422,13 +416,13 @@
   {
     "Label": "Ability_Flamethrower_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "Punch closest enemy and push them back 3m. Increase [Burn] on them based on accumulated stacks and energy spent and make them explode. The explosion spreads to other enemies with [Burn].",
+    "ENG": "Push closest enemy, multiplying their [Burn]Burn making them explode.\n\nSpreads to nearby [Burn]Burning enemies.",
     "PL": ""
   },
   {
     "Label": "Ability_Flamethrower_Ultimate_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Punch closest enemy and push them back 3m. Increase [Burn]Burn effect applied to them by 1% for each 1 stack and 1 [E]Energy spent (up to 200% total). Hit enemy then explodes, consuming all [Burn]Burn to deal {0}[I] to him for each 1[Burn]Burn removed and spreading the explosion to all [Burn]Burning enemies within 3m range.",
+    "ENG": "Punch closest enemy and push them back 3m. Multiply their current [Burn]Burn by 1% for each 1 stack and 1 [E]Energy spent (up to 200% total). Hit enemy then explodes, consuming all [Burn]Burn to deal {0}[I] to him for each 1[Burn]Burn removed and spreading the explosion to all [Burn]Burning enemies within 3m range.",
     "PL": ""
   },
   {
@@ -492,273 +486,213 @@
     "PL": "Zamiast normalnego okręgu eksplozji, tworzone są małe eksplozje w promieniu 3m wokół ciebie (aż stworzonych zostanie 100 eksplozji). Eksplozje zadają {0}[HI]Zranienia ({1}%[HI]) i {2}[Burn]Podpalenia ({3}%[MS])."
   },
   {
-    "Label": "Ability_Artillery",
+    "Label": "Ability_ChargedShot",
+    "Category": "Technique",
+    "ENG": "Charged Shot",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_FlavorText",
+    "Label": "Ability_ChargedShot_Description",
+    "Category": "Technique",
+    "ENG": "Charge and release a shot that deals {0}[RI]Injury and {2}[Freeze]Freeze (up to +{4}% after charging for {5} sec).",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_DescriptionDetailed",
+    "Category": "Technique",
+    "ENG": "Charge-time Technique ({0} sec). Release a projectile that deals {0}[RI]Injury ({1}%[RI]) and {2}[Freeze]Freeze ({3}%[MS]). After charging for {5} seconds, deals {6}[RI]Damage and {7}{Freeze]Freeze.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_MasteryA_Description",
+    "Category": "Technique",
+    "ENG": "Upon using the Technique, apply {0}[Slow]Slow to targeted enemy (if no target, closest enemy is affected).",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_MasteryB_Description",
+    "Category": "Technique",
+    "ENG": "Projectile pierces through enemies and applies {0}[Prone]Prone.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_Ultimate",
+    "Category": "Technique",
+    "ENG": "Shattering Shot",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_Ultimate_Description",
+    "Category": "Technique",
+    "ENG": "Can charge the shot for up to {4} seconds for +{5}%, and apply {8}[Freeze]/sec to target while charging.",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_ChargedShot_Ultimate_DescriptionDetailed",
+    "Category": "Technique",
+    "ENG": "Charge-time Technique ({0} sec). Release a projectile that deals {0}[RI] ({1}%[RI]) and {2}[Freeze] ({3}%[MS]). After charging for {4} seconds, deals {6}[RI]Damage and {7}{Freeze]. While charging the shot, targetted enemy receives {8}[Freeze]Freeze ({9}%[MS]) every second (if no target, closest enemy is affected).",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Permafrost",
+    "Category": "Technique",
+    "ENG": "Permafrost",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_Permafrost_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_Description",
+    "Label": "Ability_Permafrost_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Leave behind frost zone that applies {0}[Freeze]/sec and {1}[Slow]/sec.",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_DescriptionDetailed",
+    "Label": "Ability_Permafrost_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "For next 15 seconds, leave behind a trail of frost wherever you go. The ice lasts 15 seconds and applies {0}[Freeze] ({1}%[MS]) and {1}[Slow] each second enemies stand on it.",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_MasteryA_Description",
+    "Label": "Ability_Permafrost_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Frost zone also applies -{0}%[T]Tenacity per second, lasting 15 seconds.",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_MasteryA_DescriptionDetailed",
+    "Label": "Ability_Permafrost_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Restore [RED]{0}%[/RED] missing [H]Health/sec for the duration.",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_MasteryB_Description",
+    "Label": "Ability_Permafrost_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Frost Domain",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_MasteryB_DescriptionDetailed",
+    "Label": "Ability_Permafrost_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Push away all enemies and create a ring of frost around you. It applies {0}[Freeze]Freeze and {1}[Slow]Slow to enemies who enter it for the first time.",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_Ultimate",
+    "Label": "Ability_SpearsOfIce",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Spears of Ice",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_Ultimate_Description",
+    "Label": "Ability_SpearsOfIce_FlavorText",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Ammo is a finite resource, but the energy of a Glacies Enforcer is not. This technique allows to unleash a torrent of ice shards in the direction of one's enemy without having to worry about anything.",
     "PL": ""
   },
   {
-    "Label": "Ability_Artillery_Ultimate_DescriptionDetailed",
+    "Label": "Ability_SpearsOfIce_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Shoot ice spears that deal {0}[MI] and {2}[Freeze].",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost",
+    "Label": "Ability_SpearsOfIce_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Stacks-based Technique ({0} max). For each stack conumsed, shoot 1 ice projectile (3 per second) in targeted direction, dealing {0}[MI]({1}%[MI]), {2}[Freeze]({3}%[MS]) and {4}m knockback on hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_FlavorText",
+    "Label": "Ability_SpearsOfIce_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Increase knockback to {0}m and deal {1}% of enemy maximum [SB] on hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_Description",
+    "Label": "Ability_SpearsOfIce_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Increase speed by {0}% and deal extra {1}[MI]({2}%[MI]) on hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_DescriptionDetailed",
+    "Label": "Ability_SpearsOfIce_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Ice Onslaught",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_MasteryA_Description",
+    "Label": "Ability_SpearsOfIce_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Stacks-based Technique ({0} max). Shoot 15 projectiles per second instead of 3.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_MasteryA_DescriptionDetailed",
+    "Label": "Ability_TimeFreeze",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Frozen Time",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_MasteryB_Description",
+    "Label": "Ability_TimeFreeze_FlavorText",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Manipulating time itself is a higher art than what Glacies family is capable of. However, releasing sufficient ice energy into nearby area can accomplish a shockingly similar result.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_MasteryB_DescriptionDetailed",
+    "Label": "Ability_TimeFreeze_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Slow down time, gain {1}[Ammo] and spawn {2} marks on target. Hitting a mark deals extra {3}[RI] and {5}[Freeze]. Hitting all marks inflicts {7}[S]Stagger.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_Ultimate",
+    "Label": "Ability_TimeFreeze_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Slow down time to {0}%, gain {1}[Ammo] and spawn {2} marks on current (or closest) target.\n\nPress [BasicAttackButtonPress] to shoot, dealing {3}[RI]({4}%[RI]) and {5}[Freeze]({6}%[RS]) on successful mark hit, destroying it.\n\nHitting all marks inflicts {7}[S]({8}%[RS]+{9}%[MS]) and ends the Technique.\n\nOnly marks can be hit for the duration, and [BlockButtonPress]Blocking or [DodgeButtonPress]Dodging ends the Technique.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_Ultimate_Description",
+    "Label": "Ability_TimeFreeze_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Gain {0} [Ammo]Ammo on use. Technique ends after using {1}[Ammo]Ammo. Deal {3}[RI]/{5}[RS] on hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_PathOfFrost_Ultimate_DescriptionDetailed",
+    "Label": "Ability_TimeFreeze_MasteryA_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Gain {0} [Ammo]Ammo on use (instead of usual {1}[Ammo]). Instead of creating marks, Technique ends after shooting {2}[Ammo] times. Projectiles inflict {3}[RI]({4}%[RI]) and {5}[RS]({6}%[RS]) on hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_FrozenSpears",
+    "Label": "Ability_TimeFreeze_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Hitting all marks restores {0}[E]Energy and reduces the Technique's remaining [CD]Cooldown by {1} seconds.",
     "PL": ""
   },
   {
-    "Label": "Ability_FrozenSpears_FlavorText",
+    "Label": "Ability_TimeFreeze_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Absolute Zero",
     "PL": ""
   },
   {
-    "Label": "Ability_FrozenSpears_Description",
+    "Label": "Ability_TimeFreeze_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_MasteryA_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_MasteryA_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_MasteryB_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_MasteryB_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_Ultimate",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_Ultimate_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_FrozenSpears_Ultimate_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_FlavorText",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_MasteryA_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_MasteryA_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_MasteryB_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_MasteryB_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_Ultimate",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_Ultimate_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BulletTime_Ultimate_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
+    "ENG": "For next 20 seconds (4 seconds real-time), shoot enemies without spending any [Ammo]Ammo.\n\nAll [I]Injury dealt is converted into [S]Stagger, but no [D]Damage is dealt to enemies who are already [Staggered]Staggered.",
     "PL": ""
   },
   {
     "Label": "Ability_Fortify",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Fortify",
     "PL": ""
   },
   {
@@ -770,581 +704,485 @@
   {
     "Label": "Ability_Fortify_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_Fortify_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
+    "ENG": "Stacks-based Technique ({0} max).\n\nBrace yourself, gaining {1}[A]({2}[A]+{3}% of your total [A]Armor) and becoming [Unstunnable]Unstunnable.\n\nLasts 1 sec for each 10 stacks consumed.",
     "PL": ""
   },
   {
     "Label": "Ability_Fortify_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_Fortify_MasteryA_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
+    "ENG": "While Technique is in effect and above 50%[H]Health, your [EG]Energy Gain is increased by {0}%.\n\nIf below 50%[H]Health, instead restore {1}% missing [H]Health per second.",
     "PL": ""
   },
   {
     "Label": "Ability_Fortify_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Each time you take [D]Damage, gain 1 stack.\n\nFor each stack available when Technique is used, gain {0}[Barrier]Barrier.",
     "PL": ""
   },
   {
     "Label": "Ability_Fortify_MasteryB_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Each time you take [D]Damage, gain 1 stack.\n\nFor each stack available when Technique is used, gain {0}[Barrier]Barrier ({1}% MAX [H]Health + {2}% MAX [SB]Stagger Bar, {1}[Barrier] at {2} stacks).",
     "PL": ""
   },
   {
     "Label": "Ability_Fortify_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Kinetic Reversal",
     "PL": ""
   },
   {
     "Label": "Ability_Fortify_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_Fortify_Ultimate_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_FlavorText",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_MasteryA_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_MasteryA_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_MasteryB_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_MasteryB_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_Ultimate",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_Ultimate_Description",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_GroundSlam_Ultimate_DescriptionDetailed",
-    "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BlastStep",
-    "Category": "Technique",
-    "ENG": "",
+    "ENG": "Stacks-based Technique ({0} max).\n\nBrace yourself, gaining {1}[A] ({2}[A]+{3}% of your current [A]Armor) and reflecting [GREEN]{4}%[/GREEN] pre-mitigation [D]Damage back at attackers.",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_FlavorText",
+    "Label": "Ability_TectonicPull",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
-  },
-  {
-    "Label": "Ability_BlastStep_Description",
-    "Category": "Technique",
-    "ENG": "",
+    "ENG": "Ground Slam",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_DescriptionDetailed",
+    "Label": "Ability_TectonicPull_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_MasteryA_Description",
+    "Label": "Ability_TectonicPull_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Charge and slam the ground, dealing {1}/{2} and pulling affected enemies in front of you.",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_MasteryA_DescriptionDetailed",
+    "Label": "Ability_TectonicPull_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Charge-time Technique ({0} sec).\n\nSlam the ground, dealing {1}/{2}(higher total between {3}%[HI]+{4}%[HS] vs {5}%[MI]+{6}%[MS]) and applying knock-back to affected enemies that places them into a spot right in front of you.\n\nAffected area size depends on charge time.",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_MasteryB_Description",
+    "Label": "Ability_TectonicPull_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Removes Technique's charge time and applies {0}[Stun]Stun to enemies hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_MasteryB_DescriptionDetailed",
+    "Label": "Ability_TectonicPull_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Increases maximum charge time to {0} sec (max hit range still achieved at {1} sec charge).\n\nBased on charge time, multiply [D]Damage dealt by up to {0}.",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_Ultimate",
+    "Label": "Ability_TectonicPull_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Rock Cage",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_Ultimate_Description",
+    "Label": "Ability_TectonicPull_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Charge-time Technique ({0} sec). After using the Technique, also create a half-circular wall of stone around affected enemies that lasts {1} seconds.",
     "PL": ""
   },
   {
-    "Label": "Ability_BlastStep_Ultimate_DescriptionDetailed",
+    "Label": "Ability_BlastDash",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Blast Dash",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter",
+    "Label": "Ability_BlastDash_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_FlavorText",
+    "Label": "Ability_BlastDash_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Dash in target direction, dealing {0}[I]/{2}[S] to enemies hit.\n\nIf an enemy is pushed into an obstacle, apply [Stun]Stun ({4} sec).",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_Description",
+    "Label": "Ability_BlastDash_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Dash in target direction. Coming into contact with enemies inflicts {0}[I]({1}% user's MAX [H])/{2}[S]({3}% user's MAX [SB]) and pushes them together with you. Colliding with an obstacle applies [Stun]Stun ({4} sec) on you. If any enemy was hit before collision, the [Stun]Stun is applied to the enemies instead.",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_DescriptionDetailed",
+    "Label": "Ability_BlastDash_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Increase dash range by {0}%.\n\nEnemies pushed into obstacles also receive {0}[Prone].",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_MasteryA_Description",
+    "Label": "Ability_BlastDash_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Hitting enemies instead inflicts {1}% user's MISSING [H] / {3}% user's CURRENT [SB].",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_MasteryA_DescriptionDetailed",
+    "Label": "Ability_BlastDash_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Blast Flight",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_MasteryB_Description",
+    "Label": "Ability_BlastDash_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Massively increases dash range and makes it possible to alter direction mid-flight. Increases [Stun]Stun applied to {0} sec.",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_MasteryB_DescriptionDetailed",
+    "Label": "Ability_Helmsplitter",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Earth Splitter",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_Ultimate",
+    "Label": "Ability_Helmsplitter_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_Ultimate_Description",
+    "Label": "Ability_Helmsplitter_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Gain {1}[Barrier], then charge to convert all [Barrier] into power that is then unleashed at enemies in front of you.",    
     "PL": ""
   },
   {
-    "Label": "Ability_EarthSplitter_Ultimate_DescriptionDetailed",
+    "Label": "Ability_Helmsplitter_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Charge-time Technique ({0} sec).\n\nGain {1}[Barrier], then start consuming your [Barrier] at speed of {1}[Barrier]/sec.\n\nAfter releasing Technique button (or after all [Barrier] is consumed), deal {2}[I]/{3}[S] for every 10[Barrier] consumed to enemies in front of you.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows",
+    "Label": "Ability_Helmsplitter_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "On use, lose [RED]{0}%[/RED] MAX [H] and [PURPLE]{1}%[/PURPLE] MAX [SB] and gain {2}[Barrier] for every 1[H] or 1[SB] lost. This CANNOT bring you below 1[H]Health or make you [Staggered]Staggered.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_FlavorText",
+    "Label": "Ability_Helmsplitter_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Gain {0}[A]Armor and [Unstoppable]Unstoppable while Technique is being charged. Apply {1}[Prone]Prone to enemies who attack you during charge time.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_Description",
+    "Label": "Ability_Helmsplitter_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Decisive Gambit",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_DescriptionDetailed",
+    "Label": "Ability_Helmsplitter_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Charge-time Technique ({0} sec).\n\nWhile Technique is being charged, [Barrier]Barrier is not depleted when taking [D]Damage.\n\nInstead, gain {1}[Barrier] for every {2}[D] taken.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_MasteryA_Description",
+    "Label": "Ability_ShadowLeap",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Shadow Leap",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_MasteryA_DescriptionDetailed",
+    "Label": "Ability_ShadowLeap_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_MasteryB_Description",
+    "Label": "Ability_ShadowLeap_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Throw a grapplig hook, [Stun]Stunning enemies ({0} sec) and pulling yourself to them.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_MasteryB_DescriptionDetailed",
+    "Label": "Ability_ShadowLeap_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Throw a grappling hook, attaching to first hit unit, object or surface and pulling yourself to it.\n\nIf an enemy is hit, apply [Stun]Stun ({0} sec).",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_Ultimate",
+    "Label": "Ability_ShadowLeap_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "On enemy hit, apply {0}[Prone]Prone and remove their [ImmunityToBackstabs]Backstab Immunity.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_Ultimate_Description",
+    "Label": "Ability_ShadowLeap_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "You are [Invincible]Invincible during the Technique.\n\nGain [Stealth]Stealth ({0} sec) if a non-unit was hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_JumpThroughShadows_Ultimate_DescriptionDetailed",
+    "Label": "Ability_ShadowLeap_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Shadow Descent",
     "PL": ""
   },
   {
-    "Label": "Ability_TargetMarked",
+    "Label": "Ability_ShadowLeap_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Teleport yourself behind target enemy, applying {0}[Incision]Incision if they are performing an [Unstoppable]Unstoppable attack.",
     "PL": ""
   },
-  {
-    "Label": "Ability_TargetMarked_FlavorText",
+    {
+    "Label": "Ability_ShadowInfusion",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "Cutting Wind",
+    "PL": "Tnący Wiatr"
   },
   {
-    "Label": "Ability_TargetMarked_Description",
+    "Label": "Ability_ShadowInfusion_FlavorText",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "This technique united every single Anima tribe and every single kind of weapon. After all, energy can be channeled through any steel, no matter the shape.",
+    "PL": "Ta technika połączyła wszystkie plemiona Anima, wraz z ich przeróżnymi typami broni. Koniec końców, energią można wypełnić każdą stal, bez różnicą jaką przyjmuje formę."
   },
   {
-    "Label": "Ability_TargetMarked_DescriptionDetailed",
+    "Label": "Ability_ShadowInfusion_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "Your next non-Technique hit with current weapon deals +{1}[S].",
+    "PL": "Twoje następne uderzenie obecną bronią, które nie jest techniką zadaje +{1}[S]."
   },
   {
-    "Label": "Ability_TargetMarked_MasteryA_Description",
+    "Label": "Ability_ShadowInfusion_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "Instantly gain 'Cutting Wind' Effect ({0} sec), causing your next [BA]Basic Attack, [Riposte]Riposte, [Counter]Counter or [Backstab]Backstabs with current weapon to deal extra {1}[S]Stagger ({2}%[I] + {3}%[S]). You also gain {4}%[AS]Attack Speed for current Weapon. Technique can be used even while performing other attacks.",
+    "PL": "Natychmiast otrzymaj Efekt 'Tnący Wiatr' ({0} sek), sprawiając że następny [BA]Podstawowy Atak,[Riposte] Riposta, [Counter]Kontra lub [Backstab]Atak w Plecy zadaje dodatkowe {1}[S]Zachwiania ({2}%[I] + {3}%[S]). Poza tym także zyskujesz {4}%[AS]Prędkości Ataku dla obecnej Broni. Technika może być użyta nawet w trakcie wykonywania innych ataków."
   },
   {
-    "Label": "Ability_TargetMarked_MasteryA_DescriptionDetailed",
+    "Label": "Ability_ShadowInfusion_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "[H]Heal for {0}% of [D]Damage dealt by the empowered attack.",
+    "PL": "[H]Ulecz się o {0}% [D]Obrażeń zadanych przez wzmocniony atak."
   },
   {
-    "Label": "Ability_TargetMarked_MasteryB_Description",
+    "Label": "Ability_ShadowInfusion_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "Gain [Unstunnable] and {1}%[A] for {0} sec.",
+    "PL": "Zyskaj efekt [Unstunnable] i {1}%[A] na {0} sek."
   },
   {
-    "Label": "Ability_TargetMarked_MasteryB_DescriptionDetailed",
+    "Label": "Ability_ShadowInfusion_MasteryB_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "Upon using the Technique, gain [Unstunnable]Unstunnable and {1}%[A]Armor for {0} sec.",
+    "PL": "Po użyciu Techniki otrzymaj [Unstunnable]Nie-do-ogłuszenia i {1}%[A]Redukcji Obrażeń przez {0} sek."
   },
   {
-    "Label": "Ability_TargetMarked_Ultimate",
+    "Label": "Ability_ShadowInfusion_Ultimate",
     "Category": "Technique",
-    "ENG": "",
+    "ENG": "Spirit Weapon",
     "PL": ""
   },
   {
-    "Label": "Ability_TargetMarked_Ultimate_Description",
+    "Label": "Ability_ShadowInfusion_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "For {0} seconds your weapon has increased range, speed and deals +{1}[I] and +{3}[S].",
+    "PL": "Przez {0} sekund twoja broń ma zwiększony zasięg, prędkość i zadaje +{1}[I] i +{3}[S]."
   },
   {
-    "Label": "Ability_TargetMarked_Ultimate_DescriptionDetailed",
+    "Label": "Ability_ShadowInfusion_Ultimate_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "",
-    "PL": ""
+    "ENG": "For next {0} seconds, current Weapon has greatly increased range, +{1}%[AS]Attack Speed and all [BA]Basic Attacks, [Riposte]Ripostes, [Counter]Counters and [Backstab]Backstabs performed with it deal extra {2}[I]Injury ({3}%[I]) and {4}[S]Stagger ({5}%[S]).",
+    "PL": "Przez następne {0} sekund, obecna Broń ma ogromnie zwiększony zasięg, +{1}%[AS]Prędkości Ataku i wszystkie [BA]Podstawowe Ataki, [Riposte]Riposty, [Counter]Kontry i [Backstab]Ataki w Plecy wykonane z jej pomocą zadają dodatkowe {2}[I]Zranienia ({3}%[I]) i {4}[S]Zachwiania ({5}%[S])."
   },
   {
-    "Label": "Ability_Execution",
+    "Label": "Ability_DeathSentence",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_FlavorText",
+    "Label": "Ability_DeathSentence_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_Description",
+    "Label": "Ability_DeathSentence_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_DescriptionDetailed",
+    "Label": "Ability_DeathSentence_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_MasteryA_Description",
+    "Label": "Ability_DeathSentence_MasteryA_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_MasteryA_DescriptionDetailed",
+    "Label": "Ability_DeathSentence_MasteryA_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_MasteryB_Description",
+    "Label": "Ability_DeathSentence_MasteryB_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_MasteryB_DescriptionDetailed",
+    "Label": "Ability_DeathSentence_MasteryB_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_Ultimate",
+    "Label": "Ability_DeathSentence_Ultimate",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_Ultimate_Description",
+    "Label": "Ability_DeathSentence_Ultimate_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Execution_Ultimate_DescriptionDetailed",
+    "Label": "Ability_DeathSentence_Ultimate_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_HuntingInstincts",
+    "Label": "Ability_Shadowgifted",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_FlavorText",
+    "Label": "Ability_Shadowgifted_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_Description",
+    "Label": "Ability_Shadowgifted_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_DescriptionDetailed",
+    "Label": "Ability_Shadowgifted_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_MasteryA_Description",
+    "Label": "Ability_Shadowgifted_MasteryA_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_MasteryA_DescriptionDetailed",
+    "Label": "Ability_Shadowgifted_MasteryA_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_MasteryB_Description",
+    "Label": "Ability_Shadowgifted_MasteryB_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_MasteryB_DescriptionDetailed",
+    "Label": "Ability_Shadowgifted_MasteryB_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_Ultimate",
+    "Label": "Ability_Shadowgifted_Ultimate",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_Ultimate_Description",
+    "Label": "Ability_Shadowgifted_Ultimate_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_Ability_HuntingInstincts_Ultimate_DescriptionDetailed",
+    "Label": "Ability_Shadowgifted_Ultimate_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking",
+    "Label": "Ability_ReplicaBlow",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_FlavorText",
+    "Label": "Ability_ReplicaBlow_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_Description",
+    "Label": "Ability_ReplicaBlow_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_DescriptionDetailed",
+    "Label": "Ability_ReplicaBlow_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_MasteryA_Description",
+    "Label": "Ability_ReplicaBlow_MasteryA_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_MasteryA_DescriptionDetailed",
+    "Label": "Ability_ReplicaBlow_MasteryA_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_MasteryB_Description",
+    "Label": "Ability_ReplicaBlow_MasteryB_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_MasteryB_DescriptionDetailed",
+    "Label": "Ability_ReplicaBlow_MasteryB_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_Ultimate",
+    "Label": "Ability_ReplicaBlow_Ultimate",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_Ultimate_Description",
+    "Label": "Ability_ReplicaBlow_Ultimate_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ReplicaFlanking_Ultimate_DescriptionDetailed",
+    "Label": "Ability_ReplicaBlow_Ultimate_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
@@ -1416,67 +1254,67 @@
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs",
+    "Label": "Ability_FlurryOfBlows",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_FlavorText",
+    "Label": "Ability_FlurryOfBlows_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_Description",
+    "Label": "Ability_FlurryOfBlows_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_DescriptionDetailed",
+    "Label": "Ability_FlurryOfBlows_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_MasteryA_Description",
+    "Label": "Ability_FlurryOfBlows_MasteryA_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_MasteryA_DescriptionDetailed",
+    "Label": "Ability_FlurryOfBlows_MasteryA_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_MasteryB_Description",
+    "Label": "Ability_FlurryOfBlows_MasteryB_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_MasteryB_DescriptionDetailed",
+    "Label": "Ability_FlurryOfBlows_MasteryB_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_Ultimate",
+    "Label": "Ability_FlurryOfBlows_Ultimate",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_Ultimate_Description",
+    "Label": "Ability_FlurryOfBlows_Ultimate_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_RapidStabs_Ultimate_DescriptionDetailed",
+    "Label": "Ability_FlurryOfBlows_Ultimate_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
@@ -1746,67 +1584,67 @@
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast",
+    "Label": "Ability_FinalBlast",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_FlavorText",
+    "Label": "Ability_FinalBlast_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_Description",
+    "Label": "Ability_FinalBlast_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_DescriptionDetailed",
+    "Label": "Ability_FinalBlast_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_MasteryA_Description",
+    "Label": "Ability_FinalBlast_MasteryA_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_MasteryA_DescriptionDetailed",
+    "Label": "Ability_FinalBlast_MasteryA_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_MasteryB_Description",
+    "Label": "Ability_FinalBlast_MasteryB_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_MasteryB_DescriptionDetailed",
+    "Label": "Ability_FinalBlast_MasteryB_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_Ultimate",
+    "Label": "Ability_FinalBlast_Ultimate",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_Ultimate_Description",
+    "Label": "Ability_FinalBlast_Ultimate_Description",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_EnergyBlast_Ultimate_DescriptionDetailed",
+    "Label": "Ability_FinalBlast_Ultimate_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
@@ -1894,32 +1732,32 @@
   {
     "Label": "Stance_SingularPursuit_DescriptionDetailed",
     "Category": "Stance",
-    "ENG": "Stance can be assigned to only one Weapon at a time. Gain +10% Spirit Bond for takedown. All [D]Damage (including Techniques) you deal using current Weapon is increased by amount indicated on the Spirit Bond bar (max 30%). Spirit Bond decreases by 0.5%/sec.",
-    "PL": "Postawa może być przypisana do tylko jednej Broni jednocześnie. Zyskaj +10% Więzi Duchowej za każde pokonanie. Wszystkie [D]Obrażenia (włączając Techniki) które zadajesz obecną Bronią są zwiększone o wartość licznika Więzi Duchowej (maks 30%). Więź Duchowa spada o 0.5%/sek."
+    "ENG": "Stance can be assigned to only one Weapon at a time. Gain +10 Spirit Bond for takedown. All [D]Damage (including Techniques) you deal using current Weapon is increased by amount indicated on the Spirit Bond bar (max 30). Spirit Bond decreases by 0.5/sec.",
+    "PL": "Postawa może być przypisana do tylko jednej Broni jednocześnie. Zyskaj +10 Więzi Duchowej za każde pokonanie. Wszystkie [D]Obrażenia (włączając Techniki) które zadajesz obecną Bronią są zwiększone o wartość licznika Więzi Duchowej (maks 30). Więź Duchowa spada o 0.5/sek."
   },
   {
     "Label": "Stance_SingularPursuit_Upgrade1_Description",
     "Category": "Stance",
-    "ENG": "Basic Attacks give 1% Spirit Bond. +20% max Spirit Bond.",
-    "PL": "Podstawowe Ataki dają 1% Więzi Duchowej. +20% max Więzi Duchowej."
+    "ENG": "Basic Attacks give 1 Spirit Bond. +20 max Spirit Bond.",
+    "PL": "Podstawowe Ataki dają 1 Więzi Duchowej. +20 max Więzi Duchowej."
   },
   {
     "Label": "Stance_SingularPursuit_Upgrade1_DescriptionDetailed",
     "Category": "Stance",
-    "ENG": "Basic Attack Hits increase Spirit-bond by 1% (based on [AS]Attack Speed, once per [BasicAttack]Basic Attack). Max Spirit Bond +20%.",
-    "PL": "Uderzenia Podstawowymi Atakami zwiększają Więź Duchową o 1% (zależnie od [AS]Prędkości Ataku, raz na Podstawowy Atak). Maks Więź Duchowa +20%."
+    "ENG": "Basic Attack Hits increase Spirit-bond by 1 (based on [AS]Attack Speed, once per [BA]Basic Attack). Max Spirit Bond +20.",
+    "PL": "Uderzenia Podstawowymi Atakami zwiększają Więź Duchową o 1 (zależnie od [AS]Prędkości Ataku, raz na Podstawowy Atak). Maks Więź Duchowa +20."
   },
   {
     "Label": "Stance_SingularPursuit_Upgrade2_Description",
     "Category": "Stance",
-    "ENG": "Techniques give 5% Spirit Bond. +20% max Spirit Bond.",
-    "PL": "Techniki dają 5% Więzi Duchowej. +20% max Więzi Duchowej."
+    "ENG": "Techniques give 5 Spirit Bond. +20 max Spirit Bond.",
+    "PL": "Techniki dają 5 Więzi Duchowej. +20 max Więzi Duchowej."
   },
   {
     "Label": "Stance_SingularPursuit_Upgrade3_Description",
     "Category": "Stance",
-    "ENG": "Ripostes give 3% Spirit Bond, Counters give 5%. Max Spirit-bond +30%.",
-    "PL": "Riposty dają 3% Więzi Duchowej, Kontry dają 5%. Maks Więź Duchowa +30%."
+    "ENG": "Ripostes give 3 Spirit Bond, Counters give 5. Max Spirit-bond +30.",
+    "PL": "Riposty dają 3 Więzi Duchowej, Kontry dają 5. Maks Więź Duchowa +30."
   },
   {
     "Label": "Stance_OmniMastery",
@@ -1954,7 +1792,7 @@
   {
     "Label": "Stance_OmniMastery_Upgrade2_Description",
     "Category": "Stance",
-    "ENG": "Switching to this Stance results in a quick and powerful [BasicAttack]Basic Attack being performed.",
+    "ENG": "Switching to this Stance results in a quick and powerful [BA]Basic Attack being performed.",
     "PL": "Zmiana Postawy na tą sprawia, że wyprowadzany jest szybki i potężny Podstawowy Atak."
   },
   {
@@ -2380,14 +2218,14 @@
   {
     "Label": "Stance_PowerWithoutLimit_Description",
     "Category": "Stance",
-    "ENG": "Use [Magic]Magic instead of current Weapon. [BasicAttack]Basic Attacks are ranged and do not consume ammo.",
-    "PL": "Używaj [Magic]Magii zamiast obecnej Broni. [BasicAttack]Podstawowe Ataki są zasięgowe i nie zużywają amunicji."
+    "ENG": "Use [Magic]Magic instead of current Weapon. [BA]Basic Attacks are ranged and do not consume ammo.",
+    "PL": "Używaj [Magic]Magii zamiast obecnej Broni. [BA]Podstawowe Ataki są zasięgowe i nie zużywają amunicji."
   },
   {
     "Label": "Stance_PowerWithoutLimit_DescriptionDetailed",
     "Category": "Stance",
-    "ENG": "Current Weapon is not used in this Stance (Effects from the Weapon still apply). All [BasicAttack]Basic Attacks, [Riposte]Ripostes, [Counter]Counters and [Backstab]Backstabs scale with [MD]Magic Damage instead of current Weapon's [D]Damage. [BasicAttack]Basic Attacks are ranged and do not consume [Ammo]Ammo.",
-    "PL": "Obecna Broń nie jest używana w tej Postawie (Efekty z Broni nadal działają). Wszystkie [BasicAttack]Podstawowe Ataki, [Riposte]Riposty, [Counter]Kontry i [Backstab]Ataki z Zaskoczenia skalują się z [MD]Magicznymi Obrażeniami zamiast [D]Obrażeniami obecnej Broni. [BasicAttack]Podstawowe Ataki są zasięgowe i nie zużywają [Ammo]Amunicji."
+    "ENG": "Current Weapon is not used in this Stance (Effects from the Weapon still apply). All [BA]Basic Attacks, [Riposte]Ripostes, [Counter]Counters and [Backstab]Backstabs scale with [MD]Magic Damage instead of current Weapon's [D]Damage. [BA]Basic Attacks are ranged and do not consume [Ammo]Ammo.",
+    "PL": "Obecna Broń nie jest używana w tej Postawie (Efekty z Broni nadal działają). Wszystkie [BA]Podstawowe Ataki, [Riposte]Riposty, [Counter]Kontry i [Backstab]Ataki z Zaskoczenia skalują się z [MD]Magicznymi Obrażeniami zamiast [D]Obrażeniami obecnej Broni. [BA]Podstawowe Ataki są zasięgowe i nie zużywają [Ammo]Amunicji."
   },
   {
     "Label": "Stance_PowerWithoutLimit_Upgrade1_Description",
@@ -2428,14 +2266,14 @@
   {
     "Label": "Stance_MindOverMatter_Description",
     "Category": "Stance",
-    "ENG": "Use [Magic]Magic instead of current Weapon. [BasicAttack]Basic Attacks are powerful melee blasts.",
-    "PL": "Używaj [Magic]Magii zamiast obecnej Broni. [BasicAttack]Podstawowe Ataki są potężnymi, krótko-zasięgowymi uderzeniami."
+    "ENG": "Use [Magic]Magic instead of current Weapon. [BA]Basic Attacks are powerful melee blasts.",
+    "PL": "Używaj [Magic]Magii zamiast obecnej Broni. [BA]Podstawowe Ataki są potężnymi, krótko-zasięgowymi uderzeniami."
   },
   {
     "Label": "Stance_MindOverMatter_DescriptionDetailed",
     "Category": "Stance",
-    "ENG": "Current Weapon is not used in this Stance (Effects from the Weapon still apply). All [BasicAttack]Basic Attacks, [Riposte]Ripostes, [Counter]Counters and [Backstab]Backstabs scale with [MD]Magic Damage instead of current Weapon's [D]Damage. [BasicAttack]Basic Attacks are powerful melee blasts.",
-    "PL": "Obecna Broń nie jest używana w tej Postawie (Efekty z Broni nadal działają). Wszystkie [BasicAttack]Podstawowe Ataki, [Riposte]Riposty, [Counter]Kontry i [Backstab]Ataki w Plecy skalują się z [MD]Magicznymi Obrażeniami zamiast [D]Obrażeniami obecnej Broni. [BasicAttack]Podstawowe Ataki są potężnymi, krótko-zasięgowymi uderzeniami."
+    "ENG": "Current Weapon is not used in this Stance (Effects from the Weapon still apply). All [BA]Basic Attacks, [Riposte]Ripostes, [Counter]Counters and [Backstab]Backstabs scale with [MD]Magic Damage instead of current Weapon's [D]Damage. [BA]Basic Attacks are powerful melee blasts.",
+    "PL": "Obecna Broń nie jest używana w tej Postawie (Efekty z Broni nadal działają). Wszystkie [BA]Podstawowe Ataki, [Riposte]Riposty, [Counter]Kontry i [Backstab]Ataki w Plecy skalują się z [MD]Magicznymi Obrażeniami zamiast [D]Obrażeniami obecnej Broni. [BA]Podstawowe Ataki są potężnymi, krótko-zasięgowymi uderzeniami."
   },
   {
     "Label": "Stance_MindOverMatter_Upgrade1_Description",
@@ -2446,8 +2284,8 @@
   {
     "Label": "Stance_MindOverMatter_Upgrade2_Description",
     "Category": "Stance",
-    "ENG": "[BasicAttack]Basic Attacks apply 10[Analyzed]Analyzed.",
-    "PL": "[BasicAttack]Podstawowe Ataki nakładają 10[Analyzed]Przebadany."
+    "ENG": "[BA]Basic Attacks apply 10[Analyzed]Analyzed.",
+    "PL": "[BA]Podstawowe Ataki nakładają 10[Analyzed]Przebadany."
   },
   {
     "Label": "Stance_MindOverMatter_Upgrade2_DescriptionDetailed",
@@ -2536,13 +2374,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Duelist",
+    "Label": "Outfit_Duelist",
     "Category": "Item",
     "ENG": "Dueling Robe",
     "PL": "Szata Pojedynkowa"
   },
   {
-    "Label": "Armor_Duelist_FlavorText",
+    "Label": "Outfit_Duelist_FlavorText",
     "Category": "Item",
     "ENG": "Cumbersome armor is not necessary for one who values duels to the death. Even the slightest misstep should always be punished, for being promptly deflected by the armor would rid the duel of all its meaning.",
     "PL": ""
@@ -2623,13 +2461,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_WeaponMaster",
+    "Label": "Outfit_WeaponMaster",
     "Category": "Item",
     "ENG": "Blademaster's Garb",
     "PL": "Strój Mistrza Ostrzy"
   },
   {
-    "Label": "Armor_WeaponMaster_FlavorText",
+    "Label": "Outfit_WeaponMaster_FlavorText",
     "Category": "Item",
     "ENG": "Each weapon has its purpose. Some are inteded for the offensive, while other are quite the contrary. By knowing one's role, one can become that much more effective.",
     "PL": ""
@@ -2686,13 +2524,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Jailer",
+    "Label": "Outfit_Jailer",
     "Category": "Item",
     "ENG": "Unfeeling Cage",
     "PL": ""
   },
   {
-    "Label": "Armor_Jailer_FlavorText",
+    "Label": "Outfit_Jailer_FlavorText",
     "Category": "Item",
     "ENG": "An armor is supposed to protect its owner. But what protection could it ever offer when the wearer does not wish to be protected? And if it is punishment that one desires, then the armor shall oblige.",
     "PL": ""
@@ -2797,13 +2635,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Ancient",
+    "Label": "Outfit_Ancient",
     "Category": "Item",
     "ENG": "Security Armor",
     "PL": ""
   },
   {
-    "Label": "Armor_Ancient_FlavorText",
+    "Label": "Outfit_Ancient_FlavorText",
     "Category": "Item",
     "ENG": "The search for immortality requires many sacrifices. To make sure everything goes according to plan, a powerful security force is required. And it goes without saying that an army without proper equipment would be worthless.",
     "PL": ""
@@ -2872,13 +2710,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_BattleBorn",
+    "Label": "Outfit_BattleBorn",
     "Category": "Item",
     "ENG": "Blood-stained Armor",
     "PL": ""
   },
   {
-    "Label": "Armor_BattleBorn_FlavorText",
+    "Label": "Outfit_BattleBorn_FlavorText",
     "Category": "Item",
     "ENG": "To protect and serve. The oath that some might have treated as mere formality was still etched deep in her mind. Combined with somewhat juvenile dreams of knights and warriors of old, her course was firmly set.",
     "PL": ""
@@ -2955,7 +2793,7 @@
   {
     "Label": "ItemSet_Knight_Description",
     "Category": "Item",
-    "ENG": "[DR]Durability, Protection from [Burn]Burn and [Freeze]Freeze",
+    "ENG": "[A]Durability, Protection from [Burn]Burn and [Freeze]Freeze",
     "PL": ""
   },
   {
@@ -2971,13 +2809,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Knight",
+    "Label": "Outfit_Knight",
     "Category": "Item",
     "ENG": "Molten Cuirass",
     "PL": "Zbroja Płytowa"
   },
   {
-    "Label": "Armor_Knight_FlavorText",
+    "Label": "Outfit_Knight_FlavorText",
     "Category": "Item",
     "ENG": "Novices of the Ignis style often end up hurting themselves with their own flames. As such, the armor of the Ignis knights was designed to protect from them. After all, who could possibly expect for treachery to come from within one's own ranks?",
     "PL": ""
@@ -3034,13 +2872,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Judge",
+    "Label": "Outfit_Judge",
     "Category": "Item",
     "ENG": "Judge's Mantle",
     "PL": ""
   },
   {
-    "Label": "Armor_Judge_FlavorText",
+    "Label": "Outfit_Judge_FlavorText",
     "Category": "Item",
     "ENG": "The frustration stemming from what could have been had to be directed somewhere. The fault could not be theirs, for they were infallible. And if so, the fault must have laid with the ignorant masses, too moronic to properly carry out even one simple task.",
     "PL": ""
@@ -3133,13 +2971,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Gunslinger",
+    "Label": "Outfit_Gunslinger",
     "Category": "Item",
     "ENG": "Gunslinger Garb",
     "PL": ""
   },
   {
-    "Label": "Armor_Gunslinger_FlavorText",
+    "Label": "Outfit_Gunslinger_FlavorText",
     "Category": "Item",
     "ENG": "One could hardly ever be as bad as the Judges of the Glacies family, so the so-called 'Gunslingers' were often treated as a breath of fresh air. Most of them roamed the land, settling conflicts according to their own moral compass.",
     "PL": ""
@@ -3229,13 +3067,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Arbiter",
+    "Label": "Outfit_Arbiter",
     "Category": "Item",
     "ENG": "Avenger's Perserverance",
     "PL": ""
   },
   {
-    "Label": "Armor_Arbiter_FlavorText",
+    "Label": "Outfit_Arbiter_FlavorText",
     "Category": "Item",
     "ENG": "If there is no justice in this world, then seek it outside. No matter how ardurous the journey. No matter how long it takes. Justice will find its way eventually. So that no more victims will be created.",
     "PL": ""
@@ -3333,7 +3171,7 @@
   {
     "Label": "ItemSet_IronBlooded_Description",
     "Category": "Item",
-    "ENG": "[H]Health, [DR]Durability, Reflect [D]Damage Taken",
+    "ENG": "[H]Health, [A]Durability, Reflect [D]Damage Taken",
     "PL": ""
   },
   {
@@ -3349,13 +3187,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_IronBlooded",
+    "Label": "Outfit_IronBlooded",
     "Category": "Item",
     "ENG": "Spike Carapace",
     "PL": ""
   },
   {
-    "Label": "Armor_IronBlooded_FlavorText",
+    "Label": "Outfit_IronBlooded_FlavorText",
     "Category": "Item",
     "ENG": "Hurt anyone who approaches. Prevent anyone from touching you. That is the only way to ensure survival, to prevent betrayal. But how can one survive alone, when the whole world is considered an enemy?",
     "PL": ""
@@ -3421,13 +3259,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Unbreakable",
+    "Label": "Outfit_Unbreakable",
     "Category": "Item",
     "ENG": "Steadfast Armor",
     "PL": ""
   },
   {
-    "Label": "Armor_Unbreakable_FlavorText",
+    "Label": "Outfit_Unbreakable_FlavorText",
     "Category": "Item",
     "ENG": "Guarding those searching for immortality seemed like a simple enough task. While there were some dissidents, none were strong enough to actually threaten the research project. It would seem like the presence of the Unbreakable would be nothing more than an assurance.",
     "PL": ""
@@ -3489,7 +3327,7 @@
   {
     "Label": "ItemSet_Mercenary_Description",
     "Category": "Item",
-    "ENG": "[Barrier]Barrier, [DR]Durability, Anti-Burst",
+    "ENG": "[Barrier]Barrier, [A]Durability, Anti-Burst",
     "PL": ""
   },
   {
@@ -3505,13 +3343,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Mercenary",
+    "Label": "Outfit_Mercenary",
     "Category": "Item",
     "ENG": "Mercenary Armor",
     "PL": "Zbroja Najemnika"
   },
   {
-    "Label": "Armor_Mercenary_FlavorText",
+    "Label": "Outfit_Mercenary_FlavorText",
     "Category": "Item",
     "ENG": "The Molis family is willing to grant any request. Their reputation is their lifeline, after all. As long as enough money is paid, the contract will be fulfilled. No matter how revolting, no matter how much self-loathing it may end up causing.",
     "PL": ""
@@ -3601,13 +3439,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Survivor",
+    "Label": "Outfit_Survivor",
     "Category": "Item",
     "ENG": "Protective Suit",
     "PL": ""
   },
   {
-    "Label": "Armor_Survivor_FlavorText",
+    "Label": "Outfit_Survivor_FlavorText",
     "Category": "Item",
     "ENG": "Unlike researchers or engineers, the doctors were not privy to what was truly happening in the facility. All they could see was a tormented, newborn existence. And so, they naturally offered it their compassion. And so, every single member of the Salutis family survived the catastrophe, even if their memories did not.",
     "PL": ""
@@ -3685,13 +3523,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Assassin",
+    "Label": "Outfit_Assassin",
     "Category": "Item",
     "ENG": "Assassin's Garb",
     "PL": ""
   },
   {
-    "Label": "Armor_Assassin_FlavorText",
+    "Label": "Outfit_Assassin_FlavorText",
     "Category": "Item",
     "ENG": "Although their Energy Cores were not as strong as other families, Salutis managed to stand their ground through clever use of techniques and avoiding face-to-face confrontations. They became both reviled and respected, a reputation that was not much different from their time as doctors.",
     "PL": ""
@@ -3793,13 +3631,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Executioner",
+    "Label": "Outfit_Executioner",
     "Category": "Item",
     "ENG": "Hallowed Armor",
     "PL": ""
   },
   {
-    "Label": "Armor_Executioner_FlavorText",
+    "Label": "Outfit_Executioner_FlavorText",
     "Category": "Item",
     "ENG": "It is no easy feat to go against the teaching of one's family. But countless innocent lives is too big of a price to pay for a sin commited hundreds of years ago. That much should be plain for anyone to see, so why was she standing alone?",
     "PL": ""
@@ -3877,13 +3715,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Artisan",
+    "Label": "Outfit_Artisan",
     "Category": "Item",
     "ENG": "Artist's Garb",
     "PL": ""
   },
   {
-    "Label": "Armor_Artisan_FlavorText",
+    "Label": "Outfit_Artisan_FlavorText",
     "Category": "Item",
     "ENG": "Inventing new technology is so much more than just science. It is an art, an endevaour that requires offering every ounce of creativity one possesses. Without such dedication, the pursuit of immortality would be nothing more than a pipe dream.",
     "PL": ""
@@ -3937,13 +3775,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Alacrity",
+    "Label": "Outfit_Alacrity",
     "Category": "Item",
     "ENG": "Acceleration Suit",
     "PL": ""
   },
   {
-    "Label": "Armor_Alacrity_FlavorText",
+    "Label": "Outfit_Alacrity_FlavorText",
     "Category": "Item",
     "ENG": "Electricty can be used to power various machines, but as Tonitrui's interest turned towards combat, they soon found themselves using it for enhancing their own bodies instead. Lacking the brute force of Ignis or Molis, they had to rely on speed instead.",
     "PL": ""
@@ -4005,7 +3843,7 @@
   {
     "Label": "ItemSet_Enforcer_Description",
     "Category": "Item",
-    "ENG": "[Onslaught]Onslaught, [BasicAttack]Basic Attacks",
+    "ENG": "[Onslaught]Onslaught, [BA]Basic Attacks",
     "PL": ""
   },
   {
@@ -4021,13 +3859,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Enforcer",
+    "Label": "Outfit_Enforcer",
     "Category": "Item",
     "ENG": "Combat Suit",
     "PL": ""
   },
   {
-    "Label": "Armor_Enforcer_FlavorText",
+    "Label": "Outfit_Enforcer_FlavorText",
     "Category": "Item",
     "ENG": "Enforcers are much more likely to be born within already established families, with a similar aptitude to one's parents. As such, most Enforcers are born and stay within their families, avoiding the risk of their techniques leaking outside. Tonitrui, however, possessed few techniques of their own, forcing them to partially rely on outsiders.",
     "PL": ""
@@ -4129,13 +3967,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_Sage",
+    "Label": "Outfit_Sage",
     "Category": "Item",
     "ENG": "Mystic's Robe",
     "PL": ""
   },
   {
-    "Label": "Armor_Sage_FlavorText",
+    "Label": "Outfit_Sage_FlavorText",
     "Category": "Item",
     "ENG": "The final result was nothing surprising. True immortality is no doubt beyond human reach, and the pale imitation that was discovered was an affront to life as a whole. However, just as expected, the catastrophic downfall of the project brought with it some interesting revelations.",
     "PL": ""
@@ -4189,13 +4027,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_RoyalGuard",
+    "Label": "Outfit_RoyalGuard",
     "Category": "Item",
     "ENG": "Azure Breastplate",
     "PL": ""
   },
   {
-    "Label": "Armor_RoyalGuard_FlavorText",
+    "Label": "Outfit_RoyalGuard_FlavorText",
     "Category": "Item",
     "ENG": "Just any regular member of the Proprius family expressing their opinion would have been laughable. But things were different when it was the heir apparent who had done so. Drake went against the very principles driving the Proprius family, and by doing so, promised survival to those in despair.",
     "PL": ""
@@ -4261,13 +4099,13 @@
     "PL": ""
   },
   {
-    "Label": "Armor_ShadowGifted",
+    "Label": "Outfit_ShadowGifted",
     "Category": "Item",
     "ENG": "Hero's Vest",
     "PL": ""
   },
   {
-    "Label": "Armor_ShadowGifted_FlavorText",
+    "Label": "Outfit_ShadowGifted_FlavorText",
     "Category": "Item",
     "ENG": "Saving the world is too daunting of a task to be accomplished alone. But only Enforcers are strong enough to have any say in the matter. While certainly reliable, Drake's elite squad lacked the power to challenge the Shadow. When it comes to brute force, only one name came to Drake's mind, a tyrant from a future that would never come to pass.",
     "PL": ""
@@ -5059,7 +4897,12 @@
 
 
 
-  
+  {
+    "Label": "Effect_Detailed_Description",
+    "Category": "Effect",
+    "ENG": "Some effects and abilities have complex effects.\n\nIf you are interested in knowing exactly how they work, you can hover over such icons get the full explanation instead of the shortened version.",
+    "PL": ""
+  },
   {
     "Label": "Effect_Riposte_Description",
     "Category": "Effect",
@@ -5073,9 +4916,15 @@
     "PL": ""
   },
   {
+    "Label": "Effect_Block_Description",
+    "Category": "Effect",
+    "ENG": "[Block]Block: performed by holding [BlockButtonPress], it allows to convert all [I]Injury taken into [S]Stagger ([RED]15%[/RED] of original [I]Injury).\n\nIn addition to that, [Block]Blocking lowers all [S]Stagger taken by [PURPLE]40%[/PURPLE], making it much more effective against attacks inflicting [I]Injury rather than [S]Stagger.\n\nWhen [Staggered]Staggered, [Block]Blocking only allows to take [RED]50%[/RED][I]Injury instead of full amount, making [Riposte]Ripostes, [Counter]Counters and [Dodge]Dodges a much more effective alternative.",
+    "PL": ""
+  },
+  {
     "Label": "Effect_Dodge_Description",
     "Category": "Effect",
-    "ENG": "[Dodge]Dodge: performed by pressing [DodgeBinding], it allows to temporarily avoid all attacks aside from some [Counter]Counterable and all [Unstoppable]Unstoppable.\n\nMoving while pressing [DodgeBinding] will result in a roll, countering enemy [Counterable]Special thrust attacks.\n\nStanding still while pressing [DodgeBinding] will result in a backstep, countering enemy [Counterable]Special swinging, down-to-up attacks.\n\nEffects that trigger on [Dodge]Dodge only work if any [D]Damage is succesfully avoided",
+    "ENG": "[Dodge]Dodge: performed by pressing [DodgeButtonPress], it allows to temporarily avoid all attacks aside from some [Counter]Counterable and all [Unstoppable]Unstoppable.\n\nMoving while pressing [DodgeButtonPress] will result in a roll, countering enemy [Counterable]Special thrust attacks.\n\nStanding still while pressing [DodgeButtonPress] will result in a backstep, countering enemy [Counterable]Special swinging, down-to-up attacks.\n\nEffects that trigger on [Dodge]Dodge only work if any [D]Damage is succesfully avoided.",
     "PL": ""
   },
   {
@@ -5087,31 +4936,31 @@
   {
     "Label": "Effect_BasicAttack_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Basic Attack: performed by pressing [BasicAttackBinding] using currently equipped weapon.\n\nHoliding [BasicAttackBinding] causes a Strong [BasicAttack]Basic Attack to be performed ([D]Damage and attack type improve with higher attack count)",
+    "ENG": "[BA]Basic Attack: performed by pressing [BasicAttackButtonPress] using currently equipped weapon.\n\nHoliding [BasicAttackButtonPress] causes a Strong [BA]Basic Attack to be performed ([D]Damage and attack type improve with higher attack count)",
     "PL": ""
   },
   {
     "Label": "Effect_Magic_Description",
     "Category": "Effect",
-    "ENG": "[Magic]Magic: some [Technique]Techniques deal [MD]Damage dependant on [Magic]Magic instead of [Weapons]Weapon stats. [Proprius]Power Without Limit and [Proprius]Mind Over Matter stances allow to use [BasicAttack]Basic Attacks that scale with [Magic]Magic instead of currently equipped weapon.\n\n[Magic]Magic [AS]Attack Speed is capped at 2.0",
+    "ENG": "[Magic]Magic: some [Technique]Techniques deal [MD]Damage dependant on [Magic]Magic instead of [Weapons]Weapon stats.\n\n[Proprius]Power Without Limit and [Proprius]Mind Over Matter stances allow to use [BA]Basic Attacks that scale with [Magic]Magic instead of currently equipped weapon.\n\n[Magic]Magic [AS]Attack Speed is capped at 2.0.",
     "PL": ""
   },
   {
     "Label": "Effect_Weapons_Description",
     "Category": "Effect",
-    "ENG": "[Weapons]Weapons: you can use [Heavy]Heavy, [Light]Light and [Ranged]Ranged weapons, each assigned to their respective stance. Damage dealt by [BasicAttack]Basic Attacks and some [Technique]Techniques is dependant on your [Weapons]Weapon stat values",
+    "ENG": "[Weapons]Weapons: you can use [Heavy]Heavy, [Light]Light and [Ranged]Ranged weapons, each assigned to their respective stance. Damage dealt by [BA]Basic Attacks and some [Technique]Techniques is dependant on your [Weapons]Weapon stat values",
     "PL": ""
   },
   {
     "Label": "Effect_Backstab_Description",
     "Category": "Effect",
-    "ENG": "[Backstab]Backstab: performed by pressing [BasicAttackBinding] while facing an enemy's back. Has special animation and higher [D]Damage, but cannot be used again against the same enemy until their [ImmunityToBackstabs]Backstab Immunity wears off",
+    "ENG": "[Backstab]Backstab: performed by pressing [BasicAttackButtonPress] while facing an enemy's back. Has special animation and higher [D]Damage, but cannot be used again against the same enemy until their [ImmunityToBackstabs]Backstab Immunity wears off",
     "PL": ""
   },
   {
     "Label": "Effect_Technique_Description",
     "Category": "Effect",
-    "ENG": "[Technique]Technique: performed by pressing [Ability1Binding], [Ability2Binding], [Ability3Binding] or [Ability4Binding] and paying corresponding [E]Energy.\n\nCannot be used again until used [Technique]Technique's [CD]Cooldown wears off.\n\nDifferent [Technique]Techniques have different [E]Energy costs, [CD]Cooldowns, special effects and scale with different stat values ([HD]/[LD]/[RD]/[MD])",
+    "ENG": "[Technique]Technique: performed by pressing [Ability1ButtonPress], [Ability2ButtonPress], [Ability3ButtonPress] or [Ability4ButtonPress] and paying corresponding [E]Energy.\n\nCannot be used again until used [Technique]Technique's [CD]Cooldown wears off.\n\nDifferent [Technique]Techniques have different [E]Energy costs, [CD]Cooldowns, special effects and scale with different stat values ([HD]/[LD]/[RD]/[MD])",
     "PL": ""
   },
   {
@@ -5129,7 +4978,7 @@
   {
     "Label": "Effect_Ranged_Description",
     "Category": "Effect",
-    "ENG": "[Ranged]Ranged Weapons: Guns, Bows, Cannons.\n\nRequire [Ammo]Ammo to perform [BasicAttack]Basic Attacks (but not [Technique]Techniques).\n\n[Ammo]Ammo is restored at the end of combat, by defeating enemies or through various special [Effect]Effects.\n\n[Ranged]Ranged Weapons [AS]Attack Speed is capped at 2.0",
+    "ENG": "[Ranged]Ranged Weapons: Guns, Bows, Cannons.\n\nRequire [Ammo]Ammo to perform [BA]Basic Attacks (but not [Technique]Techniques).\n\n[Ammo]Ammo is restored at the end of combat, by defeating enemies or through various special [Effect]Effects.\n\n[Ranged]Ranged Weapons [AS]Attack Speed is capped at 2.0",
     "PL": ""
   },
 
@@ -5202,18 +5051,6 @@
     "PL": "[Burn]Podpalenie: cel otrzymuje dane [S]Zachwianie co sekundę. Zadaje podwójne [D]Obrażenia gdy wróg jest [Staggered]Zachwiany. Ten efekt się kumuluje."
   },
   {
-    "Label": "Effect_FrozenInPlace",
-    "Category": "Effect",
-    "ENG": "[Freeze]Frozen In Place",
-    "PL": "[Freeze]Zamrożenie"
-  },
-  {
-    "Label": "Effect_FrozenInPlace_Description",
-    "Category": "Effect",
-    "ENG": "[Freeze]Frozen In Place: unable to perform any actions.\n\nOccurrs when enemy with [Freeze]Freeze applied to them becomes [Staggered]Staggered.\n\nDuration is calculated based on [Freeze]Freeze amount vs enemy's max [SB]Stagger Bar",
-    "PL": "[Freeze]Zamrożenie: cel ma zmniejszoną [SPEED]Prędkość Ruchu i [AS]Prędkość Ataku. Po osiągnięciu 100% wróg zostaje zamrożony i następne zadane mu [D]Obrażenia są potrójne i usuwają efekt. Efektywność jest zależna od maksymalnego [SB]Pasku Zachwiania wroga. Ten efekt się kumuluje."
-  },
-  {
     "Label": "Effect_Freeze",
     "Category": "Effect",
     "ENG": "[Freeze]Freeze",
@@ -5222,7 +5059,7 @@
   {
     "Label": "Effect_Freeze_Description",
     "Category": "Effect",
-    "ENG": "[Freeze]Freeze: receive given [S]Stagger each second (stackable).\n\nWhen [Staggered]Staggered, consumes all stacks and cause the target to be [Freeze]Frozen In Place.\n\n[Freeze]Frozen In Place duration is calculated based on [Freeze]Freeze amount vs enemy's max [SB]Stagger Bar",
+    "ENG": "[Freeze]Freeze: receive given [S]Stagger each second (stackable).\n\nWhen [Staggered]Staggered, consumes all stacks to extend default [Staggered]Staggered duration.\n\nDuration increase is calculated based on [Freeze]Freeze amount vs enemy's max [SB]Stagger Bar.",
     "PL": "[Freeze]Zamrożenie: cel ma zmniejszoną [SPEED]Prędkość Ruchu i [AS]Prędkość Ataku. Po osiągnięciu 100% wróg zostaje zamrożony i następne zadane mu [D]Obrażenia są potrójne i usuwają efekt. Efektywność jest zależna od maksymalnego [SB]Pasku Zachwiania wroga. Ten efekt się kumuluje."
   },
   {
@@ -5234,7 +5071,7 @@
   {
     "Label": "Effect_Barrier_Description",
     "Category": "Effect",
-    "ENG": "[Barrier]Barrier: all [D]Damage taken is first absorbed by the effect's value (stackable).\n\n[S]Stagger does not deplete [Barrier]Barrier unless to prevent [Staggered]Staggered",
+    "ENG": "[Barrier]Barrier: all [D]Damage taken is first absorbed by the effect's value (stackable)\n\n[S]Stagger does not deplete [Barrier]Barrier unless to prevent [Staggered]Staggered\n\nEffect amount cannot be larger than max [H]Health",
     "PL": "[Barrier]Bariera: wszystkie otrzymane przez cel [D]Obrażenia są najpierw pochłonięte przez wartość [Barrier]Bariery. Ten efekt się kumuluje."
   },
   {
@@ -5291,7 +5128,7 @@
   {
     "Label": "Effect_Staggered_Description",
     "Category": "Effect",
-    "ENG": "[Staggered]Staggered: unable to perform any actions and [DR]Damage Reduction is ineffective.\n\nCaused by filling up the [SB]Stagger Bar",
+    "ENG": "[Staggered]Staggered: lose all removable [Buff]Buffs, [E]Energy and [A]Armor until effect ends.\n\n[Staggered]Staggered enemies cannot perform any actions, but player only suffers -45[SPEED]Movement Speed.\n\nCaused by filling up the [SB]Stagger Bar.",
     "PL": "[Staggered]Przełamanie: spowodowane wypełnieniem [SB]Paska Zachwiania."
   },
   {
@@ -5333,8 +5170,8 @@
   {
     "Label": "Effect_Onslaught_Description",
     "Category": "Effect",
-    "ENG": "[Onslaught]Onslaught: [BasicAttack]Basic Attacks deal more %[D]Damage based on the effect's value (stackable)",
-    "PL": "[Onslaught]Napór: przy wykonywaniu [BasicAttack]Podstawowych Ataków, zadawaj zwiększone %[D]Obrażenia równe wartości efektu. Ten efekt się kumuluje."
+    "ENG": "[Onslaught]Onslaught: [BA]Basic Attacks deal more %[D]Damage based on the effect's value (stackable)",
+    "PL": "[Onslaught]Napór: przy wykonywaniu [BA]Podstawowych Ataków, zadawaj zwiększone %[D]Obrażenia równe wartości efektu. Ten efekt się kumuluje."
   },
   {
     "Label": "Effect_Prone",
@@ -5393,8 +5230,8 @@
   {
     "Label": "Effect_Chained_Description",
     "Category": "Effect",
-    "ENG": "[Chained]Chained: deal more %[D]Damage based on the effect's value, but also lose [EG]Energy Gain, [DR]Damage Reduction and [AS]Attack Speed equal to 15% of the effect's value (stackable)",
-    "PL": "[Chained]Kajdany: Zadawaj więcej [D]Obrażeń o podaną ilość, ale także zmniejsz [DR], [AS] i [EG] o 10% podanej ilości. Jest liczone jako 3 negatywne efekty. Ten efekt się kumuluje."
+    "ENG": "[Chained]Chained: deal more %[D]Damage based on the effect's value, but also lose [EG]Energy Gain, [A]Armor and [AS]Attack Speed equal to 15% of the effect's value (stackable)",
+    "PL": "[Chained]Kajdany: Zadawaj więcej [D]Obrażeń o podaną ilość, ale także zmniejsz [A], [AS] i [EG] o 10% podanej ilości. Jest liczone jako 3 negatywne efekty. Ten efekt się kumuluje."
   },
   {
     "Label": "Effect_Poison",
@@ -5465,7 +5302,7 @@
   {
     "Label": "Effect_Slow_Description",
     "Category": "Effect",
-    "ENG": "[Slow]Slow: lowered [SP]Movement Speed by given percent (stackable).\n\nLasts only 5 seconds and decays much quicker",
+    "ENG": "[Slow]Slow: lowered [SP]Movement Speed by given percent, but enemies cannot be slowed below 20% base speed (stackable).\n\nLasts only 5 seconds and decays much quicker",
     "PL": "[Slow]Spowolnienie: cel ma zmniejszoną [SP]Prędkość Ruchu o podany procent. Ten efekt się kumuluje, trwa tylko 5 sekund i szybko się zmniejsza."
   },
   {
@@ -5478,7 +5315,7 @@
     "Label": "Effect_Acceleration_Description",
     "Category": "Effect",
     "ENG": "[Acceleration]Acceleration: increased %[AS]Attack Speed by given amount (stackable)",
-    "PL": "[Acceleration]Przyspieszenie: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
+    "PL": "[Acceleration]Przyspieszenie: cel ma zwiększoną %[AS]Prędkość Ataku o podaną ilość, do max +100. Ten efekt się kumuluje."
   },
   {
     "Label": "Effect_Lethargy",
@@ -5490,7 +5327,7 @@
     "Label": "Effect_Lethargy_Description",
     "Category": "Effect",
     "ENG": "[Lethargy]Lethargy: lowered %[AS]Attack Speed by given amount (stackable)",
-    "PL": "[Lethargy]Letarg: cel ma zwiększoną [AS]Prędkość Ataku o podaną ilość, do max +100%. Ten efekt się kumuluje."
+    "PL": "[Lethargy]Letarg: cel ma zwiększoną %[AS]Prędkość Ataku o podaną ilość, do max +100. Ten efekt się kumuluje."
   },
   {
     "Label": "Effect_Feeble",
@@ -5513,7 +5350,7 @@
   {
     "Label": "Effect_Stealth_Description",
     "Category": "Effect",
-    "ENG": "[Stealth]Stealth: untargettable to enemies.\n\nUsing [BasicAttack]Basic Attacks, [Technique]Techniques or [Tool]Tools will cause [Stealth]Stealth to end prematurely",
+    "ENG": "[Stealth]Stealth: untargettable to enemies.\n\nUsing [BA]Basic Attacks, [Technique]Techniques or [Tool]Tools will cause [Stealth]Stealth to end prematurely",
     "PL": "[Stealth]Ukrycie:"
   },
 
@@ -5797,7 +5634,7 @@
   {
     "Label": "Effect_Energy_Description",
     "Category": "Effect",
-    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy total",
+    "ENG": "+[BLUE]{0}[/BLUE][E]Energy total",
     "PL": ""
   },
   {
@@ -5809,19 +5646,19 @@
   {
     "Label": "Effect_EnergyGain_Description",
     "Category": "Effect",
-    "ENG": "+[BLUE]{0}%[/BLUE][EG]Energy Gain",
+    "ENG": "+[BLUE]{0}[/BLUE][EG]Energy Gain",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReduction",
+    "Label": "Effect_Armor",
     "Category": "Effect",
     "ENG": "Resilient Muscles",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReduction_Description",
+    "Label": "Effect_Armor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction",
+    "ENG": "+{0}[A]Armor",
     "PL": ""
   },
   {
@@ -5833,7 +5670,7 @@
   {
     "Label": "Effect_Tenacity_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[T]Tenacity",
+    "ENG": "+{0}[T]Tenacity",
     "PL": ""
   },
   {
@@ -5845,7 +5682,7 @@
   {
     "Label": "Effect_CooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "+[GREY]{0}%[/GREY][CDR]Cooldown Reduction",
+    "ENG": "+[GREY]{0}[/GREY][CDR]Cooldown Reduction",
     "PL": ""
   },
   {
@@ -5857,7 +5694,7 @@
   {
     "Label": "Effect_Control_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[Control]Control",
+    "ENG": "+{0}[Control]Control",
     "PL": ""
   },
   {
@@ -5869,7 +5706,7 @@
   {
     "Label": "Effect_MovementSpeed_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[MOVE]Movement Speed",
+    "ENG": "+{0}[MOVE]Movement Speed",
     "PL": ""
   },
   {
@@ -5992,15 +5829,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstCounterable",
+    "Label": "Effect_ArmorAgainstCounterable",
     "Category": "Effect",
     "ENG": "Prepare for the Worst",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstCounterable_Description",
+    "Label": "Effect_ArmorAgainstCounterable_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs [Counter]Counterable",
+    "ENG": "+{0}[A]Armor vs [Counter]Counterable",
     "PL": ""
   },
   {
@@ -6070,39 +5907,39 @@
     "PL": ""
   },
   {
-    "Label": "Effect_SharpDamageReduction",
+    "Label": "Effect_SharpArmor",
     "Category": "Effect",
     "ENG": "Sharp Senses",
     "PL": ""
   },
   {
-    "Label": "Effect_SharpDamageReduction_Description",
+    "Label": "Effect_SharpArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Sharp]Sharp level 1/2/3",
+    "ENG": "+{0}[A]/+{1}[A]/+{2}[A]Armor at [Sharp]Sharp level 1/2/3",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAfterRiposteOrCounter",
+    "Label": "Effect_ArmorAfterRiposteOrCounter",
     "Category": "Effect",
     "ENG": "Overwhelming Prediction",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAfterRiposteOrCounter_Description",
+    "Label": "Effect_ArmorAfterRiposteOrCounter_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction for 5 sec after [Riposte]Riposte or 10 sec after [Counter]Counter",
+    "ENG": "+{0}[A]Armor for 5 sec after [Riposte]Riposte or 10 sec after [Counter]Counter",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstUnstoppable",
+    "Label": "Effect_ArmorAgainstUnstoppable",
     "Category": "Effect",
     "ENG": "Grit and Endure",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstUnstoppable_Description",
+    "Label": "Effect_ArmorAgainstUnstoppable_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs [Unstoppable]Unstoppable",
+    "ENG": "+{0}[A]Armor vs [Unstoppable]Unstoppable",
     "PL": ""
   },
   {
@@ -6126,19 +5963,19 @@
   {
     "Label": "Effect_SharpEmpowersBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "[Sharp]Sharp empowers [BasicAttack]Basic Attacks at {0}% efficiency",
+    "ENG": "[Sharp]Sharp empowers [BA]Basic Attacks at {0}% efficiency",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionDuringBasicAttacks",
+    "Label": "Effect_ArmorDuringBasicAttacks",
     "Category": "Effect",
     "ENG": "Battle Trance",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionDuringBasicAttacks_Description",
+    "Label": "Effect_ArmorDuringBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction during [BasicAttack]Basic Attacks",
+    "ENG": "+{0}[A]Armor during [BA]Basic Attacks",
     "PL": ""
   },    
   {
@@ -6162,7 +5999,7 @@
   {
     "Label": "Effect_StrongBasicAttackDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Strong Basic Attack Damage",
+    "ENG": "+[GREEN]{0}%[/GREEN][BA]Strong Basic Attack Damage",
     "PL": ""
   },
   {
@@ -6198,7 +6035,7 @@
   {
     "Label": "Effect_HealFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [BasicAttack]Basic Attack [D]Damage",
+    "ENG": "Heal for [RED]{0}%[/RED] of [BA]Basic Attack [D]Damage",
     "PL": ""
   },
   {
@@ -6268,7 +6105,7 @@
   {
     "Label": "Effect_BasicAttackStagger_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[BasicAttack]Basic Attack [S]Stagger",
+    "ENG": "+{0}%[BA]Basic Attack [S]Stagger",
     "PL": ""
   },
   {
@@ -6308,27 +6145,27 @@
     "PL": "[Burn]Podpalenie którą nakładasz zmniejsza się o {0}% mniej co sekundę."
   },
   {
-    "Label": "Effect_BurnDamageReduction",
+    "Label": "Effect_BurnArmor",
     "Category": "Effect",
     "ENG": "Debilitating Embers",
     "PL": "Redukcja Obrażeń od Podpalonych"
   },
   {
-    "Label": "Effect_BurnDamageReduction_Description",
+    "Label": "Effect_BurnArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at enemy [Burn]Burn level 1/2/3",
+    "ENG": "+{0}[A]/+{1}[A]/+{2}[A]Armor at enemy [Burn]Burn level 1/2/3",
     "PL": ""
   },
   {
-    "Label": "Effect_BurnDamageReductionWithoutLimit",
+    "Label": "Effect_BurnArmorWithoutLimit",
     "Category": "Effect",
     "ENG": "Debilitating Embers",
     "PL": "Redukcja Obrażeń od Podpalonych"
   },
   {
-    "Label": "Effect_BurnDamageReductionWithoutLimit_Description",
+    "Label": "Effect_BurnArmorWithoutLimit_Description",
     "Category": "Effect",
-    "ENG": "+[DR]Damage Reduction ({0}% of enemy current [Burn]Burn)",
+    "ENG": "+[A]Armor ({0}% of enemy current [Burn]Burn)",
     "PL": ""
   },
   {
@@ -6340,7 +6177,7 @@
   {
     "Label": "Effect_HeavyStrongBasicAttackStagger_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[S]Stagger with [Heavy]Heavy Weapon [BasicAttack]Strong Basic Attacks",
+    "ENG": "+{0}%[S]Stagger with [Heavy]Heavy Weapon [BA]Strong Basic Attacks",
     "PL": ""
   },
   {
@@ -6368,15 +6205,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstBosses",
+    "Label": "Effect_ArmorAgainstBosses",
     "Category": "Effect",
     "ENG": "Challenge Seeker",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstBosses_Description",
+    "Label": "Effect_ArmorAgainstBosses_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs Bosses",
+    "ENG": "+{0}[A]Armor vs Bosses",
     "PL": ""
   },
   {
@@ -6410,15 +6247,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstNonBosses",
+    "Label": "Effect_ArmorAgainstNonBosses",
     "Category": "Effect",
     "ENG": "Merciless Enforcer",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionAgainstNonBosses_Description",
+    "Label": "Effect_ArmorAgainstNonBosses_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs NOT-Bosses",
+    "ENG": "+{0}[A]Armor vs NOT-Bosses",
     "PL": ""
   },
   {
@@ -6521,7 +6358,7 @@
   {
     "Label": "Effect_RangedDamageLowersTenacity_Description",
     "Category": "Effect",
-    "ENG": "[RD]Ranged Damage reduces [T]Tenacity by {0}% for 10 seconds (refreshes without stacking)",
+    "ENG": "[RD]Ranged Damage reduces [T]Tenacity by {0} for 10 seconds (refreshes without stacking)",
     "PL": ""
   },
   {
@@ -6533,7 +6370,7 @@
   {
     "Label": "Effect_MagicDamageLowersTenacity_Description",
     "Category": "Effect",
-    "ENG": "[MD]Magic Damage reduces [T]Tenacity by {0}% for 10 seconds (refreshes without stacking)",
+    "ENG": "[MD]Magic Damage reduces [T]Tenacity by {0} for 10 seconds (refreshes without stacking)",
     "PL": ""
   },
   {
@@ -6545,7 +6382,7 @@
   {
     "Label": "Effect_StaggeringLowersTenacity_Description",
     "Category": "Effect",
-    "ENG": "[Staggered]Staggering reduces [T]Tenacity by {0}% for 30 seconds (refreshes without stacking)",
+    "ENG": "[Staggered]Staggering reduces [T]Tenacity by {0} for 30 seconds (refreshes without stacking)",
     "PL": ""
   },
   {
@@ -6557,7 +6394,7 @@
   {
     "Label": "Effect_MovementSpeedWhileInRangedStance_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[SPEED]Movement Speed in [Ranged]Ranged stance",
+    "ENG": "+{0}[SPEED]Movement Speed in [Ranged]Ranged stance",
     "PL": ""
   },
   {
@@ -6581,7 +6418,7 @@
   {
     "Label": "Effect_ControlWhileNoAmmo_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[C]Control while at 0[Ammo]Ammo",
+    "ENG": "+{0}[C]Control while at 0[Ammo]Ammo",
     "PL": ""
   },
   {
@@ -6593,7 +6430,7 @@
   {
     "Label": "Effect_ControlWhileLowHealth_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[C]Control while below [RED]25%[/RED][H]Health",
+    "ENG": "+{0}[C]Control while below [RED]25%[/RED][H]Health",
     "PL": ""
   },
   {
@@ -6617,7 +6454,7 @@
   {
     "Label": "Effect_FinalAmmoDealsMoreDamage_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [RD]Ranged Damage while at 1[Ammo]Ammo",
+    "ENG": "+[GREEN]{0}%[/GREEN][BA]Basic Attack [RD]Ranged Damage while at 1[Ammo]Ammo",
     "PL": ""
   },
   {
@@ -6633,15 +6470,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_DealMoreStaggerBasedOnEnemyDamageReduction",
+    "Label": "Effect_DealMoreStaggerBasedOnEnemyArmor",
     "Category": "Effect",
     "ENG": "The Bigger They Are",
     "PL": ""
   },
   {
-    "Label": "Effect_DealMoreStaggerBasedOnEnemyDamageReduction_Description",
+    "Label": "Effect_DealMoreStaggerBasedOnEnemyArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[S]Stagger per 1[DR]Damage Reduction on enemy",
+    "ENG": "+{0}%[S]Stagger per 1[A]Armor on enemy",
     "PL": ""
   },
   {
@@ -6713,15 +6550,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_BarrierDamageReduction",
+    "Label": "Effect_BarrierArmor",
     "Category": "Effect",
     "ENG": "Hardened Skin",
     "PL": "Redukcja Obrażeń z Barierą"
   },
   {
-    "Label": "Effect_BarrierDamageReduction_Description",
+    "Label": "Effect_BarrierArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Barrier]Barrier level 1/2/3",
+    "ENG": "+{0}[A]/+{1}[A]/+{2}[A]Armor at [Barrier]Barrier level 1/2/3",
     "PL": ""
   },
   {
@@ -6755,27 +6592,27 @@
     "PL": ""
   },
   {
-    "Label": "Effect_ConvertDamageReductionToTenacity",
+    "Label": "Effect_ConvertArmorToTenacity",
     "Category": "Effect",
     "ENG": "Unshakeable",
     "PL": ""
   },
   {
-    "Label": "Effect_ConvertDamageReductionToTenacity_Description",
+    "Label": "Effect_ConvertArmorToTenacity_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[T]Tenacity ({1}% of your [DR]Damage Reduction)",
+    "ENG": "+{0}[T]Tenacity ({1}% of your [A]Armor)",
     "PL": ""
   },
   {
-    "Label": "Effect_ConvertTenacityToDamageReduction",
+    "Label": "Effect_ConvertTenacityToArmor",
     "Category": "Effect",
     "ENG": "Unyielding",
     "PL": ""
   },
   {
-    "Label": "Effect_ConvertTenacityToDamageReduction_Description",
+    "Label": "Effect_ConvertTenacityToArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction ({1}% of your [T]Tenacity)",
+    "ENG": "+{0}[A]Armor ({1}% of your [T]Tenacity)",
     "PL": ""
   },
   {
@@ -6823,19 +6660,19 @@
   {
     "Label": "Effect_MoreTenacityWhileBarrier_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[T]Tenacity while [Barrier]Barriered",
+    "ENG": "+{0}[T]Tenacity while [Barrier]Barriered",
     "PL": ""
   },
   {
-    "Label": "Effect_MoreDamageReductionWhileCCed",
+    "Label": "Effect_MoreArmorWhileCCed",
     "Category": "Effect",
     "ENG": "Never Surrender",
     "PL": ""
   },
   {
-    "Label": "Effect_MoreDamageReductionWhileCCed_Description",
+    "Label": "Effect_MoreArmorWhileCCed_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage while [CrowdControl]Crowd-Controlled",
+    "ENG": "+{0}%[D]Damage while [CrowdControl]Crowd-Controlled",
     "PL": ""
   },
   {
@@ -6881,15 +6718,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionWhileLowHealth",
+    "Label": "Effect_ArmorWhileLowHealth",
     "Category": "Effect",
     "ENG": "Hard To Kill",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionWhileLowHealth_Description",
+    "Label": "Effect_ArmorWhileLowHealth_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction while below [RED]50%[/RED] max [H]Health",
+    "ENG": "+{0}[A]Armor while below [RED]50%[/RED] max [H]Health",
     "PL": ""
   },
   {
@@ -6935,15 +6772,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionWhileHighStaggerBar",
+    "Label": "Effect_ArmorWhileHighStaggerBar",
     "Category": "Effect",
     "ENG": "On the Edge",
     "PL": ""
   },
   {
-    "Label": "Effect_DamageReductionWhileHighStaggerBar_Description",
+    "Label": "Effect_ArmorWhileHighStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction while above [PURPLE]50%[/PURPLE] max [SB]Stagger Bar",
+    "ENG": "+{0}[A]Armor while above [PURPLE]50%[/PURPLE] max [SB]Stagger Bar",
     "PL": ""
   },
   {
@@ -6973,7 +6810,7 @@
   {
     "Label": "Effect_HealFromStaggerTaken_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger you take while NOT-[Staggered]Staggered ([DR]Damage Reduction does not decrease this healing)",
+    "ENG": "Heal for [RED]{0}%[/RED] of [S]Stagger you take while NOT-[Staggered]Staggered ([A]Armor does not decrease this healing)",
     "PL": ""
   },
 
@@ -7027,7 +6864,7 @@
   {
     "Label": "Effect_SalutisTechniqueCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction for [Salutis]Salutis [Technique]Techniques",
+    "ENG": "+{0}[CDR]Cooldown Reduction for [Salutis]Salutis [Technique]Techniques",
     "PL": ""
   },
   {
@@ -7039,7 +6876,7 @@
   {
     "Label": "Effect_TechniqueCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction for [Technique]Techniques",
+    "ENG": "+{0}[CDR]Cooldown Reduction for [Technique]Techniques",
     "PL": ""
   },
   {
@@ -7051,7 +6888,7 @@
   {
     "Label": "Effect_ToolCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction for [Tool]Tools",
+    "ENG": "+{0}[CDR]Cooldown Reduction for [Tool]Tools",
     "PL": ""
   },
   {
@@ -7063,13 +6900,13 @@
   {
     "Label": "Effect_EffectCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction for [Effect]Effects",
+    "ENG": "+{0}[CDR]Cooldown Reduction for [Effect]Effects",
     "PL": ""
   },
   {
     "Label": "Effect_EffectCooldownReduction_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction for [Effect]Effects (special properties of some Equipment or Stances)",
+    "ENG": "+{0}[CDR]Cooldown Reduction for [Effect]Effects (special properties of some Equipment or Stances)",
     "PL": ""
   },
   {
@@ -7183,25 +7020,19 @@
   {
     "Label": "Effect_BasicAttackInjury_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][BasicAttack]Basic Attack [I]Injury",
+    "ENG": "+[RED]{0}%[/RED][BA]Basic Attack [I]Injury",
     "PL": ""
   },
   {
-    "Label": "Effect_InjuryDamageReductionPenetration",
+    "Label": "Effect_InjuryArmorPenetration",
     "Category": "Effect",
     "ENG": "Gap in the Armor",
     "PL": ""
   },
   {
-    "Label": "Effect_InjuryDamageReductionPenetration_Description",
+    "Label": "Effect_InjuryArmorPenetration_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[I]Injury [DR]Damage Reduction Penetration",
-    "PL": ""
-  },
-  {
-    "Label": "Effect_InjuryDamageReductionPenetration_DescriptionDetailed",
-    "Category": "Effect",
-    "ENG": "When dealing [I]Injury, it ignores {0}% of enemy's [DR]Damage Reduction",
+    "ENG": "+{0}%[A]Armor Penetration for [I]Injury",
     "PL": ""
   },
   {
@@ -7231,7 +7062,7 @@
   {
     "Label": "Effect_BackstabsApplyIncision_Description",
     "Category": "Effect",
-    "ENG": "[Backstab]Backstabbing applies [Incision]Incision ([GREEN]{0}%[/GREEN] of [D]Damage dealt)",
+    "ENG": "[Backstab]Backstabbing applies [Incision]Incision ([GREEN]{0}%[/GREEN] of [I]Injury dealt)",
     "PL": ""
   },
   {
@@ -7328,15 +7159,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_SuperchargeDamageReduction",
+    "Label": "Effect_SuperchargeArmor",
     "Category": "Effect",
     "ENG": "Repelling Static",
     "PL": "Redukcja Obrażeń z Naładowaniem"
   },
   {
-    "Label": "Effect_SuperchargeDamageReduction_Description",
+    "Label": "Effect_SuperchargeArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Supercharge]Supercharge level 1/2/3",
+    "ENG": "+{0}[A]/+{1}[A]/+{2}[A]Armor at [Supercharge]Supercharge level 1/2/3",
     "PL": ""
   },
   {
@@ -7390,19 +7221,19 @@
   {
     "Label": "Effect_SuperchargeInjuryFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "+[RED]{0}%[/RED][BasicAttack]Basic Attack [Supercharge]Supercharge [I]Injury",
+    "ENG": "+[RED]{0}%[/RED][BA]Basic Attack [Supercharge]Supercharge [I]Injury",
     "PL": ""
   },
   {
-    "Label": "Effect_ExtraDamageReductionBasedOnMovementSpeed",
+    "Label": "Effect_ExtraArmorBasedOnMovementSpeed",
     "Category": "Effect",
     "ENG": "Blurred Silhouette",
     "PL": ""
   },
   {
-    "Label": "Effect_ExtraDamageReductionBasedOnMovementSpeed_Description",
+    "Label": "Effect_ExtraArmorBasedOnMovementSpeed_Description",
     "Category": "Effect",
-    "ENG": "+[DR]Damage Reduction ({0}% of bonus [SPEED]Movement Speed)",
+    "ENG": "+[A]Armor ({0}% of bonus [SPEED]Movement Speed)",
     "PL": ""
   },
   {
@@ -7452,13 +7283,13 @@
   {
     "Label": "Effect_EnergyGainFromBasicAttacks_Description",
     "Category": "Effect",
-    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [BasicAttack]Basic Attacks",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [BA]Basic Attacks",
     "PL": ""
   },
   {
     "Label": "Effect_EnergyGainFromBasicAttacks_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [BasicAttack]Basic Attacks (+{1}[E] for each attack)",
+    "ENG": "+[BLUE]{0}%[/BLUE][E]Energy gained from [BA]Basic Attacks (+{1}[E] for each attack)",
     "PL": ""
   },
   {
@@ -7584,7 +7415,7 @@
   {
     "Label": "Effect_PropriusTechniqueCooldownReduction_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction for [Proprius]Proprius [Technique]Techniques",
+    "ENG": "+{0}[CDR]Cooldown Reduction for [Proprius]Proprius [Technique]Techniques",
     "PL": ""
   },
   {
@@ -7600,15 +7431,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_AnalysisDamageReduction",
+    "Label": "Effect_AnalysisArmor",
     "Category": "Effect",
     "ENG": "Adaptive Defenses",
     "PL": "Redukcja Obrażeń z Analizą"
   },
   {
-    "Label": "Effect_AnalysisDamageReduction_Description",
+    "Label": "Effect_AnalysisArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at [Analysis]Analysis level 1/2/3",
+    "ENG": "+{0}[A]/+{1}[A]/+{2}[A]Armor at [Analysis]Analysis level 1/2/3",
     "PL": ""
   },
   {
@@ -7717,33 +7548,33 @@
     "PL": ""
   },
   {
-    "Label": "Effect_SharpDamageReductionWithoutLimit_Description",
+    "Label": "Effect_SharpArmorWithoutLimit_Description",
     "Category": "Effect",
-    "ENG": "+[DR]Damage Reduction ({0}% of your current [Sharp]Sharp)",
+    "ENG": "+[A]Armor ({0}% of your current [Sharp]Sharp)",
     "PL": ""
   },
   {
     "Label": "Effect_GainSharpOnBasicAttacksAndOnslaughtOnRipostesAndCounters_Description",
     "Category": "Effect",
-    "ENG": "+{0}[Sharp]Sharp for each [BasicAttack]Basic Attack\n\n+{1}[Onslaught]Onslaught for each [Riposte]Riposte and [Counter]Counter",
+    "ENG": "+{0}[Sharp]Sharp upon [BA]Basic Attacking\n\n+{1}[Onslaught]Onslaught upon [Riposte]Riposting or [Counter]Countering",
     "PL": ""
   },
   {
     "Label": "Effect_RestoreHealthOnRiposteOrCounter_Description",
     "Category": "Effect",
-    "ENG": "+{0}[H]Heal when [Riposte]Riposting or [Counter]Countering",
+    "ENG": "+{0}[H]Heal upon [Riposte]Riposting\n\n+{1}[H]Heal upon [Counter]Countering",
     "PL": ""
   },
   {
     "Label": "Effect_ExtraEffectiveButConsumableSharp_Description",
     "Category": "Effect",
-    "ENG": "+{0}% [Sharp]Sharp gained, but {1}% faster decay\n\n[Riposte]Ripostes and [Counter]Counters consume all [Sharp]Sharp",
+    "ENG": "+{1}% [Sharp]Sharp gained, but {0}% faster decay\n\n[Riposte]Ripostes and [Counter]Counters consume all [Sharp]Sharp",
     "PL": ""
   },
   {
     "Label": "Effect_ReceiveSharpWhileInProximity_Description",
     "Category": "Effect",
-    "ENG": "+{1}[Sharp]Sharp/sec while enemy is within {0}m",
+    "ENG": "+{1}[Sharp]Sharp/sec while an enemy is within {0}m",
     "PL": ""
   },
   {
@@ -7755,7 +7586,7 @@
   {
     "Label": "Effect_EmpowerNextAttackAfterRiposteOrCounter_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[D]Damage dealt by next attack after [Riposte]Riposting\n\n+{0}%[D]Damage dealt by next attack after [Counter]Countering",
+    "ENG": "+{0}%[D]Damage dealt by next attack after [Riposte]Riposting\n\n+{1}%[D]Damage dealt by next attack after [Counter]Countering",
     "PL": ""
   },
 
@@ -7780,25 +7611,25 @@
   {
     "Label": "Effect_WeaponTechniquesEmpowerNextBasicAttackAndViceVersa_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{1}%[/GREEN][BasicAttack]Basic Attack [D]Damage for {0} sec after dealing [WD]Weapon [TD]Technique Damage\n\n+[GREEN]{2}%[/GREEN][WD]Weapon [TD]Technique Damage for {0} sec after dealing [BasicAttack]Basic Attack [D]Damage",
+    "ENG": "+[GREEN]{1}%[/GREEN][BA]Basic Attack [D]Damage for {0} sec after dealing [WD]Weapon [TD]Technique Damage\n\n+[GREEN]{2}%[/GREEN][WD]Weapon [TD]Technique Damage for {0} sec after dealing [BA]Basic Attack [D]Damage",
     "PL": ""
   },
   {
     "Label": "Effect_WeaponTechniquesEmpowerNextBasicAttackAndViceVersa_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Dealing damage with [Weapons]Weapon-based [Technique]Techniques causes your next [BasicAttack]Basic Attack within next {0} seconds to deal [GREEN]{1}%[/GREEN] more [D]Damage\n\nDealing damage with [BasicAttack]Basic Attacks causes your next [Weapons]Weapon-based [TD]Technique Damage within next {0} seconds to deal [GREEN]{2}%[/GREEN] more [D]Damage",
+    "ENG": "Dealing damage with [Weapons]Weapon-based [Technique]Techniques causes your next [BA]Basic Attack within next {0} seconds to deal [GREEN]{1}%[/GREEN] more [D]Damage\n\nDealing damage with [BA]Basic Attacks causes your next [Weapons]Weapon-based [TD]Technique Damage within next {0} seconds to deal [GREEN]{2}%[/GREEN] more [D]Damage",
     "PL": ""
   },
   {
     "Label": "Effect_BlademastersGarb_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [D]Damage with bladed weapon equipped\n\n{1}%[DR] with bladed weapon equipped\n\n+{1}%[DR] with NOT-bladed weapon equipped\n\n[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [D]Damage with NOT-bladed weapon equipped",
+    "ENG": "+[GREEN]{0}%[/GREEN][BA]Basic Attack [D]Damage with bladed weapon equipped\n\n-{1}[A] with bladed weapon equipped\n\n+{2}[A] with NOT-bladed weapon equipped\n\n-[GREEN]{3}%[/GREEN][BA]Basic Attack [D]Damage with NOT-bladed weapon equipped",
     "PL": ""
   },
   {
     "Label": "Effect_BlademastersGarb_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "When you have a bladed weapon equipped (Longblade, Greatsword, Twin Blades, Daggers), your [BasicAttack]Basic Attacks deal [GREEN]{0}%[/GREEN] more [D]Damage, but you have {1}%[DR]Damage Reduction\n\nWhen you have a non-bladed weapon equipped (Polearm, Gauntlets, Gun, Bow, Cannon), you have +{2}%[DR]Damage Reduction, but your [BasicAttack]Basic Attacks deal [GREEN]{3}%[/GREEN] less [D]Damage",
+    "ENG": "When you have a bladed weapon equipped (Longblade, Greatsword, Twin Blades, Daggers), your [BA]Basic Attacks deal [GREEN]{0}%[/GREEN] more [D]Damage, but you have -{1}[A]Armor\n\nWhen you have a non-bladed weapon equipped (Polearm, Gauntlets, Gun, Bow, Cannon), you have +{2}[A]Armor, but your [BA]Basic Attacks deal [GREEN]{3}%[/GREEN] less [D]Damage",
     "PL": ""
   },
   {
@@ -7810,7 +7641,7 @@
   {
     "Label": "Effect_IncreasedWeaponDamageButDecreasedMagicDamage_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[WD]Weapon Damage, but {0}%[MD]Magic Damage",
+    "ENG": "+{0}%[WD]Weapon Damage, but -{0}%[MD]Magic Damage",
     "PL": ""
   },
 
@@ -7831,15 +7662,15 @@
     "PL": ""
   },
   {
-    "Label": "Effect_GainDamageAndDamageReductionForEachDebuff_Description",
+    "Label": "Effect_GainDamageAndArmorForEachDebuff_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[D]Damage and +{1}%[DR]Damage Reduction for each [Debuff]Debuff (max at {2}[Debuff]Debuffs)",
+    "ENG": "+{0}%[D]Damage and +{1}[A]Armor for each [Debuff]Debuff (max at {2}[Debuff]Debuffs)",
     "PL": ""
   },
   {
-    "Label": "Effect_ChainedDamageReduction_Description",
+    "Label": "Effect_ChainedArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]/+{1}%[DR]/+{2}%[DR]Damage Reduction at your [Chained]Chained level 1/2/3\n\n+{3}%[DR]/+{4}%[DR]/+{5}%[DR]Damage Reduction at enemy [Chained]Chained level 1/2/3",
+    "ENG": "+{0}[A]/+{1}[A]/+{2}[A]Armor at your [Chained]Chained level 1/2/3\n\n+{3}[A]/+{4}[A]/+{5}[A]Armor at enemy [Chained]Chained level 1/2/3",
     "PL": ""
   },
   {
@@ -7863,7 +7694,7 @@
   {
     "Label": "Effect_HealFromBeingDamagedByStackingEffects_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Heal for {0}% of [D]Damage taken from [Burn]Burn, [Freeze]Freeze and [Incision]Incision (before [DR]Damage Reduction mitigation)",
+    "ENG": "Heal for {0}% of [D]Damage taken from [Burn]Burn, [Freeze]Freeze and [Incision]Incision (before [A]Armor mitigation)",
     "PL": ""
   },
   {
@@ -7893,8 +7724,8 @@
   {
     "Label": "Effect_BasicAttacksRestoreHealth_Description",
     "Category": "Effect",
-    "ENG": "+{0}[H]Heal upon [BasicAttack]Basic Attacking",
-    "PL": "[BasicAttack]Podstawowe Ataki odnawiają {0}[H]Życia."
+    "ENG": "+{0}[H]Heal upon [BA]Basic Attacking",
+    "PL": "[BA]Podstawowe Ataki odnawiają {0}[H]Życia."
   },
   {
     "Label": "Effect_ConvertChainedIntoHealth_Description",
@@ -7911,7 +7742,7 @@
   {
     "Label": "Effect_GainBurnOnBasicAttackAndIncreaseDamageBasedOnBurn_Description",
     "Category": "Effect",
-    "ENG": "+{0}[Burn]Burn on you upon [BasicAttack]Basic Attacking\n\n+{0}%[RD]Ranged Damage for every 10[Burn]Burn currently on you",
+    "ENG": "+{0}[Burn]Burn on you upon [BA]Basic Attacking\n\n+{0}%[RD]Ranged Damage for every 10[Burn]Burn currently on you",
     "PL": ""
   },
   {
@@ -7932,14 +7763,14 @@
   {
     "Label": "Effect_AncientGauntlets_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[EG]Energy Gain with 'Ancient Greaves' equipped",
-    "PL": "Kiedy nosisz Buty 'Antyczne Buty', posiadasz +{0}%[EG]."
+    "ENG": "+{0}[EG]Energy Gain with 'Ancient Greaves' equipped",
+    "PL": "Kiedy nosisz Buty 'Antyczne Buty', posiadasz +{0}[EG]."
   },
   {
     "Label": "Effect_AncientCrown_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[CDR]Cooldown Reduction with'Ancient Gauntlets' equipped",
-    "PL": "Kiedy nosisz Rękawice 'Antyczne Rękawice', posiadasz +{0}%[CDR]."
+    "ENG": "+{0}[CDR]Cooldown Reduction with'Ancient Gauntlets' equipped",
+    "PL": "Kiedy nosisz Rękawice 'Antyczne Rękawice', posiadasz +{0}[CDR]."
   },
   {
     "Label": "Effect_AncientBreastplate_Description",
@@ -7960,9 +7791,9 @@
     "PL": ""
   },
   {
-    "Label": "Effect_AncientFirearmsDamageReduction_Description",
+    "Label": "Effect_AncientFirearmsArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction for each 'Ancient' item equipped",
+    "ENG": "+{0}[A]Armor for each 'Ancient' item equipped",
     "PL": ""
   },
 
@@ -7994,9 +7825,9 @@
     "PL": ""
   },
   {
-    "Label": "Effect_GainDamageReductionAsHealthLowers_Description",
+    "Label": "Effect_GainArmorAsHealthLowers_Description",
     "Category": "Effect",
-    "ENG": "Up to +{0}%[DR]Damage Reduction (based on your missing [H]Health)",
+    "ENG": "Up to +{0}[A]Armor (based on your missing [H]Health)",
     "PL": ""
   },
   {
@@ -8020,25 +7851,25 @@
   {
     "Label": "Effect_BlazingShadowWatchesYourBack_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs [Backstab]Backstabs\n\nUpon getting [Backstab]Backstabbed, inflict {1}[Burn]Burn ({2}[CD])",
+    "ENG": "+{0}[A]Armor vs [Backstab]Backstabs\n\nUpon getting [Backstab]Backstabbed, inflict {1}[Burn]Burn ({2}[CD])",
     "PL": "Uderzenia w plecy dokonane na tobie zadają {0} mniej [D]Obrażeń i wywołują eksplozję."
   },
   {
     "Label": "Effect_BlazingShadowWatchesYourBack_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction vs [Backstab]Backstabs ([D]Damage dealt by enemies who are behind you)\n\nUpon getting [Backstab]Backstabbed, inflict {1}[Burn]Burn ({2}[CD])",
+    "ENG": "+{0}[A]Armor vs [Backstab]Backstabs ([D]Damage dealt by enemies who are behind you)\n\nUpon getting [Backstab]Backstabbed, inflict {1}[Burn]Burn ({2}[CD])",
     "PL": "Wrogie ataki w zwarciu które uderzają cię w plecy zadają {0} mniej [D]Obrażeń i tworzą eksplozję nakładającą {1}[Burn]Podpalenia."
   },
   {
     "Label": "Effect_BasicAttacksRestoreHealBasedOnMissingHealth_Description",
     "Category": "Effect",
-    "ENG": "+{0}[H]Heal upon [BasicAttack]Basic Attac (based on your missing [H]Health)",
+    "ENG": "+{0}[H]Heal upon [BA]Basic Attac (based on your missing [H]Health)",
     "PL": ""
   },
   {
     "Label": "Effect_BasicAttacksDealMoreDamageBasedOnMissingHealth_Description",
     "Category": "Effect",
-    "ENG": "+[GREEN]{0}%[/GREEN][BasicAttack]Basic Attack [D]Damage (based on your missing [H]Health)",
+    "ENG": "+[GREEN]{0}%[/GREEN][BA]Basic Attack [D]Damage (based on your missing [H]Health)",
     "PL": ""
   },
   {
@@ -8074,13 +7905,13 @@
   {
     "Label": "Effect_GainKnightTenacityAfterHit_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[T]Tenacity (if [D]Damaged in last {1} sec)",
+    "ENG": "+{0}[T]Tenacity (if [D]Damaged in last {1} sec)",
     "PL": ""
   },
   {
     "Label": "Effect_GainKnightDRAfterHit_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction (if [D]Damaged in last {1} sec)",
+    "ENG": "+{0}[A]Armor (if [D]Damaged in last {1} sec)",
     "PL": ""
   },
   {
@@ -8102,9 +7933,9 @@
     "PL": "Kiedy przeciwnik w zasięgu 15m używa Techniki z Energią (Anima, Ignis, Glacies, Molis, Salutis, Tonitrui lub Proprius), to przez następne {1} sekund zadajesz {0}% więcej [D]Obrażeń Technikami z tej Rodziny ({2}[CD])."
   },
   {
-    "Label": "Effect_PlundererDamageReduction_Description",
+    "Label": "Effect_PlundererArmor_Description",
     "Category": "Effect",
-    "ENG": "+{0}%[DR]Damage Reduction ({1} sec) upon using weapon's first effect [TD]Technique Damage amplifier",
+    "ENG": "+{0}[A]Armor ({1} sec) upon using weapon's first effect [TD]Technique Damage amplifier",
     "PL": ""
   },
 
@@ -8261,8 +8092,8 @@
   {
     "Label": "Effect_RestoreHealthOnBasicAttack_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Successful [BasicAttack]Basic Attacks heal {0}[H] (once per attack).",
-    "PL": "Udane [BasicAttack]Podstawowe Ataki odnawiają {0}[H] (raz na atak)."
+    "ENG": "Successful [BA]Basic Attacks heal {0}[H] (once per attack).",
+    "PL": "Udane [BA]Podstawowe Ataki odnawiają {0}[H] (raz na atak)."
   },
   {
     "Label": "Effect_HealOnFallingBelowHealthThreshold_Description",
@@ -8288,8 +8119,8 @@
   {
     "Label": "Effect_BasicAttacksReduceCooldowns_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Successful [BasicAttack]Basic Attacks reduce all [CD]Cooldowns (Techniques, Items and Effects) by {0} sec (once per attack).",
-    "PL": "Udane [BasicAttack]Podstawowe Ataki skracają wszystkie [CD]Blokady (Technik, Przedmiotów, Efektów) o {0} sek (raz na atak)."
+    "ENG": "Successful [BA]Basic Attacks reduce all [CD]Cooldowns (Techniques, Items and Effects) by {0} sec (once per attack).",
+    "PL": "Udane [BA]Podstawowe Ataki skracają wszystkie [CD]Blokady (Technik, Przedmiotów, Efektów) o {0} sek (raz na atak)."
   },
 
 
@@ -8315,68 +8146,68 @@
   {
     "Label": "Effect_JavelinAttack_Description",
     "Category": "Effect",
-    "ENG": "All [BasicAttack]Strong Basic Attacks are Spear Throw, and they deal extra {0}[D]Damage.",
-    "PL": "Wszystkie [BasicAttack]Silne Bazowe Ataki to 'Rzut Włócznią', oraz zadają one dodatkowe {0}[D]Obrażeń."
+    "ENG": "All [BA]Strong Basic Attacks are Spear Throw, and they deal extra {0}[D]Damage.",
+    "PL": "Wszystkie [BA]Silne Bazowe Ataki to 'Rzut Włócznią', oraz zadają one dodatkowe {0}[D]Obrażeń."
   },
   {
     "Label": "Effect_JavelinAttack_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Spear Throw [BasicAttack]Strong Basic Attack is performed regardless of distance from enemy. [BasicAttack]Strong Basic Attack deals extra {0}[D]Damage",
-    "PL": "[BasicAttack]Silny Bazowy Atak 'Rzut Włócznią' jest wykonywany niezależnie od odległości od wroga. [BasicAttack]Silny Bazowy Atak zadaje dodatkowe {0}[D]Obrażeń."
+    "ENG": "Spear Throw [BA]Strong Basic Attack is performed regardless of distance from enemy. [BA]Strong Basic Attack deals extra {0}[D]Damage",
+    "PL": "[BA]Silny Bazowy Atak 'Rzut Włócznią' jest wykonywany niezależnie od odległości od wroga. [BA]Silny Bazowy Atak zadaje dodatkowe {0}[D]Obrażeń."
   },
   {
     "Label": "Effect_HarpoonAttack_Description",
     "Category": "Effect",
-    "ENG": "All [BasicAttack]Strong Basic Attacks are Spear Throw, and they deal extra {0}[S]Stagger and pull enemies closer.",
-    "PL": "Wszystkie [BasicAttack]Silne Bazowe Ataki to 'Rzut Włócznią', oraz zadają one dodatkowe {0}[S]Zachwiania i przyciągają wrogów."
+    "ENG": "All [BA]Strong Basic Attacks are Spear Throw, and they deal extra {0}[S]Stagger and pull enemies closer.",
+    "PL": "Wszystkie [BA]Silne Bazowe Ataki to 'Rzut Włócznią', oraz zadają one dodatkowe {0}[S]Zachwiania i przyciągają wrogów."
   },
   {
     "Label": "Effect_HarpoonAttack_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Spear Throw [BasicAttack]Strong Basic Attack is performed regardless of distance from enemy. [BasicAttack]Strong Basic Attack deals extra {0}[S]Stagger and pulls enemies into a spot 2.5m in front of you.",
-    "PL": "[BasicAttack]Silny Bazowy Atak 'Rzut Włócznią' jest wykonywany niezależnie od odległości od wroga. [BasicAttack]Silny Bazowy Atak zadaje dodatkowe {0}[S]Zachwiania i przyciąga wrogów w miejsce 2.5m przed tobą."
+    "ENG": "Spear Throw [BA]Strong Basic Attack is performed regardless of distance from enemy. [BA]Strong Basic Attack deals extra {0}[S]Stagger and pulls enemies into a spot 2.5m in front of you.",
+    "PL": "[BA]Silny Bazowy Atak 'Rzut Włócznią' jest wykonywany niezależnie od odległości od wroga. [BA]Silny Bazowy Atak zadaje dodatkowe {0}[S]Zachwiania i przyciąga wrogów w miejsce 2.5m przed tobą."
   },
   {
     "Label": "Effect_ChargeLanceAttack_Description",
     "Category": "Effect",
-    "ENG": "All [BasicAttack]Strong Basic Attacks are Spear Charge, and it can be charged for up to {0}[E]Energy to deal extra {1}[D]Damage.",
-    "PL": "Wszystkie [BasicAttack]Silne Bazowe Ataki to 'Szarża Włócznią', oraz może on być naładowany do max {0}[E]Energii by zadać dodatkowe {1}[D]Obrażeń."
+    "ENG": "All [BA]Strong Basic Attacks are Spear Charge, and it can be charged for up to {0}[E]Energy to deal extra {1}[D]Damage.",
+    "PL": "Wszystkie [BA]Silne Bazowe Ataki to 'Szarża Włócznią', oraz może on być naładowany do max {0}[E]Energii by zadać dodatkowe {1}[D]Obrażeń."
   },
   {
     "Label": "Effect_ChargeLanceAttack_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Spear Charge [BasicAttack]Strong Basic Attack is performed regardless of distance from enemy. [BasicAttack]Strong Basic Attack deals extra {1}[D]Damage and costs up to {0}[E]Energy based on charge time.",
-    "PL": "[BasicAttack]Silny Bazowy Atak 'Szarża Włócznią' jest wykonywany niezależnie od odległości od wroga. [BasicAttack]Silny Bazowy Atak zadaje dodatkowe {1}[D]Obrażeń i kosztuje dodatkowe {0}[E]Energii zależnie od czasu ładowania."
+    "ENG": "Spear Charge [BA]Strong Basic Attack is performed regardless of distance from enemy. [BA]Strong Basic Attack deals extra {1}[D]Damage and costs up to {0}[E]Energy based on charge time.",
+    "PL": "[BA]Silny Bazowy Atak 'Szarża Włócznią' jest wykonywany niezależnie od odległości od wroga. [BA]Silny Bazowy Atak zadaje dodatkowe {1}[D]Obrażeń i kosztuje dodatkowe {0}[E]Energii zależnie od czasu ładowania."
   },
   {
     "Label": "Effect_GainSpeedAndDamageDuringBasicAttackCombo_Description",
     "Category": "Effect",
-    "ENG": "Gain +{0}%[HAS]Attack Speed and +{1}%[D]Damage upon hitting with a [BasicAttack]Basic Attack. Buffs expire once perfrom an action other than a [BasicAttack]Basic Attack.",
+    "ENG": "Gain +{0}[HAS]Attack Speed and +{1}%[D]Damage upon hitting with a [BA]Basic Attack. Buffs expire once perfrom an action other than a [BA]Basic Attack.",
     "PL": ""
   },
   {
     "Label": "Effect_StrongBAsDealStaggerBasedOnEnemyStaggerBar_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks deal extra {0}[HS] - {1}[HS].",
-    "PL": "[BasicAttack]Silne Podstawowe Ataki zadają dodatkowe {0}[HS] - {1}[HS]."
+    "ENG": "[BA]Strong Basic Attacks deal extra {0}[HS] - {1}[HS].",
+    "PL": "[BA]Silne Podstawowe Ataki zadają dodatkowe {0}[HS] - {1}[HS]."
   },
   {
     "Label": "Effect_StrongBAsDealStaggerBasedOnEnemyStaggerBar_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks deal extra {0}[HS] (at {2}[SB]) - {1}[HS] (at {3}[SB]) based on enemy max [SB]Stagger Bar.",
-    "PL": "[BasicAttack]Silne Podstawowe Ataki zadają dodatkowe {0}[HS] (przy {2}[SB]) - {1}[HS] (przy {3}[SB]) zależnie od maksymalnego [SB]Paska Zachwiania wroga."
+    "ENG": "[BA]Strong Basic Attacks deal extra {0}[HS] (at {2}[SB]) - {1}[HS] (at {3}[SB]) based on enemy max [SB]Stagger Bar.",
+    "PL": "[BA]Silne Podstawowe Ataki zadają dodatkowe {0}[HS] (przy {2}[SB]) - {1}[HS] (przy {3}[SB]) zależnie od maksymalnego [SB]Paska Zachwiania wroga."
   },
   {
     "Label": "Effect_ApplyIncisionWithCooldown_Description",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks apply [RED]{0}[/RED] - [RED]{1}[/RED] [Incision]Incision based on enemy max [H]Health ({4}[CD]).",
-    "PL": "[BasicAttack]Silne Podstawowe Ataki nakładają [RED]{0}[/RED]  - [RED]{1}[/RED] [Incision]Nacięcia zależnie od maksymalnego [H]Życia wroga ({4}[CD])."
+    "ENG": "[BA]Strong Basic Attacks apply [RED]{0}[/RED] - [RED]{1}[/RED] [Incision]Incision based on enemy max [H]Health ({4}[CD]).",
+    "PL": "[BA]Silne Podstawowe Ataki nakładają [RED]{0}[/RED]  - [RED]{1}[/RED] [Incision]Nacięcia zależnie od maksymalnego [H]Życia wroga ({4}[CD])."
   },
   {
     "Label": "Effect_ApplyIncisionWithCooldown_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "[BasicAttack]Strong Basic Attacks apply [RED]{0}[/RED]  (at {2}[H]) - [RED]{1}[/RED] (at {3}[H]) [Incision]Incision based on enemy max [H]Health ({4}[CD]).",
-    "PL": "[BasicAttack]Silne Podstawowe Ataki nakładają [RED]{0}[/RED]  (przy {2}[H]) - [RED]{1}[/RED] (przy {3}[H]) [Incision]Nacięcia zależnie od maksymalnego [H]Życia wroga ({4}[CD])."
+    "ENG": "[BA]Strong Basic Attacks apply [RED]{0}[/RED]  (at {2}[H]) - [RED]{1}[/RED] (at {3}[H]) [Incision]Incision based on enemy max [H]Health ({4}[CD]).",
+    "PL": "[BA]Silne Podstawowe Ataki nakładają [RED]{0}[/RED]  (przy {2}[H]) - [RED]{1}[/RED] (przy {3}[H]) [Incision]Nacięcia zależnie od maksymalnego [H]Życia wroga ({4}[CD])."
   },
 
 
@@ -8389,8 +8220,8 @@
   {
     "Label": "Effect_InflictIncisionOnBAs_Description",
     "Category": "Effect",
-    "ENG": "Basic Attacks inflict [RED]{0}[/RED][Incision]Incision, doubled for [BasicAttack]Strong Basic Attacks.",
-    "PL": "Silne Podstawowe Ataki nakładają [RED]{0}[/RED][Incision]Nacięcia, podwójnie w przypadku [BasicAttack]Silnych Podstawowych Ataków."
+    "ENG": "Basic Attacks inflict [RED]{0}[/RED][Incision]Incision, doubled for [BA]Strong Basic Attacks.",
+    "PL": "Silne Podstawowe Ataki nakładają [RED]{0}[/RED][Incision]Nacięcia, podwójnie w przypadku [BA]Silnych Podstawowych Ataków."
   },
 
 
@@ -8423,8 +8254,8 @@
   {
     "Label": "Effect_BarrageBow_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Bow [BasicAttack]Basic Attack replaced by a different, faster version. Can be performed in rapid succession, each attack dealing extra [RED]{0}[/RED] more [I]Injury than the last.",
-    "PL": "[BasicAttack]Podstawowy Atak Łuku jest zastąpiony inną, szybszą wersją. Może być wykonywany w wielokrotnie, a każdy nowy atak zadaje [RED]{0}[/RED] więcej [I]Zranienia niż poprzedni."
+    "ENG": "Bow [BA]Basic Attack replaced by a different, faster version. Can be performed in rapid succession, each attack dealing extra [RED]{0}[/RED] more [I]Injury than the last.",
+    "PL": "[BA]Podstawowy Atak Łuku jest zastąpiony inną, szybszą wersją. Może być wykonywany w wielokrotnie, a każdy nowy atak zadaje [RED]{0}[/RED] więcej [I]Zranienia niż poprzedni."
   },
   {
     "Label": "Effect_DealExtraDamageWithOtherDamage_Description",
@@ -8447,8 +8278,8 @@
   {
     "Label": "Effect_TakeStaggerOnBasicAttackButDealMoreDamage_DescriptionDetailed",
     "Category": "Effect",
-    "ENG": "Your [BasicAttack]Basic Attacks deal extra {0}[I]Injury and {1}[S]Stagger, but you take {2}[S]Stagger from each bullet shot.",
-    "PL": "Twoje [BasicAttack]Podstawowe Ataki zadają dodatkowe {0}[I]Zranienia i {1}[S]Zachwiania, ale otrzymujesz {2}[S]Zachwiania przy każdym wystrzeleniu pocisku."
+    "ENG": "Your [BA]Basic Attacks deal extra {0}[I]Injury and {1}[S]Stagger, but you take {2}[S]Stagger from each bullet shot.",
+    "PL": "Twoje [BA]Podstawowe Ataki zadają dodatkowe {0}[I]Zranienia i {1}[S]Zachwiania, ale otrzymujesz {2}[S]Zachwiania przy każdym wystrzeleniu pocisku."
   },
   {
     "Label": "Effect_ExtraDamageToUndamagedEnemies_DescriptionDetailed",
@@ -20082,7 +19913,7 @@
   {
     "Label": "Quest_Anima_0",
     "Category": "Quest",
-    "ENG": "Defeat the all enemies",
+    "ENG": "Defeat Iris",
     "PL": ""
   },
   {
@@ -20310,8 +20141,8 @@
   {
     "Label": "Mission_FirstReturn_Step_0",
     "Category": "Quest",
-    "ENG": "Using [MoveBinding], approach the potion lying on the ground to the left, then press [InteractBinding].",
-    "PL": "Używając [MoveBinding], podejdź do mikstury leżącej na ziemi po lewej, następnie wciśnij [InteractBinding]."
+    "ENG": "Using [RunUpButtonPress]/[RunLeftButtonPress]/[RunDownButtonPress]/[RunRightButtonPress], approach the potion lying on the ground to the left, then press [InteractButtonPress]].",
+    "PL": "Używając [RunUpButtonPress]/[RunLeftButtonPress]/[RunDownButtonPress]/[RunRightButtonPress], podejdź do mikstury leżącej na ziemi po lewej, następnie wciśnij [InteractButtonPress]]."
   },
   {
     "Label": "Mission_FirstReturn_Step_10",
@@ -20322,14 +20153,14 @@
   {
     "Label": "Mission_FirstReturn_Step_20",
     "Category": "Quest",
-    "ENG": "Walk up to Ryker and press [InteractBinding] to speak to him.",
-    "PL": "Podejdź do Rykera i wciśnij [InteractBinding] aby z nim rozmawiać."
+    "ENG": "Walk up to Ryker and press [InteractButtonPress]] to speak to him.",
+    "PL": "Podejdź do Rykera i wciśnij [InteractButtonPress]] aby z nim rozmawiać."
   },
   {
     "Label": "Mission_FirstReturn_Step_30",
     "Category": "Quest",
-    "ENG": "Press [BasicAttackBinding] to attack ({0}/3).",
-    "PL": "Wciśnij [BasicAttackBinding] by zaatakować ({0}/3)."
+    "ENG": "Press [BasicAttackButtonPress] to attack ({0}/3).",
+    "PL": "Wciśnij [BasicAttackButtonPress] by zaatakować ({0}/3)."
   },
   {
     "Label": "Mission_FirstReturn_Step_30_Notification",
@@ -20340,8 +20171,8 @@
   {
     "Label": "Mission_FirstReturn_Step_40",
     "Category": "Quest",
-    "ENG": "Hold [BasicAttackBinding] while attacking to perform a Strong Basic Attack ({0}/3).",
-    "PL": "Przytrzymaj [BasicAttackBinding] podczas atakowania by wyprowadzić Silny Atak Podstawowy ({0}/3)."
+    "ENG": "Hold [BasicAttackButtonPress] while attacking to perform a Strong Basic Attack ({0}/3).",
+    "PL": "Przytrzymaj [BasicAttackButtonPress] podczas atakowania by wyprowadzić Silny Atak Podstawowy ({0}/3)."
   },
   {
     "Label": "Mission_FirstReturn_Step_40_Notification",
@@ -20352,8 +20183,8 @@
   {
     "Label": "Mission_FirstReturn_Step_45",
     "Category": "Quest",
-    "ENG": "Press [InteractBinding] to indicate that you're ready to start receiving Ryker's attacks.",
-    "PL": "Wciśnij [InteractBinding] by dać znać, że jesteś gotowy na ataki Rykera."
+    "ENG": "Press [InteractButtonPress]] to indicate that you're ready to start receiving Ryker's attacks.",
+    "PL": "Wciśnij [InteractButtonPress]] by dać znać, że jesteś gotowy na ataki Rykera."
   },
   {
     "Label": "Mission_FirstReturn_Step_45_Notification",
@@ -20364,8 +20195,8 @@
   {
     "Label": "Mission_FirstReturn_Step_50",
     "Category": "Quest",
-    "ENG": "Press [DodgeBinding] to dodge ({0}/2).",
-    "PL": "Wciśnij [DodgeBinding] by wykonać unik ({0}/2)."
+    "ENG": "Press [DodgeButtonPress] to dodge ({0}/2).",
+    "PL": "Wciśnij [DodgeButtonPress] by wykonać unik ({0}/2)."
   },
   {
     "Label": "Mission_FirstReturn_Step_50_Notification",
@@ -20376,8 +20207,8 @@
   {
     "Label": "Mission_FirstReturn_Step_60",
     "Category": "Quest",
-    "ENG": "Press [BlockBinding] to block ({0}/2).",
-    "PL": "Wciśnij [BlockBinding] by blokować ({0}/2)."
+    "ENG": "Press [BlockButtonPress] to block ({0}/2).",
+    "PL": "Wciśnij [BlockButtonPress] by blokować ({0}/2)."
   },
   {
     "Label": "Mission_FirstReturn_Step_60_Notification",
@@ -20388,8 +20219,8 @@
   {
     "Label": "Mission_FirstReturn_Step_70",
     "Category": "Quest",
-    "ENG": "Press [BlockBinding] right before an enemy attack hits you to riposte it ({0}/2).",
-    "PL": "Wciśnij [BlockBinding] tuż przed otrzymaniem ataku przeciwnika aby go zripostować ({0}/2)."
+    "ENG": "Press [BlockButtonPress] right before an enemy attack hits you to riposte it ({0}/2).",
+    "PL": "Wciśnij [BlockButtonPress] tuż przed otrzymaniem ataku przeciwnika aby go zripostować ({0}/2)."
   },
   {
     "Label": "Mission_FirstReturn_Step_70_Notification",
@@ -20400,8 +20231,8 @@
   {
     "Label": "Mission_FirstReturn_Step_80",
     "Category": "Quest",
-    "ENG": "Press [StanceSwitchRightBinding] or [StanceSwitchLeftBinding] to switch currently used weapon and Technique line-up ({0}/2).",
-    "PL": "Wciśnij [StanceSwitchRightBinding] lub [StanceSwitchLeftBinding] by zmienić obecnie używaną broń i zestaw Technik ({0}/2)."
+    "ENG": "Press [RotateStanceRightButtonPress] or [RotateStanceLeftButtonPress] to switch currently used weapon and Technique line-up ({0}/2).",
+    "PL": "Wciśnij [RotateStanceRightButtonPress] lub [RotateStanceLeftButtonPress] by zmienić obecnie używaną broń i zestaw Technik ({0}/2)."
   },
   {
     "Label": "Mission_FirstReturn_Step_80_Notification",
@@ -20412,14 +20243,14 @@
   {
     "Label": "Mission_FirstReturn_Step_90",
     "Category": "Quest",
-    "ENG": "Press [AimBinding] to target Ryker. Hold [AimBinding] to stop targeting.",
-    "PL": "Wciśnij [AimBinding] by obrać Rykera jako cel. Przytrzymaj [AimBinding] by przestać celować."
+    "ENG": "Press [ToggleTargetButtonPress] to target Ryker. Hold [ToggleTargetButtonPress] to stop targeting.",
+    "PL": "Wciśnij [ToggleTargetButtonPress] by obrać Rykera jako cel. Przytrzymaj [ToggleTargetButtonPress] by przestać celować."
   },
   {
     "Label": "Mission_FirstReturn_Step_100",
     "Category": "Quest",
-    "ENG": "Press [Ability1Binding] to use the 'Wind Blast' Technique ({0}/2).",
-    "PL": "Wciśnij [Ability1Binding] by użyć Techniki 'Uderzenie Wiatru' ({0}/2)."
+    "ENG": "Press [Ability1ButtonPress] to use the 'Wind Blast' Technique ({0}/2).",
+    "PL": "Wciśnij [Ability1ButtonPress] by użyć Techniki 'Uderzenie Wiatru' ({0}/2)."
   },
   {
     "Label": "Mission_FirstReturn_Step_100_Notification",
@@ -20430,8 +20261,8 @@
   {
     "Label": "Mission_FirstReturn_Step_110",
     "Category": "Quest",
-    "ENG": "Press [BlockBinding] right before a winding, up-to-down attack hits you to counter it ({0}/1).",
-    "PL": "Wciśnij [BlockBinding] tuż przed tym jak zamachiwany atak 'z góry na dół' cię uderzy, aby go skontrować ({0}/1)."
+    "ENG": "Press [BlockButtonPress] right before a winding, up-to-down attack hits you to counter it ({0}/1).",
+    "PL": "Wciśnij [BlockButtonPress] tuż przed tym jak zamachiwany atak 'z góry na dół' cię uderzy, aby go skontrować ({0}/1)."
   },
   {
     "Label": "Mission_FirstReturn_Step_110_Notification",
@@ -20442,8 +20273,8 @@
   {
     "Label": "Mission_FirstReturn_Step_120",
     "Category": "Quest",
-    "ENG": "Backstep a wide, down-to-up swing by pressing [DodgeBinding] to counter it ({0}/1).",
-    "PL": "Wykonaj Unik do Tyłu wciskając [DodgeBinding] przed szerokim atakiem 'z dołu do góry' aby go skontrować ({0}/1)."
+    "ENG": "Backstep a wide, down-to-up swing by pressing [DodgeButtonPress] to counter it ({0}/1).",
+    "PL": "Wykonaj Unik do Tyłu wciskając [DodgeButtonPress] przed szerokim atakiem 'z dołu do góry' aby go skontrować ({0}/1)."
   },
   {
     "Label": "Mission_FirstReturn_Step_120_Notification",
@@ -20454,8 +20285,8 @@
   {
     "Label": "Mission_FirstReturn_Step_130",
     "Category": "Quest",
-    "ENG": "Roll into a narrow thrust by pressing [DodgeBinding] while moving forward to counter it ({0}/1).",
-    "PL": "Wykonaj Unik w Przód przeciwko pchnięciu wprzód aby je skontrować. Wciśnij [DodgeBinding] podczas ruchu do przodu aby wykonać kontrę ({0}/1)."
+    "ENG": "Roll into a narrow thrust by pressing [DodgeButtonPress] while moving forward to counter it ({0}/1).",
+    "PL": "Wykonaj Unik w Przód przeciwko pchnięciu wprzód aby je skontrować. Wciśnij [DodgeButtonPress] podczas ruchu do przodu aby wykonać kontrę ({0}/1)."
   },
   {
     "Label": "Mission_FirstReturn_Step_130_Notification",
@@ -20466,8 +20297,8 @@
   {
     "Label": "Mission_FirstReturn_Step_140",
     "Category": "Quest",
-    "ENG": "Press [HealBinding] to heal. Press [Item1Binding] or [Item2Binding] to use an item ({0}/1).",
-    "PL": "Wciśnij [HealBinding by się uleczyć. Wciśnij [Item1Binding] lub [Item2Binding] by użyć przedmiotu ({0}/1)."
+    "ENG": "Press [UseItemHealingButtonPress] to heal. Press [UseItem1ButtonPress] or [UseItem2ButtonPress] to use an item ({0}/1).",
+    "PL": "Wciśnij [UseItemHealingButtonPress] by się uleczyć. Wciśnij [UseItem1ButtonPress] lub [UseItem2ButtonPress] by użyć przedmiotu ({0}/1)."
   },
   {
     "Label": "Mission_FirstReturn_Step_140_Notification",
@@ -21353,14 +21184,14 @@
   {
     "Label": "TutorialDescriptionPerfectBlockWindowSimple",
     "Category": "Tutorial",
-    "ENG": "Repeatedly pressing [BlockBinding] makes Riposte harder to execute. It's better to Block only once, just before an attack reaches.",
-    "PL": "Kilkukrotne wciskanie [BlockBinding] czyni Ripostę trudniejszą do wyprowadzenia. Lepiej jest Blokować tylko raz, tuż przed otrzymaniem ataku."
+    "ENG": "Repeatedly pressing [BlockButtonPress] makes Riposte harder to execute. It's better to Block only once, just before an attack reaches.",
+    "PL": "Kilkukrotne wciskanie [BlockButtonPress] czyni Ripostę trudniejszą do wyprowadzenia. Lepiej jest Blokować tylko raz, tuż przed otrzymaniem ataku."
   },
   {
     "Label": "TutorialDescriptionPerfectBlockWindowDetailed",
     "Category": "Tutorial",
-    "ENG": "Pressing [BlockBinding] before you take [Damage]Damage will result in a Riposte (except some special attacks).\n\nThe default timing window is 0.5 second, but it's decreased for each block performed in the last few seconds, and resets upon successful Riposte.\n\nAs a result, it's better to only press [BlockBinding] once just before an attack reaches instead of pressing it repeatedly (and shortening the Riposte timing window).",
-    "PL": "Wciśnięcie [BlockBinding] tuż przed otrzymaniem [Damage]Obrażeń prowadzi do Riposty (oprócz niektórych ataków specjalnych).\n\nDomyślny dopuszczony przedział czasu to 0.5 sekundy, ale zmniejsza się z każdy wykonanym blokiem w ciągu ostatnich kilku sekund, i resetuje się po udanej Ripoście.\n\nZ tego powodu lepiej jest kliknąć [BlockBinding] raz tuż przed otrzymaniem ataku zamiast ciągle wciskać przycisk (i tym samym zmniejszać przedział czasu Riposty)."
+    "ENG": "Pressing [BlockButtonPress] before you take [Damage]Damage will result in a Riposte (except some special attacks).\n\nThe default timing window is 0.5 second, but it's decreased for each block performed in the last few seconds, and resets upon successful Riposte.\n\nAs a result, it's better to only press [BlockButtonPress] once just before an attack reaches instead of pressing it repeatedly (and shortening the Riposte timing window).",
+    "PL": "Wciśnięcie [BlockButtonPress] tuż przed otrzymaniem [Damage]Obrażeń prowadzi do Riposty (oprócz niektórych ataków specjalnych).\n\nDomyślny dopuszczony przedział czasu to 0.5 sekundy, ale zmniejsza się z każdy wykonanym blokiem w ciągu ostatnich kilku sekund, i resetuje się po udanej Ripoście.\n\nZ tego powodu lepiej jest kliknąć [BlockButtonPress] raz tuż przed otrzymaniem ataku zamiast ciągle wciskać przycisk (i tym samym zmniejszać przedział czasu Riposty)."
   },
   {
     "Label": "TutorialTitleBasicAttacks",
@@ -21371,14 +21202,14 @@
   {
     "Label": "TutorialDescriptionBasicAttacksDetailed",
     "Category": "Tutorial",
-    "ENG": "Press [BasicAttackBinding] to perform a Basic Attack that deals moderate amount of [I]Injury and a bit of [S]Stagger.\n\nPress the button again to create a Basic Attack combo (dealing more [I]Injury and [S]Stagger).\n\nAt any time during combo, hold the button to perform a Strong Basic Attack, dealing much more [S]Stagger than a regular Basic Attack.",
-    "PL": "Wciśnij [BasicAttackBinding] aby wyprowadzić Podstawowy Atak, zadający przeciętną ilość [I]Zranienia i odrobinę [S]Zachwiania.\n\nWciśnij przycisk ponownie by wyprowadzić kolejny atak, tworząc kombinację (zadającą więcej [I]Obrażeń i [S]Zachwiania).\n\nW którymkolwiek momencie kombinacji możesz przytrzymać przycisk, aby wykonać Silny Podstawowy Atak, zadający ogromną ilość [S]Zachwiania."
+    "ENG": "Press [BasicAttackButtonPress] to perform a Basic Attack that deals moderate amount of [I]Injury and a bit of [S]Stagger.\n\nPress the button again to create a Basic Attack combo (dealing more [I]Injury and [S]Stagger).\n\nAt any time during combo, hold the button to perform a Strong Basic Attack, dealing much more [S]Stagger than a regular Basic Attack.",
+    "PL": "Wciśnij [BasicAttackButtonPress] aby wyprowadzić Podstawowy Atak, zadający przeciętną ilość [I]Zranienia i odrobinę [S]Zachwiania.\n\nWciśnij przycisk ponownie by wyprowadzić kolejny atak, tworząc kombinację (zadającą więcej [I]Obrażeń i [S]Zachwiania).\n\nW którymkolwiek momencie kombinacji możesz przytrzymać przycisk, aby wykonać Silny Podstawowy Atak, zadający ogromną ilość [S]Zachwiania."
   },
   {
     "Label": "TutorialDescriptionBasicAttacksSimple",
     "Category": "Tutorial",
-    "ENG": "Press [BasicAttackBinding] to attack.\n\nPress button again to create a combo.\n\nHold the button to perform a stronger attack that finishes the combo.",
-    "PL": "Wciśnij [BasicAttackBinding] by zaatakować.\n\nWciśnij przycisk podobnie, aby wykonać kombinację ataków.\n\nPrzytrzymaj przycisk by wyprowadzić mocniejszy atak kończący kombinację."
+    "ENG": "Press [BasicAttackButtonPress] to attack.\n\nPress button again to create a combo.\n\nHold the button to perform a stronger attack that finishes the combo.",
+    "PL": "Wciśnij [BasicAttackButtonPress] by zaatakować.\n\nWciśnij przycisk podobnie, aby wykonać kombinację ataków.\n\nPrzytrzymaj przycisk by wyprowadzić mocniejszy atak kończący kombinację."
   },
   {
     "Label": "TutorialTitleHealthAndStagger",
@@ -21413,7 +21244,7 @@
   {
     "Label": "TutorialDescriptionPlayerStaggeredDetailed",
     "Category": "Tutorial",
-    "ENG": "When player's [SB]Stagger Bar (purple) fills up, he suffers a different type of [Staggered]Staggered than enemies.\n\nPlayer can still move and act, but he receives -30% [AS]Attack Speed and [SP]Movement Speed debuffs, -50% [D]Damage, [T]Tenacity and [C]Control debuffs, and receives 50% of [S]Stagger as [I]Injury instead.\n\nBlocking and Dodging attacks cause player to take 25% [D]Damage instead of full hit.\n\nPerforming Ripostes and Counters shortens the remaining duration of player's [Staggered]Staggered (by 10% and 30% respectively).",
+    "ENG": "When player's [SB]Stagger Bar (purple) fills up, he suffers a different type of [Staggered]Staggered than enemies.\n\nPlayer can still move and act, but he receives -30%[AS]Attack Speed and [SP]Movement Speed debuffs, -50% [D]Damage, [T]Tenacity and [C]Control debuffs, and receives 50% of [S]Stagger as [I]Injury instead.\n\nBlocking and Dodging attacks cause player to take 25% [D]Damage instead of full hit.\n\nPerforming Ripostes and Counters shortens the remaining duration of player's [Staggered]Staggered (by 10% and 30% respectively).",
     "PL": "Kiedy [SB]Pasek Zachwiania gracza (fioletowy pasek) wypełni się, nakładany jest inny typ [Staggered]Przełamania niż u wrogów.\n\nGracz nadal może się on poruszać i działać, ale jego [AS]Prędkość Ataku i [SP]Ruchu jest zmniejszona o 30%, zadawane [D]Obrażenia, [T]Wytrzymałość i [C]Kontrola o 50%, oraz 50% otrzymanego [S]Zachwiania jest otrzymywane jako [I]Zranienie.\n\nBlokowanie i Uniki sprawiają, że gracz otrzymuje 25% [D]Obrażeń zamiast pełnego trafienia.\n\nWykonywanie Ripost i Kontr zmniejsza pozostały czas trwania [Staggered]Przełamania gracza (odpowiednio o 10% i 30%)"
   },
   {
@@ -21431,14 +21262,14 @@
   {
     "Label": "TutorialDescriptionBlockingDetailed",
     "Category": "Tutorial",
-    "ENG": "You can hold [BlockBinding] to start Blocking incoming attacks.\n\nIn 'Challenge' mode, special attacks break through Block (unless that special attack is countered by Block).\n\nBlocking causes player to receive 10% of [I]Injury and 50% of [S]Stagger as [I]Stagger. As such, it's better to Dodge attacks that inflict high [S]Stagger instead of blocking.\n\nIn 'Story' mode, [D]Damage taken from blocking halved.",
-    "PL": "Możesz przytrzymać [BlockBinding] by zacząć Blokować nadciągające ataki.\n\nW trybie 'Wyzwanie', specjalne ataki przebijają się przez Blok (chyba że dany atak jest kontrowany przez Blok).\n\nBlokowanie sprawia, że gracz otrzymuje 10% [I]Zranienia oraz 50% [S]Zachwiania jako [I]Zachwianie. W wyniku tego lepiej jest Unikać ataków zadających dużo [S]Zachwiania zamiast je blokować.\n\nW trybie 'Fabularnym' [D]Obrażenia od blokowania są zmniejszone o pół."
+    "ENG": "You can hold [BlockButtonPress] to start Blocking incoming attacks.\n\nIn 'Challenge' mode, special attacks break through Block (unless that special attack is countered by Block).\n\nBlocking causes player to receive 10% of [I]Injury and 50% of [S]Stagger as [I]Stagger. As such, it's better to Dodge attacks that inflict high [S]Stagger instead of blocking.\n\nIn 'Story' mode, [D]Damage taken from blocking halved.",
+    "PL": "Możesz przytrzymać [BlockButtonPress] by zacząć Blokować nadciągające ataki.\n\nW trybie 'Wyzwanie', specjalne ataki przebijają się przez Blok (chyba że dany atak jest kontrowany przez Blok).\n\nBlokowanie sprawia, że gracz otrzymuje 10% [I]Zranienia oraz 50% [S]Zachwiania jako [I]Zachwianie. W wyniku tego lepiej jest Unikać ataków zadających dużo [S]Zachwiania zamiast je blokować.\n\nW trybie 'Fabularnym' [D]Obrażenia od blokowania są zmniejszone o pół."
   },
   {
     "Label": "TutorialDescriptionBlockingSimple",
     "Category": "Tutorial",
-    "ENG": "Hold [BlockBinding] to Block attacks.\n\nIn 'Challenge' mode, special attacks break through Block.\n\nBlocking is better against [I]Injury attacks, but weaker against [S]Stagger attacks.",
-    "PL": "Przytrzymaj [BlockBinding] aby Blokować ataki.\n\nW trybie 'Wyzwanie', specjalne ataki przebijają się przez Blok.\n\nBlokowanie jest lepsze przeciwko atakom zadającym [I]Zranienie, ale gorsze przeciwko atakom zadającym [S]Zachwianie."
+    "ENG": "Hold [BlockButtonPress] to Block attacks.\n\nIn 'Challenge' mode, special attacks break through Block.\n\nBlocking is better against [I]Injury attacks, but weaker against [S]Stagger attacks.",
+    "PL": "Przytrzymaj [BlockButtonPress] aby Blokować ataki.\n\nW trybie 'Wyzwanie', specjalne ataki przebijają się przez Blok.\n\nBlokowanie jest lepsze przeciwko atakom zadającym [I]Zranienie, ale gorsze przeciwko atakom zadającym [S]Zachwianie."
   },
   {
     "Label": "TutorialTitleRiposting",
@@ -21455,8 +21286,8 @@
   {
     "Label": "TutorialDescriptionRipostingSimple",
     "Category": "Tutorial",
-    "ENG": "Hold [BlockBinding] to block attacks. Block just before an attack to perform a riposte.",
-    "PL": "Przytrzymaj [BlockBinding] aby blokować ataki. Zablokuj tuż przed atakiem aby wykonać ripostę."
+    "ENG": "Hold [BlockButtonPress] to block attacks. Block just before an attack to perform a riposte.",
+    "PL": "Przytrzymaj [BlockButtonPress] aby blokować ataki. Zablokuj tuż przed atakiem aby wykonać ripostę."
   },
   {
     "Label": "TutorialTitleDodging",
@@ -21467,14 +21298,14 @@
   {
     "Label": "TutorialDescriptionDodgingDetailed",
     "Category": "Tutorial",
-    "ENG": "Press [DodgeBinding] to Dodge, avoiding all attacks except ones that specifically counter Dodging.\n\nDodging while moving forward results in a Roll.\n\nDodging while moving backwards results in a Backstep.",
-    "PL": "Możesz wcisnąć [DodgeBinding] aby wykonać Unik, unikając wszystkich ataków oprócz tych, które kontrują Uniki.\n\nUnikanie podczas ruchu naprzód skutkuje Przewrotem w Przód.\n\nUnikanie podczas ruchu do tyłu skutkuje Odskokiem."
+    "ENG": "Press [DodgeButtonPress] to Dodge, avoiding all attacks except ones that specifically counter Dodging.\n\nDodging while moving forward results in a Roll.\n\nDodging while moving backwards results in a Backstep.",
+    "PL": "Możesz wcisnąć [DodgeButtonPress] aby wykonać Unik, unikając wszystkich ataków oprócz tych, które kontrują Uniki.\n\nUnikanie podczas ruchu naprzód skutkuje Przewrotem w Przód.\n\nUnikanie podczas ruchu do tyłu skutkuje Odskokiem."
   },
   {
     "Label": "TutorialDescriptionDodgingSimple",
     "Category": "Tutorial",
-    "ENG": "Press [DodgeBinding] to Dodge, avoiding most attacks.",
-    "PL": "Wciśnij [DodgeBinding] aby wykonać Unik, negując większość ataków."
+    "ENG": "Press [DodgeButtonPress] to Dodge, avoiding most attacks.",
+    "PL": "Wciśnij [DodgeButtonPress] aby wykonać Unik, negując większość ataków."
   },
   {
     "Label": "TutorialTitleCountering",
@@ -21539,14 +21370,14 @@
   {
     "Label": "TutorialDescriptionStancesSimple",
     "Category": "Tutorial",
-    "ENG": "You can change currently used Weapon and Techniques by pressing [StanceSwitchLeftBinding] or [StanceSwitchRightBinding].",
-    "PL": "Możesz zmienić obecnie używaną Broń i Techniki wciskając [StanceSwitchLeftBinding] lub [StanceSwitchRightBinding]."
+    "ENG": "You can change currently used Weapon and Techniques by pressing [RotateStanceLeftButtonPress] or [RotateStanceRightButtonPress].",
+    "PL": "Możesz zmienić obecnie używaną Broń i Techniki wciskając [RotateStanceLeftButtonPress] lub [RotateStanceRightButtonPress]."
   },
   {
     "Label": "TutorialDescriptionStancesDetailed",
     "Category": "Tutorial",
-    "ENG": "You have access to 3 different weapons ([Heavy]Heavy, [Light]Light and [Ranged]Ranged), and each have its own 'Stance' associated with it, representing different set of Basic Attacks and 4 Techniques.\n\nTo switch current Stance, press [StanceSwitchLeftBinding] or [StanceSwitchRightBinding].\n\nDifferent weapons specialize in different things ([AS]Attack Speed, [I]Injury, [S]Stagger, [Ranged]Range...), so you can adapt to the situation at hand.\n\nBasic Attacks using Ranged weapons consume ammo, which is restored at the start of each stage (and dropped by Bosses).",
-    "PL": "Masz dostęp do 3 różnych broni (Ciężkiej, Lekkiej i Zasięgowej). Każda z nich posiada własną 'Postawę', dającą dostęp do innego zestawu Podstawowych Ataków i 4 Technik.\n\nAby zmienić obecną Postawę, wciśnij [StanceSwitchLeftBinding] lub [StanceSwitchRightBinding].\n\nRóżne bronie specjalizują się w innych aspektach ([AS]Prędkości Ataku, [I]Zranieniu, [S]Zachwianiu, [Ranged]Zasięgu...), więc możesz dostosować się do obecnej sytuacji.\n\nPodstawowe Ataki przy użyciu broni Zasięgowej zużywają amunicję, która jest odnawiana na początku każdego poziomu (oraz upuszczane przez Bossów). "
+    "ENG": "You have access to 3 different weapons ([Heavy]Heavy, [Light]Light and [Ranged]Ranged), and each have its own 'Stance' associated with it, representing different set of Basic Attacks and 4 Techniques.\n\nTo switch current Stance, press [RotateStanceLeftButtonPress] or [RotateStanceRightButtonPress].\n\nDifferent weapons specialize in different things ([AS]Attack Speed, [I]Injury, [S]Stagger, [Ranged]Range...), so you can adapt to the situation at hand.\n\nBasic Attacks using Ranged weapons consume ammo, which is restored at the start of each stage (and dropped by Bosses).",
+    "PL": "Masz dostęp do 3 różnych broni (Ciężkiej, Lekkiej i Zasięgowej). Każda z nich posiada własną 'Postawę', dającą dostęp do innego zestawu Podstawowych Ataków i 4 Technik.\n\nAby zmienić obecną Postawę, wciśnij [RotateStanceLeftButtonPress] lub [RotateStanceRightButtonPress].\n\nRóżne bronie specjalizują się w innych aspektach ([AS]Prędkości Ataku, [I]Zranieniu, [S]Zachwianiu, [Ranged]Zasięgu...), więc możesz dostosować się do obecnej sytuacji.\n\nPodstawowe Ataki przy użyciu broni Zasięgowej zużywają amunicję, która jest odnawiana na początku każdego poziomu (oraz upuszczane przez Bossów). "
   },
   {
     "Label": "TutorialTitleItems",
@@ -21557,14 +21388,14 @@
   {
     "Label": "TutorialDescriptionItemsDetailed",
     "Category": "Tutorial",
-    "ENG": "You can use equip items in menu's 'Inventory' tab.\n\nPress [Item1Binding] to use Tool in quick-use slot 1, and [Item2Binding] to use Tool in quick-use slot 2.\n\nAll currently equipped items are active in all Stances, with the exception of weapons. Only current Stance's weapon has its effects active.",
-    "PL": "Możesz zakładać przedmioty w zakładce 'Ekwipunek' w menu.\n\nWciśnij [Item1Binding] by użyć Narzędzia na przycisku 1, i [Item2Binding] by Narzędzia przedmiotu na przycisku 2.\n\nWszystkie obecnie założone przedmioty są aktywne we wszystkich Postawach. Aktywne są bonusy tylko broni obecnej Postawy."
+    "ENG": "You can use equip items in menu's 'Inventory' tab.\n\nPress [UseItem1ButtonPress] to use Tool in quick-use slot 1, and [UseItem2ButtonPress] to use Tool in quick-use slot 2.\n\nAll currently equipped items are active in all Stances, with the exception of weapons. Only current Stance's weapon has its effects active.",
+    "PL": "Możesz zakładać przedmioty w zakładce 'Ekwipunek' w menu.\n\nWciśnij [UseItem1ButtonPress] by użyć Narzędzia na przycisku 1, i [UseItem2ButtonPress] by Narzędzia przedmiotu na przycisku 2.\n\nWszystkie obecnie założone przedmioty są aktywne we wszystkich Postawach. Aktywne są bonusy tylko broni obecnej Postawy."
   },
   {
     "Label": "TutorialDescriptionItemsSimple",
     "Category": "Tutorial",
-    "ENG": "You can equip items and assign Tools to quick use slots.\n\nTo use item 1, press [Item1Binding]. For item 2, press [Item2Binding].",
-    "PL": "Możesz zakładać przedmioty, oraz przypisać Narzędzia do przycisków szybkiego użycia.\n\nAby użyć przedmiotu 1, wciśnij [Item1Binding]. Dla przedmiotu 2, wciśnij [Item2Binding]."
+    "ENG": "You can equip items and assign Tools to quick use slots.\n\nTo use item 1, press [UseItem1ButtonPress]. For item 2, press [UseItem2ButtonPress].",
+    "PL": "Możesz zakładać przedmioty, oraz przypisać Narzędzia do przycisków szybkiego użycia.\n\nAby użyć przedmiotu 1, wciśnij [UseItem1ButtonPress]. Dla przedmiotu 2, wciśnij [UseItem2ButtonPress]."
   },
   {
     "Label": "TutorialTitleTargeting",
@@ -21575,14 +21406,14 @@
   {
     "Label": "TutorialDescriptionTargetingDetailed",
     "Category": "Tutorial",
-    "ENG": "You can press [AimBinding] to target closest enemy.\n\nYou can press again to cycle between targets, or hold it to stop targeting.\n\nRanged attacks (and targeted Techniques such as Wind Blast) will aim at given target.\n\nIf no target is selected, then you can use [Aim2Binding] to target manually.",
-    "PL": "Możesz wcisnąć [AimBinding] aby obrać najbliższego wroga jako cel.\n\nMożesz wcisnąć ponownie aby przejść do następnego celu, lub przytrzymać aby przestać celować.\n\nAtaki zasięgowe (i Techniki celowane takie jak Uderzenie Wichru) uderzą w stronę danego celu.\n\nJeśli żaden cel nie jest obrany, to możesz użyć [Aim2Binding] aby celować własnoręcznie."
+    "ENG": "You can press [ToggleTargetButtonPress] to target closest enemy.\n\nYou can press again to cycle between targets, or hold it to stop targeting.\n\nRanged attacks (and targeted Techniques such as Wind Blast) will aim at given target.\n\nIf no target is selected, then you can use [ManualAim] to target manually.",
+    "PL": "Możesz wcisnąć [ToggleTargetButtonPress] aby obrać najbliższego wroga jako cel.\n\nMożesz wcisnąć ponownie aby przejść do następnego celu, lub przytrzymać aby przestać celować.\n\nAtaki zasięgowe (i Techniki celowane takie jak Uderzenie Wichru) uderzą w stronę danego celu.\n\nJeśli żaden cel nie jest obrany, to możesz użyć [ManualAim] aby celować własnoręcznie."
   },
   {
     "Label": "TutorialDescriptionTargetingSimple",
     "Category": "Tutorial",
-    "ENG": "Press [AimBinding] to target closest enemy.\n\nPress again to change target.\n\nHold to stop targeting.",
-    "PL": "Wciśnij [AimBinding] by obrać cel.\n\nNaciśnij znowu żeby zmienić cel.\n\nPrzytrzymaj aby przestać celować."
+    "ENG": "Press [ToggleTargetButtonPress] to target closest enemy.\n\nPress again to change target.\n\nHold to stop targeting.",
+    "PL": "Wciśnij [ToggleTargetButtonPress] by obrać cel.\n\nNaciśnij znowu żeby zmienić cel.\n\nPrzytrzymaj aby przestać celować."
   },
   {
     "Label": "TutorialTitleRipostingProjectiles",
@@ -22533,13 +22364,13 @@
   {
     "Label": "SkillTreeSpeciality_Anima",
     "Category": "UI",
-    "ENG": " [Weapons]Weapons, [Riposte]Ripostes, [Counter]Counters, [BasicAttack]Basic Attacks, [Sharp]Sharp",
+    "ENG": " [Weapons]Weapons, [Riposte]Ripostes, [Counter]Counters, [BA]Basic Attacks, [Sharp]Sharp",
     "PL": ""
   },
   {
     "Label": "SkillTreeSpeciality_Ignis",
     "Category": "UI",
-    "ENG": " [Heavy]Heavy Weapons, [Magic]Magic, [S]Stagger, [DR]Damage Reduction, [Burn]Burn",
+    "ENG": " [Heavy]Heavy Weapons, [Magic]Magic, [S]Stagger, [A]Armor, [Burn]Burn",
     "PL": ""
   },
   {
@@ -22551,7 +22382,7 @@
   {
     "Label": "SkillTreeSpeciality_Molis",
     "Category": "UI",
-    "ENG": " [H]Health, [SB]Stagger Bar, [T]Tenacity, [DR]Damage Reduction, [Barrier]Barrier",
+    "ENG": " [H]Health, [SB]Stagger Bar, [T]Tenacity, [A]Armor, [Barrier]Barrier",
     "PL": ""
   },
   {
@@ -22563,7 +22394,7 @@
   {
     "Label": "SkillTreeSpeciality_Tonitrui",
     "Category": "UI",
-    "ENG": " [Light]Light Weapons, [I]Injury, [BasicAttack]Basic Attacks, [AS]Speed, [Supercharge]Supercharge",
+    "ENG": " [Light]Light Weapons, [I]Injury, [BA]Basic Attacks, [AS]Speed, [Supercharge]Supercharge",
     "PL": ""
   },
   {
@@ -22595,6 +22426,12 @@
     "Category": "UI",
     "ENG": "Stop",
     "PL": "Stop"
+  },
+  {
+    "Label": "PauseScreenLabel",
+    "Category": "UI",
+    "ENG": "PAUSED",
+    "PL": "PAUZA"
   },
   {
     "Label": "DamageDisplay_Dodged",
@@ -22671,14 +22508,14 @@
   {
     "Label": "InGameDialogueSpeed",
     "Category": "UI",
-    "ENG": "In-world Dialogue Speed: ",
-    "PL": "Prędkość Dialogu w Świecie: "
+    "ENG": "In-world Dialogue Speed: {0}%",
+    "PL": "Prędkość Dialogu w Świecie: {0}%"
   },
   {
     "Label": "DialogueTextSpeed",
     "Category": "UI",
-    "ENG": "Dialogue Text Speed: ",
-    "PL": "Prędkość Tekstu Dialogów: "
+    "ENG": "Dialogue Text Speed: {0}%",
+    "PL": "Prędkość Tekstu Dialogów: {0}%"
   },
   {
     "Label": "NotHighEnoughLevelForDestructibleNotification",
@@ -22873,10 +22710,10 @@
     "PL": "Hełmy"
   },
   {
-    "Label": "InventoryCategoryArmor",
+    "Label": "InventoryCategoryOutfit",
     "Category": "UI",
-    "ENG": "Armors",
-    "PL": "Zbroje"
+    "ENG": "Outfits",
+    "PL": "Stroje"
   },
   {
     "Label": "InventoryCategoryBoots",
@@ -23065,10 +22902,10 @@
     "PL": "Hełm"
   },
   {
-    "Label": "ItemType_Armor",
+    "Label": "ItemType_Outfit",
     "Category": "UI",
-    "ENG": "Armor",
-    "PL": "Zbroja"
+    "ENG": "Outfit",
+    "PL": "Strój"
   },
   {
     "Label": "ItemType_Boots",
@@ -23215,10 +23052,10 @@
     "PL": "<- MISSING LABEL ->"
   },
   {
-    "Label": "StatLabel_DamageReduction",
+    "Label": "StatLabel_Armor",
     "Category": "UI",
-    "ENG": "[DamageReduction]Damage Reduction",
-    "PL": "[DamageReduction]Redukcja Obrażeń"
+    "ENG": "[A]Armor",
+    "PL": "[Armor]Redukcja Obrażeń"
   },
   {
     "Label": "StatLabel_Health",
@@ -23457,8 +23294,8 @@
   {
     "Label": "Controls",
     "Category": "UI",
-    "ENG": "Controls",
-    "PL": "Sterowanie"
+    "ENG": "Control Scheme",
+    "PL": "Układ Sterowania"
   },
   {
     "Label": "GameSubTitle",
@@ -23501,6 +23338,12 @@
     "Category": "UI",
     "ENG": "Upgrade {0} max amount for {1}? Materials cannot be recovered.",
     "PL": "Ulepszyć maks ilość {0} za {1}? Materiały nie mogą być odzyskane."
+  },
+  {
+    "Label": "ModalWindowTitleConfirmation",
+    "Category": "UI",
+    "ENG": "Confirmation",
+    "PL": "Potwierdzenie"
   },
   {
     "Label": "ButtonConfirm",
@@ -23559,8 +23402,8 @@
   {
     "Label": "ArenaSandboxElites",
     "Category": "UI",
-    "ENG": "Enforcers",
-    "PL": "Autarchowie"
+    "ENG": "Mini-Bosses",
+    "PL": ""
   },
   {
     "Label": "ArenaSandboxRegulars",
@@ -23587,12 +23430,6 @@
     "PL": "Wybierz przeciwnika (lub przeciwników) na których chcesz walczyć w zamkniętej arenie"
   },
   {
-    "Label": "SaveFileTimePlayed",
-    "Category": "UI",
-    "ENG": "Time Played: {0} h, {1} min, {2} sec",
-    "PL": "Czas Gry: {0} godz, {1} min, {2} sek"
-  },
-  {
     "Label": "SaveGameTitle",
     "Category": "UI",
     "ENG": "Save Game",
@@ -23605,28 +23442,28 @@
     "PL": "Wczytaj Grę"
   },
   {
-    "Label": "SaveFileCycleAndWeek",
+    "Label": "SaveFileCycleWeekTime",
     "Category": "UI",
-    "ENG": "Week {0}",
-    "PL": "Tydzień {0}"
+    "ENG": "Week {0}, Time Played: {1}h, {2}m, {3}sec",
+    "PL": "Tydzień {0}, Czas Gry: {1}g, {2}m, {3}sek"
   },
   {
-    "Label": "SaveFileLevelAndMoney",
+    "Label": "SaveFileLevelMoneySkillTrees",
     "Category": "UI",
-    "ENG": "<sprite name=\"Experience\"> {0}  <sprite name=\"Money\"> {1}",
-    "PL": "<sprite name=\"Experience\"> {0}  <sprite name=\"Money\"> {1}"
+    "ENG": "[Level]{0} [Money]{1} [Anima]{2} [Ignis]{3} [Glacies]{4} [Molis]{5} [Salutis]{6} [Tonitrui]{7} [Proprius]{8}",
+    "PL": "[Level]{0} [Money]{1} [Anima]{2} [Ignis]{3} [Glacies]{4} [Molis]{5} [Salutis]{6} [Tonitrui]{7} [Proprius]{8}"
+  },
+  {
+    "Label": "SaveFileDifficultyMission",
+    "Category": "UI",
+    "ENG": "Difficulty: {0}, Current Mission: {1}",
+    "PL": "Trudność: {0}, Obecna Misja: {1}"
   },
   {
     "Label": "CurrentMissionIsNull",
     "Category": "UI",
     "ENG": "-",
     "PL": "-"
-  },
-  {
-    "Label": "SaveFileCurrentMission",
-    "Category": "UI",
-    "ENG": "Mission: {0}",
-    "PL": "Misja: {0}"
   },
   {
     "Label": "ContinueGame",
@@ -23677,22 +23514,70 @@
     "PL": "Usunięcie Zapisu"
   },
   {
-    "Label": "DeletePostMissionAutoSaveConfirmation",
+    "Label": "ButtonDelete",
     "Category": "UI",
-    "ENG": "Are you sure you want to delete the Post-Mission Auto-Save?",
-    "PL": "Czy na pewno chcesz usunąć Automatyczny Zapis Po Misji?"
+    "ENG": "Delete",
+    "PL": "Usuń"
   },
   {
-    "Label": "DeleteMidMissionAutoSaveConfirmation",
+    "Label": "ButtonSaveFile",
     "Category": "UI",
-    "ENG": "Are you sure you want to delete the Mid-Mission Auto-Save?",
-    "PL": "Czy na pewno chcesz usunąć Automatyczny Zapis W Trakcie Misji?"
+    "ENG": "Save",
+    "PL": "Usuń"
+  },
+  {
+    "Label": "ButtonLoadFile",
+    "Category": "UI",
+    "ENG": "Load",
+    "PL": "Usuń"
+  },
+  {
+    "Label": "SaveSlotRegular",
+    "Category": "UI",
+    "ENG": "Save",
+    "PL": "Zapis"
+  },
+  {
+    "Label": "SaveSlotQuickSave",
+    "Category": "UI",
+    "ENG": "Quick-save",
+    "PL": ""
+  },
+  {
+    "Label": "SaveSlotAutoSaveBeforeMission",
+    "Category": "UI",
+    "ENG": "Auto-save before Mission",
+    "PL": ""
+  },
+  {
+    "Label": "SaveSlotAutoSaveDuringMission",
+    "Category": "UI",
+    "ENG": "Auto-save during Mission",
+    "PL": ""
+  },
+  {
+    "Label": "SaveSlotAutoSaveAfterMission",
+    "Category": "UI",
+    "ENG": "Auto-save after Mission",
+    "PL": ""
+  },
+  {
+    "Label": "OverwriteSaveConfirmation",
+    "Category": "UI",
+    "ENG": "Are you sure you want to overwrite {0}?",
+    "PL": "Czy na pewno chcesz usunąć {0}?"
+  },
+  {
+    "Label": "LoadSaveConfirmation",
+    "Category": "UI",
+    "ENG": "Are you sure you want to load {0}?",
+    "PL": "Czy na pewno chcesz usunąć {0}?"
   },
   {
     "Label": "DeleteSaveConfirmation",
     "Category": "UI",
-    "ENG": "Are you sure you want to delete Save {0}?",
-    "PL": "Czy na pewno chcesz usunąć Zapis {0}?"
+    "ENG": "Are you sure you want to delete {0}?",
+    "PL": "Czy na pewno chcesz usunąć {0}?"
   },
   {
     "Label": "GameSavedAutomatically",
@@ -23701,15 +23586,27 @@
     "PL": "Wykonano Zapis Automatyczny."
   },
   {
+    "Label": "SaveFileQuickSaveSlotName",
+    "Category": "UI",
+    "ENG": "Quick-save",
+    "PL": "Szybki Zapis"
+  },
+  {
     "Label": "SaveFileMidMissionAutoSaveSlotName",
     "Category": "UI",
-    "ENG": "Mid-mission Auto-Save",
+    "ENG": "Auto-Save during Mission",
     "PL": "Zapis Automatyczny w trakcie misji"
   },
   {
     "Label": "SaveFilePostMissionAutoSaveSlotName",
     "Category": "UI",
-    "ENG": "Post-mission Auto-Save",
+    "ENG": "Auto-Save after Mission",
+    "PL": "Zapis Automatyczny po misji"
+  },
+  {
+    "Label": "SaveFilePreMissionAutoSaveSlotName",
+    "Category": "UI",
+    "ENG": "Auto-Save before Mission",
     "PL": "Zapis Automatyczny po misji"
   },
   {
@@ -23863,6 +23760,12 @@
     "PL": "Rozpocznij"
   },
   {
+    "Label": "ButtonOptions",
+    "Category": "UI",
+    "ENG": "Options",
+    "PL": "Opcje"
+  },
+  {
     "Label": "ButtonQuitGame",
     "Category": "UI",
     "ENG": "Quit Game",
@@ -23889,7 +23792,19 @@
   {
     "Label": "FieldOfView",
     "Category": "UI",
-    "ENG": "Field of View",
+    "ENG": "Field of View Radius (in meters): {0}m",
+    "PL": "Promień Zasięgu Widoku (w metrach): {0}m"
+  },
+  {
+    "Label": "UISize",
+    "Category": "UI",
+    "ENG": "UI Size: {0}%",
+    "PL": "Zasięg Widoku"
+  },
+  {
+    "Label": "DamageNumbersSize",
+    "Category": "UI",
+    "ENG": "Damage Numbers Size: {0}%",
     "PL": "Zasięg Widoku"
   },
   {
@@ -23941,22 +23856,34 @@
     "PL": "Głośność Ogólna"
   },
   {
-    "Label": "GameplaySettings",
+    "Label": "OptionsGameplay",
     "Category": "UI",
     "ENG": "Gameplay",
     "PL": "Gra"
   },
   {
-    "Label": "GraphicsSettings",
+    "Label": "OptionsKeybinds",
     "Category": "UI",
-    "ENG": "Graphics",
+    "ENG": "Keybinds",
+    "PL": "Gra"
+  },
+  {
+    "Label": "OptionsDisplay",
+    "Category": "UI",
+    "ENG": "Display",
     "PL": "Grafika"
   },
   {
-    "Label": "AudioSettings",
+    "Label": "OptionsAudio",
     "Category": "UI",
     "ENG": "Audio",
     "PL": "Dźwięk"
+  },
+  {
+    "Label": "OptionsReportBug",
+    "Category": "UI",
+    "ENG": "Report Bug",
+    "PL": ""
   },
   {
     "Label": "FirstTimeLaunchLanguage",
@@ -23989,58 +23916,58 @@
     "PL": "Przezwycięż unikalne wyzwania przy użyciu określonych Technik i Przedmiotów"
   },
   {
-    "Label": "FirstTimeLaunchUltimateSimple",
+    "Label": "FirstTimeLaunchUltimateDescription",
     "Category": "UI",
     "ENG": "\n\nRequires in-depth knowledge of how to counter enemy attacks. Techniques and Stance effects are not available.",
     "PL": "\n\nWymaga dokładnej znajomości kontr na ataki przeciwnika. Techniki i wzmocnienia Postawy nie są dostępne."
   },
   {
-    "Label": "FirstTimeLaunchUltimateDetailed",
+    "Label": "FirstTimeLaunchUltimateDescriptionDetailed",
     "Category": "UI",
     "ENG": "Technique Points and Mastery Points are not available.\n\nStrong Basic Attacks consume 20[E]Energy. Using Tools consumes 50[E]Energy.",
     "PL": "Punkty Technik i Punkty Mistrzostwa nie są dostępne.\n\nSilne Podstawowe Ataki zużywają 20[E]Energii. Korzystanie z Narzędzi zużywa 50[E]Energii."
   },
   {
-    "Label": "FirstTimeLaunchChallengeSimple",
+    "Label": "FirstTimeLaunchChallengeDescription",
     "Category": "UI",
-    "ENG": "\n\nFights are challenging. Enemy attacks need to be countered correctly.",
-    "PL": "\n\nWalki są wymagające. Ataki przeciwników muszą być skontrowane w odpowiedni sposób."
+    "ENG": "\n\nFights are challenging. Enemy attacks need to be [Counter]Countered correctly.",
+    "PL": "\n\nWalki są wymagające. Ataki przeciwników muszą być [Counter]Skontrowane w odpowiedni sposób."
   },
   {
-    "Label": "FirstTimeLaunchChallengeDetailed",
+    "Label": "FirstTimeLaunchChallengeDescriptionDetailed",
     "Category": "UI",
-    "ENG": "Forces the player to react to enemy actions.\n\nSpecial attacks need to be countered with the correct method (dodge, roll, block).\n\nEnemies are deadlier and more aggressive.",
-    "PL": "Gracz jest zmuszony odpowiednio reagować na ataki wrogów.\n\nSpecjalne ataki muszą być skontrowane odpowiednim sposobem (unik, przewrót, blok).\n\nWrogowie są bardziej groźni i agresywni."
+    "ENG": "Enemies have 150%[H]Health and [SB]Stagger Bar.\n\nEnemies deal 120%[D]Damage and are more aggressive.\n\nSpecial attacks need to be [Counter]countered with the correct method (dodge, roll, block).\n\nCertain special enemy attacks are more dangerous.",
+    "PL": ""
   },
   {
-    "Label": "FirstTimeLaunchRegularSimple",
+    "Label": "FirstTimeLaunchRegularDescription",
     "Category": "UI",
     "ENG": "\n\nRegular difficulty without any additional changes.",
     "PL": "\n\nNormalny poziom trudności bez dodatkowych zmian."
   },
   {
-    "Label": "FirstTimeLaunchStorySimple",
+    "Label": "FirstTimeLaunchStoryDescription",
     "Category": "UI",
-    "ENG": "\n\nLess punishing combat. Blocking and dodging works on every type of attack.",
-    "PL": "\n\nMniej wymagający styl gry. Blokowanie i unikanie działa na każdy atak."
+    "ENG": "\n\nLess punishing combat. [Block]Blocking and [Dodge]Dodging works on every type of attack.",
+    "PL": "\n\nMniej wymagający styl gry. [Block]Blokowanie i [Dodge]Unikanie działa na każdy atak."
   },
   {
-    "Label": "FirstTimeLaunchStoryDetailed",
+    "Label": "FirstTimeLaunchStoryDescriptionDetailed",
     "Category": "UI",
-    "ENG": "Enemies are less aggressive (attack less frequently).\n\nTiming window for Riposte is less punishing. Blocking, dodging and rolling counter all special attacks.\n\n10 Health Potion charges available from the start. Experience and Money gains increased by 50%.",
-    "PL": "Wrogowie są mniej agresywni (rzadziej atakują).\n\nOkno czasowe pozwalające na Riposte jest mniej wymagające. Blokowanie, unikanie i przewrót kontrują wszystkie specjalne ataki.\n\nOd początku dostępne jest 10 użyć Mikstury Życia. Otrzymywane Doświadczenie i Pieniądze są zwiększone o 50%."
+    "ENG": "Enemies have 70%[H]Health and [SB]Stagger Bar.\n\nEnemies deal 60%[D]Damage and are less aggressive.\n\nTiming window for [Riposte]Riposte is less punishing. Blocking, dodging and rolling counter all special attacks.\n\n[Level]Experience and [Money]Money gains increased by 50%.",
+    "PL": ""
   },
   {
     "Label": "FirstTimeLaunchGuide",
     "Category": "UI",
-    "ENG": "While in game, you can press [MenuBinding] to open the game menu. Once there, you can navigate to the 'Guide' tab to see a list with explanations of mechanics appearing in the game.",
-    "PL": "W trakcie gry możesz wcisnąć [MenuBinding] by otworzyć menu gry. Stamtąd możesz przejść do zakładki 'Poradnik' by zobaczyć listę opisów mechanik występujących w grze."
+    "ENG": "While in game, you can press [ToggleMenuButtonPress] to open the game menu. Once there, you can navigate to the 'Guide' tab to see a list with explanations of mechanics appearing in the game.",
+    "PL": "W trakcie gry możesz wcisnąć [ToggleMenuButtonPress] by otworzyć menu gry. Stamtąd możesz przejść do zakładki 'Poradnik' by zobaczyć listę opisów mechanik występujących w grze."
   },
   {
     "Label": "FirstTimeTooltips",
     "Category": "UI",
-    "ENG": "Whenever you see the <sprite name=\"Detailed\"> icon, you can press [DetailedBinding] to check the detailed description",
-    "PL": "Kiedy widzisz gdzieś ikonkę <sprite name=\"Detailed\">, możesz wcisnąć [DetailedBinding] by zobaczyć pełny opis"
+    "ENG": "You can hover over icons such as [D] or [Detailed] to read detailed descriptions of effects, stats and abilities",
+    "PL": ""
   },
   {
     "Label": "FirstTimeLaunchCombatTypeChoice",
@@ -24071,6 +23998,12 @@
     "Category": "UI",
     "ENG": "Polski",
     "PL": "Polski"
+  },
+  {
+    "Label": "ShowExtraInfoInUI",
+    "Category": "UI",
+    "ENG": "Full Info in UI (still available on Pause Screen when off)",
+    "PL": "Tryb Okna"
   },
   {
     "Label": "ResolutionOptions",
@@ -24105,8 +24038,8 @@
   {
     "Label": "ShowDescriptionsTip",
     "Category": "UI",
-    "ENG": "Press [DetailedBinding] for detailed descriptions",
-    "PL": "Wciśnij [DetailedBinding] by pokazać dokładne opisy"
+    "ENG": "Press [DetailedDescriptionsButtonPress] for detailed descriptions",
+    "PL": "Wciśnij [DetailedDescriptionsButtonPress] by pokazać dokładne opisy"
   },
   {
     "Label": "AbandonMission",
@@ -24147,7 +24080,7 @@
   {
     "Label": "DescriptionReportBugInput",
     "Category": "UI",
-    "ENG": "Describe the bug here...",
+    "ENG": "Describe your issue here...",
     "PL": "Wpisz opis błędu..."
   },
   {
@@ -24211,16 +24144,22 @@
     "PL": "Statystyka"
   },
   {
+    "Label": "ButtonCheck",
+    "Category": "UI",
+    "ENG": "Check",
+    "PL": "Sprawdź"
+  },
+  {
     "Label": "ButtonEdit",
     "Category": "UI",
     "ENG": "Edit",
     "PL": "Zmień"
   },
   {
-    "Label": "SubMenuOverview",
+    "Label": "SubMenuCharacter",
     "Category": "UI",
-    "ENG": "Overview",
-    "PL": "Przegląd"
+    "ENG": "Character",
+    "PL": "Postać"
   },
   {
     "Label": "SubMenuSkillTree",
@@ -24235,34 +24174,22 @@
     "PL": "Ekwipunek"
   },
   {
-    "Label": "SubMenuJournal",
+    "Label": "SubMenuArchive",
     "Category": "UI",
-    "ENG": "Journal",
-    "PL": "Dziennik"
+    "ENG": "Archive",
+    "PL": "Archiwum"
   },
   {
-    "Label": "SubMenuHistory",
+    "Label": "SubMenuTutorials",
     "Category": "UI",
-    "ENG": "History",
-    "PL": "Historia"
+    "ENG": "Tutorials",
+    "PL": "Poradniki"
   },
   {
-    "Label": "SubMenuGuide",
+    "Label": "SubMenuOptions",
     "Category": "UI",
-    "ENG": "Guide",
-    "PL": "Pomoc"
-  },
-  {
-    "Label": "SubMenuSettings",
-    "Category": "UI",
-    "ENG": "Settings",
-    "PL": "Ustawienia"
-  },
-  {
-    "Label": "SubMenuOther",
-    "Category": "UI",
-    "ENG": "Other",
-    "PL": "Inne"
+    "ENG": "Options",
+    "PL": "Opcje"
   },
 
 
@@ -24306,7 +24233,7 @@
   {
     "Label": "Stat_Level_Description",
     "Category": "UI",
-    "ENG": "Reaching higher level allows you to unlock new powers and features.\n\nEvery level allows you to unlock 1 Passive Power-up.\n\nEvery 3 levels, you can upgrade 1 Technique or Stance.\n\nLevels 10, 20, 30 and 40 unlock new item tier.\n\nLevels 10, 20 and 30 unlock new Skill Tree tier.\n\nStarting from Level 25, you can use Ultimate versions of [Technique]Techniques once per fight.\n\nAt levels 35, 45, 55 and 65 Ultimate uses are increased by 1.",
+    "ENG": "Every level allows you to unlock 1 Passive Power-up.\n\nEvery 3 levels, you can upgrade 1 Technique or Stance.\n\nLevels 10, 20, 30 and 40 unlock new item tier.\n\nLevels 10, 20 and 30 unlock new Skill Tree tier.\n\nStarting from Level 25, you can use Ultimate versions of [Technique]Techniques once per fight.\n\nAt levels 30, 35, 40 and 45 Ultimate uses are increased by 1.",
     "PL": ""
   },
   {
@@ -24330,7 +24257,7 @@
   {
     "Label": "Stat_Health_Description",
     "Category": "UI",
-    "ENG": "[H]Health: When your [H]Health falls to 0, you lose. [H]Health can be restored by drinking Health Potion ([HealBinding]).",
+    "ENG": "[H]Health: When your [H]Health falls to 0, you lose. [H]Health can be restored by drinking Health Potion ([UseItemHealingButtonPress]).",
     "PL": ""
   },
   {
@@ -24354,7 +24281,7 @@
   {
     "Label": "Stat_Energy_Description",
     "Category": "UI",
-    "ENG": "[E]Energy: [E]Energy is used to perform Techniques, powerful attacks assigned to [Ability1Binding], [Ability2Binding], [Ability3Binding] and [Ability4Binding].\n\n[E]Energy is restored by attacking, dodging, blocking, riposting, countering, inflicting [Staggered]Staggered, as well as suffering [D]Damage.",
+    "ENG": "[E]Energy: [E]Energy is used to perform Techniques, powerful attacks assigned to [Ability1ButtonPress], [Ability2ButtonPress], [Ability3ButtonPress] and [Ability4ButtonPress].\n\n[E]Energy is restored by attacking, dodging, blocking, riposting, countering, inflicting [Staggered]Staggered, as well as suffering [D]Damage.",
     "PL": ""
   },
   {
@@ -24366,19 +24293,19 @@
   {
     "Label": "Stat_EnergyGain_Description",
     "Category": "UI",
-    "ENG": "[EG]EnergyGain: Increases amount of [E]Energy obtained from all sources.\n\nWith 50%[EG]Energy Gain, [BLUE]10[/BLUE][E]Energy obtained is increased to [BLUE]15[/BLUE][E].\n\nWith 100%[EG]Energy Gain, [BLUE]10[/BLUE][E]Energy obtained is increased to [BLUE]20[/BLUE][E].\n\nWith 200%[EG]Energy Gain, [BLUE]10[/BLUE][E]Energy obtained is increased to [BLUE]30[/BLUE][E].",
+    "ENG": "[EG]EnergyGain: Every point increases amount of [E]Energy obtained from all sources.\n\nWith 50[EG]Energy Gain, [BLUE]10[/BLUE][E]Energy obtained is increased to [BLUE]15[/BLUE][E].\n\nWith 100[EG]Energy Gain, [BLUE]10[/BLUE][E]Energy obtained is increased to [BLUE]20[/BLUE][E].\n\nWith 200[EG]Energy Gain, [BLUE]10[/BLUE][E]Energy obtained is increased to [BLUE]30[/BLUE][E].",
     "PL": ""
   },
   {
-    "Label": "Stat_DamageReduction",
+    "Label": "Stat_Armor",
     "Category": "UI",
     "ENG": "Damage Reduction",
     "PL": "Redukcja Obrażeń"
   },
   {
-    "Label": "Stat_DamageReduction_Description",
+    "Label": "Stat_Armor_Description",
     "Category": "UI",
-    "ENG": "[DR]Damage Reduction: Decreases [D]Damage taken from all sources by given percentage, but does not work while [Staggered]Staggered.\n\nWith 50%[DR]Damage Reduction, 150[D]Damage is reduced to 100[D].\n\nWith 100%[DR]Damage Reduction, 150[D]Damage is reduced to 75[D].\n\nWith 200%[DR]Damage Reduction, 150[D]Damage is reduced to 50[D].",
+    "ENG": "[A]Armor: Every point decreases [D]Damage taken from all sources, but does not work while [Staggered]Staggered.\n\nWith 50[A]Armor, 150[D]Damage is reduced to 100[D].\n\nWith 100[A]Armor, 150[D]Damage is reduced to 75[D].\n\nWith 200[A]Armor, 150[D]Damage is reduced to 50[D].",
     "PL": ""
   },
   {
@@ -24390,7 +24317,7 @@
   {
     "Label": "Stat_Tenacity_Description",
     "Category": "UI",
-    "ENG": "[T]Tenacity: Decreases duration of all hard-crowd control applied to you (such as [Stun]Stun or [Freeze]Freeze) by given percentage.\n\nWith 50%[T]Tenacity, 3 second [Stun]Stun will last only 2 seconds.\n\nWith 100%[T]Tenacity, 3 second [Stun]Stun will last only 1.5 seconds.\n\nWith 200%[T]Tenacity, 3 second [Stun]Stun will last only 1 second.\n\nThis is off-set by enemy [C]Control.",
+    "ENG": "[T]Tenacity: Every point decreases duration of all hard-crowd control applied to you (such as [Stun]Stun or [Freeze]Freeze).\n\nWith 50[T]Tenacity, 3 second [Stun]Stun will last only 2 seconds.\n\nWith 100[T]Tenacity, 3 second [Stun]Stun will last only 1.5 seconds.\n\nWith 200[T]Tenacity, 3 second [Stun]Stun will last only 1 second.\n\nThis is off-set by enemy [C]Control.",
     "PL": ""
   },
   {
@@ -24402,7 +24329,7 @@
   {
     "Label": "Stat_CooldownReduction_Description",
     "Category": "UI",
-    "ENG": "[CDR]Cooldown Reduction: Decreases duration of all [CD]Cooldowns, including Techniques, Items and special effects from Stances, Passive Power-ups etc.\n\nWith 50%[CDR]Cooldown Reduction, a 30 second [CD]Cooldown will last only 20 seconds.\n\nWith 100%[CDR]Cooldown Reduction, a 30 second [CD]Cooldown will last only 15 seconds.\n\nWith 200%[CDR]Cooldown Reduction, a 30 second [CD]Cooldown will last only 10 seconds.",
+    "ENG": "[CDR]Cooldown Reduction: Every point decreases duration of all [CD]Cooldowns, including Techniques, Items and special effects from Stances, Passive Power-ups etc.\n\nWith 50[CDR]Cooldown Reduction, a 30 second [CD]Cooldown will last only 20 seconds.\n\nWith 100[CDR]Cooldown Reduction, a 30 second [CD]Cooldown will last only 15 seconds.\n\nWith 200[CDR]Cooldown Reduction, a 30 second [CD]Cooldown will last only 10 seconds.",
     "PL": ""
   },
   {
@@ -24414,7 +24341,7 @@
   {
     "Label": "Stat_Control_Description",
     "Category": "UI",
-    "ENG": "[C]Control: Increases duration of all hard-crowd control applied by you (such as [Stun]Stun or [Freeze]Freeze) by given percentage.\n\nWith 50%[C]Control, a 2 second [Stun]Stun will last 3 seconds.\n\nWith 100%[C]Control, 2 second [Stun]Stun will last 4 seconds.\n\nWith 200%[C]Control, 2 second [Stun]Stun will last 6 seconds.\n\nThis is off-set by enemy [T]Tenacity.",
+    "ENG": "[C]Control: Every point increases duration of all hard-crowd control applied by you (such as [Stun]Stun or [Freeze]Freeze).\n\nWith 50[C]Control, a 2 second [Stun]Stun will last 3 seconds.\n\nWith 100[C]Control, 2 second [Stun]Stun will last 4 seconds.\n\nWith 200[C]Control, 2 second [Stun]Stun will last 6 seconds.\n\nThis is off-set by enemy [T]Tenacity.",
     "PL": ""
   },
   {
@@ -24426,7 +24353,7 @@
   {
     "Label": "Stat_MovementSpeed_Description",
     "Category": "UI",
-    "ENG": "[SPEED]Movement Speed: Increases running speed by specified amount.",
+    "ENG": "[SPEED]Movement Speed: Every point increases running speed.\n\nWith 50[SPEED]Movement Speed, player will run 50% longer distance in same amount of time.\n\nWith 100[SPEED]Movement Speed, player will run 100% longer distance in same amount of time.\n\nWith 200[SPEED]Movement Speed, player will run 200% longer distance in same amount of time.",
     "PL": ""
   },
   {
@@ -24438,19 +24365,19 @@
   {
     "Label": "Stat_Damage_Description",
     "Category": "UI",
-    "ENG": "[D]Damage: [D]Damage includes both [I]Injury and [S]Stagger.\n\nA phrase saying 'Deal [GREEN]20[/GREEN][D]Damage' means that an attack will inflict both [RED]20[/RED][I]Injury and [PURPLE]20[/PURPLE][S]Stagger.",
+    "ENG": "[D]Damage: [D]Damage includes both [I]Injury and [S]Stagger.\n\nA phrase saying 'Deal [GREEN]100[/GREEN][D]Damage' means that an attack will inflict both [RED]100[/RED][I]Injury and [PURPLE]100[/PURPLE][S]Stagger.\n\nA power-up giving '+[GREEN]50%[/GREEN][D]Damage' will increase [GREEN]100[/GREEN][D] to [GREEN]150[/GREEN][D].\n\nTwo power-ups both giving '+[GREEN]50%[/GREEN][D]Damage' will increase [GREEN]100[/GREEN][D] to [GREEN]200[/GREEN][D] (increases do not scale expotentially, so final result will NOT be [GREEN]225[/GREEN][D]).",
     "PL": ""
   },
   {
     "Label": "Stat_AttackSpeed",
     "Category": "UI",
-    "ENG": "AttackSpeed",
+    "ENG": "Attack Speed",
     "PL": ""
   },
   {
     "Label": "Stat_AttackSpeed_Description",
     "Category": "UI",
-    "ENG": "[AS]AttackSpeed: Determines speed of all Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques).",
+    "ENG": "[AS]Attack Speed: Determines speed of all Basic Attacks, Ripostes, Counters and Backstabs (but not Techniques).",
     "PL": ""
   },
   {
@@ -24474,7 +24401,7 @@
   {
     "Label": "Stat_Stagger_Description",
     "Category": "UI",
-    "ENG": "[S]Stagger: Determines all [S]Stagger inflicted.\n\n[S]Stagger fills up enemy [SB]Stagger Bar (purple bar).\n\nWhen [Staggered]Staggered, enemies lose their [DR]Damage Reduction and become temporarily unable to act.\n\nWhen an enemy is [Staggered]Staggered, player's [S]Stagger decreases enemy [H]Health at 50% effectivness.\n\nWhen the player is [Staggered]Staggered, enemy [S]Stagger is harmless.",
+    "ENG": "[S]Stagger: Determines all [S]Stagger inflicted.\n\n[S]Stagger fills up enemy [SB]Stagger Bar (purple bar).\n\nWhen [Staggered]Staggered, enemies lose their [A]Armor and become temporarily unable to act.\n\nWhen an enemy is [Staggered]Staggered, player's [S]Stagger decreases enemy [H]Health at 50% effectivness.\n\nWhen the player is [Staggered]Staggered, enemy [S]Stagger is harmless.",
     "PL": ""
   },
   {
@@ -24714,7 +24641,7 @@
   {
     "Label": "Stat_TechniqueDamage_Description",
     "Category": "UI",
-    "ENG": "[TD]Technique Damage: Determines all [D]Damage inflicted with [Technique]Techniques (performed by pressing [Ability1Binding], [Ability2Binding], [Ability3Binding] or [Ability4Binding] and paying corresponding [E]Energy cost)",
+    "ENG": "[TD]Technique Damage: Determines all [D]Damage inflicted with [Technique]Techniques (performed by pressing [Ability1ButtonPress], [Ability2ButtonPress], [Ability3ButtonPress] or [Ability4ButtonPress] and paying corresponding [E]Energy cost)",
     "PL": ""
   },
   {
@@ -24726,7 +24653,7 @@
   {
     "Label": "Stat_TechniqueInjury_Description",
     "Category": "UI",
-    "ENG": "[TI]Technique Injury: Determines all [I]Injury inflicted with [Technique]Techniques (performed by pressing [Ability1Binding], [Ability2Binding], [Ability3Binding] or [Ability4Binding] and paying corresponding [E]Energy cost)",
+    "ENG": "[TI]Technique Injury: Determines all [I]Injury inflicted with [Technique]Techniques (performed by pressing [Ability1ButtonPress], [Ability2ButtonPress], [Ability3ButtonPress] or [Ability4ButtonPress] and paying corresponding [E]Energy cost)",
     "PL": ""
   },
   {
@@ -24738,7 +24665,382 @@
   {
     "Label": "Stat_TechniqueStagger_Description",
     "Category": "UI",
-    "ENG": "[TS]Technique Stagger: Determines all [S]Stagger inflicted with [Technique]Techniques (performed by pressing [Ability1Binding], [Ability2Binding], [Ability3Binding] or [Ability4Binding] and paying corresponding [E]Energy cost)",
+    "ENG": "[TS]Technique Stagger: Determines all [S]Stagger inflicted with [Technique]Techniques (performed by pressing [Ability1ButtonPress], [Ability2ButtonPress], [Ability3ButtonPress] or [Ability4ButtonPress] and paying corresponding [E]Energy cost)",
+    "PL": ""
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "Label": "BindingName",
+    "Category": "UI",
+    "ENG": "Action Name",
+    "PL": ""
+  },
+  {
+    "Label": "KeyboardBinding1",
+    "Category": "UI",
+    "ENG": "Keyboard 1st",
+    "PL": ""
+  },
+  {
+    "Label": "KeyboardBinding2",
+    "Category": "UI",
+    "ENG": "Keyboard 2nd",
+    "PL": ""
+  },
+  {
+    "Label": "GamepadBinding1",
+    "Category": "UI",
+    "ENG": "Gamepad 1st",
+    "PL": ""
+  },
+  {
+    "Label": "GamepadBinding2",
+    "Category": "UI",
+    "ENG": "Gamepad 2nd",
+    "PL": ""
+  },
+  {
+    "Label": "RunUpButtonPress",
+    "Category": "UI",
+    "ENG": "Run up",
+    "PL": ""
+  },
+  {
+    "Label": "RunRightButtonPress",
+    "Category": "UI",
+    "ENG": "Run right",
+    "PL": ""
+  },
+  {
+    "Label": "RunDownButtonPress",
+    "Category": "UI",
+    "ENG": "Run down",
+    "PL": ""
+  },
+  {
+    "Label": "RunLeftButtonPress",
+    "Category": "UI",
+    "ENG": "Run left",
+    "PL": ""
+  },
+  {
+    "Label": "BasicAttackButtonPress",
+    "Category": "UI",
+    "ENG": "[BA]Basic Attack",
+    "PL": ""
+  },
+  {
+    "Label": "BlockButtonPress",
+    "Category": "UI",
+    "ENG": "Block",
+    "PL": ""
+  },
+  {
+    "Label": "DodgeButtonPress",
+    "Category": "UI",
+    "ENG": "[Dodge]Dodge",
+    "PL": ""
+  },
+  {
+    "Label": "InteractButtonPress",
+    "Category": "UI",
+    "ENG": "Interact",
+    "PL": ""
+  },
+  {
+    "Label": "Ability1ButtonPress",
+    "Category": "UI",
+    "ENG": "Use Technique 1",
+    "PL": ""
+  },
+  {
+    "Label": "Ability2ButtonPress",
+    "Category": "UI",
+    "ENG": "Use Technique 2",
+    "PL": ""
+  },
+  {
+    "Label": "Ability3ButtonPress",
+    "Category": "UI",
+    "ENG": "Use Technique 3",
+    "PL": ""
+  },
+  {
+    "Label": "Ability4ButtonPress",
+    "Category": "UI",
+    "ENG": "Use Technique 4",
+    "PL": ""
+  },
+  {
+    "Label": "UseItem1ButtonPress",
+    "Category": "UI",
+    "ENG": "Use Item 1",
+    "PL": ""
+  },
+  {
+    "Label": "UseItem2ButtonPress",
+    "Category": "UI",
+    "ENG": "Use Item 2",
+    "PL": ""
+  },
+  {
+    "Label": "UseItemHealingButtonPress",
+    "Category": "UI",
+    "ENG": "Use Health Potion",
+    "PL": ""
+  },
+  {
+    "Label": "ScoutButtonPress",
+    "Category": "UI",
+    "ENG": "Scout (increase field of view)",
+    "PL": ""
+  },
+  {
+    "Label": "RotateStanceLeftButtonPress",
+    "Category": "UI",
+    "ENG": "Change Stance to left",
+    "PL": ""
+  },
+  {
+    "Label": "RotateStanceRightButtonPress",
+    "Category": "UI",
+    "ENG": "Change Stance to right",
+    "PL": ""
+  },
+  {
+    "Label": "EquipHeavyStanceButtonPress",
+    "Category": "UI",
+    "ENG": "Equip [Heavy]Heavy stance",
+    "PL": ""
+  },
+  {
+    "Label": "EquipLightStanceButtonPress",
+    "Category": "UI",
+    "ENG": "Equip [Light]Light stance",
+    "PL": ""
+  },
+  {
+    "Label": "EquipRangedStanceButtonPress",
+    "Category": "UI",
+    "ENG": "Equip [Ranged]Ranged stance",
+    "PL": ""
+  },
+  {
+    "Label": "ToggleTargetButtonPress",
+    "Category": "UI",
+    "ENG": "Change Target",
+    "PL": ""
+  },
+  {
+    "Label": "ToggleMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Menu",
+    "PL": ""
+  },
+  {
+    "Label": "PauseScreenButtonPress",
+    "Category": "UI",
+    "ENG": "Pause",
+    "PL": ""
+  },
+  {
+    "Label": "PrepareUltimateButtonPress",
+    "Category": "UI",
+    "ENG": "Prepare Ultimate Technique",
+    "PL": ""
+  },
+  {
+    "Label": "QuickSaveButtonPress",
+    "Category": "UI",
+    "ENG": "Quick-save",
+    "PL": ""
+  },
+  {
+    "Label": "QuickLoadButtonPress",
+    "Category": "UI",
+    "ENG": "Quick-load",
+    "PL": ""
+  },
+  {
+    "Label": "OpenCharacterMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Character Menu",
+    "PL": ""
+  },
+  {
+    "Label": "OpenInventoryMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Inventory Menu",
+    "PL": ""
+  },
+  {
+    "Label": "OpenSkillTreeMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Skill Tree Menu",
+    "PL": ""
+  },
+  {
+    "Label": "OpenArchiveMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Archive Menu",
+    "PL": ""
+  },
+  {
+    "Label": "OpenTutorialsMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Tutorials Menu",
+    "PL": ""
+  },
+  {
+    "Label": "OpenOptionsMenuButtonPress",
+    "Category": "UI",
+    "ENG": "Open Options Menu",
+    "PL": ""
+  },
+  {
+    "Label": "OpenDebugConsoleButtonPress",
+    "Category": "UI",
+    "ENG": "Open Debug Console",
+    "PL": ""
+  },
+  {
+    "Label": "CheatModeButtonPress",
+    "Category": "UI",
+    "ENG": "Activate Cheat Mode",
+    "PL": ""
+  },
+  {
+    "Label": "ToggleLogsButtonPress",
+    "Category": "UI",
+    "ENG": "Turn Logs On/Off",
+    "PL": ""
+  },
+  {
+    "Label": "ToggleOnScreenLogsButtonPress",
+    "Category": "UI",
+    "ENG": "Turn Log Window On/Off",
+    "PL": ""
+  },
+  {
+    "Label": "GamepadAbilitiesButtonPress",
+    "Category": "UI",
+    "ENG": "Enable Technique 1/Technique 2/Technique 3/Technique 4 Buttons",
+    "PL": ""
+  },
+  {
+    "Label": "GamepadItemsButtonPress",
+    "Category": "UI",
+    "ENG": "Enable Item 1/Item 2/Health Potion/Scout Buttons",
+    "PL": ""
+  },
+  {
+    "Label": "GamepadOnly",
+    "Category": "UI",
+    "ENG": "Gamepad Only",
+    "PL": ""
+  },
+  {
+    "Label": "RestoreDefaultKeybinds",
+    "Category": "UI",
+    "ENG": "Restore Default",
+    "PL": ""
+  },
+  {
+    "Label": "RestoreAlternateKeyboardKeybinds",
+    "Category": "UI",
+    "ENG": "Alternate Keyboard",
+    "PL": ""
+  },
+  {
+    "Label": "RestoreAlternateGamepadKeybinds",
+    "Category": "UI",
+    "ENG": "Alternate Gamepad",
+    "PL": ""
+  },
+  {
+    "Label": "IncorrectKeybindInput",
+    "Category": "UI",
+    "ENG": "Received unexpected input, rebinding was cancelled",
+    "PL": ""
+  },
+  {
+    "Label": "WrongGamepadKeybindInput",
+    "Category": "UI",
+    "ENG": "Received Gamepad input, expected Mouse or Keyboard",
+    "PL": ""
+  },
+  {
+    "Label": "WrongKeyboardKeybindInput",
+    "Category": "UI",
+    "ENG": "Received Mouse or Keyboard input, expected Gamepad",
+    "PL": ""
+  },
+  {
+    "Label": "UnexpectedKeybindError",
+    "Category": "UI",
+    "ENG": "Unexpected error ocurred while trying to change keybind ({0}, {1}, {2})",
+    "PL": ""
+  },
+  {
+    "Label": "InputWaitingRoomLabel",
+    "Category": "UI",
+    "ENG": "Waiting 5 seconds for valid input...",
+    "PL": ""
+  },
+  {
+    "Label": "WaitedTooLongForKeybind",
+    "Category": "UI",
+    "ENG": "Rebind operation was automatically cancelled after 5 seconds of no valid input",
     "PL": ""
   }
 ]

@@ -7,8 +7,8 @@ public class NPCAbility_ThrowTwinBlades: Ability {
 
     public NPCAbility_ThrowTwinBlades(Unit ability_user) : base(ability_user) {
         AddCustomSound("Fly", "Blade/Blade_Fly3", 0.7f);
-        DamageSources.Add(new DamageSource(25, 150, Constants.DamageType.Light) {Knockback = 150});
-        DamageSources.Add(new DamageSource(450, 0, Constants.DamageType.Light, "2") {Knockback = 250});
+        DamageSources.Add(new DamageSource(25, 150, Constants.DamageType.Light) {KnockbackInMeters = 1.5f});
+        DamageSources.Add(new DamageSource(450, 0, Constants.DamageType.Light, "2") {KnockbackInMeters = 2.5f});
     }
 
     public override void CallAbilityEvent4()

@@ -8332,7 +8332,7 @@ MonoBehaviour:
   DistanceAwayFromChaseTarget: 1.1
   UnitColorChange: {fileID: 5770492055223227392}
   HealthBars:
-  - 1800
+  - 18000
   StaggeredRegen: 0
   DefaultStaggerBarRegenPercentage: 2
   StaggerBars:
@@ -8340,12 +8340,12 @@ MonoBehaviour:
   - 700
   BaseInjury: 120
   BaseStagger: 100
-  BaseAttackSpeed: 1
-  BaseMovementSpeed: 1
-  BaseTenacity: 1
-  BaseControl: 1
-  BaseCooldownReduction: 1
-  BaseDamageReduction: 1
+  BaseAttackSpeed: 15
+  BaseMovementSpeed: 25
+  BaseTenacity: -15
+  BaseControl: -25
+  BaseCooldownReduction: 10
+  BaseArmor: 50
 --- !u!1 &5770492055258735909
 GameObject:
   m_ObjectHideFlags: 0

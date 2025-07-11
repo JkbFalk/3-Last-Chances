@@ -28,12 +28,12 @@ public class NPCAbility_DoubleEarthRipper : Ability {
         vfx2.GetComponent<AttachObjectToBodyPart>().BodyPartName = "Light Left";
         vfx2.GetComponent<AttachObjectToBodyPart>().AttachToBone = true;
         vfx2.GetComponent<AttachObjectToBodyPart>().Initialize(User);
-        ChaseCurrentTargetAtGivenDegreeAngle(80, 70, 7);
+        ChaseCurrentTargetAtGivenDegreeAngle(3, 70);
     }
 
     public override void CallAbilityEvent3()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(50, 45, 5);
+        ChaseCurrentTargetAtGivenDegreeAngle(2, 45);
     }
 
     public override void CallAbilityEvent2()

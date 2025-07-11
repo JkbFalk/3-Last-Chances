@@ -26,22 +26,22 @@ public class Effect_DawnAndDusk : Effect {
     public void ApplyBuff() {
         if((InjuryBuff == null || InjuryBuff.EffectEnded) && (StaggerBuff == null || StaggerBuff.EffectEnded)) {
             if(Player.Instance.LightInjury.Current > Player.Instance.LightStagger.Current) {
-                InjuryBuff = new Effect_ChangeStat(Player.Instance.LightInjury, SourceOfEffect) {PercentageModifier = BuffAmount};
+                InjuryBuff = new Effect_ChangeStat(Player.Instance.LightInjury, SourceOfEffect) {PercentageAmount = BuffAmount};
                 Player.Instance.AddEffect(InjuryBuff);
             }
             else {
-                StaggerBuff = new Effect_ChangeStat(Player.Instance.LightStagger, SourceOfEffect) {PercentageModifier = BuffAmount};
+                StaggerBuff = new Effect_ChangeStat(Player.Instance.LightStagger, SourceOfEffect) {PercentageAmount = BuffAmount};
                 Player.Instance.AddEffect(StaggerBuff);
             }
         }
         else if(InjuryBuff != null && !InjuryBuff.EffectEnded) {
             InjuryBuff.EndThisEffect();
-            StaggerBuff = new Effect_ChangeStat(Player.Instance.LightStagger, SourceOfEffect) {PercentageModifier = BuffAmount};
+            StaggerBuff = new Effect_ChangeStat(Player.Instance.LightStagger, SourceOfEffect) {PercentageAmount = BuffAmount};
             Player.Instance.AddEffect(StaggerBuff);
         }
         else {
             StaggerBuff.EndThisEffect();
-            InjuryBuff = new Effect_ChangeStat(Player.Instance.LightInjury, SourceOfEffect) {PercentageModifier = BuffAmount};
+            InjuryBuff = new Effect_ChangeStat(Player.Instance.LightInjury, SourceOfEffect) {PercentageAmount = BuffAmount};
             Player.Instance.AddEffect(InjuryBuff);
         }
 

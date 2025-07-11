@@ -31,8 +31,8 @@ public class Stance_HeatOfBattle : Effect_Stance
         if(IsActive && UnlockedUpgrade2 && damage?.SourceOfDamage?.User != null && damage.SourceOfDamage.User is Player && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Burn)) && damage.TargetOfDamage.IsHostile) {
             base.OnInvokeHitDealt(damage);
             float increaseAmount = damage.TargetOfDamage.GetEffect(typeof(Effect_Burn)).DecayingAmount * 0.5f;
-            damage.ExtraInjuryDealtPercentage += increaseAmount;
-            damage.ExtraStaggerDealtPercentage += increaseAmount;
+            damage.InjuryDealtPercentageModifier += increaseAmount;
+            damage.StaggerDealtPercentageModifier += increaseAmount;
         }
     }
 

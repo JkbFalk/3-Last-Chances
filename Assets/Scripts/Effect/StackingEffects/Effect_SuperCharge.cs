@@ -17,7 +17,7 @@ public class Effect_Supercharge : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
     public override void OnStart()
@@ -60,9 +60,12 @@ public class Effect_Supercharge : Effect
     }
 
     public override void OnInvokeDamageDealt(Damage damage) {
-        if(damage.SourceOfDamage?.User == TargetOfEffect && damage.IsDamageOverTime == false && damage.IsExtraDamage == false) {
-            Damage d = new Damage(damage.TargetOfDamage, new Ability_SourcelessDamage(TargetOfEffect), damage.DamagingObject) {AbilityDamageSource = new(0, 0, Constants.DamageType.None), Injury = DecayingAmount, IsExtraDamage = true, Properties = new() {Damage.DamageProperty.Supercharge}};
-            d.CalculateDamage();
+        if(damage.SourceOfDamage?.User == TargetOfEffect && damage.IsNot(Damage.DamageProperty.DamageOverTime) && damage.IsNot(Damage.DamageProperty.ExtraDamage)) {
+            Damage d = new Damage(damage.TargetOfDamage, new Ability_SourcelessDamage(TargetOfEffect), damage.DamagingObject) {
+                AbilityDamageSource = new(0, 0, Constants.DamageType.None), 
+                Injury = DecayingAmount, 
+                Properties = new() {Damage.DamageProperty.Supercharge, Damage.DamageProperty.ExtraDamage}};
+            d.CalculateAndApplyDamage();
             base.OnInvokeDamageDealt(damage);
         }
     }

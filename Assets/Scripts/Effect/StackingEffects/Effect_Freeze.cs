@@ -7,83 +7,91 @@ using UnityEngine;
 public class Effect_Freeze : Effect
 {
     public GameObject Vfx;
-    public float FreezePercentage = 0;
-    public int FreezeLevel = 0;
-
-    public Effect_ChangeStat MSSlowEffect;
-    public Effect_ChangeCompositeStat ASSlowEffect;
-    public Effect_Freeze(float freeze, SourceOfEffect source_of_effect) : base(source_of_effect)
+    public override int StackingEffectIntensityLevel {
+        get { 
+            return 
+            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 2.5f ? 1 :
+            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 5 ? 2 : 3;
+        }
+    }
+    public Effect_Freeze(float decaying_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
-        _initialDecayingAmount = freeze;
+        _initialDecayingAmount = decaying_amount;
         ShowsInUI = true;
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        Listeners.Add(EventManager.EffectStarted);
     }
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        if(MSSlowEffect == null || ASSlowEffect == null) {
-            return;
-        }
-        FreezePercentage = DecayingAmount / TargetOfEffect.StaggerBar.Maximum * 100 / TargetOfEffect.Tenacity.Current * SourceOfEffect.User.Control.Current;
-        if(FreezePercentage > 100) {
-            FreezePercentage = 100;
-        }
-        EffectIndicatorText = Utils.GetFormattedFloat(FreezePercentage) + "%";
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
         AddVisualEffect();
-        if(TargetOfEffect is not Player) {
-            SpecialSkinColorDuringHardCrowdControl = new Color(0, Utils.GetValueBasedOnMinAndMax(FreezePercentage, 0, 100, 0, 0.5f), Utils.GetValueBasedOnMinAndMax(FreezePercentage, 0, 100, 0, 1));
-        }
-        MSSlowEffect.PercentageModifier = -FreezePercentage / 2;
-        ASSlowEffect.PercentageModifier = -FreezePercentage / 2;
-        if(FreezePercentage >= 100) {
-            TargetOfEffect.AddEffect(new Effect_Frozen(SourceOfEffect), 5);
-            ChangeDecayingAmount(-TargetOfEffect.StaggerBar.Maximum * 0.25f, false);
-        }
-    }
-
-    public override void OnUpdate() {
-        if(TargetOfEffect is not Player) {
-            TargetOfEffect.UnitColorChange.SpecialSkinColor = SpecialSkinColorDuringHardCrowdControl;
-            TargetOfEffect.UnitColorChange.UpdateMaterialProperties();
-        }
     }
 
     public override void OnStart()
     {
         base.OnStart();
-        ASSlowEffect = new Effect_ChangeCompositeStat(TargetOfEffect, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect);
-        MSSlowEffect = new Effect_ChangeStat(TargetOfEffect.MovementSpeed, SourceOfEffect);
-        TargetOfEffect.AddEffect(ASSlowEffect);
-        TargetOfEffect.AddEffect(MSSlowEffect);
         BaseDuration = Constants.DEFAULT_STACKING_EFFECT_BASE_DURATION_IN_SECONDS;
-        ChangeDecayingAmount(DecayingAmount);
+        AddVisualEffect();
+        EventManager.OneTenthSecondElapsedInGame.AddListener(ApplyFreeze);
     }
 
     public override void OnEnd()
     {
         base.OnEnd();
-        ASSlowEffect.EndThisEffect();
-        MSSlowEffect.EndThisEffect();
-        TargetOfEffect.UnitColorChange.SpecialSkinColor = Color.white;
-        TargetOfEffect.UnitColorChange.UpdateMaterialProperties();
-        MonoBehaviour.Destroy(Vfx.gameObject);
+        RemoveVFXs();
+        EventManager.OneTenthSecondElapsedInGame.RemoveListener(ApplyFreeze);
     }
 
     public void AddVisualEffect() {
-        int prevLevel = FreezeLevel;
-        FreezeLevel = 
-        FreezePercentage < 20 ? 1 : FreezePercentage < 40 ? 2 : FreezePercentage < 60 ? 3 : FreezePercentage < 80 ? 4 : 5;
-        if(prevLevel == FreezeLevel) {
+        int prevLevel = StackingEffectIntensityLevel;
+        if(prevLevel == StackingEffectIntensityLevel) {
             return;
         }
-        if(Vfx != null && Vfx.gameObject.IsDestroyed() == false) {
-            MonoBehaviour.Destroy(Vfx.gameObject);
-        }
-        Vfx = Utils.CreateVisualEffect(SourceOfEffect, "Freeze" + FreezeLevel);
-        Vfx.gameObject.name = "VisualEffect_Freeze" + FreezeLevel;
+        RemoveVFXs();
+        Vfx = Utils.CreateVisualEffect(SourceOfEffect, "Freeze" + StackingEffectIntensityLevel);
+        Vfx.gameObject.name = "VisualEffect_Freeze" + StackingEffectIntensityLevel;
         Vfx.transform.SetParent(TargetOfEffect.SpriteRenderers["Upper Body"].Bone);
         Vfx.transform.localPosition = Vector2.zero;
-        Utils.PlaySoundEffect(Vfx.GetComponent<AudioSource>(), "Effect/Effect_Freeze", 0.05f + 0.02f * FreezeLevel);
+        Utils.PlaySoundEffect(Vfx.GetComponent<AudioSource>(), "Effect/Effect_Freeze", 0.05f + 0.03f * StackingEffectIntensityLevel);
+    }
+
+    public void RemoveVFXs() {
+        for(int i = 1; i < 6; i ++) {
+            if(TargetOfEffect.SpriteRenderers["Upper Body"]?.Bone?.transform.Find("VisualEffect_Freeze" + i)?.gameObject != null) {
+                MonoBehaviour.Destroy(TargetOfEffect.SpriteRenderers["Upper Body"].Bone.transform.Find("VisualEffect_Freeze" + i).gameObject);
+            }
+        }
+    }
+
+    public override void OnInvokeEffectStarted(Effect effect) {
+        if(effect.TargetOfEffect == TargetOfEffect && effect.GetType().IsSubclassOf(typeof(Effect_Staggered))) {
+            float freezeDuration = Constants.DEFAULT_HARD_STAGGERED_DURATION + DecayingAmount / Utils.GetExpectedPowerForLevel(Player.Instance.Level) / effect.TargetOfEffect.StaggerBar.Maximum * 50;
+            Debug.Log("FREEZE DURATION CALCULATION: " + freezeDuration);
+            effect.TargetOfEffect.AddEffect(new Effect_Frozen(SourceOfEffect), freezeDuration);
+            GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlace");
+            vfx.transform.SetParent(effect.TargetOfEffect.SpriteRenderers["Upper Body"].Bone);
+            vfx.transform.localPosition = Vector2.zero;
+            float size = 0.7f + StackingEffectIntensityLevel * 0.25f;
+            vfx.transform.localScale = new Vector2(size, size);
+            base.OnInvokeEffectStarted(effect);
+            EndThisEffect();
+        }
+    }
+
+    public void ApplyFreeze()
+    {
+        if (EffectEnded || TargetOfEffect == null)
+        {
+            return;
+        }
+        new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null)
+        {
+            AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None),
+            Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.DamageOverTime },
+            Stagger = DecayingAmount / 10,
+            PlaySoundOnEnemyHit = false
+        }.CalculateAndApplyDamage();
     }
 }

@@ -8,10 +8,10 @@ public class NPCAbility_JumpAndExplosionImpale : Ability {
     public NPCAbility_JumpAndExplosionImpale(Unit ability_user) : base(ability_user) {
         AddCustomSound("Jump", "Explosion/Ground Explosion", 0.6f);
         AddCustomSound("Hit", "Explosion/Explosion1", 0.8f);
-        DamageSources.Add(new DamageSource(100, 600, Constants.DamageType.Heavy) {Knockback = 600});
-        DamageSources.Add(new DamageSource(75, 450, Constants.DamageType.Heavy, "Main AoE") {Knockback = 600});
+        DamageSources.Add(new DamageSource(100, 600, Constants.DamageType.Heavy) {KnockbackInMeters = 6f});
+        DamageSources.Add(new DamageSource(75, 450, Constants.DamageType.Heavy, "Main AoE") {KnockbackInMeters = 6f});
         DamageSources.Add(new DamageSource(150, 0, Constants.DamageType.Heavy, "Weaker AoE"));
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.CounteredByRiposte});
+        Properties.AddRange(new List<Ability.Property> {Property.CounteredByRiposte});
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }

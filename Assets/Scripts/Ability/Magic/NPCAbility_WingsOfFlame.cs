@@ -17,7 +17,7 @@ public class NPCAbility_WingsOfFlame : Ability {
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.5f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)), new Effect_Unstunnable(new(this)) };
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
     }

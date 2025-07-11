@@ -11,7 +11,7 @@ public class NPCAbility_HeelCleaver : Ability {
         DamageSources.Add(new DamageSource(250, 150, Constants.DamageType.Light));
         AddCustomSound("Swing", "Generic/Generic_Swoosh1", 1f);
         HitSoundType = Constants.HitSoundTypeEnum.SmallBlunt;
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.CounteredByBackstep, AbilityProperty.ImmuneToFlinch});
+        Properties.AddRange(new List<Ability.Property> {Property.CounteredByBackstep, Property.ImmuneToFlinch});
         WaitTimeBeforeNextAction = 0.3f;
     }
 }

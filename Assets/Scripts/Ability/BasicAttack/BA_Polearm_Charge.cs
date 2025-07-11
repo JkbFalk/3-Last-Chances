@@ -9,8 +9,8 @@ public class BA_Polearm_Charge : BasicAttack {
     public bool IsDashing = false;
     private int _powerLevel = 0;
     public BA_Polearm_Charge(Unit ability_user) : base(ability_user) {
-        Properties.Add(AbilityProperty.StrongBasicAttack);
-        AddCustomSound("Charge", "Ability/Ability_Snipe_Charge", 0.5f);
+        Properties.Add(Property.StrongBasicAttack);
+        AddCustomSound("Charge", "Ability/Ability_ChargedShot_Charge", 0.5f);
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Heavy));
         TransitionIntoAnimationDuration = 0;
         EffectsAffectingUserDuringAbility = new() {new Effect_Immovable(new(this)), new Effect_Unstunnable(new(this))};
@@ -23,7 +23,7 @@ public class BA_Polearm_Charge : BasicAttack {
 
     public override void CallAbilityEvent1()
     {
-        if(SaveFile.Instance.EquippedHeavyWeapon is not Polearm_ChargeLance || User.Energy.Current < 2 || HoldingMainButton == false) {
+        if(SaveFile.Instance.EquippedHeavyWeapon is not Polearm_ChargeLance || User.Energy.Current < 2 || PlayerControls.BasicAttackButtonHoldDuration == 0) {
             User.PlayAnimation("Polearm_Charge", 0f, 0.52f);
         }
         else {

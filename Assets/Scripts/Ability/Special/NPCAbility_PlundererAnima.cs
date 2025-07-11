@@ -8,10 +8,10 @@ public class NPCAbility_PlundererAnima : Ability {
     private int _counter = 0;
     public NPCAbility_PlundererAnima(Unit ability_user) : base(ability_user) {
         HitSoundType = Constants.HitSoundTypeEnum.SmallSharp;
-        DamageSources.Add(new DamageSource(300, 100, Constants.DamageType.Heavy) {Knockback = 300});
+        DamageSources.Add(new DamageSource(300, 100, Constants.DamageType.Heavy) {KnockbackInMeters = 3f});
         WaitTimeBeforeNextAction = 0.4f;
         AddCustomSound("Use", "Wind/WindSlash", 0.9f);
-        Properties.AddRange(new List<AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CountersBlock, AbilityProperty.CountersRiposte});
+        Properties.AddRange(new List<Property> {Property.ImmuneToFlinch, Property.CountersBlock, Property.CountersRiposte});
         EffectsAffectingUserDuringAbility = new List<Effect> { new Effect_RootedInPlace(new(this)) };
         TransitionIntoAnimationDuration = 0;
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;

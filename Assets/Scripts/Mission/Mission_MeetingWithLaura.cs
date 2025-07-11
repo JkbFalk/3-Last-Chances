@@ -134,7 +134,7 @@ public class Mission_MeetingWithLaura : Mission
         SaveFile.Instance.CurrentMission = new Mission_TrimvineExploration();
         Quest_Exploration exploration = new Quest_Exploration() {Icon = "UI/HouseYellow"};
         Utils.ShowMissionObjective(exploration.Objectives[0]);
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(true);
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button/Text").GetComponent<LabelInitializer>().SetLabel("{FinishMission}");
+        UIManager.Objects.EscapeMissionButton.gameObject.SetActive(true);
+        UIManager.Objects.EscapeMissionButtonLabel.SetLabel("{FinishMission}");
     }
 }

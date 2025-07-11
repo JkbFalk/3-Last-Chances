@@ -12,7 +12,7 @@ public class NPCAbility_ClariseAssassination : Ability {
         DamageSources.Add(new DamageSource(450, 250, Constants.DamageType.Heavy));
         AddCustomSound("Dash1", "Impact/Impact 3", 0.6f);
         AddCustomSound("Dash2", "Grunts/Female Jump 2", 1f);
-        Properties.Add(AbilityProperty.CounteredByBackstep);
+        Properties.Add(Property.CounteredByBackstep);
         WaitTimeBeforeNextAction = 0.1f;
     }
 

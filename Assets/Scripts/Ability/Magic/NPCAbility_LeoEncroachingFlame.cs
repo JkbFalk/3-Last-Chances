@@ -11,11 +11,11 @@ public class NPCAbility_LeoEncroachingFlame : Ability {
     private int _counter = 0;
 
     public NPCAbility_LeoEncroachingFlame(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Magic) {Knockback = -1000});
+        DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Magic) {KnockbackInMeters = -10f});
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 1f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 

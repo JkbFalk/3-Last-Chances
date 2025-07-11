@@ -13,11 +13,11 @@ public class NPCAbility_LeoWindmill : Ability {
     public NPCAbility_LeoWindmill(Unit ability_user) : base(ability_user) {
         AddCustomSound("Appear", "Fire/Fire2", 0.8f);
         AddCustomSound("Waving", "Fire/Fire8", 0.5f);
-        DamageSources.Add(new DamageSource(100, 100, Constants.DamageType.Magic) {Knockback = 200});
+        DamageSources.Add(new DamageSource(100, 100, Constants.DamageType.Magic) {KnockbackInMeters = 2f});
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 1f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 

@@ -6,7 +6,7 @@ public class AttackSpeed : Stat {
 
     public AttackSpeed(Constants.DamageType type, Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         if(stat_owner is Player) {
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find(type.ToString() + "AttackSpeed/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find(type.ToString() + "AttackSpeed/Value").GetComponent<TextMeshProUGUI>();
         }
         Type = type;
         MaximumValue = Type == Constants.DamageType.Heavy ? 1.5f : Type == Constants.DamageType.Light ? 2.5f : 2.0f;

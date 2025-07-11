@@ -13,7 +13,7 @@ public class NPCAbility_BlackBullet : Ability {
         AddCustomSound("Use", "Ice/Ice_Use4", 0.3f);
         HitSoundType = Constants.HitSoundTypeEnum.Magic;
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-        Properties.AddRange(new List<Ability.AbilityProperty> {AbilityProperty.IgnoresImmunityToHits});
+        Properties.AddRange(new List<Ability.Property> {Property.IgnoresImmunityToHits});
     }
 
     public override void CallAbilityEvent1()

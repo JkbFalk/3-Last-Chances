@@ -34,7 +34,7 @@ public class AbilitySelect : MonoBehaviour, IPointerDownHandler, ISelectHandler
         }
         GetComponent<Button>().interactable = SaveFile.Instance.UnlockedAbilities.Contains(AbilityType);
         FieldInfo family = AbilityType.GetField("Family", BindingFlags.Public | BindingFlags.Static);
-        transform.Find("Mask").GetComponent<Image>().color = SaveFile.Instance.UnlockedAbilities.Contains(AbilityType) ? Colors.GetFamilyColor(family.GetValue(null).ToString()) : Color.black;
+        transform.Find("Mask").GetComponent<Image>().color = SaveFile.Instance.UnlockedAbilities.Contains(AbilityType) ? Color.black : Color.grey;
         transform.Find(IsStanceEquippedAbility ? "UI_UpgradesLoadout/1" : "UI_UpgradesOverview/1").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (SaveFile.Instance.AbilitiesMasteryA.Contains(AbilityType) ? "UpgradeUnlocked" : "UpgradeNotUnlocked"), typeof(Sprite)) as Sprite;
         transform.Find(IsStanceEquippedAbility ? "UI_UpgradesLoadout/2" : "UI_UpgradesOverview/2").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (SaveFile.Instance.AbilitiesMasteryB.Contains(AbilityType) ? "UpgradeUnlocked" : "UpgradeNotUnlocked"), typeof(Sprite)) as Sprite;
     }
@@ -49,15 +49,15 @@ public class AbilitySelect : MonoBehaviour, IPointerDownHandler, ISelectHandler
 
     public void OpenAbilitySelection(string ability_being_changed) {
         MenuManager.Instance.ShowAbilityDetails(AbilityType);
-        MenuManager.Instance.transform.Find("Overview Window/Ability Select").gameObject.SetActive(true);
+        MenuManager.Instance.transform.Find("Character Window/Ability Select").gameObject.SetActive(true);
         MenuManager.Instance.HideEnergySelection();
         MenuManager.Instance.HideStanceSelection();
-        MenuManager.Instance.transform.Find("Overview Window/Effects").gameObject.SetActive(false);
+        MenuManager.Instance.transform.Find("Character Window/Effects").gameObject.SetActive(false);
         MenuManager.Instance.AbilityBeingChanged = ability_being_changed;
         EventManager.CancelButtonPressed.AddListener(MenuManager.Instance.HideAbilitySelection);
         EventManager.ExitMenu.AddListener(MenuManager.Instance.HideAbilitySelection);
         if(Settings.Instance.ControlScheme == "Gamepad") {
-            MenuManager.Instance.transform.Find("Overview Window/Ability Select/Abilities/Anima/1").GetComponent<Button>().Select();
+            MenuManager.Instance.transform.Find("Character Window/Ability Select/Abilities/Anima/1").GetComponent<Button>().Select();
         }
     }
 

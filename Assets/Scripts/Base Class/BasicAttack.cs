@@ -2,8 +2,6 @@ using UnityEngine;
 
 public abstract class BasicAttack : Ability {
     public int ComboCounter = 1;
-    public bool ReleasedMainButton = false;
-    public float ButtonHoldDuration = 0;
     private bool _canFollowUpAttack = false;
     protected bool CanFollowUpAttack {
         get {
@@ -14,7 +12,6 @@ public abstract class BasicAttack : Ability {
             CanInterruptCurrentAbility = true;
         }
     }
-    public int ButtonPressedCounter = 1;
     public bool DealingDamage {
         get {
             return (Player.Instance.CurrentStance.WeaponType == Constants.ItemType.Heavy && Player.Instance.SpriteRenderers["Heavy"].Weapon.DealingDamage) ||
@@ -24,28 +21,17 @@ public abstract class BasicAttack : Ability {
 
     public BasicAttack(Unit ability_user) : base(ability_user) {
         CanAlwaysBeInterruptedBy.Add(AbilityInterruptType.StanceSwitch);
-        HoldingMainButton = true;
-        Properties.Add(AbilityProperty.BasicAttack);
+        Properties.Add(Property.BasicAttack);
     }
 
-    public override void OnMainButtonPress() {
-        ButtonPressedCounter++;
-        HoldingMainButton = true;
-        ButtonHoldDuration = 0;
+    public override void OnBasicAttackButtonPress() {
     }
 
-    public override void OnMainButtonRelease() {
-        ReleasedMainButton = true;
-        HoldingMainButton = false;
-        ButtonHoldDuration = 0;
+    public override void OnBasicAttackButtonRelease() {
     }
 
     public override void AdditionalActionsOnUpdate()
     {
-        if(HoldingMainButton)
-        {
-            ButtonHoldDuration += Time.deltaTime;
-        }
     }
 
     public static BasicAttack GetPolearmStrongAttack(int combo_counter) {

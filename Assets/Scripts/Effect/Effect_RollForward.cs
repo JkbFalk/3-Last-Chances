@@ -20,10 +20,10 @@ public class Effect_RollForward : Effect {
     }
 
     public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
-        if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfDamageWorksWithDefensiveAbilities() == false) {
+        if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfInteractsWithCounters() == false) {
             return;
         }
-        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && damage.SourceOfDamage.Is(Ability.AbilityProperty.CounteredByRoll) || (SaveFile.Instance.DifficultyLevel == 0 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter)))
+        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && damage.SourceOfDamage.Is(Ability.Property.CounteredByRoll) || (SaveFile.Instance.DifficultyLevel == 0 && damage.SourceOfDamage.Is(Ability.Property.Counter)))
         {
             damage.DamageWasRiposted = true;
             damage.DamageWasBlocked = true;
@@ -35,10 +35,10 @@ public class Effect_RollForward : Effect {
             roll_counter.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_RollCounter" + variant;
             roll_counter.Target = damage.SourceOfDamage.User;
             UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed = roll_counter;
-            if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.AlreadyGeneratedEnergy))
+            if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
             {
                 UnitCreatingTheEffect.Energy.GenerateEnergy(Constants.EnergyGainSource.Counter, damage.SourceOfDamage.User.IsBoss);
-                UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+                UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
             }
             EventManager.AbilityWasRipostedOrCountered.Invoke(damage.SourceOfDamage, true);
             damage.SourceOfDamage.User.AddEffect(new Effect_RollCountered(SourceOfEffect) {NameOfAnimationToAutoPlay = "RollCountered" + variant}, 4f);
@@ -46,7 +46,7 @@ public class Effect_RollForward : Effect {
             GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, damage.SourceOfDamage.User);
             new Damage(damage.SourceOfDamage.User, roll_counter, null)
                 .SetDamageSource(0,  Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageType)
-                .CalculateDamage();
+                .CalculateAndApplyDamage();
             if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player)
             {
                 CameraController.Instance.ShakeScreen(0.2f, 0.1f);
@@ -57,7 +57,7 @@ public class Effect_RollForward : Effect {
             EndThisEffect();
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
-        else if (SaveFile.Instance.DifficultyLevel == 0 || damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter) == false)
+        else if (SaveFile.Instance.DifficultyLevel == 0 || damage.SourceOfDamage.Is(Ability.Property.Counter) == false)
         {
             float multiplier = 
             !damage.TargetOfDamage.IsStaggered ? 0 : 
@@ -70,21 +70,21 @@ public class Effect_RollForward : Effect {
 
             damage.DecreaseProjectileDurability = false;
 
-            if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.AlreadyGeneratedEnergy))
+            if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
             {
                 Player.Instance.Energy.GenerateEnergy(Constants.EnergyGainSource.Dodge, damage.SourceOfDamage.User.IsBoss);
-                UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+                UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
             }
             EventManager.DamageWasDodged.Invoke(damage, SourceOfEffect.SourceAbility);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
-        else if (SaveFile.Instance.DifficultyLevel > 0 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))
+        else if (SaveFile.Instance.DifficultyLevel > 0 && damage.SourceOfDamage.Is(Ability.Property.Counter))
         {
             damage.Injury *= 0.5f;
             damage.Stagger *= 0.5f;
 
             TargetOfEffect.AddEffect(new Effect_Stun(SourceOfEffect), SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
-            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
+            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {PercentageAmount = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
             base.OnInvokeAfterHitDamageCalculation(damage);
         }
     }

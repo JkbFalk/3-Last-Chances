@@ -13,7 +13,7 @@ public class DebugController : MonoBehaviour
 {
     public static DebugController Instance {
         get {
-            return CanvasElements.UICanvasObject.transform.Find("Debug Console").GetComponent<DebugController>();
+            return UIManager.Objects.DebugConsole.GetComponent<DebugController>();
         }
     }
     public string NotificationToBeSent;
@@ -56,7 +56,7 @@ public class DebugController : MonoBehaviour
 
     public void InputDebugConsoleCommand(string custom_command = null)
     {
-        string command = custom_command != null ? custom_command : CanvasElements.UICanvasObject.transform.Find("Debug Console/Text Area/Text").GetComponent<TextMeshProUGUI>().text;
+        string command = custom_command != null ? custom_command : UIManager.Instance.transform.Find("Debug Console/Text Area/Text").GetComponent<TextMeshProUGUI>().text;
         bool command_was_executed = false;
         bool info_command_executed = false;
         foreach (DebugCommand item in Commands)
@@ -99,7 +99,7 @@ public class DebugController : MonoBehaviour
         if(command_was_executed == false)
         {
             AddDebugConsoleHistoryEntry("Command does not exist: " + command);
-            CanvasElements.UICanvasObject.transform.Find("Debug Console").GetComponent<TMP_InputField>().ActivateInputField();
+            UIManager.Objects.DebugConsole.GetComponent<TMP_InputField>().ActivateInputField();
         }
         else if(info_command_executed == false)
         {
@@ -107,9 +107,9 @@ public class DebugController : MonoBehaviour
         }
         else
         {
-            CanvasElements.UICanvasObject.transform.Find("Debug Console").GetComponent<TMP_InputField>().ActivateInputField();
+            UIManager.Objects.DebugConsole.GetComponent<TMP_InputField>().ActivateInputField();
         }
-        CanvasElements.UICanvasObject.transform.Find("Debug Console").GetComponent<TMP_InputField>().text = "";
+        UIManager.Objects.DebugConsole.GetComponent<TMP_InputField>().text = "";
         ConsoleText = "";
     }
 
@@ -117,8 +117,8 @@ public class DebugController : MonoBehaviour
     {
         Time.timeScale = DebugController.TimeScaleBeforeDebug;
         GameController.Instance.PlayerInput.SwitchCurrentActionMap("Regular");
-        CanvasElements.UICanvasObject.transform.Find("Debug Console").gameObject.SetActive(false);
-        CanvasElements.UICanvasObject.transform.Find("Debug Console").GetComponent<TMP_InputField>().text = "";
+        UIManager.Objects.DebugConsole.gameObject.SetActive(false);
+        UIManager.Objects.DebugConsole.GetComponent<TMP_InputField>().text = "";
         DebugController.ConsoleText = "";
     }
     
@@ -130,7 +130,7 @@ public class DebugController : MonoBehaviour
         {
             console_history += history + "\n";
         }
-        CanvasElements.UICanvasObject.transform.Find("Debug Console/Text Area/History/History Text").GetComponent<TextMeshProUGUI>().text = console_history;
+        UIManager.Instance.transform.Find("Debug Console/Text Area/History/History Text").GetComponent<TextMeshProUGUI>().text = console_history;
     }
 
     public class DebugCommand
@@ -200,11 +200,26 @@ public class DebugController : MonoBehaviour
                     e.EndThisEffect();
                 }
             }
-            superInjury = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new("Cheat")) {IsRemovable = false, PercentageModifier = 100000};
-            superAS = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {IsRemovable = false, PercentageModifier = 100};
-            superDef = new Effect_ChangeStat(Player.Instance.DamageReduction, new("Cheat")) {PercentageModifier = 5000};
-            superRes = new Effect_ChangeStat(Player.Instance.Tenacity, new("Cheat")) {IsRemovable = false, PercentageModifier = 1000};
-            superSpeed = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("Cheat")) {IsRemovable = false, PercentageModifier = 250};
+            superInjury = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new("Cheat")) {
+                IsRemovable = false, 
+                PercentageModifier = 100000
+            };
+            superAS = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {
+                IsRemovable = false,
+                PercentageModifier = 100
+            };
+            superDef = new Effect_ChangeStat(Player.Instance.Armor, new("Cheat")) {
+                IsRemovable = false, 
+                PercentageAmount = 5000
+            };
+            superRes = new Effect_ChangeStat(Player.Instance.Tenacity, new("Cheat")) {
+                IsRemovable = false, 
+                PercentageAmount = 1000
+            };
+            superSpeed = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("Cheat")) {
+                IsRemovable = false, 
+                PercentageAmount = 250
+            };
             foreach(Effect e in new List<Effect> {superInjury, superAS, superDef, superRes, superSpeed}) {
                 Player.Instance.AddEffect(e);
             }
@@ -292,14 +307,26 @@ public class DebugController : MonoBehaviour
     }
 
     public void RefreshSpamMode() {
-        if(SpamModeEnabled) {
-            superCDR = new Effect_ChangeStat(Player.Instance.CooldownReduction, new("Cheat")) {IsRemovable = false, PercentageModifier = 10000};
-            superEG = new Effect_ChangeStat(Player.Instance.Energy, new("Cheat")) {IsRemovable = false, RegenerationFlatModifier = 100};
+        if (SpamModeEnabled)
+        {
+            superCDR = new Effect_ChangeStat(Player.Instance.CooldownReduction, new("Cheat"))
+            {
+                IsRemovable = false,
+                FlatAmount = 1000
+            };
+            superEG = new Effect_ChangeStat(Player.Instance.Energy, new("Cheat"))
+            {
+                IsRemovable = false,
+                RegenerationFlatAmount = 1000
+            };
+            Debug.Log("QQ1: " + Player.Instance.Energy.Current + " , " + Player.Instance.CooldownReduction.Current);
             Player.Instance.AddEffect(superCDR);
             Player.Instance.AddEffect(superEG);
             Player.Instance.RemoveAllCooldowns();
+            Debug.Log("QQ2: " + Player.Instance.Energy.Current + " , " + Player.Instance.CooldownReduction.Current);
         }
-        else {
+        else
+        {
             superCDR.EndThisEffect();
             superEG.EndThisEffect();
         }
@@ -345,8 +372,8 @@ public class DebugController : MonoBehaviour
         foreach(Unit unit in Utils.GetAllUnits(true, true))
         {
             for(int i = 0; i < unit.HealthBars.Count; i++) {
-                Damage damage = new Damage(unit, new Ability_SourcelessDamage(Player.Instance), null).SetDamageSource(10 * unit.Health.Maximum / unit.GetComponent<Unit>().DamageReduction.Current, 0);
-                damage.CalculateDamage();
+                Damage damage = new Damage(unit, new Ability_SourcelessDamage(Player.Instance), null).SetDamageSource(10 * unit.Health.Maximum / unit.GetComponent<Unit>().Armor.Current, 0);
+                damage.CalculateAndApplyDamage();
             }
         }
     }
@@ -358,7 +385,7 @@ public class DebugController : MonoBehaviour
 
     public void ToggleFPSCounter(int param)
     {
-        CanvasElements.UICanvas.FPSCounter.SetActive(param == 1);
+        UIManager.Objects.FPSCounter.SetActive(param == 1);
     }
 
     public void GiveAllItems(int param)

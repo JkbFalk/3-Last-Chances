@@ -9,7 +9,7 @@ using UnityEngine.AI;
 
 public class Tool_Sanctuary : Item
 {
-    public new float[] Duration = new float[] { 20, 22, 24, 26, 30};
+    public float[] Duration = new float[] { 20, 22, 24, 26, 30};
     public float[] MaxDamageBlocked = new float[] { 250, 350, 500, 700, 1000};
     public static float Cooldown = 60;
 
@@ -30,11 +30,17 @@ public class Tool_Sanctuary : Item
         base.OnUse();
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Item/Sanctuary_Use");
         Utils.CreateVisualEffect(new(this), "Sanctuary", Player.Instance.transform.position.x, Player.Instance.transform.position.y);
-        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(this)) { ShowsInUI=true, EffectGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_2"), FirstParameter = MaxDamageBlocked[GradeIndex], ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                    (damage.TargetOfDamage == Player.Instance)),
-                Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                    damage.Injury -= effect.FirstParameter;
-                    damage.Stagger -= effect.FirstParameter;
-                })}, Duration[GradeIndex]);
+        Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(this)) { 
+            ShowsInUI = true, 
+            UIGraphic = Utils.LoadSpriteFromMultiple("Tool Icons", "Tool Icons_2"), 
+            FirstParameter = MaxDamageBlocked[GradeIndex], 
+            ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
+                damage.TargetOfDamage == Player.Instance
+            ),
+            Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
+                damage.Injury -= effect.FirstParameter;
+                damage.Stagger -= effect.FirstParameter;
+            })
+        }, Duration[GradeIndex]);
     }
 }

@@ -6,7 +6,7 @@ public class Tenacity : Stat {
 
     public Tenacity(Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         if(stat_owner is Player) {
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find("Tenacity/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find("Tenacity/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
         Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedControlLevel(stat_owner.Level) : base_amount;
@@ -21,6 +21,6 @@ public class Tenacity : Stat {
 
     public override void UpdateMenuStatDisplayValue()
     {
-        MenuStatDisplay.text = (Current < 1 ? "" : "+") + Utils.GetFormattedFloat((Current - 1) * 100, 0) + "%";
+        MenuStatDisplay.text = (Current < 0 ? "" : "+") + Utils.GetFormattedFloat(Current);
     }
 }

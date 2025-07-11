@@ -5,7 +5,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MasteryUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
+public class MasteryUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler
 {
     public string Ability;
     public Type AbilityType;
@@ -81,11 +81,6 @@ public class MasteryUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHan
     public void OnSelect(BaseEventData eventData)
     {
         MenuManager.Instance.ShowSkillTreeMasteryDetails(this);
-        MenuManager.Instance.SetGamepadIndicator(gameObject);
-    }
-
-    public void OnDeselect(BaseEventData eventData) {
-        CanvasElements.MenuCanvas.GamepadIndicator.SetActive(false);
     }
 
     public void UpdateUnlockedStatus() {

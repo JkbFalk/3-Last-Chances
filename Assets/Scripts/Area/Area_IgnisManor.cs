@@ -53,7 +53,7 @@ public class Area_IgnisManor
     }){DialogueSpeaker=Utils.GetUnit("Blaine_Cycle2"), PlayerStartingPosition = new Vector2(-45f, 1f), PlayerStartingFlipped = false, SpeakerStartingPosition = new Vector2(-42f, 1f), SpeakerStartingFlipped = true, ReturnUnitsToOriginalPositions = false};}
 
     public static void OnEnd_IgnisManor_Cycle2Introduction() {
-        CanvasElements.SetActiveOnCanvasGroup(CanvasElements.UICanvasObject, false);
+        Utils.SetActiveOnCanvasGroup(Utils.CanvasType.UI, false);
         Utils.MoveIntoArea(false, "IgnisVolcano");
     }
 
@@ -70,7 +70,7 @@ public class Area_IgnisManor
     }){DialogueSpeaker=Utils.GetUnit("Guard_Cycle3"), PlayerStartingPosition = new Vector2(-45f, 1f), PlayerStartingFlipped = false, SpeakerStartingPosition = new Vector2(-42f, 1f), SpeakerStartingFlipped = true, ReturnUnitsToOriginalPositions = false};}
 
     public static void OnEnd_IgnisManor_Cycle3Introduction() {
-        CanvasElements.SetActiveOnCanvasGroup(CanvasElements.UICanvasObject, false);
+        Utils.SetActiveOnCanvasGroup(Utils.CanvasType.UI, false);
         Utils.MoveIntoArea(false, "IgnisVolcano_Summit");
     }
 

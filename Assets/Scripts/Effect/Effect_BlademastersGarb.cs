@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class Effect_BlademastersGarb : Effect {
     public float BladedBasicAttackBuff = 0.75f;
-    public float BladedDamageReductionDebuff = -0.25f;
+    public float BladedArmorDebuff = -0.25f;
     public float NonBladedBasicAttackDebuff = -0.25f;
-    public float NonBladedDamageReductionBuff = 0.75f;
-    public Effect_ChangeStat DamageReductionBuff;
-    public Effect_ChangeStat DamageReductionDebuff;
+    public float NonBladedArmorBuff = 0.75f;
+    public Effect_ChangeStat ArmorBuff;
+    public Effect_ChangeStat ArmorDebuff;
 
     public Effect_BlademastersGarb(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
@@ -32,21 +32,21 @@ public class Effect_BlademastersGarb : Effect {
     }
 
     public void Activate() {
-        if((EffectEnded || CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass)) && DamageReductionBuff != null && DamageReductionBuff.EffectEnded == false) {
-            DamageReductionBuff.EndThisEffect();
-            DamageReductionBuff = null;
+        if((EffectEnded || CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass)) && ArmorBuff != null && ArmorBuff.EffectEnded == false) {
+            ArmorBuff.EndThisEffect();
+            ArmorBuff = null;
         }
-        if((EffectEnded || !CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass)) && DamageReductionDebuff != null && DamageReductionDebuff.EffectEnded == false) {
-            DamageReductionDebuff.EndThisEffect();
-            DamageReductionDebuff = null;
+        if((EffectEnded || !CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass)) && ArmorDebuff != null && ArmorDebuff.EffectEnded == false) {
+            ArmorDebuff.EndThisEffect();
+            ArmorDebuff = null;
         }
-        if(!CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass) && (DamageReductionBuff == null || DamageReductionBuff.EffectEnded) && !EffectEnded) {
-            DamageReductionBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = NonBladedDamageReductionBuff};
-            Player.Instance.AddEffect(DamageReductionBuff);
+        if(!CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass) && (ArmorBuff == null || ArmorBuff.EffectEnded) && !EffectEnded) {
+            ArmorBuff = new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {PercentageAmount = NonBladedArmorBuff};
+            Player.Instance.AddEffect(ArmorBuff);
         }
-        if(CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass) && (DamageReductionDebuff == null || DamageReductionDebuff.EffectEnded) && !EffectEnded) {
-            DamageReductionDebuff = new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = BladedDamageReductionDebuff};
-            Player.Instance.AddEffect(DamageReductionDebuff);
+        if(CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass) && (ArmorDebuff == null || ArmorDebuff.EffectEnded) && !EffectEnded) {
+            ArmorDebuff = new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {PercentageAmount = BladedArmorDebuff};
+            Player.Instance.AddEffect(ArmorDebuff);
         }
     }
 
@@ -64,17 +64,17 @@ public class Effect_BlademastersGarb : Effect {
 
     public override void OnInvokeHitDealt(Damage damage)
     {
-        if(damage.SourceOfDamage.User != Player.Instance || damage.SourceOfDamage.IsNot(Ability.AbilityProperty.BasicAttack)) {
+        if(damage.SourceOfDamage.User != Player.Instance || damage.SourceOfDamage.IsNot(Ability.Property.BasicAttack)) {
             return;
         }
         base.OnInvokeHitDealt(damage);
         if(CheckIfIsBladedWeapon(Player.Instance.CurrentStance.WeaponClass)) {
-            damage.ExtraInjuryDealtPercentage += BladedBasicAttackBuff;
-            damage.ExtraStaggerDealtPercentage += BladedBasicAttackBuff;
+            damage.InjuryDealtPercentageModifier += BladedBasicAttackBuff;
+            damage.StaggerDealtPercentageModifier += BladedBasicAttackBuff;
         }
         else {
-            damage.ExtraInjuryDealtPercentage += NonBladedBasicAttackDebuff;
-            damage.ExtraStaggerDealtPercentage += NonBladedBasicAttackDebuff;
+            damage.InjuryDealtPercentageModifier += NonBladedBasicAttackDebuff;
+            damage.StaggerDealtPercentageModifier += NonBladedBasicAttackDebuff;
         }
     }
 

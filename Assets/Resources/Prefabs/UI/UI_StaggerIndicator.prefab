@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6498104536065761941}
   - component: {fileID: 2532920826950868210}
   - component: {fileID: 4845184127472912115}
-  - component: {fileID: 6583930022062022709}
   m_Layer: 0
   m_Name: UI_StaggerIndicator
   m_TagString: Untagged
@@ -156,18 +155,3 @@ MonoBehaviour:
   IsDisappearing: 0
   bouncingBack: 0
   StartGoingInOppositeDirectionAfterDistance: 0
---- !u!114 &6583930022062022709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5367147351842360760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dbda1d0f4b696b4f816ba24b177d0f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DestroyAfterSeconds: 3
-  DestroyTime: 1
-  DetachIfParentDestroyed: 1

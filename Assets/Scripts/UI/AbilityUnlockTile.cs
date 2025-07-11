@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using System.Reflection;
 using UnityEditor.PackageManager;
 
-public class AbilityUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
+public class AbilityUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler
 {
     public string Ability;
     public Type AbilityType;
@@ -50,24 +50,24 @@ public class AbilityUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHan
     public void OnSelect(BaseEventData eventData)
     {
         MenuManager.Instance.ShowSkillTreeAbilityDetails(this);
-        MenuManager.Instance.SetGamepadIndicator(gameObject);
     }
-
-    public void OnDeselect(BaseEventData eventData) {
-        CanvasElements.MenuCanvas.GamepadIndicator.SetActive(false);
-    }
-
-    public void UpdateUnlockedStatus() {
-        if(AbilityType == null) {
+    
+    public void UpdateUnlockedStatus()
+    {
+        if (AbilityType == null)
+        {
             Start();
         }
+        Debug.Log(AbilityType + " , " + Utils.GetGameObjectPath(gameObject));
         FieldInfo family = AbilityType.GetField("Family", BindingFlags.Public | BindingFlags.Static);
-        if(IsUltimateUnlock) {
+        if (IsUltimateUnlock)
+        {
             int row = int.Parse(Row);
-            transform.Find("Mask").GetComponent<Image>().color =(row == 4 && SaveFile.Instance.Level >= 30) || (row != 4 && SaveFile.Instance.Level >= 25) ? Colors.GetFamilyColor(family.GetValue(null).ToString()) : Color.black;
+            transform.Find("Mask").GetComponent<Image>().color = (row == 4 && SaveFile.Instance.Level >= 30) || (row != 4 && SaveFile.Instance.Level >= 25) ? Colors.GetFamilyColor(family.GetValue(null).ToString()) : Color.black;
             transform.parent.parent.Find("ConnectorUltimate/Active").gameObject.SetActive((row == 4 && SaveFile.Instance.Level >= 30) || (row != 4 && SaveFile.Instance.Level >= 25));
         }
-        else {
+        else
+        {
             transform.Find("Mask").GetComponent<Image>().color = SaveFile.Instance.UnlockedAbilities.Contains(AbilityType) ? Colors.GetFamilyColor(family.GetValue(null).ToString()) : Color.black;
         }
     }

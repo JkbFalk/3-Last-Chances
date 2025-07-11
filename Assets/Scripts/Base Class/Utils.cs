@@ -210,7 +210,7 @@ public class Utils {
         bool source_to_the_left_of_target = damage.SourceOfDamage.User.transform.position.x > damage.TargetOfDamage.transform.position.x ? false : true;
         Vector2 direction_vector_towards_target = (damage.TargetOfDamage.transform.position - (damage.SourceOfDamage.User.transform.position + (source_to_the_left_of_target ? Vector3.left : Vector3.right))).normalized;
         if(distance < optimal_distance) {
-            damage.TargetOfDamage.ApplyForce(direction_vector_towards_target * (optimal_distance - distance) * 500, damage.SourceOfDamage);
+            damage.TargetOfDamage.ApplyForce(direction_vector_towards_target * (optimal_distance - distance) * 5, damage.SourceOfDamage);
         }
     }
 
@@ -237,6 +237,7 @@ public class Utils {
             "Wood_Destroy" => UnityEngine.Random.Range(1, 4),
             "Rock_Destroy" => UnityEngine.Random.Range(1, 2),
             "Gun_BasicAttack" => UnityEngine.Random.Range(1, 8),
+            "Cannon_BasicAttack" => UnityEngine.Random.Range(1, 8),
             "Bow_Draw" => UnityEngine.Random.Range(1, 16),
             "Bow_Release" => UnityEngine.Random.Range(1, 13),
             "TurnBookPage" => UnityEngine.Random.Range(1, 5),
@@ -279,7 +280,7 @@ public class Utils {
     }
 
     public static void StopIntermissionMusic(float intermission_time_in_seconds = 0.5f) {
-        if(CanvasElements.Music.clip == DefaultMusic || GameController.Instance.InterruptMusicOnDeath == false) {
+        if(GameController.Objects.Music.clip == DefaultMusic || GameController.Instance.InterruptMusicOnDeath == false) {
             return;
         }
         Utils.CreateAuditLog($"Stopping intermission music ({IntermissionMusic}) and returning to default: {DefaultMusic}" );
@@ -287,12 +288,12 @@ public class Utils {
     }
 
     private static void PlayCrossFadeMusic(AudioClip music_to_play, float intermission_time_in_seconds = 0.5f) {
-        if(CanvasElements.Music.clip == null || CanvasElements.Music.isPlaying == false) {
-            CanvasElements.Music.clip = music_to_play;
-            CanvasElements.Music.Play();
+        if(GameController.Objects.Music.clip == null || GameController.Objects.Music.isPlaying == false) {
+            GameController.Objects.Music.clip = music_to_play;
+            GameController.Objects.Music.Play();
             return;
         }
-        if(CanvasElements.Music.clip == music_to_play && CanvasElements.Music.isPlaying) {
+        if(GameController.Objects.Music.clip == music_to_play && GameController.Objects.Music.isPlaying) {
             return;
         }
         for(int i = 1; i <= 10; i++) {
@@ -304,7 +305,7 @@ public class Utils {
     }
 
     private static void ChangeCurrentMusicVolume(int volume) {
-        CanvasElements.Music.volume = 0.15f * volume / 100f * Settings.Instance.MusicVolume;
+        GameController.Objects.Music.volume = 0.15f * volume / 100f * Settings.Instance.MusicVolume;
     }
 
     public static string GetNameForUnit(Unit unit, string name = "") {
@@ -358,8 +359,8 @@ public class Utils {
     }
 
     private static void ChangeCurrentMusic() {
-        CanvasElements.Music.clip = NextMusic;
-        CanvasElements.Music.Play();
+        GameController.Objects.Music.clip = NextMusic;
+        GameController.Objects.Music.Play();
     }
 
     private static IEnumerator PlayMusicAsync(string music_filename, bool set_music_as_default = false) {
@@ -686,7 +687,7 @@ public class Utils {
             Utils.CreateAuditLog("Starting to move into area: " + area_name);
             UIManager.Instance.ShowBlackScreen(0.3f);
             for(int i = 1; i <= 5; i++) {
-                GameController.Instance.WaitAndRunMethodRealtime(0.05f * i, ChangeCurrentMusicVolume, (int)(CanvasElements.Music.volume * 100 - CanvasElements.Music.volume * 20 * i));
+                GameController.Instance.WaitAndRunMethodRealtime(0.05f * i, ChangeCurrentMusicVolume, (int)(GameController.Objects.Music.volume * 100 - GameController.Objects.Music.volume * 20 * i));
             }
             GameController.Instance.WaitAndRunMethod(0.25f, ShowAreaTransitionScreen);
             GameController.Instance.WaitAndRunMethod(0.3f, ContinueMoveIntoArea, new string[] {area_name, area_display_name, loaded_save ? "true" : "false"});
@@ -701,7 +702,7 @@ public class Utils {
         Utils.CreateAuditLog("Moving into area: " + string_params[0]);
         UIManager.Instance.ToggleLoadingScreen(true);
         if(GameController.Instance.InterruptMusicOnDeath) {
-            CanvasElements.Music.Stop();
+            GameController.Objects.Music.Stop();
         }
         GameController.Instance.DynamicSortingOrders.Clear();
         GameController.Instance.StopAllCoroutines();
@@ -716,7 +717,7 @@ public class Utils {
             Player.Instance.gameObject.SetActive(false);
         }
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(string_params[0], LoadSceneMode.Single);
-        UnityEngine.UI.Slider loadingBar = CanvasElements.TransitionScreen.LoadProgress.GetComponent<UnityEngine.UI.Slider>();
+        UnityEngine.UI.Slider loadingBar = GameController.Objects.TransitionLoadProgress.GetComponent<UnityEngine.UI.Slider>();
         while (!asyncLoad.isDone)
         {
             loadingBar.value = asyncLoad.progress;
@@ -725,10 +726,6 @@ public class Utils {
         Player.ResetPlayer();
         Player.ChangeInCombatDependantUI(false);
         UIManager.Instance.DisplayAreaTransitionScreen(string_params[1] != null ? string_params[1] : string_params[0]);
-        if (string_params[0] != "Tutorial") {
-            CanvasElements.UICanvas.HelpTextOpen.GetComponent<CanvasGroup>().alpha = 0;
-            CanvasElements.UICanvas.HelpTextClosed.GetComponent<CanvasGroup>().alpha = 0;
-        }
         Player.Instance.CurrentArea = string_params[0];
         if(!string.IsNullOrWhiteSpace(DestinationName)) {
             Player.Instance.transform.position = Area.ComponentInstance.transform.Find("Interactables/" + DestinationName).transform.position;
@@ -762,8 +759,8 @@ public class Utils {
         ShouldStartFlipped= false;
         MenuManager.Instance.ResetAndRefreshAllMenus();
         UIManager.Instance.ToggleLoadingScreen(false);
-        CanvasElements.TransitionScreen.LoadProgress.GetComponent<UnityEngine.UI.Slider>().value = 0;
-        CanvasElements.Music.volume = Settings.Instance.MusicVolume * 0.15f;
+        GameController.Objects.TransitionLoadProgress.GetComponent<UnityEngine.UI.Slider>().value = 0;
+        GameController.Objects.Music.volume = Settings.Instance.MusicVolume * 0.15f;
         GameController.Instance.WaitAndRunMethod(0.01f, UpdateFieldOfView);
         EventManager.FinishedLoadingArea.Invoke();
         EventManager.FinishedLoadingArea.RemoveAllListeners();
@@ -804,10 +801,10 @@ public class Utils {
     }
 
     public static void ShowMissionObjective(string title_label, string objective_label, string path_to_graphic, List<string> string_params = null) {
-        DestroyAllChildren(CanvasElements.UICanvas.ObjectivesDisplay.transform);
-        GameObject questDisplayItem = CanvasElements.UICanvas.ObjectivesDisplay.transform.Find(title_label)?.gameObject;
+        DestroyAllChildren(UIManager.Objects.ObjectivesDisplay.transform);
+        GameObject questDisplayItem = UIManager.Objects.ObjectivesDisplay.transform.Find(title_label)?.gameObject;
         if (questDisplayItem == null) {
-            GameObject questDisplay = CanvasElements.UICanvas.ObjectivesDisplay;
+            GameObject questDisplay = UIManager.Objects.ObjectivesDisplay;
             questDisplayItem = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MissionObjective")) as GameObject;
             questDisplayItem.transform.SetParent(questDisplay.transform);
         }
@@ -824,13 +821,13 @@ public class Utils {
     }
 
     public static void ShowMissionObjective(QuestObjective objective) {
-        DestroyAllChildren(CanvasElements.UICanvas.ObjectivesDisplay.transform);
-        GameObject questDisplayItem = CanvasElements.UICanvas.ObjectivesDisplay.transform.Find(objective.ParentQuest.ToString())?.gameObject;
+        DestroyAllChildren(UIManager.Objects.ObjectivesDisplay.transform);
+        GameObject questDisplayItem = UIManager.Objects.ObjectivesDisplay.transform.Find(objective.ParentQuest.ToString())?.gameObject;
         if (questDisplayItem != null) {
             MonoBehaviour.Destroy(questDisplayItem);
         }
         SaveFile.Instance.CurrentObjectiveDisplayed = objective;
-        GameObject questDisplay = CanvasElements.UICanvas.ObjectivesDisplay;
+        GameObject questDisplay = UIManager.Objects.ObjectivesDisplay;
         questDisplayItem = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MissionObjective")) as GameObject;
         questDisplayItem.transform.SetParent(questDisplay.transform);
         questDisplayItem.name = objective.ParentQuest.ToString().Replace("(Clone)", "");
@@ -902,7 +899,7 @@ public class Utils {
         }
         else
         {
-            CanvasElements.UICanvasObject.GetComponent<ConsoleToGUI>().Log("(" + GetTimeStamp() + ") " + log, null, LogType.Log);
+            UIManager.Instance.GetComponent<ConsoleToGUI>().Log("(" + GetTimeStamp() + ") " + log, null, LogType.Log);
         }
     }
 
@@ -914,7 +911,7 @@ public class Utils {
         unit.Animator.SetFloat("Special Animation Speed", (4f - (4f * unit.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime)) / countered.RemainingDuration);
     }
 
-    public static void PushUnitIntoPosition(Unit unit, Vector3 position, Ability source, float intensity = 30)
+    public static void PushUnitIntoPosition(Unit unit, Vector3 position, Ability source, float intensity = 0.35f)
     {
         unit.ApplyForce((position - unit.transform.position) * Vector2.Distance(unit.transform.position, position) * intensity, source);
     }
@@ -938,7 +935,11 @@ public class Utils {
                 if(text.Length > i+5 && (text[i+3] == '[' || text[i+4] == '[')) {
                     if(text.Length > i+5) {
                         string check = text.Substring(i+3, 3);
-                        if(check == "[I]" || check == "[H]") {
+                        if(check == "[D]") {
+                            result += $"<color={Colors.LabelDamage}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "[I]" || check == "[H]") {
                             result += $"<color={Colors.LabelHealth}>";
                             coloring_text = true;
                         }
@@ -953,11 +954,15 @@ public class Utils {
                     }
                     if(text.Length > i+6) {
                         string check = text.Substring(i+3, 4);
-                        if(check == "[HI]" || check == "[LI]" || check == "[RI]" || check == "[MI]" || check == "%[H]" || check == "%[I]") {
+                        if(check == "%[D]" || check == "[HD]" || check == "[LD]" || check == "[RD]" || check == "[MD]" || check == "[TD]" || check == "[WD]") {
+                            result += $"<color={Colors.LabelDamage}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "[HI]" || check == "[LI]" || check == "[RI]" || check == "[MI]" || check == "%[H]" || check == "%[I]" || check == "[TI]" || check == "[WI]") {
                             result += $"<color={Colors.LabelHealth}>";
                             coloring_text = true;
                         }
-                        else if(check == "[HS]" || check == "[LS]" || check == "[RS]" || check == "[MS]" || check == "[SD]" || check == "%[S]" || check == "[SB]") {
+                        else if(check == "[HS]" || check == "[LS]" || check == "[RS]" || check == "[MS]" || check == "[SD]" || check == "%[S]" || check == "[SB]" || check == "[TS]" || check == "[WS]") {
                             result += $"<color={Colors.LabelStagger}>";
                             coloring_text = true;
                         }
@@ -972,11 +977,15 @@ public class Utils {
                     }
                     if(text.Length > i+7) {
                         string check = text.Substring(i+3, 5);
-                        if(check == "%[HI]" || check == "%[LI]" || check == "%[RI]" || check == "%[MI]" ) {
+                        if(check == "%[HD]" || check == "%[LD]" || check == "%[RD]" || check == "%[MD]" || check == "%[TD]" || check == "%[WD]") {
+                            result += $"<color={Colors.LabelDamage}>";
+                            coloring_text = true;
+                        }
+                        else if(check == "%[HI]" || check == "%[LI]" || check == "%[RI]" || check == "%[MI]" || check == "%[TI]" || check == "%[WI]") {
                             result += $"<color={Colors.LabelHealth}>";
                             coloring_text = true;
                         }
-                        else if(check == "%[HS]" || check == "%[LS]" || check == "%[RS]" || check == "%[MS]" || check == "%[SB]") {
+                        else if(check == "%[HS]" || check == "%[LS]" || check == "%[RS]" || check == "%[MS]" || check == "%[SB]" || check == "%[TS]" || check == "%[WS]") {
                             result += $"<color={Colors.LabelStagger}>";
                             coloring_text = true;
                         }
@@ -1095,20 +1104,32 @@ public class Utils {
     }
 
     public static string GetIconForPhrase(string phrase, string effect_name = "") {
-        if(phrase.Contains("Binding")) {
-            if(phrase == "Item1Binding" && Settings.Instance.ControlScheme == "Gamepad") {
-                return GetIconForPhrase("ItemsHighlightBinding") + "+<sprite name=\"Item1BindingGamepad\">";
+        if(phrase.EndsWith("ButtonPress")) {
+            Settings.Keybind keybind = Settings.Instance.Keybinds.FirstOrDefault(k => k.ActionName == phrase);
+            if(keybind == null) {
+                return "???";
             }
-            else if(phrase == "Item2Binding" && Settings.Instance.ControlScheme == "Gamepad") {
-                return GetIconForPhrase("ItemsHighlightBinding") + "+<sprite name=\"Item2BindingGamepad\">";
+            if(phrase == "ManualAim") {
+                return "<sprite name=\"" + (Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + "rightStickup\">";
             }
-            else if(phrase == "Ability1Binding" && Settings.Instance.ControlScheme == "Gamepad") {
-                return GetIconForPhrase("AbilitiesHighlightBinding") + "+<sprite name=\"Ability1BindingGamepad\">";
+            if(phrase == "DetailedDescriptionsButtonPress") {
+                return "<sprite name=\"" + (Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + "start\">";
             }
-            else if(phrase == "HealBinding" && Settings.Instance.ControlScheme == "Gamepad") {
-                return GetIconForPhrase("ItemsHighlightBinding") + "+<sprite name=\"HealBindingGamepad\">";
+            else if(Settings.Instance.ControlScheme == "Keyboard") {
+                return "<sprite name=\"Keyboard_" + keybind.KeyboardBinding1 + "\">";
             }
-            return "<sprite name=\"" + phrase + Settings.Instance.ControlScheme.ToString() + "\">";
+            if(Settings.Instance.ControlScheme == "Gamepad" && phrase.Contains("Ability")) {
+                Settings.Keybind abilitiesKeybind = Settings.Instance.Keybinds.FirstOrDefault(k => k.ActionName == "GamepadAbilitiesButtonPress");
+                return $"<sprite name=\"{(Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + abilitiesKeybind.GamepadBinding1}\">+<sprite name=\"" + (Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + keybind.GamepadBinding1 + "\">";
+            }
+            if(Settings.Instance.ControlScheme == "Gamepad" && (phrase.Contains("Item") || phrase.Contains("Scout"))) {
+                Settings.Keybind itemsKeybind = Settings.Instance.Keybinds.FirstOrDefault(k => k.ActionName == "GamepadItemsButtonPress");
+                return $"<sprite name=\"{(Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + itemsKeybind.GamepadBinding1}\">+<sprite name=\"" + (Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + keybind.GamepadBinding1 + "\">";
+            }
+            else if(Settings.Instance.ControlScheme == "Gamepad") {
+                return "<sprite name=\"" + (Settings.Instance.GamepadType == "Xbox" ? "Xbox_" : "PS_") + keybind.GamepadBinding1 + "\">";
+            }
+            return "???";
         }
         else if(phrase=="RED") {
             return $"<color={Colors.LabelHealth}>";
@@ -1144,11 +1165,18 @@ public class Utils {
             return "</color>";
         }
         else {
-            bool isLinked = PhrasesAndExplanations.ContainsKey(phrase) || Label.ContainsKey("Effect_" + phrase + "_Description");
+            string linkType = 
+                Label.ContainsKey("Stat_" + phrase + "_Description") ? "Stat" :
+                (IconShortcuts.ContainsKey(phrase) && Label.ContainsKey("Stat_" + IconShortcuts[phrase] + "_Description")) ? "StatShort" :
+                Label.ContainsKey("Effect_" + phrase + "_Description") ? "Basic" :
+                (IconShortcuts.ContainsKey(phrase) && Label.ContainsKey("Effect_" + IconShortcuts[phrase] + "_Description")) ? "Short" : "";
             return 
-                (isLinked ? "<link=\"" + (PhrasesAndExplanations.ContainsKey(phrase) ? PhrasesAndExplanations[phrase] : "Effect_" + phrase + "_Description") + ">" : "") + 
+                (linkType == "Stat" ? $"<link=\"Stat_{phrase}_Description>" :
+                linkType == "StatShort" ? $"<link=\"Stat_{IconShortcuts[phrase]}_Description>" :
+                linkType == "Basic" ? $"<link=\"Effect_{phrase}_Description>" : 
+                linkType == "Short" ? $"<link=\"Effect_{IconShortcuts[phrase]}_Description>" : "") +
                 "<sprite name=\"" + (IconShortcuts.ContainsKey(phrase) ? IconShortcuts[phrase] : phrase) + "\">" + 
-                (isLinked ? "</link>" : "");
+                (linkType != "" ? "</link>" : "");
         }
     }
 
@@ -1172,7 +1200,7 @@ public class Utils {
         {"SB", "StaggerBar"},
         {"E", "Energy"},
         {"EG", "EnergyGain"},
-        {"DR", "DamageReduction"},
+        {"A", "Armor"},
         {"T", "Tenacity"},
         {"CD", "Cooldown"},
         {"CDR", "CooldownReduction"},
@@ -1191,49 +1219,8 @@ public class Utils {
         {"WS", "WeaponStagger"},
         {"TD", "TechniqueDamage"},
         {"TI", "TechniqueInjury"},
-        {"TS", "TechniqueStagger"}
-    };
-
-    public static Dictionary<string, string> PhrasesAndExplanations = new Dictionary<string, string> {
-        {"D", "Stat_Damage_Description"},
-        {"I", "Stat_Injury_Description"},
-        {"S", "Stat_Stagger_Description"},
-        {"HD", "Stat_HeavyDamage_Description"},
-        {"LD", "Stat_LightDamage_Description"},
-        {"RD", "Stat_RangedDamage_Description"},
-        {"MD", "Stat_MagicDamage_Description"},
-        {"WD", "Stat_WeaponDamage_Description"},
-        {"TD", "Stat_TechniqueDamage_Description"},
-        {"HI", "Stat_HeavyInjury_Description"},
-        {"LI", "Stat_LightInjury_Description"},
-        {"RI", "Stat_RangedInjury_Description"},
-        {"MI", "Stat_MagicInjury_Description"},
-        {"WI", "Stat_WeaponInjury_Description"},
-        {"TI", "Stat_TechniqueInjury_Description"},
-        {"HS", "Stat_HeavyStagger_Description"},
-        {"LS", "Stat_LightStagger_Description"},
-        {"RS", "Stat_RangedStagger_Description"},
-        {"MS", "Stat_MagicStagger_Description"},
-        {"WS", "Stat_WeaponStagger_Description"},
-        {"TS", "Stat_TechniqueStagger_Description"},
-        {"H", "Stat_Health_Description"},
-        {"SB", "Stat_StaggerBar_Description"},
-        {"E", "Stat_Energy_Description"},
-        {"EG", "Stat_EnergyGain_Description"},
-        {"DR", "Stat_DamageReduction_Description"},
-        {"T", "Stat_Tenacity_Description"},
-        {"CD", "Stat_Cooldown_Description"},
-        {"CDR", "Stat_CooldownReduction_Description"},
-        {"C", "Stat_Control_Description"},
-        {"MOV", "Stat_MovementSpeed_Description"},
-        {"MOVE", "Stat_MovementSpeed_Description"},
-        {"SPEED", "Stat_MovementSpeed_Description"},
-        {"SP", "Stat_MovementSpeed_Description"},
-        {"AS", "Stat_AttackSpeed_Description"},
-        {"HAS", "Stat_HeavyAttackSpeed_Description"},
-        {"LAS", "Stat_LightAttackSpeed_Description"},
-        {"RAS", "Stat_RangedAttackSpeed_Description"},
-        {"MAS", "Stat_MagicAttackSpeed_Description"}
+        {"TS", "TechniqueStagger"},
+        {"BA", "BasicAttack"},
     };
 
     public static bool CheckIfPlayerIsFacingUnit(Unit unit)
@@ -1276,20 +1263,20 @@ public class Utils {
 
     public static void ShowLevelUpSelection(List<string> selection)
     {
-        if(SaveFile.Instance.SkillTreeSurvivalType) {
+        /*if(SaveFile.Instance.SkillTreeSurvivalType) {
             return;
         }
         GameController.Instance.GameplayMode = Constants.GameplayMode.InfoPrompt;
-        PassiveSelect passive_select = CanvasElements.LevelUpPassives.GetComponent<PassiveSelect>();
+        PassiveSelect passive_select = GameController.GameObjects.LevelUpPassives.GetComponent<PassiveSelect>();
         passive_select.PassiveList1 = selection;
         passive_select.PassiveList2 = new List<string> {};
-        passive_select.InitializeOptions();
+        passive_select.InitializeOptions();*/
     }
 
     public static string GetFormattedFloat(float number, int force_show_decimals = -1)
     {
         if(force_show_decimals == -1) {
-            return Math.Round(number, 1).ToString().Replace(",", ".");
+            return number < 100 ? Math.Round(number, 1).ToString().Replace(",", ".") : Math.Round(number, 0).ToString().Replace(",", ".");
         }
         else if(force_show_decimals == 0) {
             return Math.Round(number, 0).ToString().Replace(",", ".");
@@ -1495,6 +1482,9 @@ public class Utils {
 	}
     public static string GetGameObjectPath(GameObject obj)
     {
+        if(obj == null) {
+            return "null";
+        }
         string path = "/" + obj.name;
         while (obj.transform.parent != null)
         {
@@ -1508,9 +1498,22 @@ public class Utils {
         return (unit.Actions.IsFlipped && unit_to_check_if_in_front.transform.position.x < unit.transform.position.x) || (!unit.Actions.IsFlipped && unit_to_check_if_in_front.transform.position.x > unit.transform.position.x);
     }
 
+    public static void UpdateIndicatorScaleBasedOnTime(GameObject indicator, float remaining_time) {
+        if(indicator == null) {
+            return;
+        }
+        else if(remaining_time <= 0) {
+            indicator.transform.localScale = new Vector3(1, 1, 1);
+            return;
+        }
+        else {
+            indicator.transform.localScale = new Vector3(1 + remaining_time * (Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE - 1) * 10, 1 + remaining_time * (Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE - 1) * 10, 1);
+        }
+    }
+
     public static void CopyItemAppearanceForPlayer(Constants.ItemType type, string prefab_name)
     {
-        GameObject item_to_copy_appearance_from = MonoBehaviour.Instantiate(Resources.Load("Prefabs/" + type + "/" + prefab_name)) as GameObject;
+        GameObject item_to_copy_appearance_from = MonoBehaviour.Instantiate(Resources.Load(type == ItemType.None ? $"Prefabs/{prefab_name}" : $"Prefabs/{type}/{prefab_name}")) as GameObject;
         if (type == ItemType.Heavy)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers[type.ToString()].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
@@ -1548,7 +1551,7 @@ public class Utils {
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Hair"].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
         }
-        else if (type == ItemType.Armor)
+        else if (type == ItemType.Outfit)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Lower Body"].SpriteRenderer.gameObject, item_to_copy_appearance_from.gameObject, false);
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Upper Body"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.Find("Lower Body Bone/Upper Body").gameObject, false);
@@ -1574,7 +1577,7 @@ public class Utils {
                 FlipNonSymmetricSpritePlacement("Foot", Player.Instance);
             }
         }
-        else if (type == ItemType.Tool || type == ItemType.Quest)
+        else if (type == ItemType.Tool || type == ItemType.Quest || type == ItemType.None)
         {
             CopyGameObjectAppearance(Player.Instance.SpriteRenderers["Consumable"].SpriteRenderer.gameObject, item_to_copy_appearance_from.transform.gameObject, false);
             Player.Instance.SpriteRenderers["Consumable"].SpriteRenderer.transform.localScale = Vector3.one;
@@ -1638,7 +1641,8 @@ public class Utils {
         {
             field.SetValue(element_sprite_color_change, field.GetValue(replacemenet_sprite_color_change));
         }
-        if(copy_from.transform.childCount > 0 && copy_from.transform.GetChild(0).gameObject.name.Contains("Bone")) {
+        if (copy_from.transform.childCount > 0 && copy_from.transform.GetChild(0).gameObject.name.Contains("Bone"))
+        {
             copy_into.transform.GetChild(0).localScale = copy_from.transform.GetChild(0).localScale;
         }
 
@@ -1721,16 +1725,30 @@ public class Utils {
         return null;
     }
 
+    public static float GetEffectiveCrowdControlDuration(Unit source_of_cc, Unit target_of_cc) {
+        float controlVsTenacity = source_of_cc.Control.Current - target_of_cc.Tenacity.Current;
+        if(controlVsTenacity >= 0) {
+            return 1 + controlVsTenacity / 100;
+        }
+        else {
+            return 1 / (1 + Math.Abs(controlVsTenacity / 100));
+        }
+    }
+
     public static Projectile CreateProjectile(SourceOfEffect source, string prefab_name, float pos_x = 0, float pos_y = 0)
     {
         if(Area.Instance == null) {
             return null;
         }
         GameObject new_projectile;
-        if(prefab_name == "GunBasicAttack" && source.User.CheckIfUnderEffect(typeof(Effect_CuttingWind_Ultimate)) && ((Effect_CuttingWind_Ultimate)source.User.GetEffect(typeof(Effect_CuttingWind_Ultimate))).DamageCategory == DamageType.Ranged) {
+        if(prefab_name == "GunBasicAttack" && source.User.CheckIfUnderEffect(typeof(Effect_ShadowInfusion_Ultimate)) && ((Effect_ShadowInfusion_Ultimate)source.User.GetEffect(typeof(Effect_ShadowInfusion_Ultimate))).DamageCategory == DamageType.Ranged) {
             new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_SpiritWeapon")) as GameObject;
         }
-        else {
+        else if(prefab_name == "CannonBasicAttack" && Player.Instance.CurrentStance.StanceEffect is not Stance_None) {
+            new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_CannonBasicAttack")) as GameObject;
+        }
+        else
+        {
             new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_" + prefab_name)) as GameObject;
         }
         new_projectile.name = prefab_name;
@@ -1840,5 +1858,56 @@ public class Utils {
             }
         }
         return result;
+    }
+
+    public static Dictionary<string, GameObject> PathsToGameObjects = new Dictionary<string, GameObject>();
+    public static GameObject GetGameObject(string path) {
+        if (GameController.Instance == null || String.IsNullOrWhiteSpace(path))
+        {  
+            return null;
+        }
+        if (PathsToGameObjects.ContainsKey(path)) {
+            return PathsToGameObjects[path];
+        }
+        GameObject foundGameObject = GameController.Instance.transform.Find(path)?.gameObject;
+        if(foundGameObject == null) {
+            return null;
+        }
+        PathsToGameObjects.Add(path, foundGameObject);
+        return foundGameObject;
+    }
+
+    public static Dictionary<string, Behaviour> PathsToComponents = new Dictionary<string, Behaviour>();
+    public static Behaviour GetComponent(string path, Type component_type) {
+        if (GameController.Instance == null || String.IsNullOrWhiteSpace(path))
+        {  
+            return null;
+        }
+        if (PathsToComponents.ContainsKey(path)) {
+            return PathsToComponents[path];
+        }
+        Behaviour foundComponent = GameController.Instance.transform.Find(path)?.GetComponent(component_type) as Behaviour;
+        if(foundComponent == null) {
+            return null;
+        }
+        PathsToComponents.Add(path, foundComponent);
+        return foundComponent;
+    }
+
+    public enum CanvasType {UI, Menu, Shop, StartScreen}
+
+    public static void SetActiveOnCanvasGroup(CanvasType canvas_type, bool is_active)
+    {
+        GameObject gameObject = 
+            canvas_type == CanvasType.UI ? UIManager.Instance?.gameObject : 
+            canvas_type == CanvasType.Menu ? MenuManager.Instance?.gameObject : 
+            canvas_type == CanvasType.Shop ? GameController.Objects.Shop?.gameObject :
+            canvas_type == CanvasType.StartScreen ? Utils.GetSceneRootObject("Start Screen")?.gameObject : null;
+        if(gameObject != null) {
+            CanvasGroup item = gameObject.GetComponent<CanvasGroup>();
+            item.alpha = is_active ? 1 : 0;
+            item.interactable = is_active;
+            item.blocksRaycasts = is_active;
+        }
     }
 }

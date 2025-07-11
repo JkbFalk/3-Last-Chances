@@ -12,7 +12,7 @@ public class NPCAbility_BackstepFanThrow : Ability {
     }
 
     public override void CallAbilityEvent1() {
-        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * 600 * User.MovementSpeed.Current : Vector2.left * 600 * User.MovementSpeed.Current, this);
+        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * 6 * (1 + User.MovementSpeed.Current / 100) : Vector2.left * 6 * (1 + User.MovementSpeed.Current / 100), this);
     }
 
     public override void CallAbilityEvent2() {

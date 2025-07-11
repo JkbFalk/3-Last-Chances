@@ -12,7 +12,7 @@ public class BA_Gun_F : BasicAttack {
 
     public override void CallAbilityEvent1()
     {
-        if (HoldingMainButton && ButtonPressedCounter == 1)
+        if (PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS && PlayerControls.BasicAttackButtonPressCounter == 1)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_S)))
             {
@@ -21,7 +21,7 @@ public class BA_Gun_F : BasicAttack {
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_S(User);
         }
-        else if(ButtonHoldDuration > 0.2f && ButtonPressedCounter > 1)
+        else if(PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS  && PlayerControls.BasicAttackButtonPressCounter > 1)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FS)))
             {
@@ -30,7 +30,7 @@ public class BA_Gun_F : BasicAttack {
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_FS(User);
         }
-        else if (ButtonPressedCounter > 1)
+        else if (PlayerControls.BasicAttackButtonPressCounter > 1)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
             {
@@ -38,7 +38,6 @@ public class BA_Gun_F : BasicAttack {
                 return;
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_FF(User);
-            ((BA_Gun_FF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
         }
     }
 
@@ -53,9 +52,9 @@ public class BA_Gun_F : BasicAttack {
         }
     }
 
-    public override void OnMainButtonPress()
+    public override void OnBasicAttackButtonPress()
     {
-        base.OnMainButtonPress();
+        base.OnBasicAttackButtonPress();
         if (CanFollowUpAttack)
         {
             if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
@@ -64,7 +63,6 @@ public class BA_Gun_F : BasicAttack {
                 return;
             }
             User.Actions.CurrentAbilityBeingPerformed = new BA_Gun_FF(User);
-            ((BA_Gun_FF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
         }
     }
 

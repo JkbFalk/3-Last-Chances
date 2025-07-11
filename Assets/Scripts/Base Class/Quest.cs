@@ -52,7 +52,7 @@ public class Quest {
         set {
             if (_displayedTitle != value) {
                 _displayedTitle = value;
-                GameObject questDisplayItem = CanvasElements.UICanvas.ObjectivesDisplay.transform.Find(GetType().Name)?.gameObject;
+                GameObject questDisplayItem = UIManager.Objects.ObjectivesDisplay.transform.Find(GetType().Name)?.gameObject;
                 if (questDisplayItem != null) {
                     questDisplayItem.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _displayedTitle;
                 }
@@ -78,14 +78,14 @@ public class Quest {
     }
 
     public void ChangeQuestTitleDisplay(string title_to_display) {
-        GameObject questDisplayItem = CanvasElements.UICanvas.ObjectivesDisplay.transform.Find(GetType().Name)?.gameObject;
+        GameObject questDisplayItem = UIManager.Objects.ObjectivesDisplay.transform.Find(GetType().Name)?.gameObject;
         if (questDisplayItem != null) {
             questDisplayItem.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = title_to_display;
         }
     }
 
     public void ChangeQuestDescriptionDisplay(string description_to_display) {
-        GameObject questDisplayItem = CanvasElements.UICanvas.ObjectivesDisplay.transform.Find(GetType().Name)?.gameObject;
+        GameObject questDisplayItem = UIManager.Objects.ObjectivesDisplay.transform.Find(GetType().Name)?.gameObject;
         if (questDisplayItem != null) {
             questDisplayItem.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = description_to_display;
         }

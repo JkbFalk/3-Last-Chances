@@ -10,29 +10,38 @@ using System.Net.Http.Headers;
 using Unity.VisualScripting;
 
 public class Effect {
-
     public bool RemainsActiveInOtherStances = false;
     public bool IsRemovable { get; set; } = true;
     public enum EffectType { Buff, Debuff, Neutral };
+    protected float _flatAmount = 0;
+    public virtual float FlatAmount
+    {
+        get => _flatAmount;
+        set { _flatAmount = value; }
+    }
+    protected float _percentageAmount = 0;
+    public virtual float PercentageAmount
+    {
+        get => _percentageAmount;
+        set { _percentageAmount = value; }
+    }
     public float FirstParameter = 0;
     public float SecondParameter = 0;
     public float ThirdParameter = 0;
     public string Id;
     private List<Effect> _effectModifiers;
     public bool ShowsInMenu = true;
-    public string DescriptionLabel;
+    public float NewEffectIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
     public virtual int StackingEffectIntensityLevel {
         get { return 0;}
     }
     public bool CountsAsSeparateEffect = true;
     public bool HasLinearScaling = true;
     public List<Stat> ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat>();
-    public bool IsFlatIncreaseStatIncrease = false;
 
     public Effect(SourceOfEffect source_of_effect) {
         SourceOfEffect = source_of_effect;
     }
-    public String EffectTypeName;
 
     public float PowerBudget = 0;
 
@@ -52,31 +61,55 @@ public class Effect {
     public bool InstantlyTransitionIntoAnimation = false;
     public EffectType Type = EffectType.Neutral;
     public GameObject VisualEffectOnTarget;
-    public Image EffectIndicatorCooldownDisplay;
+    public Image UICooldownDisplay;
     public List<Effect> AdditionalEffectsAffectingTargetDuringEffect = new List<Effect>();
-    public string PathToEffectGraphic;
-    public Sprite EffectGraphic;
+    public string PathToUIGraphic;
+    public Sprite UIGraphic;
+    public GameObject TileInUI;
     public bool AutoPlayEffectAnimation = false;
     public Color SpecialSkinColorDuringHardCrowdControl = Color.white;
     public bool SlowlyFadeOutColor = false;
     public bool EffectEnded = false;
     public Unit TargetOfEffect { get; set; }
-    public Unit UnitCreatingTheEffect { get; set; }
+    public Unit UnitCreatingTheEffect {
+        get {
+            if(SourceOfEffect != null && SourceOfEffect.SourceUnit != null) {
+                return SourceOfEffect.SourceUnit;
+            }
+            else if(SourceOfEffect != null && SourceOfEffect.SourceAbility != null) {
+                return SourceOfEffect.SourceAbility.User;
+            }
+            else return TargetOfEffect;
+        }
+    }
     public SourceOfEffect SourceOfEffect;
     private float _baseDuration = 0;
     public string SoundEffectName;
     public string Identifier = "";
-    public bool ShowsInUI = false;
-    public string HideInUIWhileCooldownWithIdExists = "";
-    private string _effectIndicatorText = "";
-    public string EffectIndicatorText {
-        get => _effectIndicatorText;
+    private bool _showsInUI = false;
+    public bool ShowsInUI {
+        get => _showsInUI;
         set {
-            if(value != _effectIndicatorText) {
-                _effectIndicatorText = value;
+            bool prevValue = _showsInUI;
+            _showsInUI = value;
+            if(!prevValue && _showsInUI) {
+                ShowInUI();
             }
-            if(EffectIndicatorCooldownDisplay != null) {
-                EffectIndicatorCooldownDisplay.transform.parent.Find("Text").GetComponent<TextMeshProUGUI>().text = _effectIndicatorText;
+            else if(prevValue && !_showsInUI) {
+                MonoBehaviour.Destroy(TileInUI);
+            }
+        }
+    }
+    public string HideInUIWhileCooldownWithIdExists = "";
+    private string _uiText = "";
+    public string UIText {
+        get => _uiText;
+        set {
+            if(value != _uiText) {
+                _uiText = value;
+            }
+            if(UICooldownDisplay != null) {
+                UICooldownDisplay.transform.parent.Find("Text").GetComponent<TextMeshProUGUI>().text = _uiText;
             }
         }
     }
@@ -88,7 +121,7 @@ public class Effect {
         set {
             if (SourceOfEffect != null && (IsHardCrowdControl() || IsSoftCrowdControl() || Type == EffectType.Debuff))
             {
-                _baseDuration = ScaleWithControlAndTenacity ? value * SourceOfEffect.User.Control.Current / TargetOfEffect.Tenacity.Current : value;
+                _baseDuration = ScaleWithControlAndTenacity ? value * Utils.GetEffectiveCrowdControlDuration(SourceOfEffect.User, TargetOfEffect) : value;
             }
             else
             {
@@ -110,22 +143,6 @@ public class Effect {
     public bool IsSoftCrowdControl()
     {
         return GetType().IsSubclassOf(typeof(Effect_SoftCrowdControl));
-    }
-
-    
-    public Effect SetTargetOfEffect(Unit target_of_effect) {
-        TargetOfEffect = target_of_effect;
-        return this;
-    }
-
-    public Effect SetSourceOfEffect(Unit source_of_effect) {
-        UnitCreatingTheEffect = source_of_effect;
-        return this;
-    }
-
-    public Effect SetAbilityCreatingThisEffect(Ability ability_creating_this_effect) {
-        SourceOfEffect.SourceAbility = ability_creating_this_effect;
-        return this;
     }
 
     public float RemainingDuration { get; set; } = 0;
@@ -196,6 +213,9 @@ public class Effect {
     }
 
     public List<Effect> GetEffectModifiers() {
+        if(TargetOfEffect?.CurrentEffects == null) {
+            return new List<Effect>();
+        }
         return TargetOfEffect.CurrentEffects.Concat(TargetOfEffect == SourceOfEffect.User ? new(){} : SourceOfEffect.User.CurrentEffects).Where(effect => 
             effect.GetType() == typeof(Effect_ChangeEffectPower) 
             && 
@@ -216,7 +236,9 @@ public class Effect {
     }
 
     public virtual bool CheckIfEffectAlreadyAppliedAndHandleBehaviour() {
-        ChangeDecayingAmount(_initialDecayingAmount);
+        if(_initialDecayingAmount != 0) {
+            ChangeDecayingAmount(_initialDecayingAmount);
+        }
         Effect existingEffect = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect.GetType() == GetType() && effect != this);
         if(existingEffect != null) {
             if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDecayingAmount) {
@@ -246,29 +268,26 @@ public class Effect {
         return false;
     }
 
-    public void DisplayEffectIndicatorAboveTarget() {
-        if (PathToEffectGraphic == null) { 
-            PathToEffectGraphic = "Effect/" + GetType().ToString().Replace("Effect_", "");
+    public void ShowInUI() {
+        if(TargetOfEffect == null || (TileInUI != null && !TileInUI.IsDestroyed())) {
+            return;
         }
-        if(TargetOfEffect is Player) {
-            Transform effectsDisplay = CanvasElements.UICanvas.Effects.transform;
-            GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
-            effectIndicator.GetComponent<Image>().sprite = Type == EffectType.Buff ? Resources.Load("Sprites/UI/BuffEffectIcon", typeof(Sprite)) as Sprite : Type == EffectType.Debuff ? Resources.Load("Sprites/UI/DebuffEffectIcon", typeof(Sprite)) as Sprite : Resources.Load("Sprites/UI/EffectIcon", typeof(Sprite)) as Sprite;
-            effectIndicator.transform.SetParent(effectsDisplay, false);
-            effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = EffectGraphic == null ? Resources.Load("Sprites/" + PathToEffectGraphic, typeof(Sprite)) as Sprite : EffectGraphic;
-            effectIndicator.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = EffectIndicatorText;
-            EffectIndicatorCooldownDisplay = effectIndicator.transform.Find("CooldownDisplay").GetComponent<Image>();
-            EffectIndicatorCooldownDisplay.fillAmount = 0;
+        if (PathToUIGraphic == null) { 
+            PathToUIGraphic = "Effect/" + GetType().ToString().Replace("Effect_", "");
         }
-        else {
-            Transform effectsDisplay = TargetOfEffect.EffectDisplay.transform;
-            GameObject effectIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_EffectIcon")) as GameObject;
-            effectIndicator.GetComponent<Image>().sprite = Type == EffectType.Buff ? Resources.Load("Sprites/UI/BuffEffectIcon", typeof(Sprite)) as Sprite : Type == EffectType.Debuff ? Resources.Load("Sprites/UI/DebuffEffectIcon", typeof(Sprite)) as Sprite : Resources.Load("Sprites/UI/EffectIcon", typeof(Sprite)) as Sprite;
-            effectIndicator.transform.SetParent(effectsDisplay, false);
-            effectIndicator.transform.Find("EffectImage").GetComponent<Image>().sprite = EffectGraphic == null ? Resources.Load("Sprites/" + PathToEffectGraphic, typeof(Sprite)) as Sprite : EffectGraphic;
-            effectIndicator.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = EffectIndicatorText;
-            EffectIndicatorCooldownDisplay = effectIndicator.transform.Find("CooldownDisplay").GetComponent<Image>();
-            EffectIndicatorCooldownDisplay.fillAmount = 0;
+        if(TargetOfEffect is Player || TargetOfEffect.IsBoss == false || TargetOfEffect.OnScreenBars != null) {
+            Transform effectsDisplay = 
+                TargetOfEffect is Player ? UIManager.Objects.Effects.transform : 
+                TargetOfEffect.IsBoss ? TargetOfEffect.OnScreenBars.transform.Find("Effects") : 
+                TargetOfEffect.transform.Find("World Space Canvas/Effects");
+            TileInUI = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_Effect" + Type.ToString())) as GameObject;
+            TileInUI.transform.SetParent(effectsDisplay, false);
+            TileInUI.transform.Find("EffectImage").GetComponent<Image>().sprite = UIGraphic == null ? Resources.Load("Sprites/" + PathToUIGraphic, typeof(Sprite)) as Sprite : UIGraphic;
+            TileInUI.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = UIText;
+            TileInUI.transform.localScale = new Vector3(Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, 1);
+            NewEffectIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
+            UICooldownDisplay = TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>();
+            UICooldownDisplay.fillAmount = 0;
         }
     }
 
@@ -299,12 +318,12 @@ public class Effect {
             Utils.PlaySoundEffect(TargetOfEffect.AudioSource, "Effect/" + (SoundEffectName != null ? SoundEffectName : GetType()), SoundEffectVolume);
         }
         if(ShowsInUI && (HideInUIWhileCooldownWithIdExists == "" || !TargetOfEffect.CheckIfEffectIsOnCooldown(HideInUIWhileCooldownWithIdExists))) {
-            DisplayEffectIndicatorAboveTarget();
+            ShowInUI();
         }
         AddListeners();
         if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDecayingAmount) {
             _effectModifiers = GetEffectModifiers();
-            EventManager.OneFifthSecondElapsedInGame.AddListener(ActivateEffectAmountDecay);
+            EventManager.OneTenthSecondElapsedInGame.AddListener(ActivateEffectAmountDecay);
             EventManager.EffectStarted.AddListener(UpdateEffectModifiers);
         }
         else if(BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier) {
@@ -329,8 +348,8 @@ public class Effect {
 
     public virtual void OnEnd() {
         Utils.CreateAuditLog("Unit (" + TargetOfEffect + ") ending effect: " + GetType() + " from unit " + SourceOfEffect?.User + " and source " + SourceOfEffect?.GetType() + ", original duration: " + BaseDuration);
-        if (EffectIndicatorCooldownDisplay != null) {
-            MonoBehaviour.Destroy(EffectIndicatorCooldownDisplay.transform.parent.gameObject);
+        if (UICooldownDisplay != null) {
+            MonoBehaviour.Destroy(UICooldownDisplay.transform.parent.gameObject);
         }
         if (AutoPlayEffectAnimation || IsHardCrowdControl()) {
             Player.Instance.Actions.SetFaceVariant("Regular");
@@ -387,11 +406,11 @@ public class Effect {
     }
 
     public void AddListeners() {
-        if(Listeners.Contains(EventManager.OneFifthSecondElapsedInGame)) {
-            EventManager.OneFifthSecondElapsedInGame.AddListener(OnInvokeOneFifthSecondElapsedInGame);
+        if(Listeners.Contains(EventManager.OneTenthSecondElapsedInGame)) {
+            EventManager.OneTenthSecondElapsedInGame.AddListener(OnInvokeOneTenthSecondElapsedInGame);
         }
-        if(Listeners.Contains(EventManager.OneFifthSecondElapsedRealtime)) {
-            EventManager.OneFifthSecondElapsedRealtime.AddListener(OnInvokeOneFifthSecondElapsedRealtime);
+        if(Listeners.Contains(EventManager.OneTenthSecondElapsedRealtime)) {
+            EventManager.OneTenthSecondElapsedRealtime.AddListener(OnInvokeOneTenthSecondElapsedRealtime);
         }
         if(Listeners.Contains(EventManager.HitDealt)) {
             EventManager.HitDealt.AddListener(OnInvokeHitDealt);
@@ -465,11 +484,11 @@ public class Effect {
     }
 
     public void RemoveListeners() {
-        if(Listeners.Contains(EventManager.OneFifthSecondElapsedInGame)) {
-            EventManager.OneFifthSecondElapsedInGame.RemoveListener(OnInvokeOneFifthSecondElapsedInGame);
+        if(Listeners.Contains(EventManager.OneTenthSecondElapsedInGame)) {
+            EventManager.OneTenthSecondElapsedInGame.RemoveListener(OnInvokeOneTenthSecondElapsedInGame);
         }
-        if(Listeners.Contains(EventManager.OneFifthSecondElapsedRealtime)) {
-            EventManager.OneFifthSecondElapsedRealtime.RemoveListener(OnInvokeOneFifthSecondElapsedRealtime);
+        if(Listeners.Contains(EventManager.OneTenthSecondElapsedRealtime)) {
+            EventManager.OneTenthSecondElapsedRealtime.RemoveListener(OnInvokeOneTenthSecondElapsedRealtime);
         }
         if(Listeners.Contains(EventManager.HitDealt)) {
             EventManager.HitDealt.RemoveListener(OnInvokeHitDealt);
@@ -542,11 +561,11 @@ public class Effect {
         }
     }
 
-    public virtual void OnInvokeOneFifthSecondElapsedInGame() {
+    public virtual void OnInvokeOneTenthSecondElapsedInGame() {
         EventManager.EffectActivated.Invoke(this);
     } 
 
-    public virtual void OnInvokeOneFifthSecondElapsedRealtime() {
+    public virtual void OnInvokeOneTenthSecondElapsedRealtime() {
         EventManager.EffectActivated.Invoke(this);
     } 
 

@@ -12,7 +12,9 @@ public class Cannon_UnforgivableSin : Item
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Cannon;
         SetBaseWeaponStats(70, 140, 0.85f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainBurnOnBasicAttackAndIncreaseDamageBasedOnBurn")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("CleanseBurnOnWeaponSwitch")};
+        //FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainBurnOnBasicAttackAndIncreaseDamageBasedOnBurn")};
+        //SecondItemEffects = new List<ItemEffect> {new ItemEffect("CleanseBurnOnWeaponSwitch")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealExtraDamageToUndamagedEnemies")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedTechniqueDamage")};
     }
 }

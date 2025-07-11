@@ -6,33 +6,31 @@ using UnityEngine;
 
 public class Effect_CustomizableDamageChange : Effect
 {
-    public float DamageReductionChange = 0;
-    public float IgnorePercentageOfDamageReduction = 0;
-    public float PenetrationChange = 0;
-    public float MultiplierChange = 0;
-    public float DamagePercentageChange = 0;
-    public float InjuryPercentageChange = 0;
-    public float StaggerPercentageChange = 0;
+    public float ArmorModifier = 0;
+    public float ArmorPenetrationModifier = 0;
+    public float DamagePercentageModifier = 0;
+    public float InjuryPercentageModifier = 0;
+    public float StaggerPercentageModifier = 0;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnHitDealt;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckAfterHitDamageCalculation;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnAboutToHandleFatalBlow;
     public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnDamageDealt;
     public Action<Damage, Effect_CustomizableDamageChange> Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-            if(effect.DamagePercentageChange != 0) {
-                damage.ExtraInjuryDealtPercentage += effect.DamagePercentageChange;
-                damage.ExtraStaggerDealtPercentage += effect.DamagePercentageChange;
+            if(effect.DamagePercentageModifier != 0) {
+                damage.InjuryDealtPercentageModifier += effect.DamagePercentageModifier;
+                damage.StaggerDealtPercentageModifier += effect.DamagePercentageModifier;
             }
-            if(effect.InjuryPercentageChange != 0) {
-                damage.ExtraInjuryDealtPercentage += effect.InjuryPercentageChange;
+            if(effect.InjuryPercentageModifier != 0) {
+                damage.InjuryDealtPercentageModifier += effect.InjuryPercentageModifier;
             }
-            if(effect.StaggerPercentageChange != 0) {
-                damage.ExtraStaggerDealtPercentage += effect.StaggerPercentageChange;
+            if(effect.StaggerPercentageModifier != 0) {
+                damage.StaggerDealtPercentageModifier += effect.StaggerPercentageModifier;
             }
-            if(effect.MultiplierChange != 0) {
-                damage.DamageDealtMultiplier += effect.MultiplierChange;
+            if(effect.ArmorModifier != 0) {
+                damage.ArmorModifier += effect.ArmorModifier;
             }
-            if(effect.DamageReductionChange != 0) {
-                damage.ExtraDamageReduction += effect.DamageReductionChange;
+            if(effect.ArmorPenetrationModifier != 0) {
+                damage.ArmorPenetrationModifier += effect.ArmorPenetrationModifier;
             }
         });
 

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
+public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHandler
 {
     [HideInInspector]
     public string Id;
@@ -77,7 +77,6 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHa
         SaveFile.Instance.UnlockedPowerUps.Add(Id);
         ApplyPowerUpOfThisTile();
         SaveFile.Instance.UsedPassivePowerUps++;
-        SaveFile.Instance.MaxPassivePowerUps--;
         CheckIfRowIsActive(transform.parent.Find("Active"));
         GetComponent<Image>().color = Colors.Gold;
         MenuManager.Instance.ShowPowerUpDetails(this, true);
@@ -94,9 +93,8 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHa
                 Player.Instance.EndEffect(effect);
             }
             SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] = SaveFile.Instance.UnlockedPowerUps.Where(p => p.StartsWith(Tree)).Count();
-            MenuManager.Instance.transform.Find("Skill Tree Window/Category Selection/" + Tree + "/Label").GetComponent<TextMeshProUGUI>().text = Tree + " (" + SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] + ")";
+            MenuManager.Instance.transform.Find("Skill Tree Window/Category Selection/" + Tree + "/Text").GetComponent<TextMeshProUGUI>().text = Tree + " (" + SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] + ")";
             SaveFile.Instance.UsedPassivePowerUps--;
-            SaveFile.Instance.MaxPassivePowerUps++;
             CheckIfRowIsActive(transform.parent.Find("Active"));
             GetComponent<Image>().color = Color.black;
             MenuManager.Instance.ShowPowerUpDetails(this, true);
@@ -117,7 +115,7 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHa
     public void AddPassivePowerUp(string power_up_name) {
         PowerUpEffects.AddRange(EffectList.GetEffect(power_up_name, GetPowerBudgetForTile()));
         SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] = SaveFile.Instance.UnlockedPowerUps.Where(p => p.StartsWith(Tree)).Count();
-        MenuManager.Instance.transform.Find("Skill Tree Window/Category Selection/" + Tree + "/Label").GetComponent<TextMeshProUGUI>().text = Tree + " (" + SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] + ")";
+        MenuManager.Instance.transform.Find("Skill Tree Window/Category Selection/" + Tree + "/Text").GetComponent<TextMeshProUGUI>().text = Tree + " (" + SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] + ")";
     }
 
     public void ApplyPowerUpOfThisTile() {
@@ -128,7 +126,7 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHa
         }
         foreach(Effect e in PowerUpEffects) {
             e.IsRemovable = false;
-            e.ShowsInMenu=false;
+            e.ShowsInMenu = false;
             Player.Instance.AddEffect(e);
         }
     }
@@ -154,11 +152,6 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHa
     public void OnSelect(BaseEventData eventData)
     {
         MenuManager.Instance.ShowPowerUpDetails(this);
-        MenuManager.Instance.SetGamepadIndicator(gameObject);
-    }
-
-    public void OnDeselect(BaseEventData eventData) {
-        CanvasElements.MenuCanvas.GamepadIndicator.SetActive(false);
     }
 
     public void UpdateUnlockedStatus() {
@@ -167,7 +160,7 @@ public class PassivePowerUpTile : MonoBehaviour, IPointerClickHandler, ISelectHa
         }
         GetComponent<Image>().color = SaveFile.Instance.UnlockedPowerUps.Contains(Id) ? Colors.Gold : Color.black; 
         CheckIfRowIsActive(transform.parent.Find("Active"));
-        MenuManager.Instance.transform.Find("Skill Tree Window/Category Selection/" + Tree + "/Label").GetComponent<TextMeshProUGUI>().text = Tree + " (" + SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] + ")";
+        MenuManager.Instance.transform.Find("Skill Tree Window/Category Selection/" + Tree + "/Text").GetComponent<TextMeshProUGUI>().text = Tree + " (" + SaveFile.Instance.PointsPutIntoEachSkillTree[Tree] + ")";
     }
 
     public void CheckIfRowIsActive(Transform row) {

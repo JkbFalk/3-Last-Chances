@@ -9,6 +9,28 @@ using static UnityEngine.UI.CanvasScaler;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class Damage {
+    public static float GlobalEnemyDamageModifier {
+        get {
+            switch(SaveFile.Instance.DifficultyLevel) {
+                case 0: return 0.6f;
+                case 1: return 1f;
+                case 2: return 1.2f;
+                case 3: return 1.3f;
+                default: return 1;
+            }
+        }
+    }
+    public static float GlobalEnemySurvivabilityModifier {
+        get {
+            switch(SaveFile.Instance.DifficultyLevel) {
+                case 0: return 0.7f;
+                case 1: return 1f;
+                case 2: return 1.5f;
+                case 3: return 2f;
+                default: return 1;
+            }
+        }
+    }
     public bool DamageKilledTheTarget = false;
     public float SoundVolume = 1;
     public bool PlaySoundOnEnemyHit = true;
@@ -18,11 +40,9 @@ public class Damage {
     public bool DestroyProjectileAfterDamageCalcuation = false;
     public bool DecreaseProjectileDurability = true;
     public DamagingObject DamagingObject { get; set; }
-    public bool IsDamageOverTime { get; set; } = false;
-    public bool IsExtraDamage { get; set; } = false;
     public Unit TargetOfDamage { get; set; }
     public Ability SourceOfDamage { get; set; }
-    public enum DamageProperty { Burn, Freeze, Incision, CannotKill, CannotStagger, Supercharge, BurnExplosion, IsFinalAmmo };
+    public enum DamageProperty { Burn, Freeze, Incision, CannotKill, CannotStagger, Supercharge, BurnExplosion, FinalAmmo, DamageOverTime, Execute, CriticalStagger, CriticalInjury, ExtraDamage };
     public List<DamageProperty> Properties = new List<DamageProperty>();
     public bool Is(DamageProperty property) {
         return Properties.Contains(property);
@@ -36,13 +56,12 @@ public class Damage {
     public float MaxDamage {get; set;} = 9999999;
 
     public Collider2D SourceOfCollision;
-    public float Knockback { get; set; } = 0;
+    public float KnockbackInMeters { get; set; } = 0;
     public bool InjuryWasHigherThan0 = false;
     public bool StaggerWasHigherThan0  = false;
-    public bool IsCriticalInjury = false;
-    public bool IsCriticalStagger = false;
-    public float ExtraDamageReduction = 0;
-    public float RetainedDamageReductionPercentageWhileStaggered = 0;
+    public float ArmorModifier = 0;
+    public float ArmorPenetrationModifier = 0;
+    public float RetainedArmorPercentageWhileStaggered = 0;
 
     public float OverkillInjury {get; set;} = 0;
     public bool WillBeFatalBlow = false;
@@ -50,17 +69,17 @@ public class Damage {
     public float Stagger { get; set; } = 0;
     public float InjuryDealt { get; set; } = 0;
     public float StaggerDealt { get; set; } = 0;
-    public bool ShouldHit { get; set; } = true;
-    public bool IsExecute = false;
+    public float PreMitigationInjury { get; set; } = 0;
+    public float PreMitigationStagger { get; set; } = 0;
     public bool CanCauseFlinching = true;
     public float HealthLost { get; set; } = 0;
     public float DamageDealtMultiplier = 1;
-    public float ExtraDamageDealtPercentage = 0;
-    public float ExtraInjuryDealtPercentage = 0;
-    public float ExtraStaggerDealtPercentage = 0;
-    public float ExtraDamageDealtFlat = 0;
-    public float ExtraInjuryDealtFlat = 0;
-    public float ExtraStaggerDealtFlat = 0;
+    public float DamageDealtPercentageModifier = 0;
+    public float InjuryDealtPercentageModifier = 0;
+    public float StaggerDealtPercentageModifier = 0;
+    public float DamageDealtFlatModifier = 0;
+    public float InjuryDealtFlatModifier = 0;
+    public float StaggerDealtFlatModifier = 0;
 
     public string Id;
 
@@ -82,39 +101,18 @@ public class Damage {
         }
     }
 
-    public Damage SetKnockback(float amount) {
-        Knockback = amount;
-        return this;
-    }
-
-    public Damage SetCanCauseFlinching(bool can_cause_flinching) {
-        CanCauseFlinching = can_cause_flinching;
-        return this;
-    }
- 
-    public Damage SetDamageSource(Ability.DamageSource source) {
-        AbilityDamageSource = source;
-        return this;
-    }
-
     public Damage SetDamageSource(float health_scaling, float stagger_scaling, Constants.DamageType damage_type = Constants.DamageType.None) {
         AbilityDamageSource = new Ability.DamageSource(health_scaling, stagger_scaling, damage_type);
         return this;
     }
 
-
-    public Damage SetSoundVolume(float sound_volume) {
-        SoundVolume = sound_volume;
-        return this;
-    }
-
-    public Damage CalculateDamage() {
+    public Damage CalculateAndApplyDamage() {
         if(TargetOfDamage.KnockedOut) {
             return this;
         }
         ActivateUnitBehaviourOnHit();
         if(DamagingObject is Projectile && ((Projectile)DamagingObject).IsFinalAmmo) {
-            Properties.Add(DamageProperty.IsFinalAmmo);
+            Properties.Add(DamageProperty.FinalAmmo);
         }
         DamageType = SourceOfDamage.ScalesWith == Constants.DamageType.CurrentWeapon ? Player.Instance.CurrentWeaponDamageType : SourceOfDamage.ScalesWith;
         EventManager.HitDealt.Invoke(this);
@@ -164,7 +162,7 @@ public class Damage {
     private void CalculateDamageValues() {
         float globalDamageModifier = 1;
         if(SourceOfDamage.User.IsHostile) {
-            globalDamageModifier = SaveFile.Instance.GlobalEnemyDamageModifier;
+            globalDamageModifier = GlobalEnemyDamageModifier;
         }
         float initialInjury = Injury;
         float initialStagger = Stagger;
@@ -172,31 +170,36 @@ public class Damage {
         InjuryWasHigherThan0 = Injury > 0;
         StaggerWasHigherThan0 = Stagger > 0;
 
-        float damageReduction = (TargetOfDamage.DamageReduction.Current + ExtraDamageReduction / 100 - SourceOfDamage.User.Penetration.Current) < 0 ? 1 : (1/(TargetOfDamage.DamageReduction.Current + ExtraDamageReduction / 100 - SourceOfDamage.User.Penetration.Current + 1));
-        if(TargetOfDamage.IsStaggered) {
-            damageReduction = 1 - ((1 - damageReduction) * RetainedDamageReductionPercentageWhileStaggered / 100);
+        float effectiveArmor = TargetOfDamage.Armor.Current + (ArmorModifier - ArmorPenetrationModifier) / 100;
+        if(TargetOfDamage.IsStaggered && effectiveArmor > 0) {
+            effectiveArmor *= RetainedArmorPercentageWhileStaggered / 100;
         }
+        float armorDamageReduction = 1 / (1 + effectiveArmor / 100);
 
         Injury += GetCalculatedEffectiveWeaponDamage();
 
         float preModificationInjury = Injury;
 
-        Injury = Injury * damageReduction * DamageDealtMultiplier * globalDamageModifier + ExtraInjuryDealtFlat + ExtraDamageDealtFlat;
+        PreMitigationInjury = (Injury + InjuryDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * globalDamageModifier;
+
+        Injury = PreMitigationInjury * armorDamageReduction;
 
         Stagger += GetCalculatedEffectiveWeaponDamage(false);
 
         float preModificationStagger= Stagger;
 
-        Stagger = Stagger * damageReduction * DamageDealtMultiplier * globalDamageModifier + ExtraStaggerDealtFlat + ExtraDamageDealtFlat;
+        PreMitigationStagger = (Stagger + StaggerDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * globalDamageModifier;
+
+        Stagger = PreMitigationStagger * armorDamageReduction;
 
         Utils.CreateAuditLog(
             $"{Utils.GetFormattedFloat(Injury + Stagger)}D ({Utils.GetFormattedFloat(Injury)}I {Utils.GetFormattedFloat(Stagger)}S) dealt to {TargetOfDamage} by {SourceOfDamage.User} using {SourceOfDamage.GetType()} ({AbilityDamageSource.DamageType})" +
 
-            $"\n\n{Utils.GetFormattedFloat(Injury)} Injury (Precalculation: {preModificationInjury}I, Stat: {SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current} + Extra {ExtraInjuryDealtPercentage + ExtraDamageDealtPercentage}% + Extra {ExtraInjuryDealtFlat + ExtraDamageDealtFlat} = {SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current + SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current * (ExtraInjuryDealtPercentage + ExtraDamageDealtPercentage) / 100} Injury, {AbilityDamageSource.InjuryScaling}% Base Scaling, {initialInjury} Extra Injury)" +
+            $"\n\n{Utils.GetFormattedFloat(Injury)} Injury (Precalculation: {preModificationInjury}I, Stat: {SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current} + Extra {InjuryDealtPercentageModifier + DamageDealtPercentageModifier}% + Extra {InjuryDealtFlatModifier + DamageDealtFlatModifier} = {SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current + SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current * (InjuryDealtPercentageModifier + DamageDealtPercentageModifier) / 100} Injury, {AbilityDamageSource.InjuryScaling}% Base Scaling, {initialInjury} Extra Injury)" +
 
-            $"\n{Utils.GetFormattedFloat(Stagger)} Stagger (Precalculation: {preModificationStagger}S, Stat: {SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current} + Extra {ExtraStaggerDealtPercentage + ExtraDamageDealtPercentage}% + Extra {ExtraStaggerDealtFlat + ExtraDamageDealtFlat} = {SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current + SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current * (ExtraStaggerDealtPercentage + ExtraDamageDealtPercentage) / 100} Stagger, {AbilityDamageSource.StaggerScaling}% Base Scaling, {initialStagger} Extra Stagger)" +
+            $"\n{Utils.GetFormattedFloat(Stagger)} Stagger (Precalculation: {preModificationStagger}S, Stat: {SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current} + Extra {StaggerDealtPercentageModifier + DamageDealtPercentageModifier}% + Extra {StaggerDealtFlatModifier + DamageDealtFlatModifier} = {SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current + SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current * (StaggerDealtPercentageModifier + DamageDealtPercentageModifier) / 100} Stagger, {AbilityDamageSource.StaggerScaling}% Base Scaling, {initialStagger} Extra Stagger)" +
 
-            $"\n{(TargetOfDamage.DamageReduction.Current - 1)* 100}% + {ExtraDamageReduction}% Damage Reduction vs {(SourceOfDamage.User.Penetration.Current - 1) * 100}% Penetration -> {damageReduction * 100}% Damage Dealt, DamageDealtMultiplier: {DamageDealtMultiplier}");
+            $"\n{TargetOfDamage.Armor.Current} + {ArmorModifier} Armor vs {ArmorPenetrationModifier}% Penetration ({RetainedArmorPercentageWhileStaggered}% Retained) -> Effective Armor: {effectiveArmor} -> Armor Damage Reduction: {armorDamageReduction} ,DamageDealtMultiplier: {DamageDealtMultiplier}");
 
         InjuryWasHigherThan0 = InjuryWasHigherThan0 || Injury > 0;
         StaggerWasHigherThan0 = StaggerWasHigherThan0 || Stagger > 0;
@@ -206,22 +209,22 @@ public class Damage {
         float effectiveWeaponInjury = 0, effectiveWeaponStagger = 0, total = 0;
         if (is_injury && AbilityDamageSource.HybridInjurySource != null) {
             foreach(Constants.DamageType damage_type in AbilityDamageSource.HybridInjurySource.Keys) {
-                effectiveWeaponInjury = SourceOfDamage.User.GetInjuryStatForGivenDamageType(damage_type).Current + SourceOfDamage.User.GetInjuryStatForGivenDamageType(damage_type).Current * (ExtraInjuryDealtPercentage + ExtraDamageDealtPercentage) / 100;
+                effectiveWeaponInjury = SourceOfDamage.User.GetInjuryStatForGivenDamageType(damage_type).Current + SourceOfDamage.User.GetInjuryStatForGivenDamageType(damage_type).Current * (InjuryDealtPercentageModifier + DamageDealtPercentageModifier) / 100;
                 total += AbilityDamageSource.HybridInjurySource[damage_type] / 100 * effectiveWeaponInjury;
             }
         }
         else if (is_injury){
-            effectiveWeaponInjury = SourceOfDamage.GetInjuryStatForDamageSource(AbilityDamageSource).Current + SourceOfDamage.GetInjuryStatForDamageSource(AbilityDamageSource).Current * (ExtraInjuryDealtPercentage + ExtraDamageDealtPercentage) / 100;
+            effectiveWeaponInjury = SourceOfDamage.GetInjuryStatForDamageSource(AbilityDamageSource).Current + SourceOfDamage.GetInjuryStatForDamageSource(AbilityDamageSource).Current * (InjuryDealtPercentageModifier + DamageDealtPercentageModifier) / 100;
             total += AbilityDamageSource.InjuryScaling / 100 * effectiveWeaponInjury;
         }
         else if (AbilityDamageSource.HybridStaggerSource != null) {
             foreach(Constants.DamageType damage_type in AbilityDamageSource.HybridStaggerSource.Keys) {
-                effectiveWeaponStagger = SourceOfDamage.User.GetStaggerStatForGivenDamageType(damage_type).Current + SourceOfDamage.User.GetStaggerStatForGivenDamageType(damage_type).Current * (ExtraStaggerDealtPercentage + ExtraDamageDealtPercentage) / 100;
+                effectiveWeaponStagger = SourceOfDamage.User.GetStaggerStatForGivenDamageType(damage_type).Current + SourceOfDamage.User.GetStaggerStatForGivenDamageType(damage_type).Current * (StaggerDealtPercentageModifier + DamageDealtPercentageModifier) / 100;
                 total += AbilityDamageSource.HybridStaggerSource[damage_type] / 100 * effectiveWeaponStagger;
             }
         }
         else {
-            effectiveWeaponStagger = SourceOfDamage.GetStaggerStatForDamageSource(AbilityDamageSource).Current + SourceOfDamage.GetStaggerStatForDamageSource(AbilityDamageSource).Current * (ExtraStaggerDealtPercentage + ExtraDamageDealtPercentage) / 100;
+            effectiveWeaponStagger = SourceOfDamage.GetStaggerStatForDamageSource(AbilityDamageSource).Current + SourceOfDamage.GetStaggerStatForDamageSource(AbilityDamageSource).Current * (StaggerDealtPercentageModifier + DamageDealtPercentageModifier) / 100;
             total += AbilityDamageSource.StaggerScaling / 100 * effectiveWeaponStagger;
         }
         return total;
@@ -233,7 +236,7 @@ public class Damage {
         InjuryWasHigherThan0 = InjuryWasHigherThan0 || Injury > 0;
         if (Injury > 0) {
             if(Injury > 100000) {
-                IsExecute = true;
+                Properties.Add(DamageProperty.Execute);
             }
             Injury = Injury > MaxDamage ? MaxDamage : Injury;
             OverkillInjury = Injury - TargetOfDamage.Health.Current < 0 ? 0 : Injury - TargetOfDamage.Health.Current;
@@ -250,18 +253,8 @@ public class Damage {
         }
         HealthLost = currentHealth - TargetOfDamage.Health.Current; 
         if((TargetOfDamage.IsBoss && InjuryDealt > enemyHealthBarMaximum * 0.25f) || (!TargetOfDamage.IsBoss && InjuryDealt > enemyHealthBarMaximum * 0.5f)) {
-            IsCriticalInjury = true;
+            Properties.Add(DamageProperty.CriticalInjury);
         }
-    }
-
-    public Damage DisableSoundOnEnemyHit() {
-        PlaySoundOnEnemyHit = false;
-        return this;
-    }
-
-    public Damage SetCustomHitSound(string sound_on_hit) {
-        CustomHitSound = sound_on_hit;
-        return this;
     }
 
     private void DecreaseTargetStaggerBar() {
@@ -274,7 +267,7 @@ public class Damage {
             Injury += Stagger / 2;
         }
         if((TargetOfDamage.IsBoss && StaggerDealt > enemyStaggerBarMaximum * 0.4f) || (!TargetOfDamage.IsBoss && StaggerDealt > enemyStaggerBarMaximum * 0.7f)) {
-            IsCriticalStagger = true;
+            Properties.Add(DamageProperty.CriticalStagger);
         }
     }
 
@@ -285,16 +278,16 @@ public class Damage {
     }
 
     private void CalculateKnockback() {
-        if (Knockback != 0) {
+        if (KnockbackInMeters != 0) {
             Transform source = DamagingObject != null ? DamagingObject.transform : SourceOfDamage.User.transform;
             bool source_to_the_left_of_target = SourceOfDamage.User.transform.position.x > TargetOfDamage.transform.position.x ? false : true;
             Vector2 direction_vector_towards_target = (TargetOfDamage.transform.position - (source.position + (source_to_the_left_of_target ? Vector3.left : Vector3.right))).normalized;
-            TargetOfDamage.ApplyForce(direction_vector_towards_target * Knockback, SourceOfDamage);
+            TargetOfDamage.ApplyForce(direction_vector_towards_target * KnockbackInMeters, SourceOfDamage);
         }
     }
 
     private void EnsureDistanceFromTarget() {
-        if(SourceOfDamage.User is Player && TargetOfDamage is not Player && IsDamageOverTime == false) {
+        if(SourceOfDamage.User is Player && TargetOfDamage is not Player && IsNot(DamageProperty.DamageOverTime)) {
             Utils.KnockbackEnemyBasedOnMeleeWeaponDistance(this, AbilityDamageSource.KnockbackIntoRange != 0 ? AbilityDamageSource.KnockbackIntoRange : GetMinimumDistanceFromTarget(Utils.GetPlayerWeaponClassForDamageType(AbilityDamageSource.DamageType)));
         }
     }
@@ -310,20 +303,20 @@ public class Damage {
             Constants.WeaponClass.Gauntlets => 1.1f,
             Constants.WeaponClass.Gun => 1.5f,
             Constants.WeaponClass.Bow => 2.0f,
-            Constants.WeaponClass.Cannon => 3.0f,
+            Constants.WeaponClass.Cannon => 1.2f,
             Constants.WeaponClass.Magic => Player.Instance.CurrentStance.StanceEffect is Stance_MindOverMatter ? 1.3f : 2.0f,
             _ => 0,
         };
     }
     
     private void CalculateEnergyGeneration() {
-        if (SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack) && SourceOfDamage.IsNot(Ability.AbilityProperty.AlreadyGeneratedEnergy)) {
+        if (SourceOfDamage.Is(Ability.Property.BasicAttack) && SourceOfDamage.IsNot(Ability.Property.AlreadyGeneratedEnergy)) {
             SourceOfDamage.User.Energy.GenerateEnergy(Constants.EnergyGainSource.BasicAttack, TargetOfDamage.IsBoss);
-            SourceOfDamage.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+            SourceOfDamage.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
         }
         else if (SourceOfDamage.EnergyGainedOnHit > 0) {
             SourceOfDamage.User.Energy.GenerateEnergy(SourceOfDamage.EnergyGainedOnHit);
-            SourceOfDamage.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+            SourceOfDamage.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
         }
         if (HealthLost > 0 && TargetOfDamage is Player) {
             TargetOfDamage.Energy.GenerateEnergy(Constants.EnergyGainSource.HealthLost, TargetOfDamage.IsBoss, HealthLost);
@@ -335,7 +328,7 @@ public class Damage {
         if (CanCauseFlinching && !TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Block)) && TargetOfDamage.Actions.CurrentActionBeingPerformed != Constants.ActionType.UnderHardCrowdControl && 
             ((TargetOfDamage is Player && StaggerDealt > TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_PLAYER_FLINCH / 100) || (TargetOfDamage is not Player && !TargetOfDamage.IsBoss && StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_REGULAR_FLINCH / 100) || (TargetOfDamage is not Player && TargetOfDamage.IsBoss &&  StaggerDealt >= TargetOfDamage.StaggerBar.Maximum * Constants.PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_BOSS_FLINCH / 100)) &&
             (TargetOfDamage.Actions.CurrentAbilityBeingPerformed == null ||
-            (TargetOfDamage.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.ImmuneToFlinch) && !TargetOfDamage.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Counter) && !TargetOfDamage.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.Unstoppable))))
+            (TargetOfDamage.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.ImmuneToFlinch) && !TargetOfDamage.Actions.CurrentAbilityBeingPerformed.Is(Ability.Property.Counter) && !TargetOfDamage.Actions.CurrentAbilityBeingPerformed.Is(Ability.Property.Unstoppable))))
         {
             Effect_ProtectFromFlinchingOnce protection = (Effect_ProtectFromFlinchingOnce)TargetOfDamage.GetEffect(typeof(Effect_ProtectFromFlinchingOnce));
             if (protection != null && TargetOfDamage.EffectCooldowns.FirstOrDefault(cooldown => cooldown.Type == typeof(Effect_ProtectFromFlinchingOnce)) == null) {
@@ -349,11 +342,11 @@ public class Damage {
     }
 
     private void ActivatePlayerBehaviourOnDamage() {
-        if (TargetOfDamage is Player && IsDamageOverTime == false) {
+        if (TargetOfDamage is Player && IsNot(DamageProperty.DamageOverTime)) {
             CameraController.Instance.ShakeScreen();
         }
         if(DamagingObject is UnitWeapon) {
-            if(SourceOfDamage.User is Player && SourceOfDamage.Is(Ability.AbilityProperty.Technique)) {
+            if(SourceOfDamage.User is Player && SourceOfDamage.Is(Ability.Property.Technique)) {
                 Player.Instance.Animator.SetFloat("Technique Speed", Player.Instance.TechniqueSpeed * 0.15f);
             }
             else {
@@ -384,7 +377,7 @@ public class Damage {
         }
         if (TargetOfDamage.Health.Current <= 0 && GameController.Instance.EnemiesCanBeKilled && TargetOfDamage.CurrentHealthBars > 1) {
             TargetOfDamage.CurrentHealthBars--;
-            TargetOfDamage.Health.Maximum = TargetOfDamage.HealthBars[TargetOfDamage.HealthBars.Count - TargetOfDamage.CurrentHealthBars] * (TargetOfDamage.IsHostile ? SaveFile.Instance.GlobalEnemySurvivabilityModifier : 1);
+            TargetOfDamage.Health.Maximum = TargetOfDamage.HealthBars[TargetOfDamage.HealthBars.Count - TargetOfDamage.CurrentHealthBars] * (TargetOfDamage.IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
             TargetOfDamage.Health.Current = TargetOfDamage.Health.Maximum;
             EventManager.HealthBarBroken.Invoke(this);
             if (TargetOfDamage.CurrentHealthBars == TargetOfDamage.HealthBars.Count - 1 && TargetOfDamage.UnitAI.ActionsAfter1HBarBroken.Count > 0)
@@ -398,7 +391,7 @@ public class Damage {
                 TargetOfDamage.UnitAI.InitializeAvailableActions();
             }
             TargetOfDamage.AddEffect(new Effect_HealthBarBroken(new(SourceOfDamage)), 3);
-            TargetOfDamage.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, new(SourceOfDamage)) {PercentageModifier = 200});
+            TargetOfDamage.AddEffect(new Effect_ChangeStat(Player.Instance.Armor, new(SourceOfDamage)) {PercentageAmount = 200});
         }
         else if (TargetOfDamage.Health.Current <= 0 && GameController.Instance.EnemiesCanBeKilled) {
             EventManager.UnitWouldBeDefeated.Invoke(this);
@@ -539,7 +532,11 @@ public class Damage {
             } 
             else {
                 string hit_type = SourceOfDamage?.HitSoundType.ToString() ?? Utils.DetermineHitTypeBasedOnAbilityWeaponClass(SourceOfDamage.User.CurrentWeaponClass);
-                Utils.PlaySoundEffect(TargetOfDamage.AudioSource, "Hit/" + hit_type + (IsCriticalStagger || IsCriticalInjury ? "_CriticalHit" + UnityEngine.Random.Range(1, 4) : "_Hit" + UnityEngine.Random.Range(1, 7)), (IsCriticalStagger || IsCriticalInjury ? 1.4f : 1) * SoundVolume);
+                Utils.PlaySoundEffect(
+                    TargetOfDamage.AudioSource, 
+                    "Hit/" + hit_type + ((Is(DamageProperty.CriticalInjury) || Is(DamageProperty.CriticalStagger)) ? "_CriticalHit" + UnityEngine.Random.Range(1, 4) : "_Hit" + UnityEngine.Random.Range(1, 7)), 
+                    ((Is(DamageProperty.CriticalInjury) || Is(DamageProperty.CriticalStagger)) ? 1.4f : 1) * SoundVolume
+                );
             }
             SourceOfDamage.PlayedSoundAtLeastOnce = true;
         }
@@ -561,8 +558,8 @@ public class Damage {
         }
     }
 
-    public bool CheckIfDamageWorksWithDefensiveAbilities() {
-        return IsDamageOverTime == false;
+    public bool CheckIfInteractsWithCounters() {
+        return IsNot(DamageProperty.DamageOverTime);
     }
 
     private void DisplayDamageAmount() {
@@ -576,35 +573,44 @@ public class Damage {
                 injuryIndicator.GetComponent<TextMeshProUGUI>().text = (TargetOfDamage is Player && (Player.Instance.CheckIfUnderEffect(typeof(Effect_Backstep)) || Player.Instance.CheckIfUnderEffect(typeof(Effect_RollForward)) || Player.Instance.CheckIfUnderEffect(typeof(Effect_RollSideways)))) ? Label.Get("DamageDisplay_Dodged") : "0";
                 injuryIndicator.transform.localScale = new Vector2(0.0075f * Settings.Instance.DamageNumbersSize, 0.0075f * Settings.Instance.DamageNumbersSize);
                 injuryIndicator.transform.position = new Vector2(TargetOfDamage.transform.position.x - 0.3f + UnityEngine.Random.Range(-0.2f, 0.2f), TargetOfDamage.transform.position.y + UnityEngine.Random.Range(-0.2f, 0.2f));
-                    injuryIndicator.GetComponent<TextMeshProUGUI>().color = Color.grey;
+                injuryIndicator.GetComponent<TextMeshProUGUI>().color = Color.grey;
                 return;
             }
-            if ((InjuryDealt + OverkillInjury) > 0) {
+            if ((InjuryDealt + OverkillInjury) > 0)
+            {
                 GameObject injuryIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_InjuryIndicator")) as GameObject;
                 injuryIndicator.transform.SetParent(TargetOfDamage.WorldSpaceCanvas.transform);
-                injuryIndicator.GetComponent<TextMeshProUGUI>().text = IsExecute ? Label.Get("ExecuteDisplay") : ((int)(InjuryDealt + OverkillInjury)).ToString();
-                float scale = IsExecute ? 0.012f * Settings.Instance.DamageNumbersSize : Utils.GetValueBasedOnMinAndMax(InjuryDealt + OverkillInjury, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.01f, 0.0375f) + (IsCriticalInjury ? 0.01f : 0);
+                injuryIndicator.GetComponent<TextMeshProUGUI>().text = Is(DamageProperty.Execute) ? Label.Get("ExecuteDisplay") : ((int)(InjuryDealt + OverkillInjury)).ToString();
+                float scale = Is(DamageProperty.Execute) ? 0.012f * Settings.Instance.DamageNumbersSize : Utils.GetValueBasedOnMinAndMax(InjuryDealt + OverkillInjury, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.01f, 0.0375f) + (Is(DamageProperty.CriticalInjury) ? 0.01f : 0);
                 scale *= Settings.Instance.DamageNumbersSize;
-                injuryIndicator.transform.localScale = new Vector2(scale * (IsCriticalInjury ? 1f : 0.75f), scale * (IsCriticalInjury ? 1f : 0.75f));
+                injuryIndicator.transform.localScale = new Vector2(scale * (Is(DamageProperty.CriticalInjury) ? 1f : 0.75f), scale * (Is(DamageProperty.CriticalInjury) ? 1f : 0.75f));
                 injuryIndicator.transform.position = new Vector2(TargetOfDamage.transform.position.x - 0.3f + UnityEngine.Random.Range(-0.2f, 0.2f), TargetOfDamage.transform.position.y + UnityEngine.Random.Range(-0.2f, 0.2f));
-                if(IsCriticalInjury) {
+                if (Is(DamageProperty.CriticalInjury))
+                {
                     injuryIndicator.GetComponent<TextMeshProUGUI>().color = Colors.GetColorFromCode("#FF3900");
                 }
-                if(Properties.Contains(DamageProperty.Supercharge)) {
+                if (Properties.Contains(DamageProperty.Supercharge))
+                {
                     injuryIndicator.GetComponent<TextMeshProUGUI>().color = Colors.GetColorFromCode("#FFBD00");
                 }
+                injuryIndicator.GetComponent<UIFloatController>().DisappearAfter = Utils.GetValueBasedOnMinAndMax(InjuryDealt + OverkillInjury, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.2f, 2f);
+                injuryIndicator.GetComponent<UIFloatController>().DisappearTime = Utils.GetValueBasedOnMinAndMax(InjuryDealt + OverkillInjury, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.1f, 1f);
             }
-            if (StaggerDealt > 0) {
+            if (StaggerDealt > 0)
+            {
                 GameObject staggerIndicator = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_StaggerIndicator")) as GameObject;
                 staggerIndicator.transform.SetParent(TargetOfDamage.WorldSpaceCanvas.transform);
                 staggerIndicator.GetComponent<TextMeshProUGUI>().text = ((int)StaggerDealt).ToString();
-                float scale = Utils.GetValueBasedOnMinAndMax(StaggerDealt, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.0075f, 0.015f)  + (IsCriticalStagger ? 0.01f : 0);
+                float scale = Utils.GetValueBasedOnMinAndMax(StaggerDealt, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.0075f, 0.015f) + (Is(DamageProperty.CriticalStagger) ? 0.01f : 0);
                 scale *= Settings.Instance.DamageNumbersSize;
-                staggerIndicator.transform.localScale = new Vector2(scale * (IsCriticalStagger ? 1f : 0.75f), scale * (IsCriticalStagger ? 1f : 0.75f));
+                staggerIndicator.transform.localScale = new Vector2(scale * (Is(DamageProperty.CriticalStagger) ? 1f : 0.75f), scale * (Is(DamageProperty.CriticalStagger) ? 1f : 0.75f));
                 staggerIndicator.transform.position = new Vector2(TargetOfDamage.transform.position.x + 0.3f + UnityEngine.Random.Range(-0.2f, 0.2f), TargetOfDamage.transform.position.y + UnityEngine.Random.Range(-0.2f, 0.2f));
-                if(IsCriticalStagger) {
+                if (Is(DamageProperty.CriticalStagger))
+                {
                     staggerIndicator.GetComponent<TextMeshProUGUI>().color = Colors.GetColorFromCode("#9064FF");
                 }
+                staggerIndicator.GetComponent<UIFloatController>().DisappearAfter = Utils.GetValueBasedOnMinAndMax(StaggerDealt, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.2f, 2f);
+                staggerIndicator.GetComponent<UIFloatController>().DisappearTime = Utils.GetValueBasedOnMinAndMax(StaggerDealt, 0, 1000 * Utils.GetExpectedPowerForLevel(SaveFile.Instance.Level), 0.1f, 1f);
             }
         }
     }

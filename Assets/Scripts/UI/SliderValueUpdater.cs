@@ -12,9 +12,9 @@ public class SliderValueUpdater : MonoBehaviour
     public void Start()
     {
         _slider = GetComponent<Slider>();
-        transform.Find("Left Display").GetComponent<TextMeshProUGUI>().text = _slider.minValue.ToString();
-        transform.Find("Right Display").GetComponent<TextMeshProUGUI>().text = _slider.maxValue.ToString();
-        _labelInit = transform.Find("Label").GetComponent<LabelInitializer>();
+        transform.Find("Left Display").GetComponent<TextMeshProUGUI>().text = _slider.minValue.ToString() + (transform.Find("Left Display").GetComponent<TextMeshProUGUI>().text.Contains("%") ? "%" : "");
+        transform.Find("Right Display").GetComponent<TextMeshProUGUI>().text = _slider.maxValue.ToString() + (transform.Find("Right Display").GetComponent<TextMeshProUGUI>().text.Contains("%") ? "%" : "");
+        _labelInit = transform.Find("Label") != null ? transform.Find("Label").GetComponent<LabelInitializer>() : transform.parent.Find("Label").GetComponent<LabelInitializer>();
         _labelInit.Start();
         UpdateValuesDisplayed();
     }

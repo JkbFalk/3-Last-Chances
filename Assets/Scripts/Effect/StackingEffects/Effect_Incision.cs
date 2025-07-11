@@ -16,7 +16,7 @@ public class Effect_Incision : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
     public override void OnStart() {
@@ -33,7 +33,11 @@ public class Effect_Incision : Effect
         counter++;
         if(counter >= 50 && TargetOfEffect != null) {
             counter = 0;
-            Damage damage = new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null) { IsDamageOverTime = true, Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Incision, Damage.DamageProperty.CannotKill }, Injury = DecayingAmount}.DisableSoundOnEnemyHit().CalculateDamage();
+            new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null) {
+                Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Incision, Damage.DamageProperty.CannotKill, Damage.DamageProperty.DamageOverTime }, 
+                Injury = DecayingAmount,
+                PlaySoundOnEnemyHit = false
+            }.CalculateAndApplyDamage();
         }
     }
 }

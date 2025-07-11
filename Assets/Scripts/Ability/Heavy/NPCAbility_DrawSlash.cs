@@ -13,6 +13,6 @@ public class NPCAbility_DrawSlash : Ability {
     }
 
     public override void CallAbilityEvent1() {
-        User.Actions.PushUnitForward(100);
+        User.Actions.PushUnitForwardSpecifiedMeters(1);
     }
 }

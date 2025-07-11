@@ -65,10 +65,10 @@ public class DialogueLineItem : MonoBehaviour, IPointerDownHandler, IPointerEnte
         }
         string currentChar = Utils.ConvertCharacterFromForeignLanguages(TextMeshPro.text[TextMeshPro.maxVisibleCharacters - 1].ToString().ToUpper());
         if(CurrentlyReadingSpeech && Constants.VOWELS.Contains(currentChar)) {
-            CanvasElements.AudioListener.pitch = DialogueLine.SpeakerUnit == null ? UnityEngine.Random.Range(0.9f, 1.1f) : DialogueLine.SpeakerUnit.VoicePitch + UnityEngine.Random.Range(-0.1f, 0.1f);
-            CanvasElements.AudioListener.PlayOneShot(GameController.Instance.SpeechBeepClips[((DialogueLine.SpeakerUnit != null && DialogueLine.SpeakerUnit is Player) ? "Player" : (DialogueLine.SpeakerUnit != null && DialogueLine.SpeakerUnit.IsMale) ? "Male" : (DialogueLine.SpeakerUnit == null && DialogueLine.SpeakerIsMale) ? "Male" : "Female") + currentChar]);
+            GameController.Objects.AudioListener.pitch = DialogueLine.SpeakerUnit == null ? UnityEngine.Random.Range(0.9f, 1.1f) : DialogueLine.SpeakerUnit.VoicePitch + UnityEngine.Random.Range(-0.1f, 0.1f);
+            GameController.Objects.AudioListener.PlayOneShot(GameController.Instance.SpeechBeepClips[((DialogueLine.SpeakerUnit != null && DialogueLine.SpeakerUnit is Player) ? "Player" : (DialogueLine.SpeakerUnit != null && DialogueLine.SpeakerUnit.IsMale) ? "Male" : (DialogueLine.SpeakerUnit == null && DialogueLine.SpeakerIsMale) ? "Male" : "Female") + currentChar]);
         }
-        GameController.Instance.WaitAndRunMethodRealtime(0.03f / Settings.Instance.DialogueTextSpeed * 10, RevealExtraDialogueLineCharacter);
+        GameController.Instance.WaitAndRunMethodRealtime(0.03f / Settings.Instance.DialogueTextSpeed, RevealExtraDialogueLineCharacter);
     }
 
 

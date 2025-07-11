@@ -10,7 +10,7 @@ public class NPCAbility_BlackfireTeleport : Ability {
         Cooldown = User.IsBoss ? 5 : 10;
         AddCustomSound("Teleport", "Criminal/Criminal_Daggers_MoveAbility", 0.5f);
         WaitTimeBeforeNextAction = 0.1f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void OnAbilityStart() {

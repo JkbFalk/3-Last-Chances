@@ -1,7 +1,7 @@
 public class NPCAbility_DashStab : Ability {
     public static float Cooldown = 6;
     public NPCAbility_DashStab(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(70, 250, Constants.DamageType.Heavy) {Knockback = 200});
+        DamageSources.Add(new DamageSource(70, 250, Constants.DamageType.Heavy) {KnockbackInMeters = 2f});
         WaitTimeBeforeNextAction = 0.2f;
         HitSoundVolume = 0.6f;
         /*Properties.Add(AbilityProperty.CounteredByBackstep);
@@ -10,7 +10,7 @@ public class NPCAbility_DashStab : Ability {
     }
 
     public override void CallAbilityEvent1() {
-        ChaseCurrentTargetAtGivenDegreeAngle(200, 25, 25);
+        ChaseCurrentTargetAtGivenDegreeAngle(4, 25);
         User.Actions.DisplayExtremeDangerSign();
     }
 

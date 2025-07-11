@@ -6,6 +6,7 @@ public class BA_Daggers_S : BasicAttack {
 
     public static Unit ValidTarget;
     public BA_Daggers_S(Unit ability_user) : base(ability_user) {
+        Properties.Add(Property.StrongBasicAttack);
         DamageSources.Add(new DamageSource(250 / 2, 350 / 2, Constants.DamageType.Light));
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
         AddCustomSound("Teleport1", "Ability/Light Sword Swing 10", 0.7f);

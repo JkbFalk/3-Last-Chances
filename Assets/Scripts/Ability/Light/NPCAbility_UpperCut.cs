@@ -15,7 +15,7 @@ public class NPCAbility_UpperCut : Ability {
 
     public override void CallAbilityEvent1()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(150, 10, 5);
+        ChaseCurrentTargetAtGivenDegreeAngle(3.5f, 10);
         _aoe = Utils.CreateAreaOfEffect(new(this), "SmallCircleAoE");
         _aoe.transform.SetParent(User.SpriteRenderers["Right Arm"].Bone);
         _aoe.GetComponent<DestroyGameObjectAfterGivenTime>().DestroyAfterSeconds = 1.5f;

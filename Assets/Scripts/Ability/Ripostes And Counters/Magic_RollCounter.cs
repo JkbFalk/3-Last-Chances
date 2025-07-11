@@ -5,6 +5,6 @@ public class Magic_RollCounter : Counter
 {
 
     public Magic_RollCounter(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(Constants.INJURY_PERCENTAGE_FROM_COUNTER, 0, Constants.DamageType.Magic, "AoE") {Knockback = 150});
+        DamageSources.Add(new DamageSource(Constants.INJURY_PERCENTAGE_FROM_COUNTER, 0, Constants.DamageType.Magic, "AoE") {KnockbackInMeters = 1.5f});
     }
 }

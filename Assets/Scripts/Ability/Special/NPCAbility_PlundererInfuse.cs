@@ -10,7 +10,7 @@ public class NPCAbility_PlundererInfuse : Ability {
     private Ability.AbilityFamily _blockedFamily;
     public NPCAbility_PlundererInfuse(Unit ability_user) : base(ability_user) {
         TransitionOutOfAnimationDuration = 0;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()
@@ -20,7 +20,7 @@ public class NPCAbility_PlundererInfuse : Ability {
         if(_isOmni) {
             foreach(Ability.AbilityFamily family in new List<Ability.AbilityFamily>{Ability.AbilityFamily.Anima, Ability.AbilityFamily.Ignis, Ability.AbilityFamily.Glacies, Ability.AbilityFamily.Molis, Ability.AbilityFamily.Salutis, Ability.AbilityFamily.Tonitrui, Ability.AbilityFamily.Proprius}) {
                 if(SaveFile.Instance.DifficultyLevel >= 2) {
-                    Player.Instance.AddEffect(new Effect_BlockTechniquesFromGivenFamily(family, new(this)) {EffectIndicatorText=Label.Get("Effect_TechniquesBlockedIndicator")}, 20);
+                    Player.Instance.AddEffect(new Effect_BlockTechniquesFromGivenFamily(family, new(this)) {UIText=Label.Get("Effect_TechniquesBlockedIndicator")}, 20);
                 }
                 else {
                     Player.Instance.AddEffect(new Effect_PlundererAbilityAmplify(-50, new(this)) {AmplifiedFamily = family}, 20);
@@ -29,7 +29,7 @@ public class NPCAbility_PlundererInfuse : Ability {
         }
         else {
             if(SaveFile.Instance.DifficultyLevel >= 2) {
-                Player.Instance.AddEffect(new Effect_BlockTechniquesFromGivenFamily(_blockedFamily, new(this)) {EffectIndicatorText=Label.Get("Effect_TechniquesBlockedIndicator")}, 20);
+                Player.Instance.AddEffect(new Effect_BlockTechniquesFromGivenFamily(_blockedFamily, new(this)) {UIText=Label.Get("Effect_TechniquesBlockedIndicator")}, 20);
             }
             else {
                 Player.Instance.AddEffect(new Effect_PlundererAbilityAmplify(-75, new(this)) {AmplifiedFamily = _blockedFamily}, 20);
@@ -54,7 +54,7 @@ public class NPCAbility_PlundererInfuse : Ability {
     {
         EndThisAbility();
         User.Actions.UseAbility(Type.GetType("NPCAbility_Plunderer" + (_isOmni ? "Omni" : _blockedFamily)));
-        User.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.Unstoppable);
+        User.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.Unstoppable);
     }
 
     public Ability.AbilityFamily GetValidFamilyToBlock() {

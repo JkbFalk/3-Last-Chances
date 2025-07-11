@@ -71,16 +71,19 @@ public class SandboxArenaController : MonoBehaviour
         Utils.MoveIntoArea(true, "SandboxArena");
     }
 
-    public static void OnStart() {
-        foreach(Effect e in Player.Instance.CurrentEffects.ToArray()) {
+    public static void OnStart()
+    {
+        foreach (Effect e in Player.Instance.CurrentEffects.ToArray())
+        {
             e.EndThisEffect();
         }
         SaveFile.Instance.InitializeSaveFile();
         SaveFile.Instance.Level = 75;
         SaveFile.Instance.GameType = Constants.GameType.Arena;
-        SaveFile.Instance.Difficulty = Settings.Instance.DefaultDifficulty;
+        SaveFile.Instance.Difficulty = Constants.Difficulty.Regular;
         GameController.Instance.GameplayMode = Constants.GameplayMode.Regular;
-        foreach(string unit_name in UnitsToCreate) {
+        foreach (string unit_name in UnitsToCreate)
+        {
             GameObject unit = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Unit/" + unit_name)) as GameObject;
             unit.transform.SetParent(Area.Instance.transform);
             Vector3 intended_position = new Vector2(3.5f, 0) + UnityEngine.Random.insideUnitCircle * new Vector2(2f, 2f);
@@ -93,6 +96,7 @@ public class SandboxArenaController : MonoBehaviour
             }
         }
         DebugController.Instance.GiveAllItems(0);
+        DebugController.Instance.ToggleSpamMode(1);
     }
 
 }

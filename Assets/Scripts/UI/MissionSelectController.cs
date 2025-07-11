@@ -20,4 +20,20 @@ public class MissionSelectController : MonoBehaviour
     public void CancelSurvival() {
         transform.Find("Survival Type Selection").gameObject.SetActive(false);
     }
+
+    public void SaveGame() {
+        GameController.Instance.ToggleSavePanel(true);
+    }
+
+    public void LoadGame() {
+        GameController.Instance.ToggleLoadPanel(true);
+    }
+
+    public void BackToTitle() {
+        GameController.Instance.ReturnToTitle();
+    }
+
+    public void QuitGame() {
+        GameController.Instance.QuitGame();
+    }
 }

@@ -15,18 +15,18 @@ public class Effect_AncientBreastplate : Effect {
 
     public override void OnStart() {
         base.OnStart();
-        if(SaveFile.Instance.EquippedHelmet is Helmet_Ancient && SaveFile.Instance.EquippedArmor is Armor_Ancient) {
+        if(SaveFile.Instance.EquippedHelmet is Helmet_Ancient && SaveFile.Instance.EquippedOutfit is Outfit_Ancient) {
             AddBuffs();
         }
     }
 
     public override void OnInvokeItemEquipped(Item item1, Item item2)
     {
-        if (DamageBuff != null && (item1 is Helmet_Ancient || item1 is Armor_Ancient))
+        if (DamageBuff != null && (item1 is Helmet_Ancient || item1 is Outfit_Ancient))
         {
             DamageBuff.EndThisEffect();
         }
-        else if ((item2 is Armor_Ancient && SaveFile.Instance.EquippedHelmet is Helmet_Ancient) || (item2 is Helmet_Ancient && SaveFile.Instance.EquippedArmor is Armor_Ancient))
+        else if ((item2 is Outfit_Ancient && SaveFile.Instance.EquippedHelmet is Helmet_Ancient) || (item2 is Helmet_Ancient && SaveFile.Instance.EquippedOutfit is Outfit_Ancient))
         {
             AddBuffs();
         }

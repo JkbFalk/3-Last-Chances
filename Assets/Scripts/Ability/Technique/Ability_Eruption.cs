@@ -25,33 +25,34 @@ public class Ability_Eruption : Technique
 
     public Ability_Eruption(Unit ability_user) : base(ability_user)
     {
+        HitSoundType = Constants.HitSoundTypeEnum.Fire;
         AddCustomSound("Explosion", "Fire/FireExplosion2", 0.7f);
         AddCustomSound("Use", "Greatsword/StabIntoGround", 0.5f);
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
         if (Player.Instance.PreparingForUltimate)
         {
-            DamageSources.Add(new DamageSource(HeavyInjuryScalingUltimate, 0, Constants.DamageType.Heavy, "AoE Ultimate") {Knockback = 120});
+            DamageSources.Add(new DamageSource(HeavyInjuryScalingUltimate, 0, Constants.DamageType.Heavy, "AoE Ultimate") {KnockbackInMeters = 1.2f});
         }
         else
         {
-            DamageSources.Add(new DamageSource(new Dictionary<Constants.DamageType, float>() {{ Constants.DamageType.Heavy, HeavyInjuryScaling },{ Constants.DamageType.Magic, MagicInjuryScaling }}, new Dictionary<Constants.DamageType, float>() {{ Constants.DamageType.Heavy, HeavyStaggerScaling }}, Constants.DamageType.Heavy, "AoE") {Knockback = 180});
+            DamageSources.Add(new DamageSource(new Dictionary<Constants.DamageType, float>() {{ Constants.DamageType.Heavy, HeavyInjuryScaling },{ Constants.DamageType.Magic, MagicInjuryScaling }}, new Dictionary<Constants.DamageType, float>() {{ Constants.DamageType.Heavy, HeavyStaggerScaling }}, Constants.DamageType.Heavy, "AoE") {KnockbackInMeters = 1.8f});
         }
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)), new Effect_Unstunnable(new(this))};
     }
 
     public override void CallAbilityEvent1()
     {
-        if(IsNot(AbilityProperty.Ultimate)) {
+        if(IsNot(Property.Ultimate)) {
             _aoe = Utils.CreateAreaOfEffect(new(this), "EruptionCircle").transform.parent.parent.gameObject;
             _aoe.transform.position = User.transform.position + new Vector3(0, -0.2f);
-            GameController.Instance.WaitAndRunMethod(UpgradeAUnlocked ? 0.5f : 1, AdvanceExplosion);
+            GameController.Instance.WaitAndRunMethod(Is(Property.UpgradeA) ? 0.5f : 1, AdvanceExplosion);
             GameController.Instance.WaitAndRunMethod(1.2f, PlaySound);
         }
     }
 
     public override void CallAbilityEvent2()
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             CreateExplosion();
         }
     }
@@ -67,7 +68,7 @@ public class Ability_Eruption : Technique
             if(_circleCounter < 5) {
                 GameController.Instance.WaitAndRunMethod(1.2f, PlaySound);
             }
-            GameController.Instance.WaitAndRunMethod(UpgradeAUnlocked ? 0.5f : 1 , AdvanceExplosion);
+            GameController.Instance.WaitAndRunMethod(Is(Property.UpgradeA) ? 0.5f : 1 , AdvanceExplosion);
         }
     }
 
@@ -101,16 +102,16 @@ public class Ability_Eruption : Technique
 
     public override void ExtraBehaviourOnHit(Damage damage)
     {
-        if (Is(AbilityProperty.Ultimate)) {
+        if (Is(Property.Ultimate)) {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(Player.Instance.MagicStagger.Current * MagicStaggerBurnScalingUltimate / 100, new(this)));
         }
         else {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(Player.Instance.MagicStagger.Current * MagicStaggerBurnScaling / 100, new(this)));
         }
-        if(UpgradeAUnlocked) {
+        if(Is(Property.UpgradeA)) {
             damage.TargetOfDamage.AddEffect(new Effect_Prone(MasteryAProneApplied, new(this)));
         }
-        if(UpgradeBUnlocked) {
+        if(Is(Property.UpgradeB)) {
             User.AddEffect(new Effect_Barrier((Player.Instance.MagicStagger.Current + Player.Instance.HeavyStagger.Current) * MasteryBBarrierScaling / 100, new(this)));
         }
     }

@@ -46,7 +46,7 @@ public class PB
 
 
     //Multipliers for only affecting certain subset
-    public const float SPECIALIZATION__RIPOSTES_COUNTERS = 3f;
+    public const float SPECIALIZATION__RIPOSTES_AND_COUNTERS = 3f;
     public const float SPECIALIZATION__RIPOSTES = 5f;
     public const float SPECIALIZATION__COUNTERS = 5f;
     public const float SPECIALIZATION__WEAPONS = 1.2f;
@@ -91,6 +91,7 @@ public class PB
     public const float REQUIREMENT__DODGE = 1.75f;
     public const float REQUIREMENT__RIPOSTE = 2f;
     public const float REQUIREMENT__COUNTER = 4f;
+    public const float REQUIREMENT__RIPOSTE_OR_COUNTER = 1.75f;
     public const float REQUIREMENT__WEAPON_DAMAGE = 1.5f;
     public const float REQUIREMENT__WEAPON_TECHNIQUE = 2.2f;
     public const float REQUIREMENT__BASIC_ATTACK = 1.5f;
@@ -145,7 +146,7 @@ public class PB
     public const float RESTRICTION__LASTS_30_SECONDS = 1.25f;
     public const float RESTRICTION__LOSE_1P_CURRENT_HEALTH_EACH_SECOND = 5f;
     public const float RESTRICTION__CONSUME_1P_OF_STACKING_EFFECT = 1.5f;
-    public const float RESTRICTION__CONSUME_ALL_SCALING_STACKING_EFFECT_WHEN_USED = 3f;
+    public const float RESTRICTION__CONSUME_ALL_SCALING_STACKING_EFFECT_WHEN_USED = 2.5f;
     public const float RESTRICTION__ONLY_AGAINST_ENEMY_WHO_LANDED_FATAL_BLOW = 1.75f;
 
 
@@ -157,6 +158,7 @@ public class PB
     public const float SPECIAL__TOTAL_HEALTH_AMOUNT_CONVERSION = 0.05714F;
     public const float SPECIAL__TOTAL_STAGGER_BAR_AMOUNT_CONVERSION = 0.05714F;
     public const float SPECIAL__STAT_BONUS_CONVERSION = 1.0f;
+    public const float SPECIAL__BONUS_FOR_SCALING_WITH_BOTH_SELF_AND_ENEMY_DECAYING_EFFECT = 1.25f;
     public const float SPECIAL__BONUS_FOR_AFFECTING_2_DIFFERENT_STACKING_EFFECTS = 1.25f;
     public const float SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS = 1.5f; //It is much harder to extract full value from all 3 stacking effects at the same time compared to just 1
 
@@ -171,27 +173,28 @@ public class PB
 
 
     //Expected amount of certain stats or effects on average enemy
-    public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_HEALTH = 1000; // 1250 with DR
-    public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_STAGGER_BAR = 500; // 625 with DR
-    public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_HEALTH = 10000; // 12500 with DR
-    public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_STAGGER_BAR = 1000; // 1250 with DR
-    public const float EXPECTED_AMOUNT_OF_ENEMY_DAMAGE_REDUCTION = 25;
+    public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_HEALTH = 1000; // 1250 with Armor
+    public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_STAGGER_BAR = 500; // 625 with Armor
+    public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_HEALTH = 10000; // 12500 with Armor
+    public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_STAGGER_BAR = 1000; // 1250 with Armor
+    public const float EXPECTED_AMOUNT_OF_ENEMY_ARMOR = 25;
     public const float EXPECTED_AMOUNT_OF_DEBUFFS_ON_PLAYER = 3;
     public const float EXPECTED_AMOUNT_OF_DEBUFFS_ON_ENEMY = 3;
     public const float EXPECTED_AMOUNT_OF_SPECIFIC_ITEM_EQUIPPED = 3.0f;
     public const float EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER = 30;
-    public const float EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_PLAYER = 50;
+    public const float EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_PLAYER = 30;
+    public const float EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_ENEMY = 50;
 
 
     //Stat Percentage Increase per 1 PB
     public const float DAMAGE_INCREASE_PER_PB = 1f;
-    public const float DAMAGE_INCREASE_PER_1_ENEMY_DAMAGE_REDUCTION_PER_PB = 1 / PB.EXPECTED_AMOUNT_OF_ENEMY_DAMAGE_REDUCTION;
-    public const float DAMAGE_REDUCTION_PENETRATION_PER_PB = 1 / PB.EXPECTED_AMOUNT_OF_ENEMY_DAMAGE_REDUCTION;
+    public const float DAMAGE_INCREASE_PER_1_ENEMY_ARMOR_PER_PB = 1 / PB.EXPECTED_AMOUNT_OF_ENEMY_ARMOR;
+    public const float ARMOR_PENETRATION_PER_PB = 1 / PB.EXPECTED_AMOUNT_OF_ENEMY_ARMOR;
     public const float MAXIMUM_STAGGER_BAR_INCREASE_PER_PB = 2f;
     public const float MAXIMUM_HEALTH_INCREASE_PER_PB = 2f;
     public const float ATTACK_SPEED_INCREASE_PER_PB = 1.6f;
     public const float MOVEMENT_SPEED_INCREASE_PER_PB = 1.2f;
-    public const float DAMAGE_REDUCTION_INCREASE_PER_PB = 1f;
+    public const float ARMOR_INCREASE_PER_PB = 1f;
     public const float TENACITY_INCREASE_PER_PB = 1.5f;
     public const float CONTROL_INCREASE_PER_PB = 1.5f;
     public const float ENERGY_GAIN_INCREASE_PER_PB = 1.25f;
@@ -218,6 +221,7 @@ public class PB
     public const float GAIN_FLAT_ENERGY_AFFECTED_BY_ENERGY_GAIN_PER_PB = 0.5f;
     public const float AMMO_PERCENTAGE_RESTORED_PER_PB = 1f;
     public const float APPLY_STACKING_EFFECT_PER_PB = 1f;
+    public const float APPLY_DAMAGING_STACKING_EFFECT_OF_DAMAGE_DEALT_PERCENTAGE_PER_PB = 0.1f;
     public const float DECREASE_STACKING_EFFECT_RECEIVED_PER_PB = 1.5f;
     public const float REMOVE_DAMAGING_STACKING_EFFECT_FROM_PLAYER_PER_PB = 0.5f;
     public const float EXTRA_MAXIMUM_HEALTH_RESTORED_BY_HEALTH_POTION_PER_PB = PERCENTAGE_HEALTH_RESTORED_PER_SECOND_PER_PB * 10;
@@ -238,7 +242,7 @@ public class PB
 
     //Effect amount per 1 PB
     public const float ONSLAUGHT_PER_PB = SCALING_STACKING_EFFECT_PER_PB * SPECIALIZATION__BASIC_ATTACK;
-    public const float SHARP_PER_PB = SCALING_STACKING_EFFECT_PER_PB * SPECIALIZATION__RIPOSTES_COUNTERS;
+    public const float SHARP_PER_PB = SCALING_STACKING_EFFECT_PER_PB * SPECIALIZATION__RIPOSTES_AND_COUNTERS;
     public const float BURN_PER_PB = DAMAGING_STACKING_EFFECT_PER_PB * SPECIALIZATION__STAGGER * MULTIPLIER__BURN_PROPERTIES;
     public const float FREEZE_PER_PB = DAMAGING_STACKING_EFFECT_PER_PB * SPECIALIZATION__STAGGER * MULTIPLIER__FREEZE_PROPERTIES;
     public const float BARRIER_PER_PB = (PLAYER_HEALTH_PER_PB + ENEMY_HEALTH_PER_PB) / 2 * MULTIPLIER__BARRIER_PROPERTIES;

@@ -30,10 +30,10 @@ public class Ability_WindRush : Technique
     {
         if(User.CurrentWeaponDamageType == Constants.DamageType.Light) {
             DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
-            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling / 2 : InjuryScaling / 2, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageType));
+            DamageSources.Add(new DamageSource(Is(Property.Ultimate) ? UltimateInjuryScaling / 2 : InjuryScaling / 2, Is(Property.Ultimate) ? UltimateStaggerScaling / 2 : StaggerScaling / 2, User.CurrentWeaponDamageType));
         }
         else {
-            DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : InjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageType));
+            DamageSources.Add(new DamageSource(Is(Property.Ultimate) ? UltimateInjuryScaling : InjuryScaling, Is(Property.Ultimate) ? UltimateStaggerScaling : StaggerScaling, User.CurrentWeaponDamageType));
         }
         DamageSources.Add(new DamageSource(0, UltimateStaggerAoEScalingPerSecond / 2, User.CurrentWeaponDamageType, "WindRush_AoE"));
         AddCustomSound("Start", "Ability/Ability_WindBlast_Use", 0.4f);
@@ -48,17 +48,8 @@ public class Ability_WindRush : Technique
         GameObject vfx = Utils.CreateVisualEffect(new(this), "WindRush");
         vfx.GetComponent<AttachObjectToBodyPart>().Initialize(User);
         vfx.transform.eulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? -90 : 90);
-        if(Player.Instance.CurrentTarget != null) {
-            ChaseCurrentTargetAtGivenDegreeAngle(300, 60, 40);
-        }
-        else if(GameController.Instance.PlayerInput.currentControlScheme == "Gamepad") {
-            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60) * 3000, this);
-        }
-        else {
-            float distance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
-            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60) * 300 * (distance > 10 ? 10 : distance), this);
-        }
-        if(UpgradeAUnlocked) {
+        ChaseCurrentTargetAtGivenDegreeAngle(15, 60);
+        if(Is(Property.UpgradeA)) {
             User.AddEffect(new Effect_Barrier(User.CurrentWeaponInjury.Current * UpgradeABarrierInjuryScaling / 100 + User.CurrentWeaponStagger.Current * UpgradeABarrierInjuryScaling / 100, new(this)));
         }
     }
@@ -103,21 +94,21 @@ public class Ability_WindRush : Technique
         if(damage.TargetOfDamage == _intendedTarget && _intendedTargetWasHit == false) {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Knockback");
             aoe.transform.position = damage.TargetOfDamage.transform.position;
-            aoe.GetComponent<PushOrPullUnits>().Force = Is(AbilityProperty.Ultimate) ? 4000 : 1500;
+            aoe.GetComponent<PushOrPullUnits>().Force = Is(Property.Ultimate) ? 4000 : 1500;
             aoe.GetComponent<PushOrPullUnits>().AffectedUnits.AddRange(new List<Unit> { damage.SourceOfDamage.User, damage.TargetOfDamage });
-            if(UpgradeBUnlocked) {
+            if(Is(Property.UpgradeB)) {
                 User.AddEffect(new Effect_Stun(new(this)), UpgradeBStunDuration);
             }
             _intendedTargetWasHit = true;
             PlayCustomSound("WindBlast");
-            if(Is(AbilityProperty.Ultimate)) {
+            if(Is(Property.Ultimate)) {
                 _ultimateAoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Ultimate");
                 _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(false);
                 GameController.Instance.WaitAndRunMethod(1f, ActivateUltimateWall);
                 _targetOfDamage = damage.TargetOfDamage;
             }
         }
-        else if(damage.TargetOfDamage != _intendedTarget && UpgradeBUnlocked) {
+        else if(damage.TargetOfDamage != _intendedTarget && Is(Property.UpgradeB)) {
             User.AddEffect(new Effect_Sleep(new(this)), UpgradeBSleepDuration);
         }
     }
@@ -147,7 +138,7 @@ public class Ability_WindRush : Technique
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
         if(object_hitting is AreaOfEffect && object_hitting.gameObject.name.Contains("WindRush_AoE") == false) {
-            if(unit_getting_attacked != _intendedTarget && UpgradeBUnlocked) {
+            if(unit_getting_attacked != _intendedTarget && Is(Property.UpgradeB)) {
                 User.AddEffect(new Effect_Sleep(new(this)), UpgradeBSleepDuration);
             }
             return;

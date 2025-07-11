@@ -10,6 +10,6 @@ public class Gloves_IronBlooded : Item
         Set = ItemSetEnum.IronBlooded;
         Type = Constants.ItemType.Gloves;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("RegeneratePortionOfInjuryTakenAsHealthOver30Seconds")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReductionIsPartiallyEffectiveWhileStaggered")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorIsPartiallyEffectiveWhileStaggered")};
     }
 }

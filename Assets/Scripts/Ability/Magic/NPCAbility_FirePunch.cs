@@ -14,7 +14,7 @@ public class NPCAbility_FirePunch : Ability {
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.5f;
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Magic));
-        Properties.Add(AbilityProperty.CounteredByBackstep);
+        Properties.Add(Property.CounteredByBackstep);
     }
 
     public override void CallAbilityEvent1()
@@ -26,7 +26,7 @@ public class NPCAbility_FirePunch : Ability {
     public override void CallAbilityEvent2()
     {
         _aoe.transform.GetChild(0).gameObject.SetActive(true);
-        ChaseCurrentTargetAtGivenDegreeAngle(125, 35, 25);
+        ChaseCurrentTargetAtGivenDegreeAngle(3, 35);
     }
 
     public override void CallAbilityEvent3()

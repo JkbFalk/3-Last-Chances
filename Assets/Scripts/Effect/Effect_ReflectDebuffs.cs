@@ -16,9 +16,9 @@ public class Effect_ReflectDebuffs : Effect
 
     /*public override void OnEffectValueChanged()
     {
-        DamageReductionGainedPerDebuff *= PowerBudget;
+        ArmorGainedPerDebuff *= PowerBudget;
         DamageGainedPerDebuff *= PowerBudget;
-        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(DamageGainedPerDebuff), Utils.GetFormattedFloat(DamageReductionGainedPerDebuff), MaxDebuffs.ToString()};
+        DescriptionParameters = new List<string> { Utils.GetFormattedFloat(DamageGainedPerDebuff), Utils.GetFormattedFloat(ArmorGainedPerDebuff), MaxDebuffs.ToString()};
     }
 
 

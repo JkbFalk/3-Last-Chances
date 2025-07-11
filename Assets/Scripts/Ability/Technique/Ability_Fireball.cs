@@ -28,17 +28,17 @@ public class Ability_Fireball : Ability {
         AddCustomSound("Explosion", "Fire/Fire10", 0.6f);
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
-        NameOfAnimationToAutoPlay = UpgradeBUnlocked ? "Fireball_MasteryB" : Player.Instance.PreparingForUltimate ? "Fireball_Ultimate" : "Fireball";
-        if(UpgradeBUnlocked) {
+        NameOfAnimationToAutoPlay = Is(Property.UpgradeB) ? "Fireball_MasteryB" : Player.Instance.PreparingForUltimate ? "Fireball_Ultimate" : "Fireball";
+        if(Is(Property.UpgradeB)) {
             DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
-            DamageSources.Add(new DamageSource(MagicInjuryScalingMasteryB, MagicStaggerScalingMasteryB, Constants.DamageType.Magic, "Fireball") {Knockback = 300});
-            DamageSources.Add(new DamageSource(MagicInjuryScalingExplosion, 0, Constants.DamageType.Magic, "AoE") {Knockback = 100});
+            DamageSources.Add(new DamageSource(MagicInjuryScalingMasteryB, MagicStaggerScalingMasteryB, Constants.DamageType.Magic, "Fireball") {KnockbackInMeters = 3f});
+            DamageSources.Add(new DamageSource(MagicInjuryScalingExplosion, 0, Constants.DamageType.Magic, "AoE") {KnockbackInMeters = 1f});
         }
         else if(Player.Instance.PreparingForUltimate) {
-            DamageSources.Add(new DamageSource(MagicInjuryScalingUltimate, MagicBurnScalingUltimate, Constants.DamageType.Magic, "Fireball_Ultimate") {Knockback = 150});
+            DamageSources.Add(new DamageSource(MagicInjuryScalingUltimate, MagicBurnScalingUltimate, Constants.DamageType.Magic, "Fireball_Ultimate") {KnockbackInMeters = 1.5f});
         }
         else {
-            DamageSources.Add(new DamageSource(MagicInjuryScalingExplosion, 0, Constants.DamageType.Magic, "AoE") {Knockback = 300});
+            DamageSources.Add(new DamageSource(MagicInjuryScalingExplosion, 0, Constants.DamageType.Magic, "AoE") {KnockbackInMeters = 3f});
         }
         EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstunnable(new(this))};
     }
@@ -76,7 +76,7 @@ public class Ability_Fireball : Ability {
         if(Player.Instance.CurrentTarget == null) {
             _intendedDestinations[0] = Player.Instance.transform.position + relativePosition;
         }
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             for(int i = 0; i < 4; i++) {
                 _fireBalls.Add(Utils.CreateProjectile(new(this), "Fireball"));
                 MonoBehaviour.Destroy(_fireBalls[i+1].GetComponent<AttachObjectToBodyPart>());
@@ -92,7 +92,7 @@ public class Ability_Fireball : Ability {
             _fireBalls[i].IsFlying = true;
             _fireBalls[i].transform.eulerAngles = Vector3.zero;
             _fireBalls[i].DealingDamage = true;
-            if(UpgradeBUnlocked == false) {
+            if(Is(Property.UpgradeB) == false) {
                 _fireBalls[i].transform.up = (_intendedDestinations[i] + new Vector3(0, _distances[i]) - _fireBalls[i].transform.position).normalized;
                 GameController.Instance.WaitAndRunMethod(0.3f / Player.Instance.MagicAttackSpeed.Current, Explode);
                 AdjustFireballAngle(i);
@@ -113,7 +113,7 @@ public class Ability_Fireball : Ability {
     public void Explode() {
         for(int i = 0; i < _fireBalls.Count; i++) {
             if(_fireBalls[i] != null && _fireBalls[i].gameObject != null && _fireBalls[i].gameObject.IsDestroyed() == false) {
-                AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion" + (UpgradeAUnlocked ? "_MasteryA" : ""));
+                AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion" + (Is(Property.UpgradeA) ? "_MasteryA" : ""));
                 PlayCustomSound("Explosion", 0.6f, aoe.transform.parent.GetComponent<AudioSource>());
                 aoe.transform.parent.position = _fireBalls[i].transform.position;
                 MonoBehaviour.Destroy(_fireBalls[i].gameObject);
@@ -137,7 +137,7 @@ public class Ability_Fireball : Ability {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(MagicBurnScalingExplosion * User.MagicStagger.Current / 100, new(this)));
         }
         else {
-            AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion" + (UpgradeAUnlocked ? "_MasteryA" : ""));
+            AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion" + (Is(Property.UpgradeA) ? "_MasteryA" : ""));
             PlayCustomSound("Explosion", 0.6f, aoe.transform.parent.GetComponent<AudioSource>());
             aoe.transform.parent.position = damage.DamagingObject.transform.position;
             damage.DamagingObject.MakeObjectDisappear(0);
@@ -146,14 +146,14 @@ public class Ability_Fireball : Ability {
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        if(UpgradeAUnlocked) {
+        if(Is(Property.UpgradeA)) {
             damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), Utils.GetValueBasedOnMinAndMax(Vector2.Distance(damage.TargetOfDamage.transform.position, damage.DamagingObject.transform.position), 0, 3, UpgradeAStunMaxDuration, UpgradeAStunMinDuration));
         }
     }
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
-        if(Is(AbilityProperty.Ultimate) && _enemiesAffectedByExplosion.Contains(unit_getting_attacked)) {
+        if(Is(Property.Ultimate) && _enemiesAffectedByExplosion.Contains(unit_getting_attacked)) {
             return;
         }
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);

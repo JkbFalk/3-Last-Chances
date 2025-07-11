@@ -5,7 +5,7 @@ public class MovementSpeed : Stat {
 
     public MovementSpeed(Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         if(stat_owner is Player) {
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find("MovementSpeed/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find("MovementSpeed/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
         Base = base_amount;
@@ -14,17 +14,17 @@ public class MovementSpeed : Stat {
     }
 
     public override void AdditionalStatSpecificActionsAfterCurrentValueChanged() {
-        Owner.Animator.SetFloat("Movement Speed", Current);
+        Owner.Animator.SetFloat("Movement Speed",  1 + Current / 100);
         if (Owner.UnitAI != null && Owner.UnitAI.NavMeshAgent != null) {
-            Owner.UnitAI.NavMeshAgent.speed = (Owner.IsHostile ? Constants.DEFAULT_ENEMY_SPEED : Constants.DEFAULT_ALLY_SPEED) * Current;
+            Owner.UnitAI.NavMeshAgent.speed = (Owner.IsHostile ? Constants.DEFAULT_ENEMY_SPEED : Constants.DEFAULT_ALLY_SPEED) * (1 + Current / 100);
         }
-        if(ShouldInvoke && Current < 0.2f) {
-            ChangeCurrentValueWithoutInvoking(0.2f);
+        if(ShouldInvoke && Current < -80f) {
+            ChangeCurrentValueWithoutInvoking(-80f);
         }
     }
 
     public override void UpdateMenuStatDisplayValue()
     {
-        MenuStatDisplay.text = (Current < 1 ? "" : "+") + Utils.GetFormattedFloat((Current - 1) * 100) + "%";
+        MenuStatDisplay.text = (Current < 0 ? "" : "+") + Utils.GetFormattedFloat(Current);
     }
 }

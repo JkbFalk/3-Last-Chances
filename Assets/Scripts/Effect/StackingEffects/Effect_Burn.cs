@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Effect_Burn : Effect
 {
-    private int counter = 0;
     public GameObject Vfx;
     public override int StackingEffectIntensityLevel {
         get { 
@@ -25,7 +24,8 @@ public class Effect_Burn : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        AddVisualEffect();
     }
 
     public override void OnStart()
@@ -33,12 +33,14 @@ public class Effect_Burn : Effect
         base.OnStart();
         BaseDuration = Constants.DEFAULT_STACKING_EFFECT_BASE_DURATION_IN_SECONDS;
         AddVisualEffect();
+        EventManager.OneTenthSecondElapsedInGame.AddListener(ApplyBurn);
     }
 
     public override void OnEnd()
     {
         base.OnEnd();
         RemoveVFXs();
+        EventManager.OneTenthSecondElapsedInGame.RemoveListener(ApplyBurn);
     }
 
     public void AddVisualEffect() {
@@ -64,7 +66,12 @@ public class Effect_Burn : Effect
 
     public override void OnInvokeEffectStarted(Effect effect) {
         if(effect.TargetOfEffect == TargetOfEffect && effect.GetType().IsSubclassOf(typeof(Effect_Staggered))) {
-            Damage damage = new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null) { AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None), Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.BurnExplosion }, Injury = DecayingAmount * 15}.DisableSoundOnEnemyHit().CalculateDamage();
+            new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null) { 
+                AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None), 
+                Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.BurnExplosion }, 
+                Injury = DecayingAmount * 15,
+                PlaySoundOnEnemyHit = false
+            }.CalculateAndApplyDamage();
             GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "BurnExplosion");
             vfx.transform.SetParent(effect.TargetOfEffect.SpriteRenderers["Upper Body"].Bone);
             vfx.transform.localPosition = Vector2.zero;
@@ -75,18 +82,18 @@ public class Effect_Burn : Effect
         }
     }
 
-    public override void OnFixedUpdate()
+    public void ApplyBurn()
     {
-        if(EffectEnded) {
+        if (EffectEnded || TargetOfEffect == null)
+        {
             return;
         }
-        base.OnFixedUpdate();
-        counter++;
-        if(counter >= 50 && TargetOfEffect != null) {
-            counter = 0;
-            EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
-            Damage damage = new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null) { AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None), IsDamageOverTime = true, Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn }, Stagger = DecayingAmount}.DisableSoundOnEnemyHit().CalculateDamage();
-            AddVisualEffect();
-        }
+        new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null)
+        {
+            AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None),
+            Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.DamageOverTime },
+            Stagger = DecayingAmount / 10,
+            PlaySoundOnEnemyHit = false
+        }.CalculateAndApplyDamage();
     }
 }

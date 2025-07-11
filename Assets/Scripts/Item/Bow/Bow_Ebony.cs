@@ -12,6 +12,6 @@ public class Bow_Ebony : Item
         int[] baseStats = {70, 75, 85, 100, 125};
         SetBaseWeaponStats(baseStats[GradeIndex], baseStats[GradeIndex], 0.8f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("EbonySpecialScaling")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReduction")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Armor")};
     }
 }

@@ -10,12 +10,12 @@ public class NPCAbility_QuickLeftAndRightDown : Ability {
         WaitTimeBeforeNextAction = 0.1f;
         IsRight = UnityEngine.Random.Range(0, 100) < 50;
         NameOfAnimationToAutoPlay = IsRight ? "QuickRightDown" : "QuickLeftDown";
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(250, 10, 3);
+        ChaseCurrentTargetAtGivenDegreeAngle(1, 10);
     }
 
     public override void CallAbilityEvent2()

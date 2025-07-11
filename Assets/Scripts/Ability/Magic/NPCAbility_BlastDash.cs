@@ -10,7 +10,7 @@ public class NPCAbility_BlastDash : Ability {
         WaitTimeBeforeNextAction = 0.1f;
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Heavy));
         AddCustomSound("Blast", "Fire/Fire14", 0.5f);
-        Properties.Add(AbilityProperty.CounteredByBackstep);
+        Properties.Add(Property.CounteredByBackstep);
     }
 
     public override void CallAbilityEvent1()
@@ -18,7 +18,7 @@ public class NPCAbility_BlastDash : Ability {
         GameObject vfx = Utils.CreateVisualEffect(new(this), "BlastDash");
         vfx.GetComponent<AttachObjectToBodyPart>().Initialize(User);
         vfx.transform.eulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? -90 : 90);
-        ChaseCurrentTargetAtGivenDegreeAngle(350, 10, 30);
+        ChaseCurrentTargetAtGivenDegreeAngle(12, 10);
         User.Actions.PlayAbilityCustomSound("Blast");
     }
     public override void ExtraBehaviourOnDamage(Damage damage)

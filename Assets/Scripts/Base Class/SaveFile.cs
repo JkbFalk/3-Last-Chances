@@ -47,32 +47,6 @@ public class SaveFile
     public int IrisMemoryPiecesFound = 0;
     public List<string> ReceivedExperienceFromInteractables = new();
 
-    [DoNotSerialize]
-    public float GlobalEnemyDamageModifier {
-        get {
-            switch(DifficultyLevel) {
-                case 0: return 0.8f;
-                case 1: return 0.9f;
-                case 2: return 1f;
-                case 3: return 1.1f;
-                default: return 1;
-            }
-        }
-    }
-
-    [DoNotSerialize]
-    public float GlobalEnemySurvivabilityModifier {
-        get {
-            switch(DifficultyLevel) {
-                case 0: return 0.9f;
-                case 1: return 0.95f;
-                case 2: return 1f;
-                case 3: return 1.35f;
-                default: return 1;
-            }
-        }
-    }
-
     public List<Type> UnlockedTools = new();
     public Dictionary<Type, Item.ItemGrade> ToolGrades = new() {
         {typeof(Tool_Caltrops), Item.ItemGrade.Regular},
@@ -176,7 +150,7 @@ public class SaveFile
             _healUpgrades = value;
             if(prev_val != _healUpgrades) {
                 NotificationController.ShowNotificationWithGraphic("HealUpgradeNotification", "UI/Heal", new List<string> {(value-1).ToString(), value.ToString()});
-                CanvasElements.UICanvas.Items.transform.Find("Heal/Upgrade").GetComponent<TextMeshProUGUI>().text = "+" + _healUpgrades.ToString();
+                UIManager.Objects.HealingItemText.text = "+" + _healUpgrades.ToString();
                 Utils.PlaySoundEffect(Player.Instance.AudioSource, "Generic/PowerUp1", 1f);
                 if(DifficultyLevel >= 1) {
                     MaxHealCharges = 
@@ -201,8 +175,8 @@ public class SaveFile
         get => _healChargesRemaining;
         set {
             _healChargesRemaining = value < 0 ? 0 : value > SaveFile.Instance.MaxHealCharges ? SaveFile.Instance.MaxHealCharges : value;
-            CanvasElements.UICanvas.Items.transform.Find("Heal/Uses/Text").GetComponent<TextMeshProUGUI>().text = _healChargesRemaining.ToString() + "/" + SaveFile.Instance.MaxHealCharges;
-            CanvasElements.UICanvas.Items.transform.Find("Heal/Disabled").gameObject.SetActive(_healChargesRemaining <= 0);
+            UIManager.Objects.Items.transform.Find("Heal/Uses/Text").GetComponent<TextMeshProUGUI>().text = _healChargesRemaining.ToString() + "/" + SaveFile.Instance.MaxHealCharges;
+            UIManager.Objects.Items.transform.Find("Heal/Disabled").gameObject.SetActive(_healChargesRemaining <= 0);
         }
     }
     public int DifficultyLevel {
@@ -374,7 +348,7 @@ public class SaveFile
             _ultimatesUsedInCurrentCombat = value;
             int regularTiles = MaxUltimateUsesPerCombat - UltimatesUsedInCurrentCombat;
             for(int i = 0; i < Constants.MAX_ULTIMATE_USES_POSSIBLE; i++) {
-                CanvasElements.UICanvas.UltimateUses.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (i < regularTiles ? "UltimateCanBeUsed" : "UltimateCannotBeUsed"), typeof(Sprite)) as Sprite; 
+                UIManager.Objects.UltimateUses.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (i < regularTiles ? "UltimateCanBeUsed" : "UltimateCannotBeUsed"), typeof(Sprite)) as Sprite; 
             }
         }
     }
@@ -388,22 +362,22 @@ public class SaveFile
             if(Player.Instance != null) {
                 Player.Instance.Level = value > 100 ? 100 : value;
             }
-            MenuManager.Instance.transform.Find("Overview Window/Stats/Stats/Level/Label").GetComponent<TextMeshProUGUI>().text = Label.Get("UIPlayerLevel") + " " + _level.ToString();
+            MenuManager.Instance.transform.Find("Character Window/Stats/Stats/Level/Label").GetComponent<TextMeshProUGUI>().text = Label.Get("UIPlayerLevel") + " " + _level.ToString();
             MaxPassivePowerUps = Level;
             MaxUpgradePoints = Level >= 63 ? 21 : Level / 3;
-            MaxUltimateUsesPerCombat = Level >= 65 ? 5 : Level >= 55 ? 4 : Level >= 45 ? 3 : Level >= 35 ? 2 : Level >= 25 ? 1 : 0;
+            MaxUltimateUsesPerCombat = Level >= 50 ? 7 : Level >= 45 ? 6 : Level >= 40 ? 5 : Level >= 35 ? 4 : Level >= 30 ? 3 : Level >= 25 ? 2 : Level >= 20 ? 1 : 0;
             int regularTiles = MaxUltimateUsesPerCombat - UltimatesUsedInCurrentCombat;
             for(int i = 0; i < Constants.MAX_ULTIMATE_USES_POSSIBLE; i++) {
-                CanvasElements.UICanvas.UltimateUses.transform.GetChild(i).gameObject.SetActive(MaxUltimateUsesPerCombat > i);
-                CanvasElements.UICanvas.UltimateUses.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (i < regularTiles ? "UltimateCanBeUsed" : "UltimateCannotBeUsed"), typeof(Sprite)) as Sprite; 
+                UIManager.Objects.UltimateUses.transform.GetChild(i).gameObject.SetActive(MaxUltimateUsesPerCombat > i);
+                UIManager.Objects.UltimateUses.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (i < regularTiles ? "UltimateCanBeUsed" : "UltimateCannotBeUsed"), typeof(Sprite)) as Sprite; 
             }
             MakeSureAllCorrectTechniquesAndStancesAreUnlocked();
             UpdateSkillTrees();
             MenuManager.Instance.UpdateLoadoutUpgradePoints();
-            CanvasElements.UICanvas.ExperienceBar.transform.Find("Left Level").GetComponent<TextMeshProUGUI>().text = _level.ToString();
-            CanvasElements.UICanvas.ExperienceBar.transform.Find("Right Level").GetComponent<TextMeshProUGUI>().text = (_level + 1).ToString();
-            CanvasElements.DialogueExperienceBar.transform.Find("Left Level").GetComponent<TextMeshProUGUI>().text = _level.ToString();
-            CanvasElements.DialogueExperienceBar.transform.Find("Right Level").GetComponent<TextMeshProUGUI>().text = (_level + 1).ToString();
+            UIManager.Objects.ExperienceBarLeftText.text = _level.ToString();
+            UIManager.Objects.ExperienceBarRightText.text = (_level + 1).ToString();
+            GameController.Objects.DialogueExperienceBarLeftLevel.GetComponent<TextMeshProUGUI>().text = _level.ToString();
+            GameController.Objects.DialogueExperienceBarRightLevel.GetComponent<TextMeshProUGUI>().text = (_level + 1).ToString();
             if(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect) {
                 Utils.GetSceneRootObject("Mission Select").Find("Level/Left Level").GetComponent<TextMeshProUGUI>().text = _level.ToString();
                 Utils.GetSceneRootObject("Mission Select").Find("Level/Right Level").GetComponent<TextMeshProUGUI>().text = (_level + 1).ToString();
@@ -414,7 +388,7 @@ public class SaveFile
     public void MakeSureAllCorrectTechniquesAndStancesAreUnlocked() {
         UnlockedAbilities.Clear();
         UnlockedStances.Clear();
-        foreach(Type ability in new List<Type> {typeof(Ability_WindRush), typeof(Ability_HeavySlash)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_WindRush), typeof(Ability_HeavySlash), typeof(Ability_ChargedShot), typeof(Ability_Fortify), typeof(Ability_ShadowLeap), typeof(Ability_ReplicaFlank), typeof(Ability_Barrage)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
         foreach(Type stance in new List<Type> {typeof(Stance_SingularPursuit), typeof(Stance_OmniMastery), typeof(Stance_HeatOfBattle), typeof(Stance_PlunderingFlame), typeof(Stance_PowerWithoutLimit), typeof(Stance_MindOverMatter)}) {
@@ -423,19 +397,19 @@ public class SaveFile
         if(Level < 10) {
             return;
         }
-        foreach(Type ability in new List<Type> {typeof(Ability_TempestStrikes), typeof(Ability_Fireball)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_TempestStrikes), typeof(Ability_Fireball), typeof(Ability_Permafrost), typeof(Ability_TectonicPull), typeof(Ability_ShadowInfusion), typeof(Ability_Thunderstrike), typeof(Ability_EnergyBlades)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
         if(Level < 20) {
             return;
         }
-        foreach(Type ability in new List<Type> {typeof(Ability_Quickdraw), typeof(Ability_Flamethrower)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_Quickdraw), typeof(Ability_Flamethrower), typeof(Ability_SpearsOfIce), typeof(Ability_BlastDash), typeof(Ability_DeathSentence), typeof(Ability_LightningSpeed), typeof(Ability_Avatar)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
         if(Level < 30) {
             return;
         }
-        foreach(Type ability in new List<Type> {typeof(Ability_CuttingWind), typeof(Ability_Eruption)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_Deconstruction), typeof(Ability_Eruption), typeof(Ability_TimeFreeze), typeof(Ability_Helmsplitter), typeof(Ability_Shadowgifted), typeof(Ability_FlurryOfBlows), typeof(Ability_FinalBlast)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
     }
@@ -498,7 +472,7 @@ public class SaveFile
 
     
     public void UpdateToolInventoryTile(Type tool_type) {
-        foreach(Transform child in CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Inventory/Viewport/Items/Tool/Items").transform) {
+        foreach(Transform child in MenuManager.Objects.InventoryItemsTools.transform) {
             InventoryTile tile = child.GetComponent<InventoryTile>();
             if(tile.Item.GetType() == tool_type) {
                 tile.InitializeOptions();
@@ -527,11 +501,11 @@ public class SaveFile
             }
         }
         if(GameController.Instance.InterruptMusicOnDeath == false) {
-            CanvasElements.UICanvasObject.transform.Find("Ignis Energy/Amount").GetComponent<TextMeshProUGUI>().text = SaveFile.Instance.IgnisEnergy.ToString();
-            CanvasElements.UICanvasObject.transform.Find("Ignis Energy").GetComponent<Slider>().value = SaveFile.Instance.IgnisEnergy / 2000;
+            UIManager.Objects.CustomGaugeAmountText.text = SaveFile.Instance.IgnisEnergy.ToString();
+            UIManager.Objects.CustomGaugeSlider.value = SaveFile.Instance.IgnisEnergy / 2000;
             if(Area_IgnisManorOnFire.PlayerBuffEffect != null) {
                 Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter = SaveFile.Instance.IgnisEnergy / 10;
-                Area_IgnisManorOnFire.PlayerBuffEffect.EffectIndicatorText = Utils.GetFormattedFloat(Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter) + "%";
+                Area_IgnisManorOnFire.PlayerBuffEffect.UIText = Utils.GetFormattedFloat(Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter, 0);
             }
         }
     }
@@ -562,10 +536,10 @@ public class SaveFile
                 }
             }
             int expNeeded = GetExperiencePointsNeededToLevelUp();
-            MenuManager.Instance.transform.Find("Overview Window/Stats/Stats/ExperiencePointsSlider/Amount").GetComponent<TextMeshProUGUI>().text = _experiencePoints + " / " + expNeeded;
-            MenuManager.Instance.transform.Find("Overview Window/Stats/Stats/ExperiencePointsSlider").GetComponent<Slider>().value = (float)_experiencePoints / (float)expNeeded;
-            CanvasElements.UICanvas.ExperienceBar.GetComponent<Slider>().value = (float)_experiencePoints / (float)expNeeded;
-            CanvasElements.DialogueExperienceBar.GetComponent<Slider>().value = (float)_experiencePoints / (float)expNeeded;
+            MenuManager.Instance.transform.Find("Character Window/Stats/Stats/ExperiencePoints/Amount").GetComponent<TextMeshProUGUI>().text = _experiencePoints + " / " + expNeeded;
+            MenuManager.Instance.transform.Find("Character Window/Stats/Stats/ExperiencePointsSlider").GetComponent<Slider>().value = (float)_experiencePoints / (float)expNeeded;
+            UIManager.Objects.ExperienceBarSlider.value = (float)_experiencePoints / (float)expNeeded;
+            GameController.Objects.DialogueExperienceBarSlider.value = (float)_experiencePoints / (float)expNeeded;
             if(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect) {
                 Utils.GetSceneRootObject("Mission Select").Find("Level").GetComponent<Slider>().value = (float)_experiencePoints / (float)expNeeded;;
             }
@@ -573,7 +547,7 @@ public class SaveFile
             if(prevValue != value || prevLevel != Level) {
                 Utils.PlaySoundEffect(null, "UI/ExperienceGained", 0.3f);
                 GameObject notification = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ExperienceNotification")) as GameObject;
-                notification.transform.SetParent(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect ? Utils.GetSceneRootObject("Mission Select").Find("Level").transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene ? CanvasElements.DialogueExperienceBar.transform : CanvasElements.UICanvas.ExperienceBar.transform);
+                notification.transform.SetParent(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect ? Utils.GetSceneRootObject("Mission Select").Find("Level").transform : GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene ? GameController.Objects.DialogueExperienceBarSlider.transform : UIManager.Objects.ExperienceBarSlider.transform);
                 notification.transform.localPosition = new Vector2(0, 10);
                 notification.transform.localScale = Vector3.one;
                 notification.GetComponent<TextMeshProUGUI>().text = "+<sprite name=\"Experience\"/>" + Utils.GetFormattedInteger(gainedExp).ToString();
@@ -607,7 +581,7 @@ public class SaveFile
     [NonSerialized]
     public Item EquippedHelmet;
     [NonSerialized]
-    public Item EquippedArmor;
+    public Item EquippedOutfit;
     [NonSerialized]
     public Item EquippedBoots;
     [NonSerialized]
@@ -653,21 +627,17 @@ public class SaveFile
             if(Instance != this) {
                 return;
             }
-            if(_moneyTextDisplay == null)
-            {
-                _moneyTextDisplay = CanvasElements.MenuCanvasObject.transform.Find("Inventory Window/Equipment/Money/Amount").GetComponent<TextMeshProUGUI>();
-            }
-            _moneyTextDisplay.text = Utils.GetFormattedInteger(_money);
-            CanvasElements.UICanvas.MoneyDisplay.GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedInteger(_money);
-            CanvasElements.DialogueMoneyDisplay.GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedInteger(_money);
-            CanvasElements.ShopMoneyDisplay.GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedInteger(_money);
+            MenuManager.Objects.InventoryMoneyText.text = Utils.GetFormattedInteger(_money);
+            UIManager.Objects.MoneyDisplayText.text = Utils.GetFormattedInteger(_money);
+            GameController.Objects.DialogueMoneyDisplayText.text = Utils.GetFormattedInteger(_money);
+            GameController.Objects.ShopMoneyText.text = Utils.GetFormattedInteger(_money);
             if(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect) {
                 Utils.GetSceneRootObject("Mission Select").Find("Money").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedInteger(_money);
             }
             if(prevValue != _money) {
                 Utils.PlaySoundEffect(null, "UI/ItemPickedUp", 0.3f);
                 GameObject notification = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MoneyNotification")) as GameObject;
-                notification.transform.SetParent(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect ? Utils.GetSceneRootObject("Mission Select").Find("Money") : GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene ? CanvasElements.DialogueMoneyDisplay.transform : CanvasElements.UICanvas.MoneyDisplay.transform);
+                notification.transform.SetParent(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect ? Utils.GetSceneRootObject("Mission Select").Find("Money") : GameController.Instance.GameplayMode == Constants.GameplayMode.InCutscene ? GameController.Objects.DialogueMoneyDisplayText.transform : UIManager.Objects.MoneyDisplay.transform);
                 notification.transform.localPosition = new Vector2(0, 30);
                 notification.transform.localScale = Vector3.one;
                 notification.GetComponent<TextMeshProUGUI>().text = (prevValue - _money > 0 ? "- " : "+ ") + Utils.GetFormattedInteger(Math.Abs(prevValue - _money)).ToString();
@@ -717,7 +687,6 @@ public class SaveFile
         Week = 1;
         MenuManager.Instance.InitializeMissionList();
         MenuManager.Instance.UpdateMissionList();
-        MenuManager.Instance.UpdateDifficultyDisplay();
     }
 
     public void RefreshMenuDisplays() {
@@ -744,9 +713,9 @@ public class SaveFile
     public void AddDefaultItems() {
         List<Item> default_items = new List<Item>
         {
-        new Greatsword_Retribution(Item.ItemGrade.Regular),
-        new Daggers_ZephyrsTalons(Item.ItemGrade.Regular),
-        new Bow_Barrage(Item.ItemGrade.Regular),
+        new Longblade_SharpestEdge(Item.ItemGrade.Regular),
+        new Gauntlets_Shatterers(Item.ItemGrade.Regular),
+        new Bow_EternalSleep(Item.ItemGrade.Regular),
         };
         foreach(Item item in default_items)
         {
@@ -865,7 +834,7 @@ public class SaveFile
             case Constants.ItemType.Ranged: return SaveFile.Instance.EquippedRangedWeapon;
             case Constants.ItemType.Gloves: return SaveFile.Instance.EquippedGloves;
             case Constants.ItemType.Helmet: return SaveFile.Instance.EquippedHelmet;
-            case Constants.ItemType.Armor: return SaveFile.Instance.EquippedArmor;
+            case Constants.ItemType.Outfit: return SaveFile.Instance.EquippedOutfit;
             case Constants.ItemType.Boots: return SaveFile.Instance.EquippedBoots;
             default: return null;
         }
@@ -911,7 +880,9 @@ public class SaveFile
             UnlockedStances.Add(ability_type);
         }
         foreach(Stance s in SaveFile.Instance.Stances) {
-            s.StanceEffect.RefreshStance();
+            if(s.StanceEffect != null) {
+                s.StanceEffect.RefreshStance();
+            }
         }
         unlock_tile.transform.Find("Disabled").gameObject.SetActive(false);
         MenuManager.Instance.StanceOverview.FirstOrDefault(select => select.Stance == ability_type.ToString()).UpdateUnlockedStatus();
@@ -1076,11 +1047,8 @@ public class SaveFile
         if(CurrentMission != null) {
             GameController.Instance.SaveMidMissionInformation();
         }
-        SaveFileNumber = (savefile_path.Contains("PreMissionAutoSave") ? "-2" : savefile_path.Contains("PostMissionAutoSave") ? "-1" : savefile_path.Contains("MidMissionAutoSave") ? "0" : SaveFileNumber);
+        SaveFileNumber = savefile_path.Contains("QuickSave") ? "-3" : (savefile_path.Contains("PreMissionAutoSave") ? "-2" : savefile_path.Contains("MidMissionAutoSave") ? "-1" : savefile_path.Contains("PostMissionAutoSave") ? "0" : SaveFileNumber);
         ES3.Save("Save", Instance, SaveFilePath);
-        if(savefile_path.Contains("PreMissionAutoSave")) {
-            return;
-        }
         EventManager.FinishedTakingScreenshot.AddListener(FinishSavingAfterScreenshot);
         GameController.Instance.TakeScreenshot(Application.persistentDataPath + "/" + SaveFilePath.Replace(".es3", "") + ".png");
     }
@@ -1093,20 +1061,16 @@ public class SaveFile
         int hours_played = (int)(TimePlayedInSeconds / 3600);
         int minutes_played = (int)((TimePlayedInSeconds - 3600 * hours_played) / 60);
         int seconds_played = (int)(TimePlayedInSeconds - hours_played * 3600 - minutes_played * 60);
-        game_object.Find("Left-side Info/Time Played").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileTimePlayed"), new string[] {hours_played.ToString(), minutes_played.ToString(), seconds_played.ToString()} );
-        game_object.Find("Left-side Info/Cycle and Week").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCycleAndWeek"), new string[] {Week.ToString()} );
-        game_object.Find("Left-side Info/Cycle and Week/Image").GetComponent<Image>().enabled = true;
-        game_object.Find("Left-side Info/Cycle and Week/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + Cycle, typeof(Sprite)) as Sprite;
-        game_object.Find("Left-side Info/Current Mission").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCurrentMission"), new string[] {CurrentMission == null ? Label.Get("CurrentMissionIsNull") : Label.Get(CurrentMission.ToString())} );
-        
-        game_object.Find("Right-side Info/Level and Money").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileLevelAndMoney"), new string[] {Level.ToString(), Money.ToString()} );
+        game_object.Find("Cycle, Week, Time").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCycleWeekTime"), new string[] {Week.ToString(), hours_played.ToString(), minutes_played.ToString(), seconds_played.ToString()} );
+        game_object.Find("Cycle, Week, Time/Image").GetComponent<Image>().enabled = true;
+        game_object.Find("Cycle, Week, Time/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + Cycle, typeof(Sprite)) as Sprite;
         if(PointsPutIntoEachSkillTree != null) {
-            game_object.Find("Right-side Info/Skill Trees").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileSkillTrees"), new string[] {PointsPutIntoEachSkillTree["Ignis"].ToString(), PointsPutIntoEachSkillTree["Anima"].ToString(), PointsPutIntoEachSkillTree["Glacies"].ToString(), PointsPutIntoEachSkillTree["Molis"].ToString(), PointsPutIntoEachSkillTree["Salutis"].ToString(), PointsPutIntoEachSkillTree["Tonitrui"].ToString(), PointsPutIntoEachSkillTree["Proprius"].ToString()} );
+            game_object.Find("Level, Money, Skill Trees").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileLevelMoneySkillTrees"), new string[] {Level.ToString(), Money.ToString(), PointsPutIntoEachSkillTree["Anima"].ToString(), PointsPutIntoEachSkillTree["Ignis"].ToString(), PointsPutIntoEachSkillTree["Glacies"].ToString(), PointsPutIntoEachSkillTree["Molis"].ToString(), PointsPutIntoEachSkillTree["Salutis"].ToString(), PointsPutIntoEachSkillTree["Tonitrui"].ToString(), PointsPutIntoEachSkillTree["Proprius"].ToString()} );
         }
         else {
-            game_object.Find("Right-side Info/Skill Trees").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileSkillTrees"), new string[] {"0", "0", "0", "0", "0", "0", "0"} );
+            game_object.Find("Level, Money, Skill Trees").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileLevelMoneySkillTrees"), new string[] {Level.ToString(), Money.ToString(), "0", "0", "0", "0", "0", "0", "0"} );
         }
-        game_object.Find("Right-side Info/Difficulty").GetComponent<TextMeshProUGUI>().text = Label.Get("SaveFileDifficulty") + Label.Get(Difficulty.ToString() + "CombatType");
+        game_object.Find("Difficulty, Mission").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileDifficultyMission"), new string[] {Label.Get(Difficulty.ToString() + "CombatType"), CurrentMission == null ? Label.Get("CurrentMissionIsNull") : Label.Get(CurrentMission.ToString())});
         game_object.Find("Empty").gameObject.SetActive(false);
         UpdateScreenShot(new string[] {SaveFilePath.Replace(".es3", ""), SaveFileNumber, is_post_mission_autosave ? "IS_POST_MISSION_AUTOSAVE" : "NO"});
     }
@@ -1174,7 +1138,7 @@ public class SaveFile
         if(SceneManager.GetActiveScene().name == "MissionSelect") {
             Utils.GetSceneRootObject("Mission Select").Find("Cycle").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + SaveFile.Instance.Cycle, typeof(Sprite)) as Sprite;
         }
-        CanvasElements.UICanvasObject.transform.Find("Cycle").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + SaveFile.Instance.Cycle, typeof(Sprite)) as Sprite;
+        UIManager.Objects.CycleDisplayImage.sprite = Resources.Load("Sprites/UI/Cycle" + SaveFile.Instance.Cycle, typeof(Sprite)) as Sprite;
     }
 
     public void ReloadItems() {
@@ -1203,9 +1167,9 @@ public class SaveFile
                 EquippedHelmet = item_to_add;
                 MenuManager.Instance.HelmetEquipmentSlot.EquipItem(EquippedHelmet);
             }
-            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Armor) {
-                EquippedArmor = item_to_add;
-                MenuManager.Instance.ArmorEquipmentSlot.EquipItem(EquippedArmor);
+            else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Outfit) {
+                EquippedOutfit = item_to_add;
+                MenuManager.Instance.OutfitEquipmentSlot.EquipItem(EquippedOutfit);
             }
             else if(item.IsEquipped && item_to_add.Type == Constants.ItemType.Boots) {
                 EquippedBoots = item_to_add;
@@ -1252,7 +1216,7 @@ public class SaveFile
                 Effect_Stance stance_effect = (Effect_Stance)Activator.CreateInstance(s.StanceEffectType, new object[] {null});
                 s.StanceEffect = stance_effect;
             }
-            Image img = MenuManager.Instance.transform.Find("Overview Window/Abilities/Stances/" + s.WeaponType + "/UI_StanceTile").GetComponent<Image>();
+            Image img = MenuManager.Instance.transform.Find("Character Window/Abilities/Stances/" + s.WeaponType + "/UI_StanceTile").GetComponent<Image>();
             string family = s.StanceEffect.GetType().GetField("Family",  BindingFlags.Public | BindingFlags.Static).GetValue(null).ToString();
             if(img.GetComponent<Button>() != null) {
                 img.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + s.StanceEffect.GetType().ToString(), typeof(Sprite)) as Sprite;

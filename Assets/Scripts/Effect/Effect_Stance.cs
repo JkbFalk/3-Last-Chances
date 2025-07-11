@@ -50,6 +50,9 @@ public class Effect_Stance : Effect
     }
 
     public void RefreshStance() {
+        if(Player.Instance.CurrentStance?.StanceEffect == null) {
+            return;
+        }
         if(Player.Instance.CurrentStance.StanceEffect == this) {
             OnStanceDeactivated();
         }
@@ -61,7 +64,7 @@ public class Effect_Stance : Effect
     public virtual void CreateStanceDisplay() {
         GameObject gauge = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Stance/UI_" + Player.Instance.CurrentStance.StanceEffect.GetType().ToString().Replace("Stance_", ""))) as GameObject;
         Player.Instance.CurrentStanceGauge = gauge;
-        gauge.transform.SetParent(CanvasElements.UICanvasObject.transform.Find("Stance Gauge").transform);
+        gauge.transform.SetParent(UIManager.Objects.StanceGaugeContainer.transform);
         gauge.transform.localPosition = Vector2.zero;
     }
 }

@@ -5,9 +5,15 @@ using UnityEngine.EventSystems;
 
 public class SubMenuItem : MonoBehaviour, IPointerDownHandler
 {
+    public string MenuType;
     public int Index;
     public void OnPointerDown(PointerEventData eventData)
     {
-        MenuManager.Instance.SelectedSubMenu = Index;
+        if(MenuType == "Main Menu Selection") {
+            MenuManager.Instance.SelectedSubMenu = Index;
+        }
+        else if(MenuType == "Options Menu Selection") {
+            MenuManager.Instance.SelectedOptionsSubMenu = Index;
+        }
     }
 }

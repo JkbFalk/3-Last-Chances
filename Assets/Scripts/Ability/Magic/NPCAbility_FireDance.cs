@@ -13,7 +13,7 @@ public class NPCAbility_FireDance : Ability {
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.1f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         AddCustomSound("Use1", "Fire/Fire3", 0.35f);
         AddCustomSound("Use2", "Fire/Fire4", 0.35f);
         AddCustomSound("Use3", "Fire/Fire5", 0.35f);

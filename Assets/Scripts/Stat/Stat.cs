@@ -24,11 +24,6 @@ public class Stat {
     public bool CannotBeLowerThan1 = false;
     protected float _current = 0;
     public float MaximumValue = 1000000;
-    public bool IsBase1Stat {
-        get {
-            return this is EnergyGain || this is DamageReduction || this is Tenacity || this is CooldownReduction || this is Control || this is MovementSpeed || this is AttackSpeed || this is ItemPower || this is ToolPower || this is Penetration;
-        }
-    }
 
     public bool ShouldInvoke = true;
     public float Current {
@@ -132,10 +127,10 @@ public class Stat {
         total_added += calculated_maximum * percentage_increase / 100;
         calculated_maximum += total_added;
         if(flat_increase == 0) {
-            return Utils.GetFormattedFloat(pre_increase_percentage_total, IsBase1Stat ? 2 : 0) + " -> " + Utils.GetFormattedFloat(calculated_maximum, IsBase1Stat ? 2 : 0) + "     (" + Utils.GetFormattedFloat(total_percentages) + "% -> " + Utils.GetFormattedFloat(total_percentages + percentage_increase) + "%)";
+            return Utils.GetFormattedFloat(pre_increase_percentage_total) + " -> " + Utils.GetFormattedFloat(calculated_maximum) + "     (" + Utils.GetFormattedFloat(total_percentages) + "% -> " + Utils.GetFormattedFloat(total_percentages + percentage_increase) + "%)";
         }
         else {
-            return Utils.GetFormattedFloat(calculated_maximum, IsBase1Stat ? 2 : 0) + " -> " + Utils.GetFormattedFloat(calculated_maximum + modified_flat_increase, IsBase1Stat ? 2 : 0) + "      (" + Utils.GetFormattedFloat(Base + total_flats) + " -> " + Utils.GetFormattedFloat(Base + total_flats + flat_increase) + ")";
+            return Utils.GetFormattedFloat(calculated_maximum) + " -> " + Utils.GetFormattedFloat(calculated_maximum + modified_flat_increase) + "      (" + Utils.GetFormattedFloat(Base + total_flats) + " -> " + Utils.GetFormattedFloat(Base + total_flats + flat_increase) + ")";
         }
     }
 

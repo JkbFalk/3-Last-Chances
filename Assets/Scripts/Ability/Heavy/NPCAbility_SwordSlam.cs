@@ -8,7 +8,7 @@ public class NPCAbility_SwordSlam : Ability {
         DamageSources.Add(new DamageSource(80, 250, Constants.DamageType.Heavy));
         if (User.CheckIfUnderEffect(typeof(Effect_IgnisCaptainBuff)))
         {
-            Properties.Add(AbilityProperty.CounteredByRiposte);
+            Properties.Add(Property.CounteredByRiposte);
         }
     }
 }

@@ -7,19 +7,19 @@ public class NPCAbility_JumpSlam : Ability {
     public static AbilityFamily Family = AbilityFamily.Molis;
     public NPCAbility_JumpSlam(Unit ability_user) : base(ability_user) {
         DamageSources.Add(new DamageSource(100, 500, Constants.DamageType.Heavy, "AoE Stronger"));
-        DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy, "AoE Weaker") {Knockback = 250});
-        DamageSources.Add(new DamageSource(150, 150, Constants.DamageType.Heavy, "Spike AoE") {Knockback = 1100});
+        DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy, "AoE Weaker") {KnockbackInMeters = 2.5f});
+        DamageSources.Add(new DamageSource(150, 150, Constants.DamageType.Heavy, "Spike AoE") {KnockbackInMeters = 11f});
         WaitTimeBeforeNextAction = 0.5f;
         AddCustomSound("OnUse", "Heavy Object/HeavyObject_Slam1", 0.85f);
-        Properties.Add(AbilityProperty.CounteredByRiposte);
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.CounteredByRiposte);
+        Properties.Add(Property.ImmuneToFlinch);
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
     }
 
     public override void CallAbilityEvent1()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(100, 60, 5);
-        User.ApplyForce(new Vector2(0.2f, 1).normalized * 300, this);
+        ChaseCurrentTargetAtGivenDegreeAngle(2, 60);
+        User.ApplyForce(new Vector2(0.2f, 1).normalized * 3, this);
     }
 
     public override void CallAbilityEvent2()

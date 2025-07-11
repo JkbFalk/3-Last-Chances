@@ -7,7 +7,7 @@ public class NPCAbility_SwordSweep : Ability {
         DamageSources.Add(new DamageSource(200, 80, Constants.DamageType.Heavy));
         WaitTimeBeforeNextAction = 0.1f;
         if(User.CheckIfUnderEffect(typeof(Effect_IgnisCaptainBuff))) {
-            Properties.Add(AbilityProperty.CounteredByBackstep);
+            Properties.Add(Property.CounteredByBackstep);
         }
     }
 

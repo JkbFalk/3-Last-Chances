@@ -9,7 +9,7 @@ public class Effect_Block : Effect {
     }
 
     public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
-        if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfDamageWorksWithDefensiveAbilities() == false) {
+        if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfInteractsWithCounters() == false) {
             return;
         }
         if(TargetOfEffect.Actions.CurrentAbilityBeingPerformed != null && (
@@ -31,7 +31,7 @@ public class Effect_Block : Effect {
 
     private void HandleStoryModeBlock(Damage damage)
     {
-        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && (damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter)))
+        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && (damage.SourceOfDamage.Is(Ability.Property.Counter)))
         {
             PerformRiposteCounter(damage);
         }
@@ -47,15 +47,15 @@ public class Effect_Block : Effect {
 
     private void HandleBlock(Damage damage)
     {
-        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && ((damage.SourceOfDamage.Is(Ability.AbilityProperty.CounteredByBlock) || (Player.Instance.IsPerfectlyBlocking && damage.SourceOfDamage.Is(Ability.AbilityProperty.CounteredByRiposte)))))
+        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && ((damage.SourceOfDamage.Is(Ability.Property.CounteredByBlock) || (Player.Instance.IsPerfectlyBlocking && damage.SourceOfDamage.Is(Ability.Property.CounteredByRiposte)))))
         {
             PerformRiposteCounter(damage);
         }
-        else if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && Player.Instance.IsPerfectlyBlocking && !damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter) && (damage.DamagingObject == null || damage.DamagingObject.CanBeRiposted))
+        else if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && Player.Instance.IsPerfectlyBlocking && !damage.SourceOfDamage.Is(Ability.Property.Counter) && (damage.DamagingObject == null || damage.DamagingObject.CanBeRiposted))
         {
             PerformRiposte(damage);
         }
-        else if (!damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))
+        else if (!damage.SourceOfDamage.Is(Ability.Property.Counter))
         {
             PerformBlock(damage);
         }
@@ -65,7 +65,7 @@ public class Effect_Block : Effect {
             damage.Stagger *= 0.5f;
 
             TargetOfEffect.AddEffect(new Effect_Stun(SourceOfEffect), SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
-            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, SourceOfEffect) {PercentageModifier = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
+            TargetOfEffect.AddEffect(new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {PercentageAmount = 50, Type = EffectType.Debuff}, SaveFile.Instance.DifficultyLevel < 2 ? 1.5f : 3);
         }
     }
 
@@ -84,10 +84,10 @@ public class Effect_Block : Effect {
         counter.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_RiposteCounter" + variant;
         counter.Target = damage.SourceOfDamage.User;
         UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed = counter;
-        if(UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.AlreadyGeneratedEnergy))
+        if(UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
         {
             UnitCreatingTheEffect.Energy.GenerateEnergy(Constants.EnergyGainSource.Counter, damage.SourceOfDamage.User.IsBoss);
-            UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+            UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
         }
         EventManager.AbilityWasRipostedOrCountered.Invoke(damage.SourceOfDamage, true);
         damage.SourceOfDamage.User.AddEffect(new Effect_RiposteCountered(SourceOfEffect) {NameOfAnimationToAutoPlay = "RiposteCountered" + variant}, 4f);
@@ -95,7 +95,7 @@ public class Effect_Block : Effect {
         GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, damage.SourceOfDamage.User);
         new Damage(damage.SourceOfDamage.User, counter, null)
             .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageType)
-            .CalculateDamage();
+            .CalculateAndApplyDamage();
         if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player) {
             CameraController.Instance.ShakeScreen(0.2f, 0.1f);
         }
@@ -120,10 +120,10 @@ public class Effect_Block : Effect {
         riposte.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_Riposte" + variant;
         riposte.Target = damage.SourceOfDamage.User;
         UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed = riposte;
-        if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.AbilityProperty.AlreadyGeneratedEnergy))
+        if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
         {
             UnitCreatingTheEffect.Energy.GenerateEnergy(Constants.EnergyGainSource.Riposte, damage.SourceOfDamage.User.IsBoss);
-            UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.AbilityProperty.AlreadyGeneratedEnergy);
+            UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
         }
         if (damage.DamagingObject != null && damage.DamagingObject is Projectile) {
             damage.SourceOfDamage.AffectedEnemies.Clear();
@@ -136,7 +136,7 @@ public class Effect_Block : Effect {
             GameController.Instance.WaitAndRunMethod(0.5f, AdjustRemainingRipostedAnimation, damage.SourceOfDamage.User);
             new Damage(damage.SourceOfDamage.User, riposte, null)
                 .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_RIPOSTE, UnitCreatingTheEffect.CurrentWeaponDamageType)
-                .CalculateDamage();
+                .CalculateAndApplyDamage();
         }
         if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player) {
             CameraController.Instance.ShakeScreen(0.2f, 0.1f);
@@ -166,9 +166,9 @@ public class Effect_Block : Effect {
             damage.Stagger = SaveFile.Instance.DifficultyLevel > 1 ? (damage.Injury * 0.15f + damage.Stagger * 0.6f) : (damage.Injury * 0.1f + damage.Stagger * 0.2f) ;
             damage.Injury = 0;
         }
-        else if(damage.TargetOfDamage.IsStaggered) {
-            damage.Injury *= SaveFile.Instance.DifficultyLevel > 1 ? 0.4f : 0.1f;
-            damage.Stagger *= SaveFile.Instance.DifficultyLevel > 1 ? 0.4f : 0.1f;
+        else {
+            damage.Injury *= SaveFile.Instance.DifficultyLevel > 1 ? 0.5f : 0.1f;
+            damage.Stagger *= SaveFile.Instance.DifficultyLevel > 1 ? 0.5f : 0.1f; 
         }
         if(SaveFile.Instance.DifficultyLevel == 0) {
             damage.Injury *= 0.5f;

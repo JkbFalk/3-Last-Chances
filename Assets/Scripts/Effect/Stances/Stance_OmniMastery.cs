@@ -49,7 +49,10 @@ public class Stance_OmniMastery : Effect_Stance
             _damageBuff.EndThisEffect();
         }
         else if(IsActive){
-            _damageBuff = new Effect_Empowered(DamageBuffAmount, SourceOfEffect) {ShowsInUI = false, ShowsInMenu=false};
+            _damageBuff = new Effect_Empowered(DamageBuffAmount, SourceOfEffect) {
+                ShowsInUI = false, 
+                ShowsInMenu = false
+            };
             Player.Instance.AddEffect(_damageBuff, DamageBuffDuration);
         }
         Cooldown cd = Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_OmniMastery) && cd.Identifier == AssignedStance.WeaponType.ToString());
@@ -67,7 +70,7 @@ public class Stance_OmniMastery : Effect_Stance
 
     public override void OnInvokeDamageDealt(Damage damage)
     {
-        if(IsActive&& UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)  && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false ) {
+        if(IsActive&& UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)  && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false ) {
             List<Type> affected_abilities = new List<Type>();
             List<Type> unaffectable_abilities = new List<Type>();
             foreach(Stance.EquippedAbility a in Player.Instance.CurrentStance.Abilities) {

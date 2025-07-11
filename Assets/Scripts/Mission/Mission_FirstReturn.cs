@@ -105,7 +105,7 @@ public class Mission_FirstReturn : Mission {
         SaveFile.Instance.CurrentMission.MissionProgress += 10;
         EventManager.AbilityUsed.AddListener(((Mission_FirstReturn)SaveFile.Instance.CurrentMission).AbilityUsed);
         EventManager.PlayerTargetChanged.AddListener(((Mission_FirstReturn)SaveFile.Instance.CurrentMission).PlayerTargetChanged);
-        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_ChangeStat(Utils.GetUnit("TutorialRyker").LightStagger, new(Utils.GetUnit("TutorialRyker"))) {PercentageModifier = -50, IsRemovable = false});
+        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_ChangeStat(Utils.GetUnit("TutorialRyker").LightStagger, new(Utils.GetUnit("TutorialRyker"))) {PercentageAmount = -50, IsRemovable = false});
         Utils.GetUnit("TutorialRyker").UnitAI.InitializeAvailableActions(new() {"20,AI_Chase"});
         Utils.GetUnit("TutorialRyker").AttackPlayer();
     }
@@ -121,16 +121,16 @@ public class Mission_FirstReturn : Mission {
     }
 
     public void AbilityUsed(Ability ability) {
-        if(MissionProgress == 30 && ability.Is(Ability.AbilityProperty.BasicAttack)) {
+        if(MissionProgress == 30 && ability.Is(Ability.Property.BasicAttack)) {
             _counter++;
             Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 3) {
                 MissionProgress += 10;
             }
         }
-        else if(MissionProgress == 40 && ability.Is(Ability.AbilityProperty.BasicAttack)) {
+        else if(MissionProgress == 40 && ability.Is(Ability.Property.BasicAttack)) {
             BasicAttack ba = (BasicAttack)ability;
-            if(ba.IsNot(Ability.AbilityProperty.StrongBasicAttack)) {
+            if(ba.IsNot(Ability.Property.StrongBasicAttack)) {
                 return;
             }
             _counter++;
@@ -166,7 +166,7 @@ public class Mission_FirstReturn : Mission {
                 Player.Instance.SetInteractPromptToClosestInteractable();
             }
         }
-        else if(MissionProgress == 70 && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))) {
+        else if(MissionProgress == 70 && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter))) {
             _counter++;
             Utils.ShowMissionObjective(GetType().ToString(), GetType() + "_Step_" + MissionProgress, "UI/Cycle1", new List<string> {_counter.ToString()});
             if(_counter >= 2) {
@@ -270,7 +270,9 @@ public class Mission_FirstReturn : Mission {
         ryker.Tenacity.Maximum = 1;
         Utils.GetUnit("TutorialRyker").UnitAI.InitializeAvailableActions(new() {{"20,UpperCut"},{"20,FastJabs"},{"20,AI_Chase"},{"20,HeelCleaver"},{"20,DelayedJumpSlam"},{"20,ChargedPunch"}});
         ryker.AttackPlayer();
-        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_CannotBeDefeated(false, new(Utils.GetUnit("TutorialRyker"))) {IsRemovable = false});
+        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_CannotBeDefeated(false, new(Utils.GetUnit("TutorialRyker"))) {
+            IsRemovable = false
+        });
         EventManager.UnitWouldBeDefeated.AddListener(((Mission_FirstReturn)SaveFile.Instance.CurrentMission).RykerDefeated);
     }
 
@@ -392,8 +394,13 @@ public class Mission_FirstReturn : Mission {
 
     public static void MovedIntoArea() {
         SaveFile.Instance.CurrentMission.MissionProgress += 10;
-        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_Unkillable(new(Utils.GetUnit("TutorialRyker"))) {ShowsInUI = false, IsRemovable=false});
-        Player.Instance.AddEffect(new Effect_Unkillable(new(Player.Instance)) {ShowsInUI = false, IsRemovable=false});
+        Utils.GetUnit("TutorialRyker").AddEffect(new Effect_Unkillable(new(Utils.GetUnit("TutorialRyker"))) {
+            ShowsInUI = false, 
+            IsRemovable = false
+        });
+        Player.Instance.AddEffect(new Effect_Unkillable(new(Player.Instance)) {
+            ShowsInUI = false, IsRemovable = false
+        });
         Utils.GetUnit("TutorialRyker").CooldownReduction.Maximum = 9999;
         Utils.GetUnit("TutorialRyker").CooldownReduction.Current = 9999;
         NotificationController.ShowCustomizedDialogueNotification(new() {Id="FirstReturn_Inter_60"});
@@ -409,7 +416,7 @@ public class Mission_FirstReturn : Mission {
 
     public static void OnEnterArea() {
         UIManager.Instance.ShowBlackScreen(0);
-        GameController.Instance.transform.Find("Menu Canvas/Other Window/Window/Buttons/Escape Button").gameObject.SetActive(false);
+        UIManager.Objects.EscapeMissionButton.gameObject.SetActive(false);
         UIManager.Instance.StartDialogue(FirstDialogue());
         Utils.ShowMissionObjective("Mission_FirstReturn", "Mission_FirstReturn_Step_0", "UI/Cycle1");
     }

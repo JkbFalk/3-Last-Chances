@@ -50,8 +50,8 @@ public abstract class Ability {
     }
 
     public enum AbilityInterruptType { Damage, Dodge, BasicAttack, Block, EnergyAbility, StanceSwitch }
-    public enum AbilityProperty { BasicAttack, StrongBasicAttack, Technique, Riposte, Counter, Backstab, Ultimate, Unstoppable, Charged, AlreadyGeneratedEnergy, ImmuneToFlinch, CounteredByBackstep, CounteredByBlock, CounteredByRiposte, CounteredByRoll, CountersBackstep, CountersBlock, CountersRiposte, CountersRoll, IgnoresImmunityToHits};
-    public List<AbilityProperty> Properties = new List<AbilityProperty>();    
+    public enum Property { BasicAttack, StrongBasicAttack, Technique, Riposte, Counter, Backstab, Ultimate, UpgradeA, UpgradeB, Unstoppable, Charged, AlreadyGeneratedEnergy, ImmuneToFlinch, CounteredByBackstep, CounteredByBlock, CounteredByRiposte, CounteredByRoll, CountersBackstep, CountersBlock, CountersRiposte, CountersRoll, IgnoresImmunityToHits};
+    public List<Property> Properties = new List<Property>();    
     public bool AbilityEnded = false;
     public List<Effect> TriggeredEffects = new List<Effect>();
     private bool _canInterruptCurrentAbility = false;
@@ -72,7 +72,6 @@ public abstract class Ability {
     public bool PlayedSoundAtLeastOnce = false;
     public bool PlaySoundOnlyOnce = false;
     public bool PlaySoundOnEnemyHit = true;
-    public bool HoldingMainButton = false;
     public bool HoldingTechniqueButton = false;
     public Ability OriginalRipostedAbility;
     public int RipostedCount = 0;
@@ -87,18 +86,6 @@ public abstract class Ability {
     public bool HitsTriggerDamagedState = true;
     public bool AutoPlayAbilityAnimation = true;
     public bool CanMoveWhileUsing = false;
-    public bool UpgradeAUnlocked 
-    {
-        get {
-            return IsNot(AbilityProperty.Ultimate) && SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "_UpgradeA");
-        }
-    }
-    public bool UpgradeBUnlocked 
-    {
-        get {
-            return IsNot(AbilityProperty.Ultimate) && SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "_UpgradeB");
-        }
-    }
     public TemporaryObject MostRecentTemporaryObjectThatHitEnemy;
     public static bool DoesNotRequireTarget = false;
     public string Name { get; set; }
@@ -107,11 +94,11 @@ public abstract class Ability {
 
     public enum AbilityFamily { Ignis, Glacies, Anima, Molis, Salutis, Tonitrui, Proprius, None }
 
-    public bool Is(AbilityProperty property) {
+    public bool Is(Property property) {
         return Properties.Contains(property);
     }
 
-    public bool IsNot(AbilityProperty property) {
+    public bool IsNot(Property property) {
         return !Properties.Contains(property);
     }
 
@@ -119,7 +106,7 @@ public abstract class Ability {
     {
         get
         {
-            return Is(AbilityProperty.CounteredByBackstep) || Is(AbilityProperty.CounteredByRoll) || Is(AbilityProperty.CounteredByRiposte) || Is(AbilityProperty.CounteredByBlock) ;
+            return Is(Property.CounteredByBackstep) || Is(Property.CounteredByRoll) || Is(Property.CounteredByRiposte) || Is(Property.CounteredByBlock) ;
         }
     }
 
@@ -208,17 +195,12 @@ public abstract class Ability {
         }
     }
 
-    public virtual void CallAbilityEvent1() {
-    }
-
-    public virtual void CallAbilityEvent2() {
-    }
-
-    public virtual void CallAbilityEvent3() {
-    }
-
-    public virtual void CallAbilityEvent4() {
-    }
+    public virtual void CallAbilityEvent1() {}
+    public virtual void CallAbilityEvent2() {}
+    public virtual void CallAbilityEvent3() {}
+    public virtual void CallAbilityEvent4() {}
+    public virtual void CallAbilityEvent5() {}
+    public virtual void CallAbilityEvent6() {}
 
     private int _intervalActionCount = 0;
     private int _maxIntervalActions = 0;
@@ -275,9 +257,9 @@ public abstract class Ability {
     public void ShowChargeBar()
     {
         ShowingChargeBar = true;
-        CanvasElements.UICanvas.ChargeBar.SetActive(true);
-        CanvasElements.UICanvas.ChargeBar.GetComponent<Slider>().value = 0;
-        CanvasElements.UICanvas.ChargeBar.transform.Find("Ability Name").GetComponent<TextMeshProUGUI>().text = Label.Get(GetType().ToString());
+        UIManager.Objects.ChargeBarSlider.gameObject.SetActive(true);
+        UIManager.Objects.ChargeBarSlider.value = 0;
+        UIManager.Objects.ChargeBarAbilityText.GetComponent<TextMeshProUGUI>().text = Label.Get(GetType().ToString());
     }
 
     private AttackSpeed _attackSpeed;
@@ -305,7 +287,7 @@ public abstract class Ability {
         if (ShowingChargeBar)
         {
             ShowingChargeBar = false;
-            CanvasElements.UICanvas.ChargeBar.SetActive(false);
+            UIManager.Objects.ChargeBarSlider.gameObject.SetActive(false);
         }
     }
 
@@ -322,9 +304,6 @@ public abstract class Ability {
     }
 
     public virtual void OnAbilityStart() {
-        if(Player.Instance.PreparingForUltimate) {
-            Properties.Add(AbilityProperty.Ultimate);
-        }
         if(GetType().ToString().StartsWith("AI_") == false) {
             Utils.CreateAuditLog("Unit (" + User.GetType() + ") used ability: " + GetType());
         }
@@ -338,6 +317,10 @@ public abstract class Ability {
             foreach (Effect e in EffectsAffectingUserDuringAbility) {
                 User.AddEffect(e);
             }
+        }
+        if(User != null && User is Player && (GetType().ToString().Contains("Gauntlets") || (!String.IsNullOrWhiteSpace(NameOfAnimationToAutoPlay) && NameOfAnimationToAutoPlay.Contains("Gauntlets")))) {
+            User.LeftArmInFrontOfWeapon = false;
+            User.RightArmInFrontOfWeapon = false;
         }
         User.SetDefaultSortingOrder();
     }
@@ -412,11 +395,10 @@ public abstract class Ability {
         if (ShowingChargeBar)
         {
             ShowingChargeBar = false;
-            CanvasElements.UICanvas.ChargeBar.SetActive(false);
+            UIManager.Objects.ChargeBarSlider.gameObject.SetActive(false);
         }
         User.LeftArmInFrontOfWeapon = true;
         User.RightArmInFrontOfWeapon = true;
-        User.RightArmInFrontOfLeftArm = true;
         User.Actions.SetFaceVariant("Regular");
         User.RecalculateSortingOrder();
         AbilityEnded = true;
@@ -431,15 +413,13 @@ public abstract class Ability {
         HoldingTechniqueButton = false;
     }
 
-    public virtual void OnMainButtonPress() {
-        HoldingMainButton = true;
+    public virtual void OnBasicAttackButtonPress() {
         if (CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.BasicAttack)) {
             User.Actions.PerformBasicAttack();
         }
     }
 
-    public virtual void OnMainButtonRelease() {
-        HoldingMainButton = false;
+    public virtual void OnBasicAttackButtonRelease() {
     }
 
     public virtual bool CheckIfShouldShowDangerSign() {
@@ -556,7 +536,7 @@ public abstract class Ability {
             TimePassed += Time.deltaTime;
             if (ShowingChargeBar)
             {
-                CanvasElements.UICanvas.ChargeBar.GetComponent<Slider>().value = PercentageOfMaxTimePassed / 100;
+                UIManager.Objects.ChargeBarSlider.value = PercentageOfMaxTimePassed / 100;
             }
         }
         AdditionalActionsOnUpdate();
@@ -579,12 +559,13 @@ public abstract class Ability {
             if(source == null) {
                 return;
             }
-            Damage damage_dealt = new Damage(unit_getting_attacked, this, object_hitting)
-            .SetKnockback(source.Knockback)
-            .SetSoundVolume(HitSoundVolume)
-            .SetDamageSource(source);
-            damage_dealt.SourceOfCollision = collider_being_hit;
-            damage_dealt.PlaySoundOnEnemyHit = PlaySoundOnEnemyHit && (!PlaySoundOnlyOnce || !PlayedSoundAtLeastOnce);
+            Damage damage_dealt = new Damage(unit_getting_attacked, this, object_hitting) {
+                KnockbackInMeters = source.KnockbackInMeters,
+                SoundVolume = HitSoundVolume,
+                AbilityDamageSource = source,
+                SourceOfCollision = collider_being_hit,
+                PlaySoundOnEnemyHit =  PlaySoundOnEnemyHit && (!PlaySoundOnlyOnce || !PlayedSoundAtLeastOnce)
+            };
             if (PlaySoundOnEnemyHit) {
                 PlayedSoundAtLeastOnce = true;
             }
@@ -592,7 +573,7 @@ public abstract class Ability {
                 damage_dealt.CustomHitSound = source.CustomHitSound;
             }
             ExtraBehaviourOnHit(damage_dealt);
-            damage_dealt.CalculateDamage();
+            damage_dealt.CalculateAndApplyDamage();
             bool successfulHit = damage_dealt.DamageWasBlocked == false && (damage_dealt.InjuryDealt > 0 || damage_dealt.StaggerDealt > 0);
             if (successfulHit) {
                 ExtraBehaviourOnDamage(damage_dealt);
@@ -653,18 +634,29 @@ public abstract class Ability {
         }
     }
 
-    public void ChaseCurrentTargetAtGivenDegreeAngle(float chase_distance, float angle, float max_distance = 10, Unit target = null) {
+    public void ChaseCurrentTargetAtGivenDegreeAngle(float max_dash_distance_in_meters, float max_angle, Unit target = null) {
+        if (User is Player && Player.Instance.CurrentTarget == null && Settings.Instance.ControlScheme == "Gamepad")
+        {
+            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            return;
+        }
+        else if (User is Player && Player.Instance.CurrentTarget == null)
+        {
+            float distance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
+            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            return;
+        }
         Unit finalTarget = target == null ? User.CurrentTarget : target;
         if(finalTarget == null)
         {
-            Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, angle);
-            User.ApplyForce(direction_vector_towards_target * chase_distance * 8, this);
+            Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, max_angle);
+            User.ApplyForce(direction_vector_towards_target * max_dash_distance_in_meters, this);
         }
         else
         {
-            Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, finalTarget.transform.position + new Vector3(User.Actions.IsFlipped ? 0.3f : -0.3f, 0), User.Actions.IsFlipped, angle);
+            Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, finalTarget.transform.position + new Vector3(User.Actions.IsFlipped ? 0.3f : -0.3f, 0), User.Actions.IsFlipped, max_angle);
             float distance = Vector2.Distance(User.transform.position, finalTarget.transform.position);
-            User.ApplyForce(direction_vector_towards_target * chase_distance * (distance > max_distance ? max_distance : distance), this);
+            User.ApplyForce(direction_vector_towards_target * max_dash_distance_in_meters, this);
         }
     }
 
@@ -726,7 +718,7 @@ public abstract class Ability {
         public float InjuryScaling = 0;
         public float StaggerScaling = 0;
         public Constants.DamageType DamageType;
-        public float Knockback = 0;
+        public float KnockbackInMeters = 0;
         public string CustomHitSound;
         public float KnockbackIntoRange = 0;
         public Dictionary<Constants.DamageType, float> HybridInjurySource;

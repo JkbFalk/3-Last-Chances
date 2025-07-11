@@ -72,7 +72,7 @@ public class Tool_Decoy : Item
     {
         if (ItemUseAbility.AffectedEnemies.Count == 1)
         {
-            new Damage(ItemUseAbility.AffectedEnemies.First().Key, ItemUseAbility, null).SetDamageSource(0, 20 * GetMultiplierForGrade()).CalculateDamage();
+            new Damage(ItemUseAbility.AffectedEnemies.First().Key, ItemUseAbility, null).SetDamageSource(0, 20 * GetMultiplierForGrade()).CalculateAndApplyDamage();
         }
         else
         {

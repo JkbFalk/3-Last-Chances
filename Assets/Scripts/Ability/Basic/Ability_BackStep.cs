@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Ability_BackStep : Ability_Dodge {
-    private readonly int _jumpDistance = 90;
+    private readonly float _jumpDistance = 0.9f;
     private int _flipped;
     private float _movementSpeed;
 
@@ -15,7 +15,7 @@ public class Ability_BackStep : Ability_Dodge {
     public override void CallAbilityEvent1() {
         Player.Instance.AddEffect(new Effect_Backstep(new(this)), 0.5f);
         _flipped = User.Actions.IsFlipped ? -1 : 1;
-        _movementSpeed = User.MovementSpeed.Current;
+        _movementSpeed = 1 + User.MovementSpeed.Current / 100;
         Player.Instance.ApplyForce(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);
         GameController.Instance.WaitAndRunMethod(0.02f, Angle2);
         GameController.Instance.WaitAndRunMethod(0.04f, Angle3);

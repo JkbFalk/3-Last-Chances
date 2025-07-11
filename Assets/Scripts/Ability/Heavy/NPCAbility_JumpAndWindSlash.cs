@@ -6,19 +6,19 @@ public class NPCAbility_JumpAndWindSlash : Ability {
 
     public NPCAbility_JumpAndWindSlash(Unit ability_user) : base(ability_user) {
         AddCustomSound("Hit", "Explosion/Explosion1", 0.9f);
-        DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy) {Knockback = 450});
-        DamageSources.Add(new DamageSource(150, 100, Constants.DamageType.Heavy, "WindSlash") {Knockback = 150});
+        DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy) {KnockbackInMeters = 4.5f});
+        DamageSources.Add(new DamageSource(150, 100, Constants.DamageType.Heavy, "WindSlash") {KnockbackInMeters = 1.5f});
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 
     public override void CallAbilityEvent1()
     {
-        User.ApplyForce(new Vector2(0.2f * (User.Actions.IsFlipped ? -1 : 1), 1).normalized * 300, this);
+        User.ApplyForce(new Vector2(0.2f * (User.Actions.IsFlipped ? -1 : 1), 1).normalized * 3, this);
     }
 
     public override void CallAbilityEvent2()
     {
-        ChaseCurrentTargetAtGivenDegreeAngle(150, 90, 10);
+        ChaseCurrentTargetAtGivenDegreeAngle(3, 90);
     }
 
     public override void CallAbilityEvent3()

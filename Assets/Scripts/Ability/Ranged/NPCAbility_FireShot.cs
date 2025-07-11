@@ -4,7 +4,7 @@ public class NPCAbility_FireShot : Ability {
     public static float Cooldown = 6;
     public static AbilityFamily Family = AbilityFamily.Ignis;
     public NPCAbility_FireShot(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(200, 250, Constants.DamageType.Ranged) {Knockback = 550});
+        DamageSources.Add(new DamageSource(200, 250, Constants.DamageType.Ranged) {KnockbackInMeters = 5.5f});
         AddCustomSound("Shoot", "Explosion/CannonBallShot", 0.65f);
         WaitTimeBeforeNextAction = 0.3f;
     }

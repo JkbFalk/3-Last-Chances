@@ -11,8 +11,8 @@ public class Tool_FireStarter : Item
         OnUseAbility = typeof(Ability_FireStarter);
         DamageSources = new List<Ability.DamageSource>()
         {
-            new Ability.DamageSource(0, 5 * GetMultiplierForGrade(), Constants.DamageType.None, "FireStarter_" + Grade.ToString()) {Knockback = 300},
-            new Ability.DamageSource(5 * GetMultiplierForGrade(), 0, Constants.DamageType.None, "AoE") {Knockback = 700}
+            new Ability.DamageSource(0, 5 * GetMultiplierForGrade(), Constants.DamageType.None, "FireStarter_" + Grade.ToString()) {KnockbackInMeters = 3f},
+            new Ability.DamageSource(5 * GetMultiplierForGrade(), 0, Constants.DamageType.None, "AoE") {KnockbackInMeters = 7f}
         };
     }
 

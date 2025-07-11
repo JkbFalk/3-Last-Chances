@@ -3,37 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Effect_Barrier : Effect
 {
-    private RectTransform _playerHealthBar;
-    private RectTransform _playerBarrierBar;
+    private Slider _barrierBar;
     public Effect_Barrier(float barrier_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
         _initialDecayingAmount = barrier_amount;
         ShowsInUI = true;
-        PathToEffectGraphic = "Effect/Barrier";
+        PathToUIGraphic = "Effect/Barrier";
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        if(TargetOfEffect is Player && _playerHealthBar == null) {
-            _playerHealthBar = Player.Instance.Health.HUDSlider.GetComponent<RectTransform>();
-            _playerBarrierBar = Player.Instance.Health.HUDSlider.transform.Find("Barrier").GetComponent<RectTransform>();
-        }
-        if(DecayingAmount <= 0) {
-            EndThisEffect();
-        }
-        else if(TargetOfEffect is Player) {
-            float widthHealth = DecayingAmount > Player.Instance.Health.Maximum ? _playerHealthBar.sizeDelta.x : _playerHealthBar.sizeDelta.x * (DecayingAmount / Player.Instance.Health.Maximum);
-            float widthStaggerBar = DecayingAmount > Player.Instance.StaggerBar.Maximum ? _playerHealthBar.sizeDelta.x : _playerHealthBar.sizeDelta.x * (DecayingAmount / Player.Instance.StaggerBar.Maximum);
-            _playerBarrierBar.transform.localPosition = new Vector2(-5, 0);
-            _playerBarrierBar.sizeDelta = new Vector2(20 + (widthHealth + widthStaggerBar) / 4, 60);
-        }
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        _barrierBar = TargetOfEffect.Health.HUDSlider.transform.Find("Barrier").GetComponent<Slider>();
+        _barrierBar.value = TargetOfEffect.Health.Maximum / DecayingAmount;
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
     public override void OnInvokeAfterHitDamageCalculation(Damage damage)
@@ -67,7 +56,7 @@ public class Effect_Barrier : Effect
     {
         base.OnEnd();
         if(TargetOfEffect is Player) {
-            Player.Instance.Health.HUDSlider.transform.Find("Barrier").GetComponent<RectTransform>().sizeDelta = new Vector2(0, 60);
+            Player.Instance.Health.HUDSlider.transform.Find("Barrier").gameObject.SetActive(false);
         }
     }
 }

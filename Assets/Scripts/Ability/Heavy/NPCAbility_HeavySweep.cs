@@ -6,11 +6,11 @@ public class NPCAbility_HeavySweep : Ability {
         WaitTimeBeforeNextAction = 0.2f;
         if(User.IsBoss && User.DamageType == Constants.DamageType.Heavy)
         {
-            DamageSources.Add(new DamageSource(100, 450, Constants.DamageType.Heavy) {Knockback = 600});
-            Properties.Add(AbilityProperty.CounteredByBackstep);
+            DamageSources.Add(new DamageSource(100, 450, Constants.DamageType.Heavy) {KnockbackInMeters = 6f});
+            Properties.Add(Property.CounteredByBackstep);
         }
         else {
-            DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy) {Knockback = 300});
+            DamageSources.Add(new DamageSource(50, 250, Constants.DamageType.Heavy) {KnockbackInMeters = 3f});
         }
     }
 }

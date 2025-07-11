@@ -10,9 +10,9 @@ public class NPCAbility_WindmillStab : Ability {
         AddCustomSound("ChargeUp", "Greatsword/Greatsword_HeavySwing9", 0.3f);
         AddCustomSound("Explosion", "Explosion/Ground Explosion", 0.8f);
         AddCustomSound("Stab", "Greatsword/Greatsword_HeavySwing15", 0.7f);
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
-        Properties.Add(AbilityProperty.CounteredByRoll);
+        Properties.Add(Property.CounteredByRoll);
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)
@@ -42,7 +42,7 @@ public class NPCAbility_WindmillStab : Ability {
         PlayCustomSound("Stab");
         PlayCustomSound("Explosion");
         DamageSources.Add(new DamageSource(150, 300 + _charge * 100, Constants.DamageType.Heavy));
-        ChaseCurrentTargetAtGivenDegreeAngle(50 + 30 * _charge, 50 - 5 * _charge, 10 + 3 * _charge);
+        ChaseCurrentTargetAtGivenDegreeAngle(1 + 0.2f * _charge, 50 - 5 * _charge);
     }
     public override void OnAbilityStart()
     {

@@ -43,7 +43,7 @@ public class Ability_Flamethrower : Technique
         HitSoundVolume = 0.2f;
         if(Player.Instance.PreparingForUltimate) {
             NameOfAnimationToAutoPlay = "Flamethrower_Ultimate";
-            DamageSources.Add(new DamageSource(0, UltimateMagicStaggerScaling, Constants.DamageType.Magic, "SmallCircleAoE") {Knockback = 600});
+            DamageSources.Add(new DamageSource(0, UltimateMagicStaggerScaling, Constants.DamageType.Magic, "SmallCircleAoE") {KnockbackInMeters = 6f});
             DamageSources.Add(new DamageSource(1, 0, Constants.DamageType.Magic, "Ultimate AoE"));
             return;
         }
@@ -72,7 +72,7 @@ public class Ability_Flamethrower : Technique
         if(_cycle % 10 == 0) {
             ResetPotentialTargets();
         }
-        if(UpgradeAUnlocked && _cycle <= 100) {
+        if(Is(Property.UpgradeA) && _cycle <= 100) {
             _aoe.transform.localScale = new Vector2(1 + _cycle * 0.01f, 1 + _cycle * 0.01f);
             ParticleSystem.MainModule main = _aoe.GetComponent<ParticleSystem>().main;
             var startSize = main.startSize;
@@ -113,7 +113,7 @@ public class Ability_Flamethrower : Technique
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
-        if(Is(AbilityProperty.Ultimate) && object_hitting.gameObject.name == "SmallCircleAoE" && (unit_getting_attacked != Target || _ultimateHitATarget)) {
+        if(Is(Property.Ultimate) && object_hitting.gameObject.name == "SmallCircleAoE" && (unit_getting_attacked != Target || _ultimateHitATarget)) {
             return;
         }
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
@@ -121,7 +121,7 @@ public class Ability_Flamethrower : Technique
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             if((damage.AbilityDamageSource.ColliderName != "SmallCircleAoE" || !_ultimateHitATarget) && !UltimateEnemiesAndBurn.ContainsKey(damage.TargetOfDamage)) {
                 _ultimateHitATarget = true;
                 Effect_Burn appliedBurn = (Effect_Burn)damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
@@ -145,7 +145,7 @@ public class Ability_Flamethrower : Technique
             }
             return;
         }
-        if(UpgradeBUnlocked && _alreadyAffectedEnemies.Contains(damage.TargetOfDamage) == false) {
+        if(Is(Property.UpgradeB) && _alreadyAffectedEnemies.Contains(damage.TargetOfDamage) == false) {
             _alreadyAffectedEnemies.Add(damage.TargetOfDamage);
             damage.TargetOfDamage.AddEffect(new Effect_Burn((MagicStaggerBurnScaling + MasteryBMagicStaggerBurnScaling) * User.MagicStagger.Current / 100, new(this)));
         }
@@ -160,7 +160,7 @@ public class Ability_Flamethrower : Technique
         }
         AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "Flamethrower_Ultimate", enemy.transform.position.x, enemy.transform.position.y);
         Damage d = new Damage(enemy, this, aoe) {AbilityDamageSource = new(0, 0, Constants.DamageType.Magic), Injury = UltimateMagicInjuryPerBurn * UltimateEnemiesAndBurn[enemy]};
-        d.CalculateDamage();
+        d.CalculateAndApplyDamage();
     }
 
     public static void OnEquip()
@@ -199,7 +199,7 @@ public class Ability_Flamethrower : Technique
         _aoe.transform.SetParent(User.SpriteRenderers["Lower Body"].Bone);
         _aoe.transform.eulerAngles = new Vector3(0, 0, 90 * (User.Actions.IsFlipped ? 1 : -1));
         _cyclesStarted = true;
-        if(IsNot(AbilityProperty.Ultimate)) {
+        if(IsNot(Property.Ultimate)) {
             AdvanceCycle();
         }
     }
@@ -214,7 +214,7 @@ public class Ability_Flamethrower : Technique
     public override void CallAbilityEvent3()
     {
         Target = Player.Instance.CurrentTarget == null ? User.GetClosestValidTarget(true) : Player.Instance.CurrentTarget;
-        ChaseCurrentTargetAtGivenDegreeAngle(200, 45, 20, Target);
+        ChaseCurrentTargetAtGivenDegreeAngle(5, 45, Target);
     }
 
     public override void OnAbilityButtonRelease()
@@ -227,7 +227,7 @@ public class Ability_Flamethrower : Technique
     }
 
     public override void AdditionalAbilitySpecificActionsOnTryingToMove() {
-        if(UpgradeBUnlocked == false || _cyclesStarted == false) {
+        if(Is(Property.UpgradeB) == false || _cyclesStarted == false) {
             return;
         }
         if(User.Actions.TryingToMoveInDirection.Count > 0) {

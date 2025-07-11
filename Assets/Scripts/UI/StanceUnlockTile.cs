@@ -6,7 +6,7 @@ using System;
 using UnityEngine.UI;
 using System.Reflection;
 
-public class StanceUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler, IDeselectHandler
+public class StanceUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHandler
 {
     public string Ability;
     public Type AbilityType;
@@ -79,11 +79,6 @@ public class StanceUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHand
     public void OnSelect(BaseEventData eventData)
     {
         MenuManager.Instance.ShowSkillTreeStanceDetails(this);
-        MenuManager.Instance.SetGamepadIndicator(gameObject);
-    }
-
-    public void OnDeselect(BaseEventData eventData) {
-        CanvasElements.MenuCanvas.GamepadIndicator.SetActive(false);
     }
 
     public void UpdateUnlockedStatus() {

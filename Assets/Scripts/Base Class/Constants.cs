@@ -19,7 +19,7 @@ public static class Constants {
     public const float ENERGY_FROM_BASIC_ATTACK = 4f;
     public const float ENERGY_PER_STAGGER_PERCENTAGE_LOST_FROM_BLOCKING = 1.2f;
     public const float ENERGY_PER_HEALTH_PERCENTAGE_LOST = 1f;
-    public const float ENERGY_GAIN_MULTIPLIER_VERSUS_BOSSES = 1.5f;
+    public const float ENERGY_GAIN_MULTIPLIER_VERSUS_BOSSES = 1.0f;
     public const float ENERGY_FROM_DODGING = 8f;
     public const float ENERGY_FROM_INFLICTING_STAGGERED = 10f;
     public const float DEGREES_PER_RAD = 57.2958f;
@@ -33,7 +33,7 @@ public static class Constants {
     public const float DEFAULT_FLINCHING_DURATION = 0.5f;
     public const float DEFAULT_PLAYER_STAGGERED_DURATION = 15f;
     public const float DEFAULT_SOFT_STAGGERED_DURATION = 3f;
-    public const float DEFAULT_HARD_STAGGERED_DURATION = 15f;
+    public const float DEFAULT_HARD_STAGGERED_DURATION = 12f;
     public const int DEFAULT_FIXED_FRAMES_UNTIL_EXITING_COMBAT = 500;
     public const float STANCE_SWITCH_COOLDOWN = 2f;
     public const float STANCE_SWITCH_COOLDOWN_OMNIMASTERY = 0.5f;
@@ -43,6 +43,12 @@ public static class Constants {
     public const float SCOUT_ZOOM_SPEED = 0.15f;
     public const float SCOUT_RETURN_SPEED = 0.35f;
     public static readonly string[] VOWELS = {"A", "I", "E", "O", "U"};
+    public static float NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER = 0.2f;
+    public static float NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE = 2;
+    public static float FOLLOW_UP_HEALTH_BAR_FREEZE_TIME = 1f;
+    public static float FOLLOW_UP_HEALTH_BAR_DECREASE_SPEED = 0.02f;
+    public static float MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS = 0.2f;
+    public static float FORCE_REQUIRED_TO_PUSH_1M = 100;
 
     public const float PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_REGULAR_FLINCH = 40;
     public const float PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_BOSS_FLINCH = 30;
@@ -53,7 +59,8 @@ public static class Constants {
     public const float MAXIMUM_AMOUNT_OF_SAVE_FILES = 20;
     public const float FULLY_RESTED_INITIAL_ENERGY = 20;
     public const int FULLY_RESTED_INITIAL_AMMO = 6;
-    public const int MAX_ULTIMATE_USES_POSSIBLE = 5;
+    public const int MAX_ULTIMATE_USES_POSSIBLE = 7;
+    public const int PRONE_TO_KNOCKOUT_AMOUNT_ADDED_BY_GAUNTLET_BA = 40;
 
     public const float EXPECTED_POWER_AT_LEVEL_1 = 1.25f;
     public const float EXPECTED_POWER_AT_LEVEL_10 = 2.2f;
@@ -88,7 +95,7 @@ public static class Constants {
     public const int TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_5 = 8;
     public const int TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_6 = 10;
 
-    public enum HitSoundTypeEnum {LargeBlunt, LongSharp,  SmallBlunt, SmallSharp, Magic, Fire, Ice, Arrow, Bullet, Neutral}
+    public enum HitSoundTypeEnum {LargeBlunt, LongSharp,  SmallBlunt, SmallSharp, Magic, Fire, Ice, Arrow, Bullet, Neutral, Thunder, Shadow, Earth}
     
     public enum EnergyGainSource { BasicAttack, Dodge, Block, Riposte, HealthLost, InflictedStaggered, Counter }
 
@@ -98,7 +105,7 @@ public static class Constants {
 
     public enum DamageType { Heavy, Light, Ranged, Magic, CurrentWeapon, None };
 
-    public enum ItemType { Heavy, Light, Ranged, Helmet, Armor, Gloves, Boots, Tool, Quest }
+    public enum ItemType { Heavy, Light, Ranged, Helmet, Outfit, Gloves, Boots, Tool, Quest, None }
 
     public enum StatSource { Base, PowerUp, Item, Buff }
 
@@ -110,7 +117,7 @@ public static class Constants {
 
     public enum Faction { Ally, Enemy, Neutral, Monster, HostileToAll, DuelingEachOther };
 
-    public enum GameplayMode { Regular, InMenu, InCutscene, Shopping, OnStartScreen, InfoPrompt, MissionSelect };
+    public enum GameplayMode { Regular, InMenu, InCutscene, Shopping, OnStartScreen, InfoPrompt, MissionSelect, Paused };
 
     public enum GameType { Challenge, Survival, Arena, Story, None };
 

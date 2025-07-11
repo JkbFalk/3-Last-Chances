@@ -8,12 +8,12 @@ public class NPCAbility_SnowAvalanche : Ability {
 
     public NPCAbility_SnowAvalanche(Unit ability_user) : base(ability_user) {
         WaitTimeBeforeNextAction = 0.5f;
-        DamageSources.Add(new DamageSource(60, 120, Constants.DamageType.Ranged) {Knockback = 150});
+        DamageSources.Add(new DamageSource(60, 120, Constants.DamageType.Ranged) {KnockbackInMeters = 1.5f});
         AddCustomSound("Use", "Ice/Ice_Use2", 0.15f);
         HitSoundType = Constants.HitSoundTypeEnum.Ice;
         HitSoundVolume = 0.3f;
         PerformActionAfterIntervals(20, 0.5f);
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void CallAbilityEvent1() {

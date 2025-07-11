@@ -40,18 +40,16 @@ public class Effect_IncreaseStatBasedOnStackingEffectLevel : Effect
         else if(effect.EffectEnded && _buff.EffectEnded == false) {
             _buff.EndThisEffect();
         }
-        if(IncreaseBasedOnEffectLevel) {
-            if(effect.EffectEnded == false && _buff != null && _buff.EffectEnded == false && effect.StackingEffectIntensityLevel != _lastCheckedIntensityLevel) {
-                _lastCheckedIntensityLevel = effect.StackingEffectIntensityLevel;
-                _buff.PercentageModifier = !IncreaseBasedOnEffectLevel ? effect.DecayingAmount * PercentageAmount / 100 : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.5f :_lastCheckedIntensityLevel == 2 ? PercentageAmount : _lastCheckedIntensityLevel == 3 ? PercentageAmount * 2 : 0);
-            }
-            else if(effect.EffectEnded == false && _buff == null) {
-                _buff = new Effect_ChangeStat(IncreasedStat, SourceOfEffect) {
-                    PercentageModifier = !IncreaseBasedOnEffectLevel ? effect.DecayingAmount * PercentageAmount / 100 : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.5f :_lastCheckedIntensityLevel == 2 ? PercentageAmount : _lastCheckedIntensityLevel == 3 ? PercentageAmount * 2 : 0),
-                    IsRemovable = false,
-                };
-                TargetOfEffect.AddEffect(_buff);
-            }
+        if(effect.EffectEnded == false && _buff != null && _buff.EffectEnded == false && (IncreaseBasedOnEffectLevel == false || effect.StackingEffectIntensityLevel != _lastCheckedIntensityLevel)) {
+            _lastCheckedIntensityLevel = effect.StackingEffectIntensityLevel;
+            _buff.PercentageAmount = !IncreaseBasedOnEffectLevel ? effect.DecayingAmount * PercentageAmount : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.5f :_lastCheckedIntensityLevel == 2 ? PercentageAmount : _lastCheckedIntensityLevel == 3 ? PercentageAmount * 2 : 0);
+        }
+        else if(effect.EffectEnded == false && _buff == null) {
+            _buff = new Effect_ChangeStat(IncreasedStat, SourceOfEffect) {
+                PercentageAmount = !IncreaseBasedOnEffectLevel ? effect.DecayingAmount * PercentageAmount : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.5f :_lastCheckedIntensityLevel == 2 ? PercentageAmount : _lastCheckedIntensityLevel == 3 ? PercentageAmount * 2 : 0),
+                IsRemovable = false,
+            };
+            TargetOfEffect.AddEffect(_buff);
         }
     }
 }

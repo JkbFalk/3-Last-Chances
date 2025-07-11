@@ -56,16 +56,16 @@ public class Stance_SingularPursuit : Effect_Stance
         if(damage.SourceOfDamage.User != TargetOfEffect) {
             return;
         }
-        if(IsActive && UnlockedUpgrade1 && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)) {
+        if(IsActive && UnlockedUpgrade1 && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)) {
             SpiritBond += 1 / Player.Instance.CurrentWeaponAttackSpeed.Current;
         }
-        else if(IsActive && UnlockedUpgrade2 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)) {
+        else if(IsActive && UnlockedUpgrade2 && damage.SourceOfDamage.Is(Ability.Property.Technique)) {
             SpiritBond += 5;
         }
-        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Riposte)) {
+        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.Is(Ability.Property.Riposte)) {
             SpiritBond += 3;
         }
-        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter)) {
+        else if(IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.Is(Ability.Property.Counter)) {
             SpiritBond += 5;
         }
         base.OnInvokeDamageDealt(damage);

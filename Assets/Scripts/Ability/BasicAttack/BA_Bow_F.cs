@@ -6,7 +6,7 @@ public class BA_Bow_F : BasicAttack {
     public bool FastShot = false;
     public bool ShotArrow = false;
     public static int AmmoRequiredToUseAbility = 1;
-    private readonly int _jumpDistance = 90;
+    private readonly float _jumpDistance = 0.9f;
     private int _flipped;
     private float _movementSpeed;
     private bool _barrageEquipped = false;
@@ -51,10 +51,10 @@ public class BA_Bow_F : BasicAttack {
             proj.FlightSpeed = 10;
             DamageSources.Add(new DamageSource(300, 300, Constants.DamageType.Ranged));
             _flipped = User.Actions.IsFlipped ? -1 : 1;
-            _movementSpeed = User.MovementSpeed.Current;
+            _movementSpeed = 1 + User.MovementSpeed.Current / 100;
         }
         else {
-            Properties.Add(AbilityProperty.StrongBasicAttack);
+            Properties.Add(Property.StrongBasicAttack);
             StartedCharging = true;
             User.Actions.SetFaceVariant("Eyes Squinted");
         }
@@ -79,20 +79,20 @@ public class BA_Bow_F : BasicAttack {
     public override void CallAbilityEvent3()
     {
         ShotArrow = true;
-        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * ButtonHoldDuration * 200 : Vector2.left * ButtonHoldDuration * 200 , this);
+        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * PlayerControls.BasicAttackButtonHoldDuration * 2 : Vector2.left * PlayerControls.BasicAttackButtonHoldDuration * 2 , this);
         GameObject vfx = Utils.CreateVisualEffect(new(this), "Friction");
         vfx.transform.SetParent(User.SpriteRenderers["Right Foot"].Bone.parent.transform);
         vfx.transform.position = vfx.transform.parent.position;
         vfx.transform.localPosition = Vector3.zero;
         vfx.transform.eulerAngles = Vector3.zero;
-        vfx.transform.localScale = new Vector2(ButtonHoldDuration / 5, ButtonHoldDuration / 5);
+        vfx.transform.localScale = new Vector2(PlayerControls.BasicAttackButtonHoldDuration / 5, PlayerControls.BasicAttackButtonHoldDuration / 5);
         Projectile proj = Utils.CreateProjectile(new(this), "BowBasicAttack");
-        proj.FlightSpeed = 10 + ButtonHoldDuration * 2.5f;
+        proj.FlightSpeed = 10 + PlayerControls.BasicAttackButtonHoldDuration * 2.5f;
         DamageSources.Clear();
-        DamageSources.Add(new DamageSource(300 * (ButtonHoldDuration / 2), 300 * (ButtonHoldDuration / 2), Constants.DamageType.Ranged));
+        DamageSources.Add(new DamageSource(300 * (PlayerControls.BasicAttackButtonHoldDuration / 2), 300 * (PlayerControls.BasicAttackButtonHoldDuration / 2), Constants.DamageType.Ranged));
     }
 
-    public override void OnMainButtonPress()
+    public override void OnBasicAttackButtonPress()
     {
         if(_barrageEquipped && Player.Instance.Ammo > 0 && _canRecast) {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Bow_F(User);
@@ -100,7 +100,7 @@ public class BA_Bow_F : BasicAttack {
         }
     }
 
-    public override void OnMainButtonRelease()
+    public override void OnBasicAttackButtonRelease()
     {
         if(StartedCharging && !ShotArrow && !_barrageEquipped) {
             User.PlayAnimation("Bow_F", 0.05f, 0.7f);

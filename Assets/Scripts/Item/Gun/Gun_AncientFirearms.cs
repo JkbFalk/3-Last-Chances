@@ -12,6 +12,6 @@ public class Gun_AncientFirearms : Item
         WeaponClass = Constants.WeaponClass.Gun;
         SetBaseWeaponStats(130, 100, 0.75f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsDamageReduction")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsArmor")};
     }
 }

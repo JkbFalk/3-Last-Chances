@@ -11,6 +11,7 @@ public class Effect_Frozen : Effect_HardCrowdControl
         AdditionalEffectsAffectingTargetDuringEffect = new System.Collections.Generic.List<Effect> { new Effect_RootedInPlace(SourceOfEffect) };
         ShowsInUI = true;
         Listeners.Add(EventManager.HitDealt);
+        PriorityLevel = 10;
     }
 
     public override void OnStart()
@@ -32,8 +33,8 @@ public class Effect_Frozen : Effect_HardCrowdControl
     public override void OnInvokeHitDealt(Damage damage)
     {
         if(damage.TargetOfDamage == TargetOfEffect && BaseDuration - RemainingDuration > 0.25f) {
-            damage.ExtraInjuryDealtPercentage += 200;
-            damage.ExtraStaggerDealtPercentage += 200;
+            damage.InjuryDealtPercentageModifier += 200;
+            damage.StaggerDealtPercentageModifier += 200;
             damage.TargetOfDamage.AddEffect(new Effect_Flinching(new(damage.SourceOfDamage)), Constants.DEFAULT_FLINCHING_DURATION);
             Utils.PlaySoundEffect(damage.TargetOfDamage.AudioSource, "Effect/Effect_FreezeInPlace", 0.9f);
             Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlaceDestroy", damage.TargetOfDamage.transform.position.x, damage.TargetOfDamage.transform.position.y);

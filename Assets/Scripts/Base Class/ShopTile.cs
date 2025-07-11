@@ -97,7 +97,7 @@ public class ShopTile : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
         if (action == InventoryTile.InventoryActions.Buy)
         {
             if(SaveFile.Instance.Money < Item.BuyPrice) {
-                CanvasElements.ShopMoneyDisplay.GetComponent<TextMeshProUGUI>().color = Colors.GetColorFromCode("#FF000F");
+                GameController.Objects.ShopMoneyText.color = Colors.GetColorFromCode("#FF000F");
                 GameController.Instance.WaitAndRunMethodRealtime(1f, ReturnRegularMoneyDisplayColor);
                 Utils.PlaySoundEffect(null, "UI/NotEnoughMoney");
             }
@@ -112,14 +112,14 @@ public class ShopTile : MonoBehaviour, IPointerClickHandler, IPointerDownHandler
                 }
             }
         }
-        if(Settings.Instance.ControlScheme == "Gamepad" && !MenuManager.Instance.ConfirmPromptActive)
+        if(Settings.Instance.ControlScheme == "Gamepad" && !GameController.Instance.ConfirmPromptActive)
         {
             GetComponent<Button>().Select();
         }
     }
 
     public void ReturnRegularMoneyDisplayColor() {
-        CanvasElements.ShopMoneyDisplay.GetComponent<TextMeshProUGUI>().color = Colors.GetColorFromCode("#FFDE4E");
+        GameController.Objects.ShopMoneyText.color = Colors.GetColorFromCode("#FFDE4E");
     }
 
 

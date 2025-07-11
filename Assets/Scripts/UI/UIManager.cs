@@ -9,14 +9,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Constants;
 using UnityEngine.AI;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour {
     private static UIManager _instance = null;
 
     public static UIManager Instance {
         get {
-            if (_instance == null) {
-                _instance = GameController.Instance.GetComponentInChildren<UIManager>();
+            if (_instance == null && GameController.Instance.IsDestroyed() == false) {
+                _instance = GameController.Instance?.GetComponentInChildren<UIManager>();
             }
             return _instance;
         }
@@ -26,16 +27,10 @@ public class UIManager : MonoBehaviour {
 
     public bool CanGoToNextDialogueLine = true;
     public bool SkippingDialogue;
-    public GameObject LinesContainer;
-    public GameObject DialogueBoxLeft;
-    public GameObject DialogueBoxRight;
     public Image DialogueIconLeft;
     public Image DialogueIconRight;
     public LabelInitializer DialogueSpeakerLeft;
     public LabelInitializer DialogueSpeakerRight;
-
-    public Transform DialogueInteractIndicator;
-
     public Dialogue CurrentDialogue;
     public DialogueLineItem CurrentDialogueLineItem;
     private DialogueLine _currentDialogueLine;
@@ -52,27 +47,27 @@ public class UIManager : MonoBehaviour {
             if(_currentDialogueLine != null) {
                 _currentDialogueLine.OnStart();
             }
-            DialogueBoxLeft.SetActive(_currentDialogueLine.ShowSpeakerBox && _currentDialogueLine.SpeakerUnit == Player.Instance);
-            DialogueBoxRight.SetActive(_currentDialogueLine.ShowSpeakerBox && ((_currentDialogueLine.SpeakerName != null && _currentDialogueLine.SpeakerPortrait != null) || (_currentDialogueLine.SpeakerUnit != null && _currentDialogueLine.SpeakerUnit != Player.Instance)));
+            GameController.Objects.DialogueBoxLeft.SetActive(_currentDialogueLine.ShowSpeakerBox && _currentDialogueLine.SpeakerUnit == Player.Instance);
+            GameController.Objects.DialogueBoxRight.SetActive(_currentDialogueLine.ShowSpeakerBox && ((_currentDialogueLine.SpeakerName != null && _currentDialogueLine.SpeakerPortrait != null) || (_currentDialogueLine.SpeakerUnit != null && _currentDialogueLine.SpeakerUnit != Player.Instance)));
             string name = Utils.GetNameForUnit(_currentDialogueLine.SpeakerUnit, _currentDialogueLine.SpeakerName);
             if(_currentDialogueLine.Choices.Count == 0) {
                 MenuManager.Instance.AddHistoryEntry(new NotificationController.InGameDialogue() { Id=_currentDialogueLine.Id, SpeakerName=name, SpeakerPortrait = _currentDialogueLine.SpeakerPortrait != null ? _currentDialogueLine.SpeakerPortrait : _currentDialogueLine?.SpeakerUnit?.Portrait}, false, _currentDialogueLine?.StringParams);
             }
-            if(DialogueBoxLeft.activeSelf) {
+            if(GameController.Objects.DialogueBoxLeft.activeSelf) {
                 DialogueIconLeft.sprite = Resources.Load("Sprites/Face Portrait/Player", typeof(Sprite)) as Sprite;
                 DialogueSpeakerLeft.SetLabel("{Name_Player}");
             }
-            if(DialogueBoxRight.activeSelf) {
+            if(GameController.Objects.DialogueBoxRight.activeSelf) {
                 DialogueIconRight.sprite = Resources.Load("Sprites/Face Portrait/" + ((!string.IsNullOrWhiteSpace(_currentDialogueLine.SpeakerPortrait) && _currentDialogueLine.SpeakerPortrait != "Default") ? _currentDialogueLine.SpeakerPortrait : (!string.IsNullOrWhiteSpace(_currentDialogueLine.SpeakerUnit.Portrait) && _currentDialogueLine.SpeakerUnit.Portrait != "Default") ? _currentDialogueLine.SpeakerUnit.Portrait : _currentDialogueLine.SpeakerUnit.IsMale ? "Default_Male" : "Default_Female"), typeof(Sprite)) as Sprite;
                 DialogueSpeakerRight.SetLabel(name);
             }
-            Utils.DestroyAllChildren(LinesContainer.transform);
-            LinesContainer.transform.parent.Find("Clickable").gameObject.SetActive(_currentDialogueLine.Choices.Count == 0);
+            Utils.DestroyAllChildren(GameController.Objects.DialogueLinesContainer.transform);
+            GameController.Objects.DialogueLinesContainer.transform.parent.Find("Clickable").gameObject.SetActive(_currentDialogueLine.Choices.Count == 0);
             if(_currentDialogueLine.Choices.Count == 0) {
                 GameObject item = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_DialogueLineItem")) as GameObject;
                 item.GetComponent<DialogueLineItem>().Initialize(_currentDialogueLine);
                 CurrentDialogueLineItem = item.GetComponent<DialogueLineItem>();
-                item.transform.SetParent(LinesContainer.transform);
+                item.transform.SetParent(GameController.Objects.DialogueLinesContainer.transform);
                 item.transform.localScale = new Vector3(1, 1, 1);
             }
             else {
@@ -85,16 +80,16 @@ public class UIManager : MonoBehaviour {
                     if(add_choice) {
                         GameObject item = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_DialogueLineItem")) as GameObject;
                         item.GetComponent<DialogueLineItem>().Initialize(choice);
-                        item.transform.SetParent(LinesContainer.transform);
+                        item.transform.SetParent(GameController.Objects.DialogueLinesContainer.transform);
                         item.transform.localScale = new Vector3(1, 1, 1);
                     }
                 }
-                for(int i = 0; i < LinesContainer.transform.childCount; i++) {
-                    Navigation nav = LinesContainer.transform.GetChild(i).GetComponent<Button>().navigation;
+                for(int i = 0; i < GameController.Objects.DialogueLinesContainer.transform.childCount; i++) {
+                    Navigation nav = GameController.Objects.DialogueLinesContainer.transform.GetChild(i).GetComponent<Button>().navigation;
                     nav.mode = Navigation.Mode.Explicit;
-                    nav.selectOnUp = i == 0 ? null : LinesContainer.transform.GetChild(i - 1).GetComponent<Button>();
-                    nav.selectOnDown = i == (LinesContainer.transform.childCount - 1) ? null : LinesContainer.transform.GetChild(i + 1).GetComponent<Button>();
-                    LinesContainer.transform.GetChild(i).GetComponent<Button>().navigation = nav;
+                    nav.selectOnUp = i == 0 ? null : GameController.Objects.DialogueLinesContainer.transform.GetChild(i - 1).GetComponent<Button>();
+                    nav.selectOnDown = i == (GameController.Objects.DialogueLinesContainer.transform.childCount - 1) ? null : GameController.Objects.DialogueLinesContainer.transform.GetChild(i + 1).GetComponent<Button>();
+                    GameController.Objects.DialogueLinesContainer.transform.GetChild(i).GetComponent<Button>().navigation = nav;
                 }
             }
             if(_currentDialogueLine?.Choices?.Count != null && Settings.Instance.ControlScheme == "Gamepad") {
@@ -105,13 +100,10 @@ public class UIManager : MonoBehaviour {
     }
 
     public void SelectFirstChoice() {
-        LinesContainer.transform.GetChild(0).GetComponent<Button>().Select();
+        GameController.Objects.DialogueLinesContainer.transform.GetChild(0).GetComponent<Button>().Select();
     }
 
     public void Start() {
-        DialogueBoxLeft = GameController.Instance.transform.Find("Dialogue Window/Window/Left Portrait").gameObject; 
-        DialogueBoxRight = GameController.Instance.transform.Find("Dialogue Window/Window/Right Portrait").gameObject; 
-        LinesContainer = GameController.Instance.transform.Find("Dialogue Window/Window/Scroll Rect/Viewport/Lines").gameObject;
         DialogueIconLeft = GameController.Instance.transform.Find("Dialogue Window/Window/Left Portrait/Image").GetComponent<Image>();
         DialogueIconRight = GameController.Instance.transform.Find("Dialogue Window/Window/Right Portrait/Image").GetComponent<Image>();
         DialogueSpeakerLeft = GameController.Instance.transform.Find("Dialogue Window/Window/Left Portrait/Title/Text").GetComponent<LabelInitializer>();
@@ -141,14 +133,12 @@ public class UIManager : MonoBehaviour {
     }
 
     public void DisplayNotEnoughAmmoWarning() {
-        CanvasElements.UICanvas.AmmoDisplay.GetComponent<Image>().color = Color.red;
-        CanvasElements.UICanvas.AmmoDisplay.transform.Find("Ammo Count").GetComponent<TextMeshProUGUI>().color = Color.red;
+        Objects.AmmoDisplayImage.color = new Color(1, 0, 0, 1);
         GameController.Instance.WaitAndRunMethod(1, HideNotEnoughAmmoWarning);
     }
 
     public void HideNotEnoughAmmoWarning() {
-        CanvasElements.UICanvas.AmmoDisplay.GetComponent<Image>().color = Color.white;
-        CanvasElements.UICanvas.AmmoDisplay.transform.Find("Ammo Count").GetComponent<TextMeshProUGUI>().color = Color.white;
+        Objects.AmmoDisplayImage.color = new Color(1, 0, 0, 0);
     }
 
     private void DecrementNotEnoughEnergyWarningTimers() {
@@ -163,7 +153,7 @@ public class UIManager : MonoBehaviour {
         }
         NotEnoughEnergyWarnings = filteredList;
         if(NotEnoughUltimateUsesWarningCounter == 1) {
-            foreach(Transform child in CanvasElements.UICanvas.UltimateUses.transform) {
+            foreach(Transform child in Objects.UltimateUses.transform) {
                 child.GetComponent<Image>().color = Color.white;
             } 
         }
@@ -177,37 +167,37 @@ public class UIManager : MonoBehaviour {
         Player.Instance.Actions.enabled = false;
         Player.Instance.KnockedOut = true;
         UIManager.Instance.ShowBlackScreen(black_screen_speed);
-        CanvasElements.TransitionScreen.UpperText.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(2);
-        CanvasElements.TransitionScreen.LowerText.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(2);
+        GameController.Objects.TransitionUpperText.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(2);
+        GameController.Objects.TransitionLowerText.GetComponent<HideOrShowOverTime>().ShowOverTimeFromZero(2);
         if (SaveFile.Instance.GameType == GameType.Survival) {
             SaveFile.Instance.SurvivalChancesRemaining--;
             SaveFile.Instance.Save();
             if(SaveFile.Instance.SurvivalChancesRemaining > 0)
             {
                 SurvivalController.LoadStageWithoutRewards = true;
-                CanvasElements.TransitionScreen.UpperText.GetComponent<TextMeshProUGUI>().text = Label.Get("SurvivalLifeLost") + " " + SaveFile.Instance.SurvivalChancesRemaining.ToString();
-                CanvasElements.TransitionScreen.LowerText.GetComponent<TextMeshProUGUI>().text = "";
+                GameController.Objects.TransitionUpperText.GetComponent<TextMeshProUGUI>().text = Label.Get("SurvivalLifeLost") + " " + SaveFile.Instance.SurvivalChancesRemaining.ToString();
+                GameController.Objects.TransitionLowerText.GetComponent<TextMeshProUGUI>().text = "";
                 GameController.Instance.WaitAndRunMethod(5, RestartSurvivalStage);
                 GameController.Instance.WaitAndRunMethod(4, HideGameOverText);
             }
             else
             {
-                CanvasElements.TransitionScreen.UpperText.GetComponent<TextMeshProUGUI>().text = Label.Get(label);
-                CanvasElements.TransitionScreen.LowerText.GetComponent<TextMeshProUGUI>().text = label == "GameOverLabelDeath" ? Label.Get("GameOverLabelLoadClueless") : "";
+                GameController.Objects.TransitionUpperText.GetComponent<TextMeshProUGUI>().text = Label.Get(label);
+                GameController.Objects.TransitionLowerText.GetComponent<TextMeshProUGUI>().text = label == "GameOverLabelDeath" ? Label.Get("GameOverLabelLoadClueless") : "";
                 GameController.Instance.WaitAndRunMethod(5, GoToStartScreen);
                 GameController.Instance.WaitAndRunMethod(4, HideGameOverText);
             }
         }
         else if(SaveFile.Instance.CurrentMission != null)
         {
-            CanvasElements.TransitionScreen.UpperText.GetComponent<TextMeshProUGUI>().text = Label.Get(label);
-            CanvasElements.TransitionScreen.LowerText.GetComponent<TextMeshProUGUI>().text = label == "GameOverLabelDeath" ? Label.Get("GameOverLabelLoadClueless") : "";
+            GameController.Objects.TransitionUpperText.GetComponent<TextMeshProUGUI>().text = Label.Get(label);
+            GameController.Objects.TransitionLowerText.GetComponent<TextMeshProUGUI>().text = label == "GameOverLabelDeath" ? Label.Get("GameOverLabelLoadClueless") : "";
             GameController.Instance.WaitAndRunMethod(5, ContinueGameOverScreen);
             GameController.Instance.WaitAndRunMethod(4, HideGameOverText);
         }
         else {
-            CanvasElements.TransitionScreen.UpperText.GetComponent<TextMeshProUGUI>().text = Label.Get(label);
-            CanvasElements.TransitionScreen.LowerText.GetComponent<TextMeshProUGUI>().text = label == "GameOverLabelDeath" ? Label.Get("GameOverLabelLoadClueless") : "";
+            GameController.Objects.TransitionUpperText.GetComponent<TextMeshProUGUI>().text = Label.Get(label);
+            GameController.Objects.TransitionLowerText.GetComponent<TextMeshProUGUI>().text = label == "GameOverLabelDeath" ? Label.Get("GameOverLabelLoadClueless") : "";
             GameController.Instance.WaitAndRunMethod(5, GoToStartScreen);
             GameController.Instance.WaitAndRunMethod(4, HideGameOverText);
         }
@@ -220,8 +210,8 @@ public class UIManager : MonoBehaviour {
     }
 
     public void HideGameOverText() {
-        CanvasElements.TransitionScreen.UpperText.GetComponent<HideOrShowOverTime>().HideOverTime(1);
-        CanvasElements.TransitionScreen.LowerText.GetComponent<HideOrShowOverTime>().HideOverTime(1);
+        GameController.Objects.TransitionUpperText.GetComponent<HideOrShowOverTime>().HideOverTime(1);
+        GameController.Objects.TransitionLowerText.GetComponent<HideOrShowOverTime>().HideOverTime(1);
     }
 
     public void ContinueGameOverScreen() {
@@ -277,25 +267,25 @@ public class UIManager : MonoBehaviour {
                 if (Player.Instance.ToolCooldown != null && Player.Instance.ToolCooldown.RemainingDuration > 0)
                 {
                     float fillAmount = Player.Instance.ToolCooldown.RemainingDuration / Player.Instance.ToolCooldown.TotalDuration;
-                    CanvasElements.UICanvas.Items.transform.Find(i.ToString() + "/Cooldown").GetComponent<Image>().fillAmount = fillAmount;
+                    Objects.Items.transform.Find(i.ToString() + "/Cooldown").GetComponent<Image>().fillAmount = fillAmount;
                 }
                 else
                 {
-                    CanvasElements.UICanvas.Items.transform.Find(i.ToString() + "/Cooldown").GetComponent<Image>().fillAmount = 0;
+                    Objects.Items.transform.Find(i.ToString() + "/Cooldown").GetComponent<Image>().fillAmount = 0;
                 }
             }
         }
     }
 
     public Slider[] DisplayResourceBarsOnScreen(Unit targeting_unit) {
-        if (CanvasElements.UICanvas.EliteEnemyDisplays.transform.childCount >= 3)
+        if (Objects.EliteEnemyDisplays.transform.childCount >= 3)
         {
             return null;
         }
         GameObject resources = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_ResourceDisplay")) as GameObject;
-        resources.GetComponentInChildren<TextMeshProUGUI>().text = Utils.GetTitleForUnit(targeting_unit);
+        resources.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = Utils.GetTitleForUnit(targeting_unit);
         resources.transform.rotation = new Quaternion(0, 0, 0, 0);
-        resources.transform.SetParent(CanvasElements.UICanvas.EliteEnemyDisplays.transform, false);
+        resources.transform.SetParent(Objects.EliteEnemyDisplays.transform, false);
         return resources.GetComponentsInChildren<Slider>();
     }
 
@@ -322,15 +312,15 @@ public class UIManager : MonoBehaviour {
         new_display.transform.SetSiblingIndex(0);
         float[] start_scales = new float[4] { 0.01f, 0.5f, 0.7f, 0.5f };
         float[] end_scales = new float[4] { 0.5f, 0.7f, 0.5f, 0.01f };
-        for (int i = 0; i < CanvasElements.UICanvas.Stances.transform.childCount; i++) {
-            Transform display = CanvasElements.UICanvas.Stances.transform.GetChild(i);
+        for (int i = 0; i < Objects.Stances.transform.childCount; i++) {
+            Transform display = Objects.Stances.transform.GetChild(i);
             display.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
             display.GetComponent<ChangeTransformOverTime>().SetScaleChangeOverTime(Constants.STANCE_SWITCH_ROTATE_TIME, start_scales[i], end_scales[i]);
             display.GetComponent<ChangeTransformOverTime>().SetPositionXChangeOverTime(Constants.STANCE_SWITCH_ROTATE_TIME, -450 + i * 125, -325 + i * 125);
             if (i == 0) {
                 display.Find("Binding Left").gameObject.SetActive(true);
                 display.Find("Binding Right").gameObject.SetActive(false);
-                display.Find("Binding Left").GetComponent<TextMeshProUGUI>().text = "<sprite name=\"StanceSwitchLeftBinding" + Settings.Instance.ControlScheme + "\">";
+                display.Find("Binding Left").GetComponent<LabelInitializer>().SetLabel("[RotateStanceLeftButtonPress]");
             }
             else if (i == 1) {
                 display.Find("Binding Right").gameObject.SetActive(false);
@@ -339,7 +329,7 @@ public class UIManager : MonoBehaviour {
             else if (i == 2) {
                 display.Find("Binding Right").gameObject.SetActive(true);
                 display.Find("Binding Left").gameObject.SetActive(false);
-                display.Find("Binding Right").GetComponent<TextMeshProUGUI>().text = "<sprite name=\"StanceSwitchRightBinding" + Settings.Instance.ControlScheme + "\">";
+                display.Find("Binding Right").GetComponent<LabelInitializer>().SetLabel("[RotateStanceRightButtonPress]");
             }
         }
         Player.Instance.GetStanceForGivenWeapon(stance_to_replace).UIStanceDisplay = new_display.transform;
@@ -356,7 +346,7 @@ public class UIManager : MonoBehaviour {
         new_display.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + stance_to_replace, typeof(Sprite)) as Sprite;
         new_display.transform.Find("Stance Border").GetComponent<Image>().sprite = Resources.Load("Sprites/Stance/" + stance.StanceEffect.GetType().ToString(), typeof(Sprite)) as Sprite;
         new_display.name = "UI_" + stance_to_replace.ToString() + "StanceDisplay";
-        new_display.transform.SetParent(CanvasElements.UICanvas.Stances.transform, true);
+        new_display.transform.SetParent(Objects.Stances.transform, true);
         new_display.transform.localPosition = new Vector2(0, 50);
         return new_display;
     }
@@ -367,9 +357,9 @@ public class UIManager : MonoBehaviour {
 
     public void ResetStanceDisplay()
     {
-        if(CanvasElements.UICanvas.Stances.transform.childCount > 0) {
-            for(int i = CanvasElements.UICanvas.Stances.transform.childCount - 1; i >= 0; i--) {
-                MonoBehaviour.Destroy(CanvasElements.UICanvas.Stances.transform.GetChild(i).gameObject);
+        if(Objects.Stances.transform.childCount > 0) {
+            for(int i = Objects.Stances.transform.childCount - 1; i >= 0; i--) {
+                MonoBehaviour.Destroy(Objects.Stances.transform.GetChild(i).gameObject);
             }
         }
         float[] scales = new float[3] { 0.5f, 0.7f, 0.5f };
@@ -387,7 +377,7 @@ public class UIManager : MonoBehaviour {
             if (count == 0) {
                 display.Find("Binding Left").gameObject.SetActive(true);
                 display.Find("Binding Right").gameObject.SetActive(false);
-                display.Find("Binding Left").GetComponent<TextMeshProUGUI>().text = "<sprite name=\"StanceSwitchLeftBinding" + Settings.Instance.ControlScheme + "\">";
+                display.Find("Binding Left").GetComponent<LabelInitializer>().SetLabel("[RotateStanceLeftButtonPress]");
             }
             else if (count == 1) {
                 display.Find("Binding Right").gameObject.SetActive(false);
@@ -396,14 +386,14 @@ public class UIManager : MonoBehaviour {
             else if (count == 2) {
                 display.Find("Binding Right").gameObject.SetActive(true);
                 display.Find("Binding Left").gameObject.SetActive(false);
-                display.Find("Binding Right").GetComponent<TextMeshProUGUI>().text = "<sprite name=\"StanceSwitchRightBinding" + Settings.Instance.ControlScheme + "\">";
+                display.Find("Binding Right").GetComponent<LabelInitializer>().SetLabel("[RotateStanceRightButtonPress]");
             }
             count++;
         }
     }
 
     public void ToggleLoadingScreen(bool show = true) {
-        CanvasElements.TransitionScreen.LoadingScreen.SetActive(show);
+        GameController.Objects.TransitionLoadingScreen.SetActive(show);
     }
 
     public void ShowStanceRotateRight() {
@@ -412,15 +402,15 @@ public class UIManager : MonoBehaviour {
         new_display.transform.SetSiblingIndex(3);
         float[] start_scales = new float[4] { 0.5f, 0.7f, 0.5f, 0.01f };
         float[] end_scales = new float[4] { 0.01f, 0.5f, 0.7f, 0.5f };
-        for (int i = 0; i < CanvasElements.UICanvas.Stances.transform.childCount; i++) {
-            Transform display = CanvasElements.UICanvas.Stances.transform.GetChild(i);
+        for (int i = 0; i < Objects.Stances.transform.childCount; i++) {
+            Transform display = Objects.Stances.transform.GetChild(i);
             display.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
             display.GetComponent<ChangeTransformOverTime>().SetScaleChangeOverTime(Constants.STANCE_SWITCH_ROTATE_TIME, start_scales[i], end_scales[i]);
             display.GetComponent<ChangeTransformOverTime>().SetPositionXChangeOverTime(Constants.STANCE_SWITCH_ROTATE_TIME, -325 + i * 125, -450 + i * 125);
             if (i == 1) {
                 display.Find("Binding Left").gameObject.SetActive(true);
                 display.Find("Binding Right").gameObject.SetActive(false);
-                display.Find("Binding Left").GetComponent<TextMeshProUGUI>().text = "<sprite name=\"StanceSwitchLeftBinding" + Settings.Instance.ControlScheme + "\">";
+                display.Find("Binding Left").GetComponent<LabelInitializer>().SetLabel("[RotateStanceLeftButtonPress]");
             }
             else if (i == 2) {
                 display.Find("Binding Right").gameObject.SetActive(false);
@@ -429,7 +419,7 @@ public class UIManager : MonoBehaviour {
             else if (i == 3) {
                 display.Find("Binding Right").gameObject.SetActive(true);
                 display.Find("Binding Left").gameObject.SetActive(false);
-                display.Find("Binding Right").GetComponent<TextMeshProUGUI>().text = "<sprite name=\"StanceSwitchRightBinding" + Settings.Instance.ControlScheme + "\">";
+                display.Find("Binding Right").GetComponent<LabelInitializer>().SetLabel("[RotateStanceRightButtonPress]");
             }
         }
         Player.Instance.GetStanceForGivenWeapon(stance_to_replace).UIStanceDisplay = new_display.transform;
@@ -444,20 +434,20 @@ public class UIManager : MonoBehaviour {
     public void DisplayAreaTransitionScreen(string area_name) {
         UIManager.Instance.HideBlackScreen(1);
         if(!String.IsNullOrWhiteSpace(area_name)) {
-            CanvasElements.TransitionScreen.AreaName.GetComponent<CanvasGroup>().alpha = 0;
+            GameController.Objects.TransitionAreaName.GetComponent<CanvasGroup>().alpha = 0;
             if(Label.ContainsKey("Area_" + area_name)) {
-                CanvasElements.TransitionScreen.AreaName.GetComponent<LabelInitializer>().SetLabel("{Area_" + area_name + "}");
+                GameController.Objects.TransitionAreaName.GetComponent<LabelInitializer>().SetLabel("{Area_" + area_name + "}");
             }
             else {
-                CanvasElements.TransitionScreen.AreaName.GetComponent<TextMeshProUGUI>().text = "";
+                GameController.Objects.TransitionAreaName.GetComponent<TextMeshProUGUI>().text = "";
             }
-            CanvasElements.TransitionScreen.AreaName.GetComponent<HideOrShowOverTime>().ShowOverTime(1);
+            GameController.Objects.TransitionAreaName.GetComponent<HideOrShowOverTime>().ShowOverTime(1);
             GameController.Instance.WaitAndRunMethodRealtime(3, HideTransitionText);
         }
     }
 
     public void HideTransitionText() {
-        CanvasElements.TransitionScreen.AreaName.GetComponent<HideOrShowOverTime>().HideOverTime(1f);
+        GameController.Objects.TransitionAreaName.GetComponent<HideOrShowOverTime>().HideOverTime(1f);
     }
 
     public void StartDialogue(Dialogue dialogue) {
@@ -472,7 +462,7 @@ public class UIManager : MonoBehaviour {
         if(Type.GetType(dialogue.NameOfParentClass).GetMethod("OnStart_" + dialogue.NameOfDialogue) != null) {
             Type.GetType(dialogue.NameOfParentClass).GetMethod("OnStart_" + dialogue.NameOfDialogue).Invoke(null, null);
         }
-        CanvasElements.TransitionScreen.AreaName.GetComponent<HideOrShowOverTime>().HideOverTime(0.05f);
+        GameController.Objects.TransitionAreaName.GetComponent<HideOrShowOverTime>().HideOverTime(0.05f);
         ShowBlackScreen(0);
         foreach(Unit u in Utils.GetAllUnits(false, true)) {
             u.GetComponent<NavMeshAgent>().enabled = false;
@@ -565,11 +555,7 @@ public class UIManager : MonoBehaviour {
         Player.Instance.GetComponent<NavMeshAgent>().enabled = false;
         bool should_autosave = CurrentDialogue.AutoSaveOnDialogueEnd;
         CurrentDialogue = null;
-        if(DialogueInteractIndicator != null) {
-            DialogueInteractIndicator.gameObject.SetActive(true);
-            DialogueInteractIndicator = null;
-        }
-        Utils.DestroyAllChildren(CanvasElements.DialogueNotifications.transform);
+        Utils.DestroyAllChildren(GameController.Objects.DialogueNotifications.transform);
         GameController.Instance.WaitAndRunMethod(0.01f, SetPlayerIdle, should_autosave);
     }
 
@@ -617,13 +603,11 @@ public class UIManager : MonoBehaviour {
     }
 
     public void ShowBlackScreen(float time = 0.5f) {
-        Debug.Log("SHOWING BLACK SCREEN");
-        CanvasElements.TransitionScreenObject.GetComponentInChildren<HideOrShowOverTime>(true).ShowOverTimeFromZero(time);
+        GameController.Objects.TransitionScreen.GetComponentInChildren<HideOrShowOverTime>(true).ShowOverTimeFromZero(time);
     }
 
     public void HideBlackScreen(float time = 0.5f) {
-        Debug.Log("HIDING BLACK SCREEN");
-        CanvasElements.TransitionScreenObject.GetComponentInChildren<HideOrShowOverTime>(true).HideOverTimeFromFull(time);
+        GameController.Objects.TransitionScreen.GetComponentInChildren<HideOrShowOverTime>(true).HideOverTimeFromFull(time);
     }
 
     public void OpenDialogueHistory() {
@@ -658,15 +642,95 @@ public class UIManager : MonoBehaviour {
         }
     }
 
-    public void ToggleSkippingDialogue() {
-        if(SkippingDialogue) {
+    public void ToggleSkippingDialogue()
+    {
+        if (SkippingDialogue)
+        {
             SkippingDialogue = false;
         }
-        else {
+        else
+        {
             SkippingDialogue = true;
             SkipToNextDialogueLine();
         }
         GameController.Instance.transform.Find("Dialogue Window/Window/Buttons/Button Skip/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (SkippingDialogue ? "ButtonStopSkip" : "ButtonSkip"), typeof(Sprite)) as Sprite;
         GameController.Instance.transform.Find("Dialogue Window/Window/Buttons/Button Skip/Label").GetComponent<LabelInitializer>().SetLabel(SkippingDialogue ? "{DialogueButton_StopSkip}" : "{DialogueButton_Skip}");
+    }
+
+    public static class Objects
+    {
+
+        private static string _extraInfoInPauseScreen = "Pause Screen/Extra Info";
+        private static string _extraInfoInUI = "Extra Info";
+        public static GameObject Notifications => Utils.GetGameObject("UI/Notifications");
+        public static GameObject NotificationList => Utils.GetGameObject("UI/Notifications/List");
+        public static GameObject MoneyDisplay => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Money");
+        public static TextMeshProUGUI MoneyDisplayText => (TextMeshProUGUI)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Money", typeof(TextMeshProUGUI));
+        public static LabelInitializer WeekDisplayLabel => (LabelInitializer)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Week", typeof(LabelInitializer));
+        public static TextMeshProUGUI ExperienceBarLeftText => (TextMeshProUGUI)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Level/Background/Left Level", typeof(TextMeshProUGUI));
+        public static TextMeshProUGUI ExperienceBarRightText => (TextMeshProUGUI)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Level/Background/Right Level", typeof(TextMeshProUGUI));
+        public static Slider ExperienceBarSlider => (Slider)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Level", typeof(Slider));
+        public static HideOrShowOverTime InGameDialogueHideOrShow => (HideOrShowOverTime)Utils.GetComponent("UI/Notifications/In-Game Dialogue", typeof(HideOrShowOverTime));
+        public static TextMeshProUGUI InGameDialogueText => (TextMeshProUGUI)Utils.GetComponent("/UI/Notifications/In-Game Dialogue/Background/Text", typeof(TextMeshProUGUI));
+        public static Image InGameDialoguePortraitImage => (Image)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Image", typeof(Image));
+        public static TextMeshProUGUI InGameDialoguePortraitTitle => (TextMeshProUGUI)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Title/Text", typeof(TextMeshProUGUI));
+        public static GameObject PauseScreen => Utils.GetGameObject("UI/Pause Screen");
+        public static GameObject EscapeMissionButton => Utils.GetGameObject("UI/Pause Screen/Buttons/Escape Button");
+        public static LabelInitializer EscapeMissionButtonLabel => (LabelInitializer)Utils.GetComponent("UI/Pause Screen/Buttons/Escape Button/Text", typeof(LabelInitializer));
+        public static GameObject Effects => Utils.GetGameObject("UI/Effects");
+        public static GameObject ResourceBars => Utils.GetGameObject("UI/Resource Bars");
+        public static GameObject UltimateUses => Utils.GetGameObject("UI/Resource Bars/Ultimate Uses");
+        public static GameObject MissionInfo => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info");
+        public static GameObject Timer => Utils.GetGameObject("UI/Timer");
+        public static TextMeshProUGUI TimerText => (TextMeshProUGUI)Utils.GetComponent("UI/Timer", typeof(TextMeshProUGUI));
+        public static Slider ChargeBarSlider => (Slider)Utils.GetComponent("UI/Charge Bar", typeof(Slider));
+        public static TextMeshProUGUI ChargeBarAbilityText => (TextMeshProUGUI)Utils.GetComponent("UI/Charge Bar/Ability Name", typeof(TextMeshProUGUI));
+        public static GameObject InCombatIndicator => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/InCombat Indicator");
+        public static Image InCombatMaskImage => (Image)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/InCombat Indicator/Mask", typeof(Image));
+        public static Image InCombatFillImage => (Image)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/InCombat Indicator/Mask/Red Fill", typeof(Image));
+        public static Image AmmoDisplayImage => Settings.Instance.ControlScheme == "Keyboard" ? (Image)Utils.GetComponent("UI/Stance Display Keyboard/Ammo Display", typeof(Image)) : (Image)Utils.GetComponent("UI/Stance Display Gamepad/Ammo Display", typeof(Image));
+        public static GameObject Stances => Settings.Instance.ControlScheme == "Keyboard" ? Utils.GetGameObject("UI/Stance Display Keyboard/Stances") : Utils.GetGameObject("UI/Stance Display Gamepad/Stances");
+        public static GameObject ItemsKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Items");
+        public static GameObject ItemsGamepad => Utils.GetGameObject("UI/Stance Display Gamepad/Items");
+        public static Image GamepadBindingAbilitiesImage => (Image)Utils.GetComponent("UI/Stance Display Gamepad/Binding Abilities", typeof(Image));
+        public static Image GamepadBindingItemsImage => (Image)Utils.GetComponent("UI/Stance Display Gamepad/Binding Gamepad", typeof(Image));
+        public static GameObject Items => Settings.Instance.ControlScheme == "Keyboard" ? ItemsKeyboard : ItemsGamepad;
+        public static GameObject StanceGaugeContainerKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Stance Gauge");
+        public static GameObject StanceGaugeContainerGamepad => Utils.GetGameObject("UI/Stance Display Gamepad/Stance Gauge");
+        public static GameObject StanceGaugeContainer => Settings.Instance.ControlScheme == "Keyboard" ? StanceGaugeContainerKeyboard : StanceGaugeContainerGamepad;
+        public static GameObject StanceDisplayKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard");
+        public static GameObject StanceDisplayGamepad => Utils.GetGameObject("UI/Stance Display Gamepad");
+        public static GameObject AbilitiesKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Abilities");
+        public static GameObject AbilitiesGamepad => Utils.GetGameObject("UI/Stance Display Gamepad/Abilities");
+        public static GameObject Abilities => Settings.Instance.ControlScheme == "Keyboard" ? AbilitiesKeyboard : AbilitiesGamepad;
+        public static GameObject EliteEnemyDisplays => Utils.GetGameObject("UI/Elite Enemy Displays");
+        public static GameObject ObjectivesDisplay => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Objectives");
+        public static GameObject FPSCounter => Utils.GetGameObject("UI/Resource Bars/FPS Counter");
+        public static GameObject DebugConsole => Utils.GetGameObject("UI/Debug Console");
+        public static TextMeshProUGUI InteractIndicatorText => (TextMeshProUGUI)Utils.GetComponent("UI/Interact Indicator", typeof(TextMeshProUGUI));
+        public static Slider CustomGaugeSlider => (Slider)Utils.GetComponent("UI/Custom Gauge", typeof(Slider));
+        public static TextMeshProUGUI CustomGaugeAmountText => (TextMeshProUGUI)Utils.GetComponent("UI/Custom Gauge/Amount", typeof(TextMeshProUGUI));
+        public static Image CycleDisplayImage => (Image)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Cycle", typeof(Image));
+        public static TextMeshProUGUI HealingItemText => Settings.Instance.ControlScheme == "Keyboard" ? HealingItemTextKeyboard : HealingItemTextGamepad;
+        public static TextMeshProUGUI HealingItemTextKeyboard => (TextMeshProUGUI)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Upgrade", typeof(TextMeshProUGUI));
+        public static TextMeshProUGUI HealingItemTextGamepad => (TextMeshProUGUI)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Upgrade", typeof(TextMeshProUGUI));
+        public static LabelInitializer KeyboardAbility1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/1/Binding", typeof(LabelInitializer));
+        public static LabelInitializer KeyboardAbility2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/2/Binding", typeof(LabelInitializer));
+        public static LabelInitializer KeyboardAbility3UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/3/Binding", typeof(LabelInitializer));
+        public static LabelInitializer KeyboardAbility4UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/4/Binding", typeof(LabelInitializer));
+        public static LabelInitializer KeyboardItem1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/1/Binding", typeof(LabelInitializer));
+        public static LabelInitializer KeyboardItem2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/2/Binding", typeof(LabelInitializer));
+        public static LabelInitializer KeyboardItemHealingUIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadAbility1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/1/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadAbility2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/2/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadAbility3UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/3/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadAbility4UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/4/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadItem1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/1/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadItem2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/2/Binding", typeof(LabelInitializer));
+        public static LabelInitializer GamepadItemHealingUIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/Heal/Binding", typeof(LabelInitializer));
+        public static GameObject PauseScreenConfirmPrompt => Utils.GetGameObject("UI/Pause Screen/Confirm Prompt");
+        public static TextMeshProUGUI PauseScreenConfirmPromptDescription => (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Description", typeof(TextMeshProUGUI));
+        public static Button PauseScreenConfirmPromptConfirmButton => (Button)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button", typeof(Button));
+        public static TextMeshProUGUI PauseScreenConfirmPromptConfirmButtonText => (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI));
     }
 }

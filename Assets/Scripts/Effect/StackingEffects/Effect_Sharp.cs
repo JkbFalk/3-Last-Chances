@@ -18,7 +18,7 @@ public class Effect_Sharp : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        EffectIndicatorText = Utils.GetFormattedFloat(DecayingAmount);
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
     public override void OnStart()
@@ -29,9 +29,9 @@ public class Effect_Sharp : Effect
 
 
     public override void OnInvokeHitDealt(Damage damage) {
-        if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && (damage.SourceOfDamage.Is(Ability.AbilityProperty.Riposte) || damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))) || (damage?.SourceOfDamage?.User is not Player && (damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter) || damage.SourceOfDamage.Is(Ability.AbilityProperty.Unstoppable))))) {
-            damage.ExtraInjuryDealtPercentage += DecayingAmount;
-            damage.ExtraStaggerDealtPercentage += DecayingAmount;
+        if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && (damage.SourceOfDamage.Is(Ability.Property.Riposte) || damage.SourceOfDamage.Is(Ability.Property.Counter))) || (damage?.SourceOfDamage?.User is not Player && (damage.SourceOfDamage.Is(Ability.Property.Counter) || damage.SourceOfDamage.Is(Ability.Property.Unstoppable))))) {
+            damage.InjuryDealtPercentageModifier += DecayingAmount;
+            damage.StaggerDealtPercentageModifier += DecayingAmount;
             base.OnInvokeHitDealt(damage);
         }
     }

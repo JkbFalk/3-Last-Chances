@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -23,14 +24,13 @@ public class Effect_PlayerStaggered : Effect_SoftCrowdControl
         _staggeredRegen = TargetOfEffect.StaggerBar.Maximum / BaseDuration;
         TargetOfEffect.StaggeredRegen = _staggeredRegen;
         TargetOfEffect.StaggerBar.Current = TargetOfEffect.StaggerBar.Maximum;
-        TargetOfEffect.MovementSpeed.AddPercentageModifier(this, -30);
-        DamageDebuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = -50};
-        AttackSpeedDebuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = -30};
-        TargetOfEffect.AddEffect(new Effect_SoftStaggered(SourceOfEffect), Constants.DEFAULT_SOFT_STAGGERED_DURATION);
-        TargetOfEffect.AddEffect(DamageDebuff);
-        TargetOfEffect.AddEffect(AttackSpeedDebuff);
-        TargetOfEffect.Control.AddPercentageModifier(this, -50);
-        TargetOfEffect.Tenacity.AddPercentageModifier(this, -50);
+        TargetOfEffect.Energy.Current = 0;
+        TargetOfEffect.MovementSpeed.AddPercentageModifier(this, -45);
+        foreach(Effect e in TargetOfEffect.CurrentEffects.ToList()) {
+            if(e.Type == EffectType.Buff && e.IsRemovable) {
+                e.EndThisEffect();
+            }
+        }
         TargetOfEffect.IsStaggered = true;
 
     }
@@ -41,10 +41,6 @@ public class Effect_PlayerStaggered : Effect_SoftCrowdControl
         TargetOfEffect.StaggerBar.Current = 0;
         TargetOfEffect.StaggeredRegen = 0;
         TargetOfEffect.MovementSpeed.RemovePercentageModifier(this);
-        TargetOfEffect.Control.RemovePercentageModifier(this);
-        TargetOfEffect.Tenacity.RemovePercentageModifier(this);
-        TargetOfEffect.EndEffect(DamageDebuff);
-        TargetOfEffect.EndEffect(AttackSpeedDebuff);
         TargetOfEffect.IsStaggered = false;
     }
 

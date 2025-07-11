@@ -4,7 +4,7 @@ public class Stagger : Stat {
 public Constants.DamageType Type;
     public Stagger(Constants.DamageType type, Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
         if(stat_owner is Player) {
-            MenuStatDisplay = CanvasElements.MenuCanvas.StatList.transform.Find(type.ToString() + "Stagger/Value").GetComponent<TextMeshProUGUI>();
+            MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find(type.ToString() + "Stagger/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
         Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;

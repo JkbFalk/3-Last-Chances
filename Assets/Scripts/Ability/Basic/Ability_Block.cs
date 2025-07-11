@@ -44,7 +44,7 @@ public class Ability_Block : Ability {
     }
 
     public void CanReleaseBlock() {
-        if(!GameController.Instance.PlayerControls.HoldingBlockButton) {
+        if(PlayerControls.BlockButtonHoldDuration == 0) {
             EndThisAbility();
         }
         else {

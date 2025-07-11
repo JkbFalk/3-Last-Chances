@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 
 public class EventManager {
-    public static UnityEvent OneFifthSecondElapsedInGame = new UnityEvent();
-    public static UnityEvent OneFifthSecondElapsedRealtime = new UnityEvent();
+    public static UnityEvent OneTenthSecondElapsedInGame = new UnityEvent();
+    public static UnityEvent OneTenthSecondElapsedRealtime = new UnityEvent();
     public static UnityEvent<Damage> HitDealt = new UnityEvent<Damage>();
     public static UnityEvent<Damage> AfterHitDamageCalculation = new UnityEvent<Damage>();
     public static UnityEvent<Damage> AboutToHandleFatalBlow = new UnityEvent<Damage>();

@@ -14,7 +14,7 @@ public class NPCAbility_WindStep : Ability {
     public override void CallAbilityEvent1()
     {
         float distance = Vector2.Distance(User.transform.position, User.CurrentTarget.transform.position);
-        ChaseCurrentTargetAtGivenDegreeAngle(distance * 50, 85, distance * 4f);
+        ChaseCurrentTargetAtGivenDegreeAngle(5, 85);
     }
 
     public override void OnAbilityEnd()

@@ -12,6 +12,6 @@ public class Polearm_SanguineSpike : Item
         WeaponClass = Constants.WeaponClass.Polearm;
         SetBaseWeaponStats(110, 80, 0.95f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainDamageBasedOnMissingHealth")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainDamageReductionBasedOnMissingHealth")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnMissingHealth")};
     }
 }

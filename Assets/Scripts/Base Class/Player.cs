@@ -20,7 +20,6 @@ public class Player : Unit {
     public float PassivePowerUpPower = 1;
 
     [HideInInspector]
-    public TextMeshProUGUI InteractIndicatorText;
     public Collider2D Hitbox;
     private float _perfectBlockSpeed = 1;
     public float PerfectBlockSpeed {
@@ -56,12 +55,22 @@ public class Player : Unit {
     public List<Unit> UnitsInRangeForBackstab = new List<Unit>();
     public Dictionary<Type, int> CurrentTechniqueStacks = new() {
         {typeof(Ability_TempestStrikes), 1},
-        {typeof(Ability_Flamethrower), 1}
+        {typeof(Ability_Flamethrower), 1},
+        {typeof(Ability_SpearsOfIce), 1},
+        {typeof(Ability_Fortify), 1},
+        {typeof(Ability_ShadowInfusion), 1},
+        {typeof(Ability_LightningSpeed), 1},
+        {typeof(Ability_FinalBlast), 1}
     };
 
     public Dictionary<Type, int> CurrentUltimateTechniqueStacks = new() {
         {typeof(Ability_TempestStrikes), 1},
-        {typeof(Ability_Flamethrower), 1}
+        {typeof(Ability_Flamethrower), 1},
+        {typeof(Ability_SpearsOfIce), 1},
+        {typeof(Ability_Fortify), 1},
+        {typeof(Ability_ShadowInfusion), 1},
+        {typeof(Ability_LightningSpeed), 1},
+        {typeof(Ability_FinalBlast), 1}
     };
 
     private float _backstabCooldown = 20;
@@ -87,7 +96,7 @@ public class Player : Unit {
         set
         {
             _inCombatTimer = value;
-            CanvasElements.UICanvas.InCombatFill.GetComponent<Image>().fillAmount = _inCombatTimer / (float)Constants.DEFAULT_FIXED_FRAMES_UNTIL_EXITING_COMBAT;
+            UIManager.Objects.InCombatFillImage.fillAmount = _inCombatTimer / (float)Constants.DEFAULT_FIXED_FRAMES_UNTIL_EXITING_COMBAT;
         }
     }
 
@@ -158,12 +167,12 @@ public class Player : Unit {
         List<InteractableObject> validInteractables = NearbyInteractables.Where(inter => inter.CanBeInteractedWith).OrderByDescending(inter => inter.HasInteractionPriority).ThenBy(inter => Vector2.Distance(Player.Instance.transform.position, inter.transform.position)).ToList();
         if(validInteractables.Count > 0) {
             ClosestInteractable = validInteractables[0];
-            InteractIndicatorText.gameObject.SetActive(true);
-            InteractIndicatorText.text = string.Format(String.IsNullOrWhiteSpace(ClosestInteractable.SpecialInteractionLabel) ? Label.Get("Interact_Use") :  Label.Get(ClosestInteractable.SpecialInteractionLabel), new string[] {"<sprite name=\"InteractBinding" + Settings.Instance.ControlScheme + "\">"});
+            UIManager.Objects.InteractIndicatorText.gameObject.SetActive(true);
+            UIManager.Objects.InteractIndicatorText.text = string.Format(String.IsNullOrWhiteSpace(ClosestInteractable.SpecialInteractionLabel) ? Label.Get("Interact_Use") :  Label.Get(ClosestInteractable.SpecialInteractionLabel), new string[] {Settings.Instance.ControlScheme == "Keyboard" ? $"<sprite name=\"Keyboard_{Settings.Instance.Keybinds.FirstOrDefault(k => k.ActionName == "InteractButtonPress").KeyboardBinding1}\">" : $"<sprite name=\"{Settings.Instance.GamepadType}_{Settings.Instance.Keybinds.FirstOrDefault(k => k.ActionName == "InteractButtonPress").GamepadBinding1}\">"});
         }
-        else if(validInteractables.Count == 0 && CanvasElements.UICanvasObject != null){
+        else if(validInteractables.Count == 0 && UIManager.Instance != null){
             ClosestInteractable = null;
-            InteractIndicatorText.gameObject.SetActive(false);
+            UIManager.Objects.InteractIndicatorText.gameObject.SetActive(false);
         }
     }
 
@@ -196,14 +205,14 @@ public class Player : Unit {
             {
                 _currentStance.Weapon.ActivateItemEffects();
             }
-            CanvasElements.UICanvas.AmmoDisplay.gameObject.SetActive(CurrentStance.WeaponClass == Constants.WeaponClass.Gun || CurrentStance.WeaponClass == Constants.WeaponClass.Bow || CurrentStance.WeaponClass == Constants.WeaponClass.Cannon);
+            UIManager.Objects.AmmoDisplayImage.gameObject.SetActive(Player.Instance.CurrentStance == SaveFile.Instance.Stances[2]);
             EventManager.StanceSwitched.Invoke();
         }
     }
 
     public void ReplaceStanceDisplay() {
-        if(CanvasElements.UICanvas.StanceGaugeContainer.transform.childCount > 0) {
-            MonoBehaviour.Destroy(CanvasElements.UICanvas.StanceGaugeContainer.transform.GetChild(0).gameObject);
+        if(UIManager.Objects.StanceGaugeContainer.transform.childCount > 0) {
+            MonoBehaviour.Destroy(UIManager.Objects.StanceGaugeContainer.transform.GetChild(0).gameObject);
         }
         if(CurrentStance != null && CurrentStance.StanceEffect != null) {
             CurrentStance.StanceEffect.CreateStanceDisplay();
@@ -217,7 +226,8 @@ public class Player : Unit {
 
     private static Player _instance = null;
 
-    public static bool HasInstance() {
+    public static bool HasInstance()
+    {
         return _instance != null;
     }
 
@@ -263,7 +273,7 @@ public class Player : Unit {
         Instance.PlayAnimation("Idle");
         Instance.Actions.IsFlipped = false;
         SaveFile.Instance.RefreshStances();
-        foreach(Transform child in CanvasElements.UICanvas.Effects.transform) {
+        foreach(Transform child in UIManager.Objects.Effects.transform) {
             MonoBehaviour.Destroy(child.gameObject);
         }
         foreach(Item item in MenuManager.Instance.EquippedItems) {
@@ -317,12 +327,12 @@ public class Player : Unit {
         }
         */
         if(player_is_in_combat) {
-            CanvasElements.UICanvas.InCombatMask.GetComponent<UnityEngine.UI.Image>().color = Color.white;
-            CanvasElements.UICanvas.InCombatFill.SetActive(true);
+            UIManager.Objects.InCombatMaskImage.color = Color.white;
+            UIManager.Objects.InCombatFillImage.gameObject.SetActive(true);
         }
         else {
-            CanvasElements.UICanvas.InCombatMask.GetComponent<UnityEngine.UI.Image>().color = Colors.OutOfCombat;
-            CanvasElements.UICanvas.InCombatFill.SetActive(false);
+            UIManager.Objects.InCombatMaskImage.color = Colors.OutOfCombat;
+            UIManager.Objects.InCombatFillImage.gameObject.SetActive(false);
         }
     }
 
@@ -370,6 +380,95 @@ public class Player : Unit {
 
     [HideInInspector]
     public GameObject StaggerIndicator;
+    public int MostRecentLongbladeBANumber = 0;
+    public int GetLongbladeBANumber() {
+        if (MostRecentLongbladeBANumber == 1)
+        {
+            return new int[] { 2, 3, 4, 5 }[UnityEngine.Random.Range(0, 4)];
+        }
+        else if (MostRecentLongbladeBANumber == 2)
+        {
+            return new int[] { 1, 3, 4, 5 }[UnityEngine.Random.Range(0, 4)];
+        }
+        else if (MostRecentLongbladeBANumber == 3)
+        {
+            return new int[] { 1, 2, 4, 5 }[UnityEngine.Random.Range(0, 4)];
+        }
+        else if (MostRecentLongbladeBANumber == 4)
+        {
+            return new int[] { 1, 2, 3, 5 }[UnityEngine.Random.Range(0, 4)];
+        }
+        else if (MostRecentLongbladeBANumber == 5)
+        {
+            return new int[] { 1, 2, 3, 4 }[UnityEngine.Random.Range(0, 4)];
+        }
+        return UnityEngine.Random.Range(1, 6);
+    }
+    public int MostRecentGauntletBANumber = 0;
+    public int GetGauntletBANumber() {
+        if(MostRecentGauntletBANumber == 1){
+            return new int[] {2, 3, 5}[UnityEngine.Random.Range(0, 3)];
+        }
+        else if(MostRecentGauntletBANumber == 2){
+            return new int[] {1, 3, 4}[UnityEngine.Random.Range(0, 3)];
+        }
+        else if(MostRecentGauntletBANumber == 3){
+            return new int[] {1, 2, 4, 5}[UnityEngine.Random.Range(0, 4)];
+        }
+        else if(MostRecentGauntletBANumber == 4){
+            return new int[] {2, 3, 5}[UnityEngine.Random.Range(0, 3)];
+        }
+        else if(MostRecentGauntletBANumber == 5){
+            return new int[] {1, 3, 4}[UnityEngine.Random.Range(0, 3)];
+        }
+        return UnityEngine.Random.Range(1, 6);
+    }
+
+    public void PerformGauntletStrongBasicAttack() {
+        int number = GetGauntletBANumber();
+        if(number == 1) {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_R1(this);
+        }
+        else if(number == 2) {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_R2(this);
+        }
+        else if(number == 3) {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_R3(this);
+        }
+        else if(number == 4) {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_R4(this);
+        }
+        else if(number == 5) {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_R5(this);
+        }
+        MostRecentGauntletBANumber = number;
+    }
+
+    public void PerformGauntletBasicAttack()
+    {
+        int number = GetGauntletBANumber();
+        if (number == 1)
+        {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_L1(this);
+        }
+        else if (number == 2)
+        {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_L2(this);
+        }
+        else if (number == 3)
+        {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_L3(this);
+        }
+        else if (number == 4)
+        {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_L4(this);
+        }
+        else if (number == 5)
+        {
+            Actions.CurrentAbilityBeingPerformed = new BA_Gauntlets_L5(this);
+        }
+        MostRecentGauntletBANumber = number;
+    }
     public List<Unit> EnemiesInCombatWithPlayer = new();
 
     public Dictionary<string, int> AbilityLevels = new Dictionary<string, int>();
@@ -381,14 +480,13 @@ public class Player : Unit {
     }
 
     public void Initialize() {
-        CanvasElements.UICanvas.Items.transform.Find("Heal/Upgrade").GetComponent<TextMeshProUGUI>().text = "+" + SaveFile.Instance.HealUpgrades.ToString();
+        UIManager.Objects.HealingItemText.text = "+" + SaveFile.Instance.HealUpgrades.ToString();
         SaveFile.Instance.MaxHealCharges = SaveFile.Instance.DifficultyLevel == 0 ? 10 : SaveFile.Instance.DifficultyLevel == 1 ? 5 : 2;
         SaveFile.Instance.HealChargesRemaining = SaveFile.Instance.MaxHealCharges;
         Actions = GetComponent<Actions>();
         Animator = GetComponent<Animator>();
-        InteractIndicatorText = CanvasElements.UICanvasObject.transform.Find("Interact Indicator").GetComponent<TextMeshProUGUI>();
         InitializeStats();
-        EnergyGain = new EnergyGain(this, 1);
+        EnergyGain = new EnergyGain(this, 0);
         Stats.Add(EnergyGain);
         
         Hitbox = SpriteRenderers["Lower Body"].Bone.GetComponent<CapsuleCollider2D>();

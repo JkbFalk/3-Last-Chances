@@ -126,7 +126,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_ImmuneToAreaOfEffect.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_ModifyStat.cs" />
-    <Compile Include="Assets\Scripts\UI\CanvasElements.cs" />
+    <Compile Include="Assets\Scripts\UI\GameController.GameObjects.cs" />
     <Compile Include="Assets\Scripts\Ability\Basic\Ability_StanceSwitchRight.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_StealthAttacked.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_EnergyBlade.cs" />
@@ -295,7 +295,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_BARestoreDamageAsHealth.cs" />
     <Compile Include="Assets\Scripts\Base Class\Settings.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_FFS.cs" />
-    <Compile Include="Assets\Scripts\Stat\DamageReduction.cs" />
+    <Compile Include="Assets\Scripts\Stat\Armor.cs" />
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_SnowAvalanche.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_BasicAttacksInflictStun.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_TwinBlades_F.cs" />
@@ -431,7 +431,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_FinalShowdown.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_ExtraDamageToUndamagedEnemies.cs" />
-    <Compile Include="Assets\Scripts\UI\ShowGamepadIndicatorOnSelect.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_DealExtraDamageAfterTakingDamage.cs" />
     <Compile Include="Assets\Scripts\Item\Gun\Gun_Lament.cs" />
@@ -510,7 +509,7 @@
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\TwinBlades_RollCounter.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_Flinching.cs" />
     <Compile Include="Assets\Scripts\Stat\StaggerDamage.cs" />
-    <Compile Include="Assets\Scripts\Effect\Effect_ChangeDamageReduction.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_ChangeArmor.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_SpearCyclone.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_TimeAttack.cs" />

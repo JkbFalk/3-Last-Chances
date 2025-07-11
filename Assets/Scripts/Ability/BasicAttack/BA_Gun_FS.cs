@@ -3,18 +3,18 @@ using UnityEngine;
 public class BA_Gun_FS : BasicAttack {
     public  static int AmmoRequiredToUseAbility = 2;
     public BA_Gun_FS(Unit ability_user) : base(ability_user) {
-        Properties.Add(AbilityProperty.StrongBasicAttack);
+        Properties.Add(Property.StrongBasicAttack);
         DamageSources.Add(new DamageSource(300, 600, Constants.DamageType.Ranged));
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
     }
 
     public override void CallAbilityEvent1() {
-        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * 1000 : Vector2.left * 1000, this);
+        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * 10 : Vector2.left * 10, this);
     }
 
-    public override void OnMainButtonPress()
+    public override void OnBasicAttackButtonPress()
     {
-        base.OnMainButtonPress();
+        base.OnBasicAttackButtonPress();
     }
 
     public override void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile)

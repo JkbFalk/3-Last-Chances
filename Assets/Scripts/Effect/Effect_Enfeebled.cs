@@ -10,7 +10,7 @@ public class Effect_Enfeebled : Effect {
         DecreasedDamageDonePercentage = increase_amount;
         ShowsInUI = true;
         Listeners.Add(EventManager.HitDealt);
-        EffectIndicatorText = "-" + increase_amount.ToString() + "%";
+        UIText = "-" + increase_amount.ToString() + "%";
         BaseDuration = 30;
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
     }

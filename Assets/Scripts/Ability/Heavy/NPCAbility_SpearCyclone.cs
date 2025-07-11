@@ -7,9 +7,9 @@ public class NPCAbility_SpearCyclone : Ability {
     private GameObject _vfx;
 
     public NPCAbility_SpearCyclone(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(0, 150, Constants.DamageType.Heavy) {Knockback = -200});
-        DamageSources.Add(new DamageSource(0, 150, Constants.DamageType.Heavy, "2") {Knockback = -200});
-        DamageSources.Add(new DamageSource(125, 0, Constants.DamageType.Heavy, "3") {Knockback = 500});
+        DamageSources.Add(new DamageSource(0, 150, Constants.DamageType.Heavy) {KnockbackInMeters = -2f});
+        DamageSources.Add(new DamageSource(0, 150, Constants.DamageType.Heavy, "2") {KnockbackInMeters = -2f});
+        DamageSources.Add(new DamageSource(125, 0, Constants.DamageType.Heavy, "3") {KnockbackInMeters = 5f});
         HitsTriggerDamagedState = false;
         WaitTimeBeforeNextAction = 0.3f;
         HitSoundVolume = 0.6f;

@@ -13,7 +13,7 @@ public class NPCAbility_Inflame : Ability {
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.1f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
 
         NameOfAnimationToAutoPlay = User.DamageType == Constants.DamageType.Heavy ? "Inflame_Heavy" : "Inflame_Light";
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };

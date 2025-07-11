@@ -7,13 +7,13 @@ public class BA_Polearm_FFF : BasicAttack {
     }
     public override void CallAbilityEvent1()
     {
-        if (HoldingMainButton && ButtonHoldDuration > 0.3f)
+        if (PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS)
         {
             User.Actions.CurrentAbilityBeingPerformed = BasicAttack.GetPolearmStrongAttack(ComboCounter);
         }
-        else if (ButtonPressedCounter > 2)
+        else if (PlayerControls.BasicAttackButtonPressCounter > 2)
         {
-            User.Actions.CurrentAbilityBeingPerformed = new BA_Polearm_F(User) {HoldingMainButton = HoldingMainButton, ButtonPressedCounter = 0, ComboCounter = ComboCounter+1};
+            User.Actions.CurrentAbilityBeingPerformed = new BA_Polearm_F(User) { ComboCounter = ComboCounter+1};
         }
         CanFollowUpAttack = true;
     }

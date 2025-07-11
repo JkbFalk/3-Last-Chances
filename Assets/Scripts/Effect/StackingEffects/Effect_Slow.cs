@@ -21,18 +21,20 @@ public class Effect_Slow : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        if(MSSlowEffect == null) {
+        if (MSSlowEffect == null)
+        {
             return;
         }
-        float effectiveAmount = DecayingAmount > 80 ? 80 : DecayingAmount;
-        EffectIndicatorText = Utils.GetFormattedFloat(effectiveAmount) + "%";
-        MSSlowEffect.PercentageModifier = -effectiveAmount;
+        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        MSSlowEffect.FlatAmount = -DecayingAmount;
     }
 
     public override void OnStart()
     {
         base.OnStart();
-        MSSlowEffect = new Effect_ChangeStat(TargetOfEffect.MovementSpeed, SourceOfEffect) {ShowsInMenu=false};
+        MSSlowEffect = new Effect_ChangeStat(TargetOfEffect.MovementSpeed, SourceOfEffect) {
+            ShowsInMenu = false
+        };
         TargetOfEffect.AddEffect(MSSlowEffect);
         BaseDuration = 5;
         ChangeDecayingAmount(DecayingAmount);

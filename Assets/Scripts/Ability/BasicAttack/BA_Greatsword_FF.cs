@@ -8,25 +8,23 @@ public class BA_Greatsword_FF : BasicAttack {
     }
     public override void CallAbilityEvent1()
     {
-        if (HoldingMainButton && ButtonPressedCounter == 2)
+        if (PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS )
         {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Greatsword_FS(User);
         }
-        else if (ButtonPressedCounter > 2)
+        else if (PlayerControls.BasicAttackButtonPressCounter > 2)
         {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Greatsword_FFF(User);
-            ((BA_Greatsword_FFF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
         }
         CanFollowUpAttack = true;
     }
 
-    public override void OnMainButtonPress()
+    public override void OnBasicAttackButtonPress()
     {
-        base.OnMainButtonPress();
+        base.OnBasicAttackButtonPress();
         if (CanFollowUpAttack)
         {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Greatsword_FFF(User);
-            ((BA_Greatsword_FFF)User.Actions.CurrentAbilityBeingPerformed).HoldingMainButton = HoldingMainButton;
         }
     }
 }

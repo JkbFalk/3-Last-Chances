@@ -38,8 +38,8 @@ public class Ability_HeavySlash : Technique
         AddCustomSound("Explosion", "Explosion/Explosion1", 1f);
         AddCustomSound("HeatWave", "Fire/Fire6", 1f);
         AddCustomSound("Swing", "Fire/FireSwing1", 0.7f);
-        DamageSources.Add(new DamageSource(HeavyInjuryScaling, HeavyStaggerScaling, Constants.DamageType.Heavy) {Knockback = 500});
-        DamageSources.Add(new DamageSource(MagicWaveInjuryScaling, 0, Constants.DamageType.Magic, "HeavySlash") {Knockback = 100});
+        DamageSources.Add(new DamageSource(HeavyInjuryScaling, HeavyStaggerScaling, Constants.DamageType.Heavy) {KnockbackInMeters = 5f});
+        DamageSources.Add(new DamageSource(MagicWaveInjuryScaling, 0, Constants.DamageType.Magic, "HeavySlash") {KnockbackInMeters = 1f});
         NameOfAnimationToAutoPlay = "HeavySlash_" + (Player.Instance.PreparingForUltimate ? "Ultimate" : User.CurrentWeaponClass);
         if(Player.Instance.PreparingForUltimate) {
             TransitionIntoAnimationDuration = 0.02f;
@@ -68,11 +68,11 @@ public class Ability_HeavySlash : Technique
 
     public override void OnAbilityStart() {
         base.OnAbilityStart();
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             return;
         }
         ShowChargeBar();
-        if(UpgradeBUnlocked){
+        if(Is(Property.UpgradeB)){
             StartCountingTime(0.33f + (ChargeTime / 4));
             Player.Instance.Animator.SetFloat("Technique Speed", 4);
         }
@@ -83,7 +83,7 @@ public class Ability_HeavySlash : Technique
 
     public override void OnAbilityEnd() {
         base.OnAbilityEnd();
-        if(Is(AbilityProperty.Ultimate) && _ultimateAoE != null && _ultimateAoE.IsDestroyed() == false) {
+        if(Is(Property.Ultimate) && _ultimateAoE != null && _ultimateAoE.IsDestroyed() == false) {
             _ultimateAoE.MakeObjectDisappear();
         }
         StopCountingTime();
@@ -91,7 +91,7 @@ public class Ability_HeavySlash : Technique
 
     public override void CallAbilityEvent1()
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             _ultimateAoE = Utils.CreateAreaOfEffect(new(this), "HeavySlash_Ultimate");
             _ultimateAoE.GetComponent<AttachObjectToBodyPart>().Initialize(User);
             _ultimateAoE.transform.localEulerAngles = new Vector3(0, 0, 90);
@@ -120,7 +120,7 @@ public class Ability_HeavySlash : Technique
 
     public override void CallAbilityEvent2()
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             if(_buttonWasReleased) {
                 FinishChargingUltimate();
             }
@@ -134,7 +134,7 @@ public class Ability_HeavySlash : Technique
 
     public override void CallAbilityEvent3()
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             FinishChargingUltimate();
         }
         else {
@@ -167,7 +167,7 @@ public class Ability_HeavySlash : Technique
         StopCountingTime();
         User.PlayAnimation("HeavySlash_Ultimate", 0.05f, 0.61f);
         DamageSources.Clear();
-        DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateHeavyInjuryScaling, UltimateHeavyInjuryScaling * 3), GetValueBasedOnPercentageOfTimePassed(UltimateHeavyStaggerScaling, UltimateHeavyStaggerScaling * 3), Constants.DamageType.Heavy, "HeavySlash_Ultimate") {Knockback = GetValueBasedOnPercentageOfTimePassed(300, 900)});
+        DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateHeavyInjuryScaling, UltimateHeavyInjuryScaling * 3), GetValueBasedOnPercentageOfTimePassed(UltimateHeavyStaggerScaling, UltimateHeavyStaggerScaling * 3), Constants.DamageType.Heavy, "HeavySlash_Ultimate") {KnockbackInMeters = GetValueBasedOnPercentageOfTimePassed(300, 900)});
         _ultimateAoE.DealingDamage = true;
         GameController.Instance.WaitAndRunMethod(0.55f, CreateFireWave);
         for(int i = 0; i < 50; i++) {
@@ -215,7 +215,7 @@ public class Ability_HeavySlash : Technique
     public override void OnAbilityButtonRelease()
     {
         _buttonWasReleased = true;
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             if(_canFinishAbility && _transitionedAnimation == false) {
                 FinishChargingUltimate();
             }
@@ -237,10 +237,10 @@ public class Ability_HeavySlash : Technique
         if(damage.AbilityDamageSource.ColliderName == "HeavySlash") {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(MagicWaveBurnStaggerScaling * User.MagicStagger.Current / 100, new(this)));
         }
-        if(UpgradeBUnlocked && _transitionedAnimation == false && damage.AbilityDamageSource.ColliderName != "HeavySlash") {
+        if(Is(Property.UpgradeB) && _transitionedAnimation == false && damage.AbilityDamageSource.ColliderName != "HeavySlash") {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(MasteryBHeavyStaggerBurnScaling * User.HeavyStagger.Current / 100, new(this)));
         }
-        if(UpgradeAUnlocked && _transitionedAnimation == false && damage.AbilityDamageSource.ColliderName != "HeavySlash") {
+        if(Is(Property.UpgradeA) && _transitionedAnimation == false && damage.AbilityDamageSource.ColliderName != "HeavySlash") {
             damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), MasteryAStunDuration);
         }
     }

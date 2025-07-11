@@ -18,7 +18,6 @@ public class PassiveSelect : MonoBehaviour {
 
     public void InitializeOptions()
     {
-        CanvasElements.LevelUpSelection.SetActive(true);
         for (int i = transform.childCount; i > 0; i--)
         {
             MonoBehaviour.Destroy(transform.GetChild(i-1).gameObject);
@@ -75,7 +74,6 @@ public class PassiveSelect : MonoBehaviour {
         {
             ability.AbilityGraphic.transform.Find("Disabled").gameObject.SetActive(!SaveFile.Instance.UnlockedAbilities.Contains(ability.Type));
         }
-        CanvasElements.LevelUpSelection.SetActive(false);
         GameController.Instance.GameplayMode = Constants.GameplayMode.Regular;
     }
 
@@ -83,7 +81,7 @@ public class PassiveSelect : MonoBehaviour {
     {
         if(SaveFile.Instance.SurvivalLevel == 1)
         {
-            Utils.ShowLevelUpSelection(new List<string> { "Injury~30%", "Stagger~30%", "AttackSpeed~12%", "DamageReduction~15%" });
+            Utils.ShowLevelUpSelection(new List<string> { "Injury~30%", "Stagger~30%", "AttackSpeed~12%", "Armor~15%" });
         }
         else
         {

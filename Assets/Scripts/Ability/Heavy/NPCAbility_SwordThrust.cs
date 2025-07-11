@@ -9,7 +9,7 @@ public class NPCAbility_SwordThrust : Ability {
         DamageSources.Add(new DamageSource(300, 50, Constants.DamageType.Heavy));
         if (User.CheckIfUnderEffect(typeof(Effect_IgnisCaptainBuff)))
         {
-            Properties.Add(AbilityProperty.CounteredByRoll);
+            Properties.Add(Property.CounteredByRoll);
         }
     }
 

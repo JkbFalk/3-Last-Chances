@@ -3536,22 +3536,22 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0
-    functionName: SetItemSprite
-    data: Quest/Book
+    functionName: SetConsumableSprite
+    data: Tool/Book
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.083333336
+    functionName: SetConsumableSprite
+    data: Tool/Book
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 0.16666667
-    functionName: SetItemSprite
-    data: Quest/Book
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.33333334
-    functionName: SetItemSprite
-    data: Quest/Book
+    functionName: SetConsumableSprite
+    data: Tool/Book
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

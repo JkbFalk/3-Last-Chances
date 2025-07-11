@@ -8,7 +8,7 @@ public class NPCAbility_PlundererSalutis : Ability {
         AddCustomSound("Disappear", "Wind/WindWhoosh1", 0.9f);
         AddCustomSound("Appear", "Wind/WindWhoosh2", 0.9f);
         TransitionIntoAnimationDuration = 0;
-        Properties.AddRange(new List<AbilityProperty> {AbilityProperty.ImmuneToFlinch, AbilityProperty.CountersBlock, AbilityProperty.CountersRiposte});
+        Properties.AddRange(new List<Property> {Property.ImmuneToFlinch, Property.CountersBlock, Property.CountersRiposte});
     }
 
     public override void OnAbilityStart()

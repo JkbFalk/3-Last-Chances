@@ -15,7 +15,7 @@ public class NPCAbility_RykerPayback : Ability {
         DamageSources.Add(new DamageSource(2500, 0, Constants.DamageType.Magic, "AoE 4"));
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
         WaitTimeBeforeNextAction = 0.5f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
     }
 
     public override void OnAbilityStart()

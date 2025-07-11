@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class Ability_ThunderStrike : Technique
+public class Ability_Thunderstrike : Technique
 {
     private GameObject _masteryBVFX;
     private bool _releasedButton;
@@ -37,17 +37,18 @@ public class Ability_ThunderStrike : Technique
     public static AbilityFamily Family = AbilityFamily.Tonitrui;
     public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
 
-    public Ability_ThunderStrike(Unit ability_user) : base(ability_user)
+    public Ability_Thunderstrike(Unit ability_user) : base(ability_user)
     {
-        Properties.Add(AbilityProperty.Charged);
+        HitSoundType = Constants.HitSoundTypeEnum.Thunder;
+        Properties.Add(Property.Charged);
         TransitionIntoAnimationDuration = 0;
         ScaleMaxTimeWithCombatSpeed = false;
         AddCustomSound("Regular", "Ability/Ability_ThunderStrike_Regular", 0.9f);
         AddCustomSound("Type A", "Ability/Ability_ThunderStrike_A", 0.9f);
         AddCustomSound("Charge", "Ability/Ability_ThunderStrike_Charge", 0.5f);
         DamageSources.Add(new DamageSource(0, 0, Constants.DamageType.Magic));
-        NameOfAnimationToAutoPlay = "ThunderStrike" + (UpgradeBUnlocked ? "_MasteryB" : "");
-        if(UpgradeBUnlocked)
+        NameOfAnimationToAutoPlay = "ThunderStrike" + (Is(Property.UpgradeB) ? "_MasteryB" : "");
+        if(Is(Property.UpgradeB))
         {
             EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
             DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
@@ -73,12 +74,12 @@ public class Ability_ThunderStrike : Technique
     {
         base.OnAbilityButtonRelease();
         _releasedButton = true;
-        if (CountingTime && !_executedAttack && !UpgradeBUnlocked)
+        if (CountingTime && !_executedAttack && IsNot(Property.UpgradeB))
         {
             User.Actions.ConsumeEnergyAndCooldownForTheAbility();
             CreateRegularThunderStrike();
         }
-        if (CountingTime && UpgradeBUnlocked)
+        if (CountingTime && Is(Property.UpgradeB))
         {
             EndThisAbility();
         }
@@ -119,7 +120,7 @@ public class Ability_ThunderStrike : Technique
 
     public override void CallAbilityEvent1()
     {
-        if(UpgradeBUnlocked)
+        if(Is(Property.UpgradeB))
         {
             DamageSources[0]. CustomHitSound = "Ability/Ability_ThunderStrike_Charge";
             DamageSources[0].InjuryScaling = _masteryBInjury;
@@ -160,7 +161,7 @@ public class Ability_ThunderStrike : Technique
     public override void CallAbilityEvent2()
     {
         User.Actions.ConsumeEnergyAndCooldownForTheAbility();
-        if(UpgradeAUnlocked)
+        if(Is(Property.UpgradeA))
         {
             CreateMasteryAThunderStrike();
         }

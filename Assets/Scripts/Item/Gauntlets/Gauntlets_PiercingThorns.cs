@@ -10,7 +10,7 @@ public class Gauntlets_PiercingThorns : Item
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
         SetBaseWeaponStats(80, 80, 1.3f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("LightDamageTemporarilyLowersEnemyDamageReduction")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightDamageIgnoresPercentageOfEnemyDamageReduction")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("LightDamageTemporarilyLowersEnemyArmor")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightDamageIgnoresPercentageOfEnemyArmor")};
     }
 }

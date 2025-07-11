@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
+using UnityEditor;    
 using UnityEngine;
 
 public class EffectList
@@ -22,7 +22,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MAXIMUM_HEALTH_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.Health, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Health }
                 }
@@ -32,7 +32,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MAXIMUM_STAGGER_BAR_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.StaggerBar, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.StaggerBar }
                 }
@@ -42,7 +42,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger }
                 }
@@ -52,7 +52,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY});
             return new List<Effect> {
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury }
                 }
@@ -62,7 +62,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER});
             return new List<Effect> {
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Stagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger }
                 }
@@ -72,7 +72,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ATTACK_SPEED_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyAttackSpeed,Player.Instance.LightAttackSpeed,Player.Instance.RangedAttackSpeed,Player.Instance.MagicAttackSpeed }
                 }
@@ -82,19 +82,19 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ENERGY_GAIN_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.EnergyGain, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.EnergyGain }
                 }
             };
         }
-        else if (effect_name == "DamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB);
+        else if (effect_name == "Armor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB);
             return new List<Effect> {
-                new Effect_ChangeStat(Player.Instance.DamageReduction, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                new Effect_ChangeStat(Player.Instance.Armor, new(effect_name)) {
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction }
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor }
                 }
             };
         }
@@ -102,7 +102,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.TENACITY_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.Tenacity, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Tenacity }
                 }
@@ -112,7 +112,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.COOLDOWN_REDUCTION_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.CooldownReduction, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.CooldownReduction }
                 }
@@ -122,7 +122,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.CONTROL_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.Control, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Control }
                 }
@@ -132,7 +132,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MOVEMENT_SPEED_INCREASE_PER_PB);
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.MovementSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.MovementSpeed }
                 }
@@ -142,12 +142,12 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury, Player.Instance.HeavyStagger }
                 },
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB
+                    PercentageAmount = calculatedPB
                 }
             };
         }
@@ -155,12 +155,12 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.LightInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.LightInjury, Player.Instance.LightStagger }
                 },
                 new Effect_ChangeStat(Player.Instance.LightStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB
+                    PercentageAmount = calculatedPB
                 }
             };
         }
@@ -168,12 +168,12 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.RangedInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.RangedInjury, Player.Instance.RangedStagger }
                 },
                 new Effect_ChangeStat(Player.Instance.RangedStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB
+                    PercentageAmount = calculatedPB
                 }
             };
         }
@@ -181,12 +181,12 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__MAGIC});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.MagicInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.MagicInjury, Player.Instance.MagicStagger }
                 },
                 new Effect_ChangeStat(Player.Instance.MagicStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB
+                    PercentageAmount = calculatedPB
                 }
             };
         }
@@ -194,7 +194,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury}
                 }
@@ -204,7 +204,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.LightInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.LightInjury}
                 }
@@ -214,7 +214,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.RangedInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.RangedInjury}
                 }
@@ -224,7 +224,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.SPECIALIZATION__MAGIC});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.MagicInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.MagicInjury}
                 }
@@ -234,7 +234,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyStagger}
                 }
@@ -244,7 +244,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.LightStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.LightStagger}
                 }
@@ -254,7 +254,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.RangedStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.RangedStagger}
                 }
@@ -264,7 +264,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__MAGIC});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.MagicStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.MagicStagger}
                 }
@@ -274,7 +274,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ATTACK_SPEED_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyAttackSpeed}
                 }
@@ -284,7 +284,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ATTACK_SPEED_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.LightAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.LightAttackSpeed}
                 }
@@ -294,7 +294,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ATTACK_SPEED_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.RangedAttackSpeed}
                 }
@@ -304,7 +304,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ATTACK_SPEED_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__MAGIC});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.MagicAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.MagicAttackSpeed}
                 }
@@ -328,13 +328,13 @@ public class EffectList
 
 
         // Anima
-        else if(effect_name == "DamageReductionAgainstCounterable") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_COUNTERABLE});
+        else if(effect_name == "ArmorAgainstCounterable") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_COUNTERABLE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamageReductionChange = calculatedPB, 
+                    ArmorModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.IsCounterable)
                 }
@@ -344,11 +344,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__BASIC_ATTACK});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                      ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury,Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack))
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack))
                 }
             };
         }
@@ -356,11 +356,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPONS, PB.SPECIALIZATION__TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique) && damage.IsWeaponDamage)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique) && damage.IsWeaponDamage)
                 }
             };
         }
@@ -368,24 +368,24 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPONS});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger }
                 },
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.LightInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.LightStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.RangedInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.RangedStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB
+                    PercentageAmount = calculatedPB
                 }
             };
         }
@@ -393,15 +393,15 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPONS, PB.SPECIALIZATION__INJURY});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury }
                 },
                 new Effect_ChangeStat(Player.Instance.LightInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.RangedInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 }
             };
         }   
@@ -409,15 +409,15 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPONS, PB.SPECIALIZATION__STAGGER});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger }
                 },
                 new Effect_ChangeStat(Player.Instance.LightStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.RangedStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 }
             };
         }          
@@ -437,47 +437,47 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "SharpDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__SHARP});
+        else if(effect_name == "SharpArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__SHARP});
             return new List<Effect> { 
-                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Sharp), Player.Instance.DamageReduction, calculatedPB, new(effect_name)) {
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction },
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Sharp), Player.Instance.Armor, calculatedPB, new(effect_name)) {
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor },
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)}
                 }
             };
         }
-        else if (effect_name == "DamageReductionAfterRiposteOrCounter") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__5_SECONDS_AFTER_RIPOSTE_OR_10_SECONDS_AFTER_COUNTER});
+        else if (effect_name == "ArmorAfterRiposteOrCounter") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__5_SECONDS_AFTER_RIPOSTE_OR_10_SECONDS_AFTER_COUNTER});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))
+                        ability.User == Player.Instance && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
-                        Effect extraDR = new Effect_ChangeStat(Player.Instance.DamageReduction, new(ability)) {
-                            PercentageModifier = effect.PercentageAmount, 
+                        Effect extraArmor = new Effect_ChangeStat(Player.Instance.Armor, new(ability)) {
+                            FlatAmount = effect.FlatAmount, 
                             ShowsInUI = true, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier, 
-                            Identifier="DamageReductionAfterRiposteOrCounter" + special_identifier, 
-                            EffectIndicatorText = effect.PercentageAmount + "%"
+                            Identifier="ArmorAfterRiposteOrCounter" + special_identifier, 
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         };
-                        Player.Instance.AddEffect(extraDR, ability.Is(Ability.AbilityProperty.Counter) ? 10 : 5);
+                        Player.Instance.AddEffect(extraArmor, ability.Is(Ability.Property.Counter) ? 10 : 5);
                     })
                 }
             };
         }
-        else if(effect_name == "DamageReductionAgainstUnstoppable") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_UNSTOPPABLE});
+        else if(effect_name == "ArmorAgainstUnstoppable") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_UNSTOPPABLE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamageReductionChange = calculatedPB, 
+                    ArmorModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
-                        damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Unstoppable))
+                        damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Unstoppable))
                 }
             };
         }
@@ -485,11 +485,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__RIPOSTES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Riposte))
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Riposte))
                 }
             };
         }
@@ -497,27 +497,27 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB), PB.SPECIALIZATION__BASIC_ATTACK});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 100)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool> ((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack) && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack) && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Sharp sharp = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
-                        damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.DamagePercentageChange;
+                        damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.DamagePercentageModifier;
                     })
                 }
             };
         }
-        else if(effect_name == "DamageReductionDuringBasicAttacks") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_BASIC_ATTACKING});
+        else if(effect_name == "ArmorDuringBasicAttacks") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_BASIC_ATTACKING});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamageReductionChange = calculatedPB, 
+                    ArmorModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.TargetOfDamage == Player.Instance && Player.Instance.Actions.CurrentAbilityBeingPerformed != null &&  Player.Instance.Actions.CurrentAbilityBeingPerformed.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.TargetOfDamage == Player.Instance && Player.Instance.Actions.CurrentAbilityBeingPerformed != null &&  Player.Instance.Actions.CurrentAbilityBeingPerformed.Is(Ability.Property.BasicAttack)
                     )
                 }
             };
@@ -526,11 +526,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__COUNTERS});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Counter)
                     )
                 }
             };
@@ -539,11 +539,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STRONG_BASIC_ATTACK});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury,Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.StrongBasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.StrongBasicAttack)
                     )
                 }
             };
@@ -552,14 +552,14 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB), PB.SPECIALIZATION__TECHNIQUES, PB.SPECIALIZATION__WEAPONS});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 100)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique) && damage.IsWeaponDamage && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique) && damage.IsWeaponDamage && Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Sharp sharp = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
-                        damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.DamagePercentageChange;
+                        damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.DamagePercentageModifier;
                     })
                 }
             };
@@ -570,13 +570,13 @@ public class EffectList
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
                     FirstParameter = calculatedPB1,
-                    PercentageAmount = calculatedPB2,
+                    SecondParameter = calculatedPB2,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)},
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))
+                        ability.User == Player.Instance && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
-                        Player.Instance.StaggerBar.Current -= Player.Instance.StaggerBar.Maximum * (ability.Is(Ability.AbilityProperty.Counter) ? effect.PercentageAmount : effect.FirstParameter) / 100;
+                        Player.Instance.StaggerBar.Current -= Player.Instance.StaggerBar.Maximum * (ability.Is(Ability.Property.Counter) ? effect.SecondParameter : effect.FirstParameter) / 100;
                     })
                 }
             };
@@ -585,28 +585,28 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__BASIC_ATTACK});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.FirstParameter + damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.PercentageAmount + damage.StaggerDealt / 100 * effect.PercentageAmount;
                     })
                 }
             };
         }
         else if(effect_name == "HealFromRipostesAndCounters") {
-            float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__RIPOSTES_COUNTERS});
+            float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__RIPOSTES_AND_COUNTERS});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && (damage.SourceOfDamage.Is(Ability.AbilityProperty.Riposte) || damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))
+                        damage.SourceOfDamage.User == Player.Instance && (damage.SourceOfDamage.Is(Ability.Property.Riposte) || damage.SourceOfDamage.Is(Ability.Property.Counter))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.FirstParameter + damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.PercentageAmount + damage.StaggerDealt / 100 * effect.PercentageAmount;
                     })
                 }
             };
@@ -639,7 +639,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_STAGGERED});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
@@ -652,11 +652,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__BASIC_ATTACK, PB.SPECIALIZATION__STAGGER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    StaggerPercentageChange = calculatedPB, 
+                    StaggerPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     )
                 }
             };
@@ -665,11 +665,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__TECHNIQUES, PB.SPECIALIZATION__STAGGER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    StaggerPercentageChange = calculatedPB, 
+                    StaggerPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique)
                     )
                 }
             };
@@ -690,19 +690,32 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "BurnDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__BURN});
+        else if(effect_name == "BurnArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__BURN});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB,
-                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 2)},
+                    FlatAmount = calculatedPB,
+                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 0.5f), Utils.GetFormattedFloat(calculatedPB), Utils.GetFormattedFloat(calculatedPB * 2)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Burn))
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Burn burn = (Effect_Burn)damage.SourceOfDamage.User.GetEffect(typeof(Effect_Burn));
-                        damage.ExtraDamageReduction += burn.StackingEffectIntensityLevel == 1 ? effect.FirstParameter / 2 : burn.StackingEffectIntensityLevel == 2 ? effect.FirstParameter : burn.StackingEffectIntensityLevel == 3 ? effect.FirstParameter * 2 : 0;
+                        damage.ArmorModifier += burn.StackingEffectIntensityLevel == 1 ? effect.FlatAmount / 2 : burn.StackingEffectIntensityLevel == 2 ? effect.FlatAmount : burn.StackingEffectIntensityLevel == 3 ? effect.FlatAmount * 2 : 0;
                     })
+                }
+            };
+        }
+        else if(effect_name == "ArmorAgainstNonBosses") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_NON_BOSSES});
+            return new List<Effect> {
+                new Effect_CustomizableDamageChange(new(effect_name)) { 
+                    ArmorModifier = calculatedPB, 
+                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
+                    ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
+                        damage.TargetOfDamage == Player.Instance && !damage.SourceOfDamage.User.IsBoss
+                    )
                 }
             };
         }
@@ -710,11 +723,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__STRONG_BASIC_ATTACK, PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__WEAPON_TYPE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    StaggerPercentageChange = calculatedPB, 
+                    StaggerPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> {Player.Instance.HeavyStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.StrongBasicAttack) && damage.DamageType == Constants.DamageType.Heavy
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.StrongBasicAttack) && damage.DamageType == Constants.DamageType.Heavy
                     )
                 }
             };
@@ -723,7 +736,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__ENEMY_EMPTY_STAGGER_BAR, PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__MAGIC});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    StaggerPercentageChange = calculatedPB, 
+                    StaggerPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> {Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
@@ -743,13 +756,13 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DamageReductionAgainstBosses") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_BOSSES});
+        else if(effect_name == "ArmorAgainstBosses") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_BOSSES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamageReductionChange = calculatedPB, 
+                    ArmorModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction },
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.IsBoss
                     )
@@ -760,14 +773,14 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_CONVERSION_OF_DAMAGING_EFFECT_INTO_EXTRA_DAMAGE_PER_PB, new List<float> {1 / PB.BURN_PER_PB, PB.SPECIALIZATION__STAGGER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Burn))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Burn burn = (Effect_Burn)damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
-                        damage.ExtraStaggerDealtFlat += burn.DecayingAmount * effect.FirstParameter / 100;
+                        damage.StaggerDealtFlatModifier += burn.DecayingAmount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -776,7 +789,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__BURN_EXPLOSION_DAMAGE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.Is(Damage.DamageProperty.BurnExplosion)
@@ -784,30 +797,26 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DamageReductionAgainstNonBosses") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_NON_BOSSES});
+        else if(effect_name == "BurnArmorWithoutLimit") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_ENEMY * PB.BURN_PER_PB)});
             return new List<Effect> {
-                new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamageReductionChange = calculatedPB, 
-                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
-                    ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.TargetOfDamage == Player.Instance && !damage.SourceOfDamage.User.IsBoss
-                    )
-                }
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Burn), Player.Instance.Armor, calculatedPB, new(effect_name)) {
+                    DescriptionParameters = new List<String>{Utils.GetFormattedFloat(calculatedPB * 100)}, 
+                    IncreaseBasedOnEffectLevel = false
+                },
             };
         }
         else if(effect_name == "HealFromStackingEffects") {
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__PLAYER_STACKING_EFFECT_DAMAGE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && (damage.Is(Damage.DamageProperty.Burn) || damage.Is(Damage.DamageProperty.BurnExplosion) || damage.Is(Damage.DamageProperty.Freeze) || damage.Is(Damage.DamageProperty.Incision))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.FirstParameter + damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.PercentageAmount + damage.StaggerDealt / 100 * effect.PercentageAmount;
                     })
                 }
             };
@@ -816,13 +825,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER, PB.SPECIALIZATION__AGAINST_NON_STAGGERED});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && !damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Staggered))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.StaggerDealt / 100 * effect.PercentageAmount;
                     })
                 }
             };
@@ -864,19 +873,19 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.TENACITY_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE, PB.RESTRICTION__WORKS_10_SECONDS_NON_STACKABLE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = -calculatedPB, 
+                    FlatAmount = -calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.DamageType == Constants.DamageType.Ranged
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect decreasedTenacity = new Effect_ChangeStat(damage.TargetOfDamage.Tenacity, new(damage.SourceOfDamage)) {
-                            PathToEffectGraphic="UI/Control", 
-                            PercentageModifier = effect.FirstParameter, 
+                            PathToUIGraphic="UI/Control", 
+                            FlatAmount = effect.FlatAmount, 
                             ShowsInUI = true, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier, 
                             Identifier="RangedDamageLowersTenacity" + special_identifier, 
-                            EffectIndicatorText=effect.FirstParameter + "%"
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         };
                         damage.TargetOfDamage.AddEffect(decreasedTenacity, 10);
                     })
@@ -887,19 +896,19 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.TENACITY_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__MAGIC, PB.RESTRICTION__WORKS_10_SECONDS_NON_STACKABLE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = -calculatedPB, 
+                    FlatAmount = -calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.DamageType == Constants.DamageType.Magic
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect decreasedTenacity = new Effect_ChangeStat(damage.TargetOfDamage.Tenacity, new(damage.SourceOfDamage)) {
-                            PathToEffectGraphic="UI/Control", 
-                            PercentageModifier = effect.FirstParameter, 
+                            PathToUIGraphic="UI/Control", 
+                            FlatAmount = effect.FlatAmount, 
                             ShowsInUI = true, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier, 
                             Identifier="MagicDamageLowersTenacity" + special_identifier, 
-                            EffectIndicatorText=effect.FirstParameter + "%"
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         };
                         damage.TargetOfDamage.AddEffect(decreasedTenacity, 10);
                     })
@@ -910,19 +919,19 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.TENACITY_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__STAGGERING_AN_ENEMY, PB.RESTRICTION__WORKS_30_SECONDS_NON_STACKABLE});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
-                    PercentageAmount = -calculatedPB, 
+                    FlatAmount = -calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
                         effect.GetType().IsSubclassOf(typeof(Effect_Staggered)) && effect.SourceOfEffect.User == Player.Instance
                     ), 
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Effect decreasedTenacity = new Effect_ChangeStat(effect_started.TargetOfEffect.Tenacity, effect_started.SourceOfEffect) {
-                            PathToEffectGraphic="UI/Control", 
-                            PercentageModifier = effect.PercentageAmount, 
+                            PathToUIGraphic="UI/Control", 
+                            FlatAmount = effect.FlatAmount, 
                             ShowsInUI = true, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier, 
                             Identifier="StaggeringLowersTenacity" + special_identifier, 
-                            EffectIndicatorText=effect.PercentageAmount + "%"
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         };
                         effect_started.TargetOfEffect.AddEffect(decreasedTenacity, 30);
                     })
@@ -933,7 +942,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MOVEMENT_SPEED_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__ONE_STANCE});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.MovementSpeed},
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
@@ -946,11 +955,12 @@ public class EffectList
                         }
                         else if(Player.Instance.CurrentStance.DamageType == Constants.DamageType.Ranged && msBuff == null){
                             msBuff = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("MovementSpeedWhileInRangedStance")) {
-                                PercentageModifier = effect.PercentageAmount, 
+                                FlatAmount = effect.FlatAmount, 
                                 BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier, 
                                 Identifier="MovementSpeedWhileInRangedStance" + special_identifier, 
-                                IsRemovable=false, ShowsInUI=true, 
-                                EffectIndicatorText=effect.PercentageAmount + "%"
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                             };
                             Player.Instance.AddEffect(msBuff); 
                         }
@@ -977,7 +987,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.CONTROL_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__0_AMMO});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Control },
                     ConditionCheckForAmmoAmountChanged = new Func<bool>(() => true), 
@@ -988,11 +998,11 @@ public class EffectList
                         }
                         else if(Player.Instance.Ammo == 0 && controlBuff == null) {
                             controlBuff = new Effect_ChangeStat(Player.Instance.Control, new("ControlWhileNoAmmo")) {
-                                PercentageModifier = effect.PercentageAmount, 
+                                FlatAmount = effect.FlatAmount, 
                                 Identifier="ControlWhileNoAmmo" + special_identifier, 
-                                IsRemovable=false, 
-                                ShowsInUI=true, 
-                                EffectIndicatorText=effect.PercentageAmount + "%"
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                             };
                             Player.Instance.AddEffect(controlBuff);  
                         } 
@@ -1004,7 +1014,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.CONTROL_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_BELOW_25P_HEALTH});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Control },
                     ConditionCheckForUnitStatCurrentAmountChanged = new Func<Stat, float, bool>((stat, amount) => 
@@ -1017,10 +1027,11 @@ public class EffectList
                         }
                         else if(Player.Instance.Health.Current <= Player.Instance.Health.Maximum * 0.25f && controlBuff == null) {
                             controlBuff = new Effect_ChangeStat(Player.Instance.Control, new("ControlWhileLowHealth")) {
-                                PercentageModifier = effect.PercentageAmount, 
+                                FlatAmount = effect.FlatAmount, 
                                 Identifier="ControlWhileLowHealth" + special_identifier, 
-                                IsRemovable=false, ShowsInUI=true, 
-                                EffectIndicatorText=effect.PercentageAmount + "%"
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                             };
                             Player.Instance.AddEffect(controlBuff); 
                         } 
@@ -1032,7 +1043,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_CROWD_CONTROLLED});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
@@ -1045,11 +1056,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__FINAL_AMMO});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> {Player.Instance.RangedInjury,Player.Instance.RangedStagger,},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.Properties.Contains(Damage.DamageProperty.IsFinalAmmo)
+                        damage.SourceOfDamage.User == Player.Instance && damage.Properties.Contains(Damage.DamageProperty.FinalAmmo)
                     )
                 }
             };
@@ -1058,7 +1069,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_FROZEN});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
@@ -1067,18 +1078,18 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DealMoreStaggerBasedOnEnemyDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_1_ENEMY_DAMAGE_REDUCTION_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER});
+        else if(effect_name == "DealMoreStaggerBasedOnEnemyArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_1_ENEMY_ARMOR_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.DamageReduction.Current > 1
+                        damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.Armor.Current > 1
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.ExtraStaggerDealtPercentage = (damage.TargetOfDamage.DamageReduction.Current - 1) * effect.FirstParameter * 100;
+                        damage.StaggerDealtPercentageModifier = damage.TargetOfDamage.Armor.Current * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -1102,13 +1113,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__AGAINST_STAGGERED});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Staggered))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.FirstParameter + damage.StaggerDealt / 100 * effect.FirstParameter; 
+                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.PercentageAmount + damage.StaggerDealt / 100 * effect.PercentageAmount; 
                     })
                 }
             };
@@ -1135,10 +1146,9 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MAXIMUM_HEALTH_INCREASE_PER_PB, new List<float> {PB.SPECIAL__INCREASE_STAT_BASE_INSTEAD_OF_PERCENTAGE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.Health, new(effect_name)) {
-                    BaseModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Health },
-                    IsFlatIncreaseStatIncrease = true
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Health }
                 }
             };
         }
@@ -1146,17 +1156,16 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MAXIMUM_STAGGER_BAR_INCREASE_PER_PB, new List<float> {PB.SPECIAL__INCREASE_STAT_BASE_INSTEAD_OF_PERCENTAGE});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.StaggerBar, new(effect_name)) {
-                    BaseModifier = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.StaggerBar },
-                    IsFlatIncreaseStatIncrease = true
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.StaggerBar }
                 }
             };
         }
-        else if(effect_name == "BarrierDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__BARRIER});
+        else if(effect_name == "BarrierArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__BARRIER});
             return new List<Effect> { 
-                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Barrier), Player.Instance.DamageReduction, calculatedPB, new(effect_name))
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Barrier), Player.Instance.Armor, calculatedPB, new(effect_name))
             };
         }
         else if(effect_name == "ConvertStaggerBarToHealth") {
@@ -1177,21 +1186,21 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "ConvertDamageReductionToTenacity") {
-            float calculatedPB = CalculatePB(power_budget, PB.CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB, new List<float> {1 / PB.DAMAGE_REDUCTION_INCREASE_PER_PB, PB.TENACITY_INCREASE_PER_PB, PB.SPECIAL__STAT_BONUS_CONVERSION});
+        else if(effect_name == "ConvertArmorToTenacity") {
+            float calculatedPB = CalculatePB(power_budget, PB.CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB, new List<float> {1 / PB.ARMOR_INCREASE_PER_PB, PB.TENACITY_INCREASE_PER_PB, PB.SPECIAL__STAT_BONUS_CONVERSION});
             return new List<Effect> {
-                new Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Player.Instance.DamageReduction, Player.Instance.Tenacity, calculatedPB, new(effect_name) ) {
-                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat((Player.Instance.DamageReduction.Maximum - 1) * calculatedPB, 2), Utils.GetFormattedFloat(calculatedPB)},
+                new Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Player.Instance.Armor, Player.Instance.Tenacity, calculatedPB, new(effect_name) ) {
+                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat((Player.Instance.Armor.Maximum - 1) * calculatedPB, 2), Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Tenacity}
                 }
             };
         }
-        else if(effect_name == "ConvertTenacityToDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB, new List<float> {1 / PB.TENACITY_INCREASE_PER_PB, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, PB.SPECIAL__STAT_BONUS_CONVERSION});
+        else if(effect_name == "ConvertTenacityToArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB, new List<float> {1 / PB.TENACITY_INCREASE_PER_PB, PB.ARMOR_INCREASE_PER_PB, PB.SPECIAL__STAT_BONUS_CONVERSION});
             return new List<Effect> {
-                new Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Player.Instance.Tenacity, Player.Instance.DamageReduction, calculatedPB, new(effect_name) ) {
+                new Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Player.Instance.Tenacity, Player.Instance.Armor, calculatedPB, new(effect_name) ) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat((Player.Instance.Tenacity.Maximum - 1) * calculatedPB, 2), Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction}
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor}
                 }
             };
         }
@@ -1215,7 +1224,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.TENACITY_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__BARRIER});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Tenacity},
                     ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
@@ -1223,11 +1232,12 @@ public class EffectList
                     ), 
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Tenacity, new (effect_name)) {
-                            PercentageModifier = effect.PercentageAmount, 
+                            FlatAmount = effect.FlatAmount, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Identifier="MoreTenacityWhileBarrier" + special_identifier, 
-                            IsRemovable=false, ShowsInUI=true, 
-                            EffectIndicatorText=effect.PercentageAmount + "%"
+                            IsRemovable = false, 
+                            ShowsInUI = true, 
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         });
                     }), 
                     ConditionCheckForEffectEnded = new Func<Effect, bool>((effect) => 
@@ -1242,13 +1252,13 @@ public class EffectList
                 }
             };
         }
-        else if (effect_name == "MoreDamageReductionWhileCCed") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_CROWD_CONTROLLED});
+        else if (effect_name == "MoreArmorWhileCCed") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_CROWD_CONTROLLED});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamageReductionChange = calculatedPB, 
+                    ArmorModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl
                     )
@@ -1288,12 +1298,13 @@ public class EffectList
                     ), 
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new (effect_name)) {
-                            RegenerationFlatModifier = effect.FlatAmount, 
+                            RegenerationFlatAmount = effect.FlatAmount, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Identifier="HealthRegenWhileBarrier" + special_identifier, 
-                            IsRemovable=false, ShowsInUI=true, 
-                            PathToEffectGraphic="UI/HealthRegeneration", 
-                            EffectIndicatorText=effect.FlatAmount.ToString()
+                            IsRemovable = false, 
+                            ShowsInUI = true, 
+                            PathToUIGraphic="UI/HealthRegeneration", 
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         });
                     }), 
                     ConditionCheckForEffectEnded = new Func<Effect, bool>((effect) => 
@@ -1308,28 +1319,28 @@ public class EffectList
                 }
             };
         }
-        else if (effect_name == "DamageReductionWhileLowHealth") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_BELOW_50P_HEALTH});
+        else if (effect_name == "ArmorWhileLowHealth") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_BELOW_50P_HEALTH});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckForUnitStatCurrentAmountChanged = new Func<Stat, float, bool>((stat, amount) => 
                         stat.Owner == Player.Instance && stat is Health
                     ), 
                     ActionOnUnitStatCurrentAmountChanged = new Action<Stat, float, Effect_CustomizableEffectOnEvent> ((stat, amount, effect) =>  {
-                        Effect_ChangeStat drBuff = (Effect_ChangeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "DamageReductionWhileLowHealth" + special_identifier);
+                        Effect_ChangeStat drBuff = (Effect_ChangeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "ArmorWhileLowHealth" + special_identifier);
                         if(Player.Instance.Health.Current > Player.Instance.Health.Maximum * 0.5f && drBuff != null) {
                             drBuff.EndThisEffect();
                         }
                         else if(Player.Instance.Health.Current <= Player.Instance.Health.Maximum * 0.5f && drBuff == null) {
-                            drBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, new("DamageReductionWhileLowHealth")) {
-                                PercentageModifier = effect.PercentageAmount, 
-                                Identifier="DamageReductionWhileLowHealth" + special_identifier, 
-                                IsRemovable=false, 
-                                ShowsInUI=true, 
-                                EffectIndicatorText=effect.PercentageAmount + "%"
+                            drBuff = new Effect_ChangeStat(Player.Instance.Armor, new("ArmorWhileLowHealth")) {
+                                FlatAmount = effect.FlatAmount, 
+                                Identifier="ArmorWhileLowHealth" + special_identifier, 
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                             };
                             Player.Instance.AddEffect(drBuff);
                         }  
@@ -1370,13 +1381,13 @@ public class EffectList
                     ), 
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.StaggerBar, new (effect_name)) {
-                            RegenerationFlatModifier = effect.FlatAmount, 
+                            RegenerationFlatAmount = effect.FlatAmount, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Identifier="StaggerBarRegenWhileBarrier" + special_identifier, 
-                            IsRemovable=false, 
-                            ShowsInUI=true, 
-                            PathToEffectGraphic="UI/StaggerBarRegeneration", 
-                            EffectIndicatorText=effect.FlatAmount.ToString()
+                            IsRemovable = false, 
+                            ShowsInUI = true, 
+                            PathToUIGraphic="UI/StaggerBarRegeneration", 
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         });
                     }), 
                     ConditionCheckForEffectEnded = new Func<Effect, bool>((effect) => 
@@ -1391,29 +1402,29 @@ public class EffectList
                 }
             };
         }
-        else if (effect_name == "DamageReductionWhileHighStaggerBar")
+        else if (effect_name == "ArmorWhileHighStaggerBar")
         {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_ABOVE_50P_STAGGER_BAR});
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_ABOVE_50P_STAGGER_BAR});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction},
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor},
                     ConditionCheckForUnitStatCurrentAmountChanged = new Func<Stat, float, bool>((stat, amount) => 
                         stat.Owner == Player.Instance && stat is Health
                     ), 
                     ActionOnUnitStatCurrentAmountChanged = new Action<Stat, float, Effect_CustomizableEffectOnEvent> ((stat, amount, effect) =>  {
-                        Effect_ChangeStat drBuff = (Effect_ChangeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "DamageReductionWhileHighStaggerBar" + special_identifier);
+                        Effect_ChangeStat drBuff = (Effect_ChangeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "ArmorWhileHighStaggerBar" + special_identifier);
                         if(Player.Instance.StaggerBar.Current < Player.Instance.StaggerBar.Maximum * 0.5f && drBuff != null) {
                             drBuff.EndThisEffect();
                         }
                         else if(Player.Instance.StaggerBar.Current >= Player.Instance.StaggerBar.Maximum * 0.5f && drBuff == null) {
-                            drBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, new("DamageReductionWhileHighStaggerBar")) {
-                                PercentageModifier = effect.PercentageAmount, 
-                                Identifier="DamageReductionWhileHighStaggerBar" + special_identifier, 
-                                IsRemovable=false, 
-                                ShowsInUI=true, 
-                                EffectIndicatorText=effect.PercentageAmount + "%"
+                            drBuff = new Effect_ChangeStat(Player.Instance.Armor, new("ArmorWhileHighStaggerBar")) {
+                                FlatAmount = effect.FlatAmount, 
+                                Identifier="ArmorWhileHighStaggerBar" + special_identifier, 
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                             };
                             Player.Instance.AddEffect(drBuff);
                         }
@@ -1427,11 +1438,11 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
                     PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ConditionCheckForOneFifthSecondElapsedInGame = new Func<bool>(() => 
+                    ConditionCheckForOneTenthSecondElapsedInGame = new Func<bool>(() => 
                         Player.Instance.Health.Current < Player.Instance.Health.Maximum
                     ), 
-                    ActionOnOneFifthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
-                        Player.Instance.Health.Current += (Player.Instance.Health.Maximum - Player.Instance.Health.Current) * effect.PercentageAmount / 100 / 5;
+                    ActionOnOneTenthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
+                        Player.Instance.Health.Current += (Player.Instance.Health.Maximum - Player.Instance.Health.Current) * effect.PercentageAmount / 100 / 10;
                     })
                 }
             };
@@ -1440,13 +1451,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__STAGGER, PB.SPECIAL__SCALES_WITH_ENEMY_DAMAGE_INSTEAD_OF_PLAYERS});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && damage.StaggerDealt > 0 && !Player.Instance.CheckIfUnderEffect(typeof(Effect_PlayerStaggered))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.StaggerDealt / 100 * effect.PercentageAmount;
                     })
                 }
             };
@@ -1519,7 +1530,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.REQUIREMENT__INCISION});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    InjuryPercentageChange = calculatedPB, 
+                    InjuryPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
@@ -1548,11 +1559,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.SPECIALIZATION__BACKSTAB});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    InjuryPercentageChange = calculatedPB, 
+                    InjuryPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Backstab)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Backstab)
                     )
                 }
             };
@@ -1561,11 +1572,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY, PB.SPECIALIZATION__TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    InjuryPercentageChange = calculatedPB, 
+                    InjuryPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique)
                     )
                 }
             };
@@ -1577,7 +1588,7 @@ public class EffectList
                     PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && ability.Is(Ability.AbilityProperty.Backstab)
+                        ability.User == Player.Instance && ability.Is(Ability.Property.Backstab)
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                         foreach(Cooldown cd in Player.Instance.TechniqueCooldowns) {
@@ -1598,7 +1609,7 @@ public class EffectList
                     FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && ability.Is(Ability.AbilityProperty.Backstab)
+                        ability.User == Player.Instance && ability.Is(Ability.Property.Backstab)
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                         Player.Instance.Energy.GenerateEnergy(effect.FlatAmount);
@@ -1610,14 +1621,14 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_CONVERSION_OF_DAMAGING_EFFECT_INTO_EXTRA_DAMAGE_PER_PB, new List<float> {1 / PB.INCISION_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIALIZATION__INJURY});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Backstab) && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Incision))
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Backstab) && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Incision))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Incision incision = (Effect_Incision)damage.TargetOfDamage.GetEffect(typeof(Effect_Incision));
-                        damage.ExtraInjuryDealtFlat += incision.DecayingAmount * effect.FirstParameter / 100;
+                        damage.InjuryDealtFlatModifier += incision.DecayingAmount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -1626,24 +1637,24 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__BASIC_ATTACK, PB.SPECIALIZATION__INJURY});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    InjuryPercentageChange = calculatedPB, 
+                    InjuryPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     )
                 }
             };
         }
-        else if(effect_name == "InjuryDamageReductionPenetration") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_PENETRATION_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY});
+        else if(effect_name == "InjuryArmorPenetration") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_PENETRATION_PER_PB, new List<float> {PB.SPECIALIZATION__INJURY});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    IgnorePercentageOfDamageReduction = calculatedPB, 
+                    ArmorPenetrationModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     )
                 }
             };
@@ -1657,39 +1668,39 @@ public class EffectList
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
                     FirstParameter = calculatedPB1,
                     SecondParameter = calculatedPB2,
-                    DamagePercentageChange = calculatedPB3,
+                    ThirdParameter = calculatedPB3,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2), Utils.GetFormattedFloat(calculatedPB3)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Backstab)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Backstab)
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         if(Player.Instance.CheckIfUnderEffect(typeof(Effect_Onslaught))) {
                             Effect_Onslaught onslaught = (Effect_Onslaught)damage.TargetOfDamage.GetEffect(typeof(Effect_Onslaught));
-                            damage.ExtraDamageDealtPercentage += onslaught.DecayingAmount * effect.FirstParameter / 100;
+                            damage.DamageDealtPercentageModifier += onslaught.DecayingAmount * effect.FirstParameter / 100;
                         }
                         if(Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))) {
                             Effect_Sharp sharp = (Effect_Sharp)damage.TargetOfDamage.GetEffect(typeof(Effect_Sharp));
-                            damage.ExtraDamageDealtPercentage += sharp.DecayingAmount * effect.SecondParameter / 100;
+                            damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.SecondParameter / 100;
                         }
                         if(Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis))) {
                             Effect_Analysis analysis = (Effect_Analysis)damage.TargetOfDamage.GetEffect(typeof(Effect_Analysis));
-                            damage.ExtraDamageDealtPercentage += analysis.DecayingAmount * effect.DamagePercentageChange / 100;
+                            damage.DamageDealtPercentageModifier += analysis.DecayingAmount * effect.ThirdParameter / 100;
                         }
                     })
                 }
             };
         }
         else if(effect_name == "BackstabsApplyIncision") {
-            float calculatedPB = CalculatePB(power_budget, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.INCISION_PER_PB, PB.SPECIALIZATION__BACKSTAB});
+            float calculatedPB = CalculatePB(power_budget, PB.APPLY_DAMAGING_STACKING_EFFECT_OF_DAMAGE_DEALT_PERCENTAGE_PER_PB, new List<float> {PB.INCISION_PER_PB, PB.SPECIALIZATION__BACKSTAB, PB.SPECIALIZATION__INJURY});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Backstab)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Backstab)
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.TargetOfDamage.AddEffect(new Effect_Incision(damage.InjuryDealt * effect.FirstParameter + damage.StaggerDealt * effect.FirstParameter, new(damage.SourceOfDamage)));
+                        damage.TargetOfDamage.AddEffect(new Effect_Incision(damage.InjuryDealt * effect.PercentageAmount, new(damage.SourceOfDamage)));
                     })
                 }
             };
@@ -1698,13 +1709,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__BACKSTAB});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},  
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Backstab)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Backstab)
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.DamagePercentageChange + damage.StaggerDealt / 100 * effect.DamagePercentageChange;
+                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.DamagePercentageModifier + damage.StaggerDealt / 100 * effect.DamagePercentageModifier;
                     })
                 }
             };
@@ -1790,19 +1801,19 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.MOVEMENT_SPEED_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__SUPERCHARGE});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
                         effect is Effect_Supercharge && effect.TargetOfEffect == Player.Instance
                     ), 
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.MovementSpeed, new (effect_name)) {
-                            PercentageModifier = effect.PercentageAmount, 
+                            FlatAmount = effect.FlatAmount, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Identifier="SuperchargeMovementSpeed" + special_identifier, 
-                            IsRemovable=false, 
-                            ShowsInUI=true, 
-                            EffectIndicatorText=effect.PercentageAmount + "%"
+                            IsRemovable = false, 
+                            ShowsInUI = true, 
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         });
                     }), 
                     ConditionCheckForEffectEnded = new Func<Effect, bool>((effect) => 
@@ -1817,17 +1828,17 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "SuperchargeDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__SUPERCHARGE});
+        else if(effect_name == "SuperchargeArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__SUPERCHARGE});
             return new List<Effect> { 
-                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Supercharge), Player.Instance.DamageReduction, calculatedPB, new(effect_name))
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Supercharge), Player.Instance.Armor, calculatedPB, new(effect_name))
             };
         }
         else if(effect_name == "SuperchargeInjuryDealt") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__SUPERCHARGE_DAMAGE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    InjuryPercentageChange = calculatedPB,
+                    InjuryPercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)}, 
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
@@ -1850,7 +1861,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__BASIC_ATTACK, PB.SPECIALIZATION__SUPERCHARGE_DAMAGE});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    InjuryPercentageChange = calculatedPB, 
+                    InjuryPercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.Properties.Contains(Damage.DamageProperty.Supercharge)
@@ -1858,12 +1869,12 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "ConvertMovementSpeedToDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB, new List<float> {1 / PB.MOVEMENT_SPEED_INCREASE_PER_PB, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, PB.SPECIAL__STAT_BONUS_CONVERSION});
+        else if(effect_name == "ConvertMovementSpeedToArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.CONVERT_ONE_PERCENTAGE_OF_ONE_STAT_INTO_ANOTHER_PER_PB, new List<float> {1 / PB.MOVEMENT_SPEED_INCREASE_PER_PB, PB.ARMOR_INCREASE_PER_PB, PB.SPECIAL__STAT_BONUS_CONVERSION});
             return new List<Effect> {
-                new Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Player.Instance.Tenacity, Player.Instance.DamageReduction, calculatedPB, new(effect_name) ) {
+                new Effect_PercentageOfStatIncreasesAlsoAffectAnotherStat(Player.Instance.Tenacity, Player.Instance.Armor, calculatedPB, new(effect_name) ) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat((Player.Instance.MovementSpeed.Maximum - 1) * calculatedPB, 2), Utils.GetFormattedFloat(calculatedPB)},
-                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.DamageReduction}
+                    ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.Armor}
                 }
             };
         }
@@ -1873,14 +1884,14 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
                     PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
-                    ConditionCheckForOneFifthSecondElapsedInGame = new Func<bool>(() => 
+                    ConditionCheckForOneTenthSecondElapsedInGame = new Func<bool>(() => 
                         Player.Instance.Health.Current < Player.Instance.Health.Maximum
                     ), 
-                    ActionOnOneFifthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
+                    ActionOnOneTenthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
                         if(Player.Instance.PlayerSavedPosition == null) {
                             Player.Instance.PlayerSavedPosition = Player.Instance.transform.position;
                         }
-                        Player.Instance.Health.Current += Vector2.Distance(Player.Instance.PlayerSavedPosition, Player.Instance.transform.position) * effect.PercentageAmount / 100 / 5;
+                        Player.Instance.Health.Current += Vector2.Distance(Player.Instance.PlayerSavedPosition, Player.Instance.transform.position) * effect.PercentageAmount / 100 / 10;
                         Player.Instance.PlayerSavedPosition = Player.Instance.transform.position;
                     })
                 }
@@ -1896,7 +1907,7 @@ public class EffectList
                         ability.User == Player.Instance && ability is Ability_Heal
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new(effect_name)) {RegenerationPercentageModifier = effect.PercentageAmount / 2 }, 2);
+                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, new(effect_name)) {RegenerationPercentageAmount = effect.PercentageAmount / 2 }, 2);
                     })
                 }
             };
@@ -1954,7 +1965,7 @@ public class EffectList
             };
         }
         else if(effect_name == "EnergyGainFromRipostesAndCounters") {
-            float calculatedPB = CalculatePB(power_budget, PB.ENERGY_GAIN_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__RIPOSTES_COUNTERS});
+            float calculatedPB = CalculatePB(power_budget, PB.ENERGY_GAIN_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__RIPOSTES_AND_COUNTERS});
             return new List<Effect> {
                 new Effect_GainMoreEnergyFromSpecifiedSource(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB), Utils.GetFormattedFloat(calculatedPB * Constants.ENERGY_FROM_RIPOSTING / 100), Utils.GetFormattedFloat(calculatedPB * Constants.ENERGY_FROM_COUNTERING / 100, 1)},
@@ -1982,11 +1993,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamagePercentageChange = calculatedPB, 
+                    DamagePercentageModifier = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique)
                     )
                 }
             };
@@ -2011,14 +2022,14 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.ANALYSIS_PER_PB, PB.SPECIALIZATION__EVERYTHING_EXCEPT_TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamagePercentageChange = calculatedPB,  
+                    DamagePercentageModifier = calculatedPB,  
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},   
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis)) && damage.SourceOfDamage.IsNot(Ability.AbilityProperty.Technique)
+                        damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis)) && damage.SourceOfDamage.IsNot(Ability.Property.Technique)
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Analysis analysis = (Effect_Analysis)Player.Instance.GetEffect(typeof(Effect_Analysis));
-                        damage.ExtraDamageDealtPercentage += analysis.DecayingAmount * effect.DamagePercentageChange / 100;
+                        damage.DamageDealtPercentageModifier += analysis.DecayingAmount * effect.DamagePercentageModifier / 100;
                     })
                 }
             };
@@ -2027,11 +2038,11 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__ULTIMATE_TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Ultimate)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Ultimate)
                     )
                 }
             };
@@ -2055,18 +2066,19 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ENERGY_GAIN_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__ANALYSIS});
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) => 
                         effect is Effect_Analysis && effect.TargetOfEffect == Player.Instance
                     ), 
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.EnergyGain, new (effect_name)) {
-                            PercentageModifier = effect.PercentageAmount, 
+                            FlatAmount = effect.FlatAmount, 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Identifier="AnalysisEnergyGain", 
-                            IsRemovable=false, ShowsInUI=true, 
-                            EffectIndicatorText=effect.PercentageAmount + "%"
+                            IsRemovable = false, 
+                            ShowsInUI = true, 
+                            UIText = Utils.GetFormattedFloat(effect.FlatAmount)
                         });
                     }), 
                     ConditionCheckForEffectEnded = new Func<Effect, bool>((effect) => 
@@ -2081,21 +2093,21 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "AnalysisDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__ANALYSIS});
+        else if(effect_name == "AnalysisArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__ANALYSIS});
             return new List<Effect> { 
-                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Analysis), Player.Instance.DamageReduction, calculatedPB, new(effect_name))
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Analysis), Player.Instance.Armor, calculatedPB, new(effect_name))
             };
         }
         else if(effect_name == "PropriusUltimateTechniqueDamage") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__ULTIMATE_TECHNIQUES, PB.SPECIALIZATION__FAMILY_TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyInjury,Player.Instance.LightInjury,Player.Instance.RangedInjury,Player.Instance.MagicInjury, Player.Instance.HeavyStagger,Player.Instance.LightStagger,Player.Instance.RangedStagger,Player.Instance.MagicStagger },
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Ultimate) && Technique.GetFamily(damage.SourceOfDamage.GetType()) == Ability.AbilityFamily.Proprius
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Ultimate) && Technique.GetFamily(damage.SourceOfDamage.GetType()) == Ability.AbilityFamily.Proprius
                     )
                 }
             };
@@ -2105,13 +2117,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.ANALYSIS_PER_PB, PB.REQUIREMENT__DEALING_DAMAGE, PB.SPECIALIZATION__TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique)
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Analysis(calculatedPB, new(effect_name)));
+                        Player.Instance.AddEffect(new Effect_Analysis(effect.FlatAmount, new(effect_name)));
                     })
                 }
             };
@@ -2131,13 +2143,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__TECHNIQUES});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique)
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.FirstParameter + damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.PercentageAmount + damage.StaggerDealt / 100 * effect.PercentageAmount;
                     })
                 }
             };
@@ -2203,12 +2215,12 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2), Utils.GetFormattedFloat(calculatedPB3)}, 
                     FirstParameter = calculatedPB1, 
-                    SecondParameter = calculatedPB2, 
+                    SecondParameter = calculatedPB2,
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))
+                        ability.User is Player && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Sharp(ability.Is(Ability.AbilityProperty.Riposte) ? effect.FirstParameter : effect.SecondParameter, new(effect_name)));
+                        Player.Instance.AddEffect(new Effect_Sharp(ability.Is(Ability.Property.Riposte) ? effect.FirstParameter : effect.SecondParameter, new(effect_name)));
                     })
                 },
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
@@ -2223,34 +2235,34 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "SharpDamageReductionWithoutLimit") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB)});
+        else if(effect_name == "SharpArmorWithoutLimit") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {1 / (PB.EXPECTED_AMOUNT_OF_SCALING_STACKING_EFFECT_ON_PLAYER * PB.SHARP_PER_PB)});
             return new List<Effect> {
-                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Sharp), Player.Instance.DamageReduction, calculatedPB, new(effect_name)) {
-                    DescriptionParameters = new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Sharp), Player.Instance.Armor, calculatedPB, new(effect_name)) {
+                    DescriptionParameters = new List<String>{Utils.GetFormattedFloat(calculatedPB * 100)}, 
                     IncreaseBasedOnEffectLevel = false
                 },
             };
         }
         else if(effect_name == "GainSharpOnBasicAttacksAndOnslaughtOnRipostesAndCounters") {
             float calculatedPB1 = CalculatePB(power_budget * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.SHARP_PER_PB, PB.REQUIREMENT__BASIC_ATTACK});
-            float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.ONSLAUGHT_PER_PB, PB.SPECIALIZATION__RIPOSTES_COUNTERS});
+            float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.ONSLAUGHT_PER_PB, PB.REQUIREMENT__RIPOSTE_OR_COUNTER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}, 
-                    FirstParameter = calculatedPB1, 
+                    FlatAmount = calculatedPB1, 
                     TriggersOncePerAbility = true, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Sharp(effect.FirstParameter, effect.SourceOfEffect));
+                        Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount, effect.SourceOfEffect));
                     })
                 },
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     FlatAmount= calculatedPB2, 
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))
+                        ability.User is Player && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                         Player.Instance.AddEffect(new Effect_Onslaught(effect.FlatAmount, effect.SourceOfEffect));
@@ -2259,17 +2271,19 @@ public class EffectList
             };
         }
         else if(effect_name == "RestoreHealthOnRiposteOrCounter") {
-            float calculatedPB = CalculatePB(power_budget, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.REQUIREMENT__RIPOSTE_COUNTER_OR_DODGE});
+            float calculatedPB1 = CalculatePB(power_budget * 0.5f, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.REQUIREMENT__RIPOSTE});
+            float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.REQUIREMENT__COUNTER});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
-                    FirstParameter = calculatedPB, 
+                    DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}, 
+                    FirstParameter = calculatedPB1, 
+                    SecondParameter = calculatedPB2, 
                     TriggersOncePerAbility = false, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && (damage.SourceOfDamage.Is(Ability.AbilityProperty.Riposte) || damage.SourceOfDamage.Is(Ability.AbilityProperty.Counter))
+                        damage.SourceOfDamage.User == Player.Instance && (damage.SourceOfDamage.Is(Ability.Property.Riposte) || damage.SourceOfDamage.Is(Ability.Property.Counter))
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.SourceOfDamage.Is(Ability.Property.Riposte) ? effect.FirstParameter : effect.SecondParameter;
                     })
                 }
             };
@@ -2281,12 +2295,12 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}, 
                     FirstParameter = calculatedPB1, 
-                    FlatAmount = calculatedPB2,
+                    SecondParameter = calculatedPB2,
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && (ability.Is(Ability.AbilityProperty.Counter) || ability.Is(Ability.AbilityProperty.Riposte))
+                        ability.User == Player.Instance && (ability.Is(Ability.Property.Counter) || ability.Is(Ability.Property.Riposte))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Invincible(new(effect_name)) {ShowsInUI = true}, ability.Is(Ability.AbilityProperty.Counter) ? effect.FlatAmount : effect.FirstParameter);
+                        Player.Instance.AddEffect(new Effect_Invincible(new(effect_name)), ability.Is(Ability.Property.Riposte) ? effect.FirstParameter : effect.SecondParameter);
                     })
                 }
             };
@@ -2300,29 +2314,29 @@ public class EffectList
                     FirstParameter = calculatedPB1, 
                     SecondParameter = calculatedPB2,
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && (ability.Is(Ability.AbilityProperty.Counter) || ability.Is(Ability.AbilityProperty.Riposte))
+                        ability.User == Player.Instance && (ability.Is(Ability.Property.Counter) || ability.Is(Ability.Property.Riposte))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                         Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(effect_name)) {
-                            DamagePercentageChange = ability.Is(Ability.AbilityProperty.Riposte) ? effect.FirstParameter : effect.SecondParameter,
+                            DamagePercentageModifier = ability.Is(Ability.Property.Riposte) ? effect.FirstParameter : effect.SecondParameter,
                             ShowsInUI = true,
-                            PathToEffectGraphic = "Effect/Empowered",
-                            EffectIndicatorText = ability.Is(Ability.AbilityProperty.Riposte) ? (Utils.GetFormattedFloat(effect.FirstParameter, 0) + "%") : (Utils.GetFormattedFloat(effect.SecondParameter, 0) + "%")
+                            PathToUIGraphic = "Effect/Empowered",
+                            UIText = ability.Is(Ability.Property.Riposte) ? Utils.GetFormattedFloat(effect.FirstParameter) : Utils.GetFormattedFloat(effect.SecondParameter)
                         });
                     })
                 }
             };
         }
         else if(effect_name == "ExtraEffectiveButConsumableSharp") {
-            float calculatedPB1 = CalculatePB(power_budget, PB.EFFECT_DECAY_INCREASE_PER_PB * -0.5f);
-            float calculatedPB2 = CalculatePB(power_budget, PB.EFFECT_AMOUNT_INCREASE_PER_PB * 1.5f, new List<float> {PB.RESTRICTION__CONSUME_ALL_SCALING_STACKING_EFFECT_WHEN_USED});
+            float calculatedPB1 = CalculatePB(power_budget, PB.EFFECT_DECAY_INCREASE_PER_PB * -0.3f);
+            float calculatedPB2 = CalculatePB(power_budget, PB.EFFECT_AMOUNT_INCREASE_PER_PB * 1.3f, new List<float> {PB.RESTRICTION__CONSUME_ALL_SCALING_STACKING_EFFECT_WHEN_USED});
             return new List<Effect> { 
                 new Effect_ChangeEffectPower(typeof(Effect_Sharp), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player, calculatedPB1, new(effect_name)) {
-                    DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}
+                    DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(Math.Abs(calculatedPB2))}
                 },
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     ConditionCheckForAbilityEnded = new Func<Ability, bool>((ability) => 
-                        ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter)) && ability.User.CheckIfUnderEffect(typeof(Effect_Sharp))
+                        ability.User is Player && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter)) && ability.User.CheckIfUnderEffect(typeof(Effect_Sharp))
                     ), 
                     ActionOnAbilityEnded = new Action<Ability, Effect_CustomizableEffectOnEvent> ((Ability, effect) =>  {
                         Effect sharp = Player.Instance.GetEffect(typeof(Effect_Sharp));
@@ -2338,11 +2352,11 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     DescriptionParameters = new List<String> {"5", Utils.GetFormattedFloat(calculatedPB), Utils.GetFormattedFloat(calculatedPB)}, 
                     FlatAmount = calculatedPB, 
-                    ConditionCheckForOneFifthSecondElapsedInGame = new Func<bool>(() => 
+                    ConditionCheckForOneTenthSecondElapsedInGame = new Func<bool>(() => 
                         Utils.GetAllUnits(true, true).FirstOrDefault(enemy => Vector2.Distance(enemy.transform.position, Player.Instance.transform.position) < 5) != null
                     ), 
-                    ActionOnOneFifthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount / 5, effect.SourceOfEffect));
+                    ActionOnOneTenthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
+                        Player.Instance.AddEffect(new Effect_Sharp(effect.FlatAmount / 10, effect.SourceOfEffect));
                     })
                 }
             };
@@ -2355,51 +2369,49 @@ public class EffectList
             float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__TECHNIQUES, PB.SPECIALIZATION__WEAPONS, PB.REQUIREMENT__BASIC_ATTACK, PB.RESTRICTION__LASTS_5_SECONDS});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB1,
+                    PercentageAmount = calculatedPB1,
                     DescriptionParameters = new List<String> {"5", Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.Technique) && damage.IsWeaponDamage
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.Technique) && damage.IsWeaponDamage
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                     Player.Instance.AddEffect(
                         new Effect_CustomizableDamageChange(effect.SourceOfEffect) {
-                            FirstParameter = effect.FirstParameter, 
-                            ShowsInUI=true, 
-                            PathToEffectGraphic="UI/AllWeapons", 
+                            PercentageAmount = effect.PercentageAmount, 
+                            ShowsInUI = true, 
+                            PathToUIGraphic="UI/AllWeapons", 
                             Identifier="WeaponTechniquesEmpowerNextBasicAttackAndViceVersa - EmpoweredBasicAttack" + special_identifier, 
-                            EffectIndicatorText=effect.FirstParameter + "%", 
+                            UIText = Utils.GetFormattedFloat(effect.PercentageAmount), 
                             ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage2, effect2) => 
-                                damage2.SourceOfDamage.User == Player.Instance && damage2.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                                damage2.SourceOfDamage.User == Player.Instance && damage2.SourceOfDamage.Is(Ability.Property.BasicAttack)
                             ), 
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage3, effect3) =>  {
-                                damage3.ExtraInjuryDealtPercentage += effect3.FirstParameter;
-                                damage3.ExtraStaggerDealtPercentage += effect3.FirstParameter;
+                                damage3.DamageDealtPercentageModifier += effect3.PercentageAmount;
                                 effect3.EndThisEffect();
                             })
                         }
                     , 5);
                 })},
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter =  calculatedPB2,
+                    PercentageAmount =  calculatedPB2,
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Player.Instance.AddEffect(
                             new Effect_CustomizableDamageChange(effect.SourceOfEffect) {
-                                FirstParameter = effect.FirstParameter, 
-                                ShowsInUI=true, 
-                                PathToEffectGraphic="UI/Technique", 
+                                PercentageAmount = effect.PercentageAmount, 
+                                ShowsInUI = true, 
+                                PathToUIGraphic="UI/Technique", 
                                 Identifier="WeaponTechniquesEmpowerNextBasicAttackAndViceVersa - EmpoweredWeaponTechnique" + special_identifier, 
-                                EffectIndicatorText=effect.FirstParameter + "%", 
+                                UIText = Utils.GetFormattedFloat(effect.PercentageAmount), 
                                 ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage2, effect2) => 
-                                    damage2.SourceOfDamage.User == Player.Instance && damage2.SourceOfDamage.Is(Ability.AbilityProperty.Technique) && damage2.IsWeaponDamage
+                                    damage2.SourceOfDamage.User == Player.Instance && damage2.SourceOfDamage.Is(Ability.Property.Technique) && damage2.IsWeaponDamage
                                 ), 
                                 BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier, 
                                 Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage3, effect3) =>  {
-                                    damage3.ExtraInjuryDealtPercentage += effect3.FirstParameter;
-                                    damage3.ExtraStaggerDealtPercentage += effect3.FirstParameter;
+                                    damage3.DamageDealtPercentageModifier += effect3.PercentageAmount;
                                     effect3.EndThisEffect();
                                 })
                             }, 
@@ -2410,15 +2422,15 @@ public class EffectList
         }
         else if(effect_name == "BlademastersGarb") {
             float calculatedPB1 = CalculatePB(power_budget * 1.5f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE, PB.SPECIALIZATION__BASIC_ATTACK});
-            float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_REDUCTION_INCREASE_PER_PB);
-            float calculatedPB3 = CalculatePB(power_budget * 1.5f, PB.DAMAGE_REDUCTION_INCREASE_PER_PB);
+            float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.ARMOR_INCREASE_PER_PB);
+            float calculatedPB3 = CalculatePB(power_budget * 1.5f, PB.ARMOR_INCREASE_PER_PB);
             float calculatedPB4 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPON_TYPE, PB.SPECIALIZATION__BASIC_ATTACK});
             return new List<Effect> { 
                 new Effect_BlademastersGarb(new(effect_name)) {
                     DescriptionParameters = new List<String>{Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2), Utils.GetFormattedFloat(calculatedPB3), Utils.GetFormattedFloat(calculatedPB4)},
                     BladedBasicAttackBuff = calculatedPB1,
-                    BladedDamageReductionDebuff = calculatedPB2,
-                    NonBladedDamageReductionBuff = calculatedPB3,
+                    BladedArmorDebuff = calculatedPB2,
+                    NonBladedArmorBuff = calculatedPB3,
                     NonBladedBasicAttackDebuff = calculatedPB4
                 }
             };
@@ -2428,13 +2440,13 @@ public class EffectList
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
-                    FirstParameter = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     TriggersOncePerAbility = true, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.TriggeredEffects.Contains(effect) == false && damage.IsWeaponDamage
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += effect.FirstParameter;
+                        Player.Instance.Health.Current += effect.FlatAmount;
                     })
                 }
             };
@@ -2443,16 +2455,16 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.ATTACK_SPEED_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__WEAPONS});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.HeavyAttackSpeed}
                 },
                 new Effect_ChangeStat(Player.Instance.LightAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.LightAttackSpeed}
                 },
                 new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, new(effect_name)) {
-                    PercentageModifier = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat> { Player.Instance.RangedAttackSpeed}
                 }
             };
@@ -2462,29 +2474,29 @@ public class EffectList
             float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__MAGIC});
                 return new List<Effect> { 
                     new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                        PercentageModifier = calculatedPB1, 
+                        PercentageAmount = calculatedPB1, 
                         DescriptionParameters=new List<string>{Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)}
                     }, 
                     new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                        PercentageModifier = calculatedPB1
+                        PercentageAmount = calculatedPB1
                     }, 
                     new Effect_ChangeStat(Player.Instance.LightInjury, new(effect_name)) {
-                        PercentageModifier = calculatedPB1
+                        PercentageAmount = calculatedPB1
                     }, 
                     new Effect_ChangeStat(Player.Instance.LightStagger, new(effect_name)) {
-                        PercentageModifier = calculatedPB1
+                        PercentageAmount = calculatedPB1
                     }, 
                     new Effect_ChangeStat(Player.Instance.RangedInjury, new(effect_name)) {
-                        PercentageModifier = calculatedPB1
+                        PercentageAmount = calculatedPB1
                     }, 
                     new Effect_ChangeStat(Player.Instance.RangedStagger, new(effect_name)) {
-                        PercentageModifier = calculatedPB1
+                        PercentageAmount = calculatedPB1
                     }, 
                     new Effect_ChangeStat(Player.Instance.MagicInjury, new(effect_name)) {
-                        PercentageModifier = -calculatedPB2
+                        PercentageAmount = -calculatedPB2
                     }, 
                     new Effect_ChangeStat(Player.Instance.MagicStagger, new(effect_name)) {
-                        PercentageModifier = -calculatedPB2
+                        PercentageAmount = -calculatedPB2
                     }
             };
         }
@@ -2496,12 +2508,12 @@ public class EffectList
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
-                    FirstParameter = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance || damage.TargetOfDamage == Player.Instance
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Chained(effect.FirstParameter, effect.SourceOfEffect));
+                        Player.Instance.AddEffect(new Effect_Chained(effect.FlatAmount, effect.SourceOfEffect));
                     })
                 }
             };
@@ -2522,32 +2534,33 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "GainDamageAndDamageReductionForEachDebuff") {
+        else if(effect_name == "GainDamageAndArmorForEachDebuff") {
             float calculatedPB1 = CalculatePB(power_budget * 0.666f, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_DEBUFFED, 1 / PB.EXPECTED_AMOUNT_OF_DEBUFFS_ON_PLAYER});
-            float calculatedPB2 = CalculatePB(power_budget * 0.334f, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_DEBUFFED, 1 / PB.EXPECTED_AMOUNT_OF_DEBUFFS_ON_PLAYER});
+            float calculatedPB2 = CalculatePB(power_budget * 0.334f, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.RESTRICTION__PLAYER_DEBUFFED, 1 / PB.EXPECTED_AMOUNT_OF_DEBUFFS_ON_PLAYER});
             return new List<Effect> {
-                new Effect_GainDamageAndDamageReductionForEachDebuff(new(effect_name)) {
+                new Effect_GainDamageAndArmorForEachDebuff(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2)},
                     DamageGainedPerDebuff = calculatedPB1, 
-                    DamageReductionGainedPerDebuff = calculatedPB2, 
+                    ArmorGainedPerDebuff = calculatedPB2, 
                     MaxDebuffs = 10
                 }
             };
         }
-        else if(effect_name == "ChainedDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__CHAINED});
+        else if(effect_name == "ChainedArmor") {
+            float calculatedPB1 = CalculatePB(power_budget * 0.666f, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__CHAINED, PB.SPECIAL__BONUS_FOR_SCALING_WITH_BOTH_SELF_AND_ENEMY_DECAYING_EFFECT});
+            float calculatedPB2 = CalculatePB(power_budget * 0.334f, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__CHAINED, PB.SPECIAL__BONUS_FOR_SCALING_WITH_BOTH_SELF_AND_ENEMY_DECAYING_EFFECT});
             return new List<Effect> { 
-                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Chained), Player.Instance.DamageReduction, calculatedPB, new(effect_name)) {
-                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB), Utils.GetFormattedFloat(calculatedPB * 0.5f)},
+                new Effect_IncreaseStatBasedOnStackingEffectLevel(typeof(Effect_Chained), Player.Instance.Armor, calculatedPB1, new(effect_name)) {
+                    DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1 * 0.5f), Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB1 * 2), Utils.GetFormattedFloat(calculatedPB2 * 0.5f), Utils.GetFormattedFloat(calculatedPB2), Utils.GetFormattedFloat(calculatedPB2 * 2)},
                 },
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB * 0.5f,
+                    FlatAmount = calculatedPB2,
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Chained))
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Chained burn = (Effect_Chained)damage.SourceOfDamage.User.GetEffect(typeof(Effect_Chained));
-                        damage.ExtraDamageReduction += burn.StackingEffectIntensityLevel == 1 ? effect.FirstParameter / 2 : burn.StackingEffectIntensityLevel == 2 ? effect.FirstParameter : burn.StackingEffectIntensityLevel == 3 ? effect.FirstParameter * 2 : 0;
+                        damage.ArmorModifier += burn.StackingEffectIntensityLevel == 1 ? effect.FlatAmount / 2 : burn.StackingEffectIntensityLevel == 2 ? effect.FlatAmount : burn.StackingEffectIntensityLevel == 3 ? effect.FlatAmount * 2 : 0;
                     })
                 }
             };
@@ -2562,7 +2575,7 @@ public class EffectList
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     FlatAmount = calculatedPB, 
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User is Player && (ability.Is(Ability.AbilityProperty.Riposte) || ability.Is(Ability.AbilityProperty.Counter))
+                        ability.User is Player && (ability.Is(Ability.Property.Riposte) || ability.Is(Ability.Property.Counter))
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((ability, effect) =>  {
                         Player.Instance.AddEffect(new Effect_Chained(effect.FlatAmount, effect.SourceOfEffect));
@@ -2571,10 +2584,10 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     TriggersOncePerAbility=true, 
                     FlatAmount = calculatedPB, 
-                    ConditionCheckForDamageWasDodged = new Func<Damage, bool>((damage) => 
+                    ConditionCheckForDamageWasDodged = new Func<Damage, Ability, bool>((damage, dodge) => 
                         damage.TargetOfDamage == Player.Instance
                     ), 
-                    ActionOnDamageWasDodged = new Action<Damage, Effect_CustomizableEffectOnEvent> ((damage, effect) =>  {
+                    ActionOnDamageWasDodged = new Action<Damage, Ability, Effect_CustomizableEffectOnEvent> ((damage, dodge, effect) =>  {
                         Player.Instance.AddEffect(new Effect_Chained(effect.FlatAmount, effect.SourceOfEffect));
                     })
                 }
@@ -2599,13 +2612,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> {PB.SPECIALIZATION__ENEMY_STACKING_EFFECT_DAMAGE, PB.SPECIAL__SCALES_WITH_ENEMY_DAMAGE_INSTEAD_OF_PLAYERS});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     DescriptionParameters=new List<string>{Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.TargetOfDamage == Player.Instance && (damage.Is(Damage.DamageProperty.Burn) || damage.Is(Damage.DamageProperty.Freeze) || damage.Is(Damage.DamageProperty.Incision))
                     ), 
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += damage.InjuryDealt / 100 * effect.FirstParameter + damage.StaggerDealt / 100 * effect.FirstParameter;
+                        Player.Instance.Health.Current += damage.InjuryDealt * effect.PercentageAmount / 100 + damage.StaggerDealt * effect.PercentageAmount / 100;
                     })
                 } 
             };
@@ -2615,14 +2628,14 @@ public class EffectList
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
-                    FirstParameter = calculatedPB, 
+                    PercentageAmount = calculatedPB, 
                     TriggersOncePerAbility = true, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.TriggeredEffects.Contains(effect) == false && Player.Instance.CheckIfUnderEffect(typeof(Effect_Chained))
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Chained playersChained = (Effect_Chained)Player.Instance.GetEffect(typeof(Effect_Chained));
-                        damage.TargetOfDamage.AddEffect(new Effect_Chained(playersChained.DecayingAmount * effect.FirstParameter / 100, effect.SourceOfEffect));
+                        damage.TargetOfDamage.AddEffect(new Effect_Chained(playersChained.DecayingAmount * effect.PercentageAmount / 100, effect.SourceOfEffect));
                     })
                 }
             };
@@ -2632,13 +2645,13 @@ public class EffectList
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     DescriptionParameters=new List<String>{Utils.GetFormattedFloat(calculatedPB)}, 
-                    FirstParameter = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     TriggersOncePerAbility = true, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage.TriggeredEffects.Contains(effect) == false && damage.SourceOfDamage.User == Player.Instance && damage.DamageType == Constants.DamageType.Heavy
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Chained(effect.FirstParameter, effect.SourceOfEffect));
+                        Player.Instance.AddEffect(new Effect_Chained(effect.FlatAmount, effect.SourceOfEffect));
                     })
                 }
             };
@@ -2650,12 +2663,12 @@ public class EffectList
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) {
                     DescriptionParameters = new List<String> {currentHealthPercentageLostEachSecond.ToString(), Utils.GetFormattedFloat(calculatedPB)}, 
                     FlatAmount = calculatedPB, 
-                    ConditionCheckForOneFifthSecondElapsedInGame = new Func<bool>(() => 
+                    ConditionCheckForOneTenthSecondElapsedInGame = new Func<bool>(() => 
                         Player.Instance.Health.Current > Player.Instance.Health.Maximum * 0.1f && Player.Instance.InCombat
                     ), 
-                    ActionOnOneFifthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
-                        Player.Instance.Health.Current -= Player.Instance.Health.Maximum * 0.02f / 5;
-                        Player.Instance.AddEffect(new Effect_Chained(effect.FlatAmount * (Player.Instance.Health.Maximum * 0.02f / 5 / 100), effect.SourceOfEffect));
+                    ActionOnOneTenthSecondElapsedInGame = new Action<Effect_CustomizableEffectOnEvent> ((effect) =>  {
+                        Player.Instance.Health.Current -= Player.Instance.Health.Maximum * 0.02f / 10;
+                        Player.Instance.AddEffect(new Effect_Chained(effect.FlatAmount * (Player.Instance.Health.Maximum * 0.02f / 10 / 100), effect.SourceOfEffect));
                     })
                 }
             };
@@ -2664,13 +2677,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.REQUIREMENT__BASIC_ATTACK});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<String> { Utils.GetFormattedFloat(calculatedPB)}, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.Health.Current += effect.FirstParameter;  
+                        Player.Instance.Health.Current += effect.FlatAmount;  
                     })
                 }
             };
@@ -2680,17 +2693,17 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.FLAT_HEALTH_RESTORED_PER_PB, new List<float> {PB.REQUIREMENT__BASIC_ATTACK, PB.REQUIREMENT__CHAINED, percentageOfChainedConsumed * PB.RESTRICTION__CONSUME_1P_OF_STACKING_EFFECT});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB,
+                    PercentageAmount = calculatedPB,
                     DescriptionParameters = new List<String> { percentageOfChainedConsumed.ToString(), Utils.GetFormattedFloat(calculatedPB * 10)}, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                            damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack) && Player.Instance.CheckIfUnderEffect(typeof(Effect_Chained))
+                            damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack) && Player.Instance.CheckIfUnderEffect(typeof(Effect_Chained))
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Chained playersChained = (Effect_Chained)Player.Instance.GetEffect(typeof(Effect_Chained));
-                        Player.Instance.Health.Current += effect.FirstParameter * playersChained.DecayingAmount * 0.15f;
+                        Player.Instance.Health.Current += effect.PercentageAmount * playersChained.DecayingAmount * 0.15f;
                         Effect e2 = Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Identifier == "ConvertedChainedGeneratesBarrier"));
                         if(e2 != null) {
-                            Player.Instance.AddEffect(new Effect_Barrier(e2.FirstParameter * playersChained.DecayingAmount * 0.15f, effect.SourceOfEffect));
+                            Player.Instance.AddEffect(new Effect_Barrier(e2.PercentageAmount * playersChained.DecayingAmount * 0.15f, effect.SourceOfEffect));
                         }  
                         playersChained.ChangeDecayingAmount(-playersChained.DecayingAmount * 0.15f);
                     })
@@ -2702,8 +2715,7 @@ public class EffectList
             return new List<Effect> {
                 new Effect_Description(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB * 10)},
-                    Identifier="ConvertedChainedGeneratesBarrier", 
-                    FirstParameter = calculatedPB
+                    Identifier = "ConvertedChainedGeneratesBarrier"
                 }
             };
         }
@@ -2713,22 +2725,22 @@ public class EffectList
             return new List<Effect> {
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB1), Utils.GetFormattedFloat(calculatedPB2 * 10)}, 
-                    FirstParameter = calculatedPB1,
+                    FlatAmount = calculatedPB1,
                     ConditionCheckForAbilityUsed = new Func<Ability, bool>((ability) => 
-                        ability.User == Player.Instance && ability.Is(Ability.AbilityProperty.BasicAttack)
+                        ability.User == Player.Instance && ability.Is(Ability.Property.BasicAttack)
                     ), 
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Burn(effect.FirstParameter, effect.SourceOfEffect));
+                        Player.Instance.AddEffect(new Effect_Burn(effect.FlatAmount, effect.SourceOfEffect));
                     })
                 },
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    FirstParameter = calculatedPB2, 
+                    PercentageAmount = calculatedPB2, 
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) => 
                         damage.SourceOfDamage?.User == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Burn)) && damage.DamageType == Constants.DamageType.Ranged
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Burn playersBurn = (Effect_Burn)Player.Instance.GetEffect(typeof(Effect_Burn));
-                        damage.ExtraDamageDealtPercentage += playersBurn.DecayingAmount * effect.FirstParameter / 100 / 10;
+                        damage.DamageDealtPercentageModifier += playersBurn.DecayingAmount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -2760,10 +2772,10 @@ public class EffectList
             return new List<Effect> { 
                 new Effect_AncientCrown(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1)},
-                    FirstParameter = calculatedPB1
+                    FlatAmount = calculatedPB1
                 },
                 new Effect_ChangeStat(Player.Instance.CooldownReduction, new(effect_name)) { 
-                    PercentageModifier = calculatedPB2
+                    FlatAmount = calculatedPB2
                 }
             };
         }
@@ -2773,10 +2785,10 @@ public class EffectList
             return new List<Effect> { 
                 new Effect_AncientGauntlets(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1)},
-                    FirstParameter = calculatedPB1
+                    FlatAmount = calculatedPB1
                 },
                 new Effect_ChangeStat(Player.Instance.EnergyGain, new(effect_name)) { 
-                    PercentageModifier = calculatedPB2
+                    FlatAmount = calculatedPB2
                 }
             };
         }
@@ -2786,10 +2798,10 @@ public class EffectList
             return new List<Effect> { 
                 new Effect_AncientBreastplate(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1)},
-                    FirstParameter = calculatedPB1
+                    PercentageAmount = calculatedPB1
                 },
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(effect_name)) { 
-                    PercentageModifier = calculatedPB2
+                    PercentageAmount = calculatedPB2
                 }
             };
 
@@ -2800,10 +2812,10 @@ public class EffectList
             return new List<Effect> { 
                 new Effect_AncientGreaves(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1)},
-                    FirstParameter = calculatedPB1
+                    PercentageAmount = calculatedPB1
                 },
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new(effect_name)) { 
-                    PercentageModifier = calculatedPB2
+                    PercentageAmount = calculatedPB2
                 }
             };
         }
@@ -2813,23 +2825,23 @@ public class EffectList
             return new List<Effect> { 
                 new Effect_AncientFirearmsDamage(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1)},
-                    FirstParameter = calculatedPB1
+                    PercentageAmount = calculatedPB1
                 },
                 new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(effect_name)) { 
-                    PercentageModifier = calculatedPB2
+                    PercentageAmount = calculatedPB2
                 }
             };
         }
-        else if(effect_name == "AncientFirearmsDamageReduction") {
-            float calculatedPB1 = CalculatePB(power_budget * 0.1f, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SPECIFIC_ITEM_EQUIPPED, PB.REQUIREMENT__SPECIFIC_ITEM_EQUIPPED});
-            float calculatedPB2 = CalculatePB(power_budget * 0.9f, PB.DAMAGE_REDUCTION_INCREASE_PER_PB);
+        else if(effect_name == "AncientFirearmsArmor") {
+            float calculatedPB1 = CalculatePB(power_budget * 0.1f, PB.ARMOR_INCREASE_PER_PB, new List<float> {1 / PB.EXPECTED_AMOUNT_OF_SPECIFIC_ITEM_EQUIPPED, PB.REQUIREMENT__SPECIFIC_ITEM_EQUIPPED});
+            float calculatedPB2 = CalculatePB(power_budget * 0.9f, PB.ARMOR_INCREASE_PER_PB);
             return new List<Effect> { 
-                new Effect_AncientFirearmsDamageReduction(new(effect_name)) {
+                new Effect_AncientFirearmsArmor(new(effect_name)) {
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB1)},
-                    FirstParameter = calculatedPB1
+                    FlatAmount = calculatedPB1
                 },
                 new Effect_ChangeStat(Player.Instance.EnergyGain, new(effect_name)) { 
-                    PercentageModifier = calculatedPB2
+                    FlatAmount = calculatedPB2
                 }
             };
         }
@@ -2848,17 +2860,17 @@ public class EffectList
                         Effect_ChangeCompositeStat asBuff = (Effect_ChangeCompositeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "GainAttackSpeedAsHealthLowers" + special_identifier);
                         if(asBuff == null) {
                             asBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, effect.SourceOfEffect) {
-                                PercentageModifier = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 
+                                PercentageAmount = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 
                                 Identifier="GainAttackSpeedAsHealthLowers" + special_identifier, 
-                                IsRemovable=false, 
-                                ShowsInUI=true, 
-                                EffectIndicatorText=Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum)) + "%"
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 0)
                             };
                             Player.Instance.AddEffect(asBuff);
                         }
                         else {
-                            asBuff.PercentageModifier = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
-                            asBuff.EffectIndicatorText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum)) + "%";
+                            asBuff.PercentageAmount = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
+                            asBuff.UIText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 0);
                         }
                     })
                 }
@@ -2868,13 +2880,13 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.BARRIER_PER_PB, PB.REQUIREMENT__GETTING_DAMAGED, PB.SPECIAL__SCALES_WITH_MISSING_HEALTH_INSTEAD_OF_MAXIMUM});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    FirstParameter = calculatedPB,
+                    FlatAmount = calculatedPB,
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB)}, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                         damage.TargetOfDamage == Player.Instance
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_Barrier(effect.FirstParameter * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), effect.SourceOfEffect));
+                        Player.Instance.AddEffect(new Effect_Barrier(effect.FlatAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), effect.SourceOfEffect));
                     })
                 }
             };
@@ -2901,13 +2913,13 @@ public class EffectList
                         }
                         if(Player.Instance.Health.Current > Player.Instance.Health.Maximum * 0.5f && minusRegen == null) {
                             Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, effect.SourceOfEffect) {
-                                RegenerationPercentageModifier = -effect.FirstParameter,
+                                RegenerationPercentageAmount = -effect.FirstParameter,
                                 Identifier = "LoseHealthWhileAboveHalfAndRegenWhileBelow - LoseHealth"
                             });
                         }
                         if(Player.Instance.Health.Current <= Player.Instance.Health.Maximum * 0.5f && plusRegen == null) {
                             Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Health, effect.SourceOfEffect) {
-                                RegenerationPercentageModifier = effect.SecondParameter,
+                                RegenerationPercentageAmount = effect.SecondParameter,
                                 Identifier = "LoseHealthWhileAboveHalfAndRegenWhileBelow - RestoreHealth"
                             });
                         }
@@ -2915,30 +2927,30 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "GainDamageReductionBasedOnMissingHealth") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.SPECIAL__SCALES_WITH_MISSING_HEALTH_INSTEAD_OF_MAXIMUM});
+        else if(effect_name == "GainArmorBasedOnMissingHealth") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.SPECIAL__SCALES_WITH_MISSING_HEALTH_INSTEAD_OF_MAXIMUM});
             return new List<Effect> { 
                 new Effect_CustomizableEffectOnEvent(new(effect_name)) { 
-                    PercentageAmount = calculatedPB, 
+                    FlatAmount = calculatedPB, 
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB)},
                     ConditionCheckForUnitStatCurrentAmountChanged = new Func<Stat, float, bool>((stat, amount) => 
                         stat.Owner == Player.Instance && stat is Health
                     ), 
                     ActionOnUnitStatCurrentAmountChanged = new Action<Stat, float, Effect_CustomizableEffectOnEvent> ((stat, amount, effect) =>  {
-                        Effect_ChangeStat drBuff = (Effect_ChangeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "GainDamageReductionBasedOnMissingHealth" + special_identifier);
+                        Effect_ChangeStat drBuff = (Effect_ChangeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "GainArmorBasedOnMissingHealth" + special_identifier);
                         if(drBuff == null) {
-                            drBuff = new Effect_ChangeStat(Player.Instance.DamageReduction, effect.SourceOfEffect) {
-                                PercentageModifier = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 
-                                Identifier="GainDamageReductionBasedOnMissingHealth" + special_identifier, 
-                                IsRemovable=false, 
-                                ShowsInUI=true, 
-                                EffectIndicatorText=Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum)) + "%"
+                            drBuff = new Effect_ChangeStat(Player.Instance.Armor, effect.SourceOfEffect) {
+                                FlatAmount = effect.FlatAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 
+                                Identifier="GainArmorBasedOnMissingHealth" + special_identifier, 
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.FlatAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 0)
                             };
                             Player.Instance.AddEffect(drBuff);
                         }
                         else {
-                            drBuff.PercentageModifier = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
-                            drBuff.EffectIndicatorText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum)) + "%";
+                            drBuff.PercentageAmount = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
+                            drBuff.UIText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 0);
                         }
                     })
                 }
@@ -2961,7 +2973,7 @@ public class EffectList
                         damage.WillBeFatalBlow = false;
                         Player.Instance.Health.Current = Player.Instance.Health.Maximum * effect.FirstParameter / 100;
                         Player.Instance.AddEffect(new Effect_CustomizableDamageChange(new(effect_name)) {
-                            DamagePercentageChange = calculatedPB2,
+                            DamagePercentageModifier = calculatedPB2,
                             ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage2, effect2) =>
                                 damage2.SourceOfDamage.User == Player.Instance && damage2.TargetOfDamage == damage.SourceOfDamage.User
                             ),
@@ -2988,11 +3000,11 @@ public class EffectList
             };
         }
         else if(effect_name == "BlazingShadowWatchesYourBack") {
-            float calculatedPB1 = CalculatePB(power_budget * 0.5f, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__GETTING_DAMAGED_FROM_BEHIND});
+            float calculatedPB1 = CalculatePB(power_budget * 0.5f, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__GETTING_DAMAGED_FROM_BEHIND});
             float calculatedPB2 = CalculatePB(power_budget * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> {PB.BURN_PER_PB, PB.REQUIREMENT__GETTING_DAMAGED_FROM_BEHIND});
             return new List<Effect> {
                 new Effect_BlazingShadowWatchesYourBack(new(effect_name)) {
-                    ExtraDamageReductionAgainstBackstabs = calculatedPB1,
+                    ExtraArmorAgainstBackstabs = calculatedPB1,
                     BurnScalingInflictedToBackstabbers = calculatedPB2
                 }
             };
@@ -3015,7 +3027,7 @@ public class EffectList
                     FirstParameter = calculatedPB,
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB)}, 
                     ConditionCheckOnDamageDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Player.Instance.Health.Current += effect.FirstParameter * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
@@ -3027,10 +3039,10 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIAL__SCALES_WITH_MISSING_HEALTH_INSTEAD_OF_MAXIMUM, PB.SPECIALIZATION__BASIC_ATTACK});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
-                    DamagePercentageChange = calculatedPB,
+                    DamagePercentageModifier = calculatedPB,
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB)}, 
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.AbilityProperty.BasicAttack)
+                        damage.SourceOfDamage.User == Player.Instance && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)
                     )
                 }
             };
@@ -3048,17 +3060,17 @@ public class EffectList
                         Effect_ChangeCompositeStat damageBuff = (Effect_ChangeCompositeStat)Player.Instance.CurrentEffects.FirstOrDefault(effect => effect.Identifier == "GainDamageBasedOnMissingHealth" + special_identifier);
                         if(damageBuff == null) {
                             damageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, effect.SourceOfEffect) {
-                                PercentageModifier = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 
+                                PercentageAmount = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 
                                 Identifier="GainDamageBasedOnMissingHealth" + special_identifier, 
-                                IsRemovable=false, 
-                                ShowsInUI=true, 
-                                EffectIndicatorText=Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum)) + "%"
+                                IsRemovable = false, 
+                                ShowsInUI = true, 
+                                UIText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 0)
                             };
                             Player.Instance.AddEffect(damageBuff);
                         }
                         else {
-                            damageBuff.PercentageModifier = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
-                            damageBuff.EffectIndicatorText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum)) + "%";
+                            damageBuff.PercentageAmount = effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum);
+                            damageBuff.UIText = Utils.GetFormattedFloat(effect.PercentageAmount * (1 - Player.Instance.Health.Current / Player.Instance.Health.Maximum), 0);
                         }
                     })
                 }
@@ -3079,7 +3091,9 @@ public class EffectList
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Tenacity, effect.SourceOfEffect) {
-                            PercentageModifier=effect.FirstParameter, 
+                            FlatAmount = effect.FirstParameter, 
+                            ShowsInUI = true,
+                            UIText = Utils.GetFormattedFloat(effect.FirstParameter),
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
                             Identifier="GainTenacityAfterBeingHit" + special_identifier
                         }, 10);
@@ -3087,8 +3101,8 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "GainDamageReductionAfterBeingHit") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__PLAYER_WAS_DAMAGED_IN_LAST_10_SECONDS});
+        else if(effect_name == "GainArmorAfterBeingHit") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__PLAYER_WAS_DAMAGED_IN_LAST_10_SECONDS});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     FirstParameter = calculatedPB, 
@@ -3098,10 +3112,12 @@ public class EffectList
                         damage.TargetOfDamage == Player.Instance
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.DamageReduction, effect.SourceOfEffect) {
-                            PercentageModifier=effect.FirstParameter, 
+                        Player.Instance.AddEffect(new Effect_ChangeStat(Player.Instance.Armor, effect.SourceOfEffect) {
+                            FlatAmount=effect.FirstParameter, 
+                            ShowsInUI = true,
+                            UIText = Utils.GetFormattedFloat(effect.FirstParameter),
                             BehaviourWhenDuplicateEffect = Effect.BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier,
-                            Identifier="GainDamageReductionAfterBeingHit" + special_identifier
+                            Identifier="GainArmorAfterBeingHit" + special_identifier
                         }, 10);
                     })
                 }
@@ -3116,8 +3132,8 @@ public class EffectList
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB), "10"},
                     ShowsInUI = true,
                     HideInUIWhileCooldownWithIdExists = "BlockXAmountOfDamageOnceEveryNSeconds" + special_identifier,
-                    PathToEffectGraphic = "UI/Barrier",
-                    EffectIndicatorText =  Utils.GetFormattedFloat(calculatedPB, 0),
+                    PathToUIGraphic = "UI/Barrier",
+                    UIText =  Utils.GetFormattedFloat(calculatedPB, 0),
                     ConditionCheckAfterHitDamageCalculation = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                         damage.TargetOfDamage == Player.Instance && !Player.Instance.CheckIfEffectIsOnCooldown("BlockXAmountOfDamageOnceEveryNSeconds" + special_identifier)
                     ),
@@ -3161,23 +3177,23 @@ public class EffectList
                 } 
             };
         }
-        else if(effect_name == "PlundererDamageReduction") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__WEAPON_TECHNIQUE, PB.SPECIALIZATION__FAMILY_TECHNIQUES, PB.RESTRICTION__LASTS_15_SECONDS});
+        else if(effect_name == "PlundererArmor") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__WEAPON_TECHNIQUE, PB.SPECIALIZATION__FAMILY_TECHNIQUES, PB.RESTRICTION__LASTS_15_SECONDS});
             return new List<Effect> {
                 new Effect_Description(new(effect_name)) {
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB), "15"},
-                    Identifier = "PlundererDamageReduction",
+                    Identifier = "PlundererArmor",
                     FirstParameter = calculatedPB,
                     SecondParameter = 15
                 } 
             };
         }
-        else if(effect_name == "ConvertDamageReductionToHeavyStagger") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__WEAPON_TECHNIQUE, PB.SPECIALIZATION__FAMILY_TECHNIQUES, PB.RESTRICTION__LASTS_15_SECONDS});
+        else if(effect_name == "ConvertArmorToHeavyStagger") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {PB.REQUIREMENT__WEAPON_TECHNIQUE, PB.SPECIALIZATION__FAMILY_TECHNIQUES, PB.RESTRICTION__LASTS_15_SECONDS});
             return new List<Effect> {
                 new Effect_Description(new(effect_name)) {
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB), "15"},
-                    Identifier = "PlundererDamageReduction",
+                    Identifier = "PlundererArmor",
                     FirstParameter = calculatedPB,
                     SecondParameter = 15
                 } 
@@ -3214,8 +3230,8 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DamageReductionWhileAbove50PHealth") {
-            float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_REDUCTION_INCREASE_PER_PB, new List<float> {});
+        else if(effect_name == "ArmorWhileAbove50PHealth") {
+            float calculatedPB = CalculatePB(power_budget, PB.ARMOR_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
                     FirstParameter = calculatedPB,
@@ -3315,7 +3331,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "WhileInRangedStanceDecreaseDamageReductionButIncreaseDamage") {
+        else if(effect_name == "WhileInRangedStanceDecreaseArmorButIncreaseDamage") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -3571,7 +3587,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DamageReductionIsPartiallyEffectiveWhileStaggered") {
+        else if(effect_name == "ArmorIsPartiallyEffectiveWhileStaggered") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -3599,7 +3615,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DamageReductionIsMoreEffectiveAgainstInjury") {
+        else if(effect_name == "ArmorIsMoreEffectiveAgainstInjury") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -3657,7 +3673,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "DamageReductionWhileBlocking") {
+        else if(effect_name == "ArmorWhileBlocking") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -3716,7 +3732,7 @@ public class EffectList
 
 
         //Mercenary
-        else if(effect_name == "GainDamageReductionBasedOnBarrierAmount") {
+        else if(effect_name == "GainArmorBasedOnBarrierAmount") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -3831,7 +3847,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "GainDamageReductionWhileAtFullHealth") {
+        else if(effect_name == "GainArmorWhileAtFullHealth") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -4289,7 +4305,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "ConvertMovementSpeedToDamageReduction") {
+        else if(effect_name == "ConvertMovementSpeedToArmor") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -4303,7 +4319,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "ConvertAttackSpeedToDamageReduction") {
+        else if(effect_name == "ConvertAttackSpeedToArmor") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -4592,7 +4608,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "GainDamageReductionBasedOnAnalysisAmount") {
+        else if(effect_name == "GainArmorBasedOnAnalysisAmount") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -4707,7 +4723,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "GainDamageReductionBasedOnPositiveStackingEffectsOnYouAndNegativeOnEnemy") {
+        else if(effect_name == "GainArmorBasedOnPositiveStackingEffectsOnYouAndNegativeOnEnemy") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -4962,7 +4978,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "LightDamageTemporarilyLowersEnemyDamageReduction") {
+        else if(effect_name == "LightDamageTemporarilyLowersEnemyArmor") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -4976,7 +4992,7 @@ public class EffectList
                 }
             };
         }
-        else if(effect_name == "LightDamageIgnoresPercentageOfEnemyDamageReduction") {
+        else if(effect_name == "LightDamageIgnoresPercentageOfEnemyArmor") {
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {});
             return new List<Effect> { 
                 new Effect_CustomizableDamageChange(new(effect_name)) {
@@ -5045,10 +5061,10 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__FINAL_AMMO});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 }
             };
         }
@@ -5058,7 +5074,7 @@ public class EffectList
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
                     FirstParameter = calculatedPB, 
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.Is(Ability.AbilityProperty.Backstab) && damage.SourceOfDamage?.User == Player.Instance && damage.IsDamageOverTime == false
+                        damage.SourceOfDamage.Is(Ability.Property.Backstab) && damage.SourceOfDamage?.User == Player.Instance
                     ),
                     Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         damage.TargetOfDamage.AddEffect(new Effect_Burn(Player.Instance.HeavyStagger.Current * 0.05f, new(damage.SourceOfDamage)));
@@ -5071,7 +5087,6 @@ public class EffectList
             return new List<Effect> {
                 new Effect_ChangeEffectPower(typeof(Effect_Burn), Effect_ChangeEffectPower.ChangeTypeEnum.AffectAmountAdded, Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies, 10, new(effect_name)),
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    MultiplierChange = -0.05f, 
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                         damage.TargetOfDamage == Player.Instance && damage.SourceOfDamage.User.CheckIfUnderEffect(typeof(Effect_Burn))
                     )
@@ -5089,7 +5104,6 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__FINAL_AMMO});
             return new List<Effect> {
                 new Effect_CustomizableDamageChange(new(effect_name)) { 
-                    MultiplierChange = -0.1f, 
                     ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
                         damage.TargetOfDamage == Player.Instance && damage.Properties.Contains(Damage.DamageProperty.Burn)
                     )
@@ -5100,10 +5114,10 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__FINAL_AMMO});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 }
             };
         }
@@ -5117,7 +5131,7 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__FINAL_AMMO});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.Health, new(effect_name)) {
-                    BaseModifier = -calculatedPB 
+                    FlatAmount = -calculatedPB 
                 }
             };
         }
@@ -5125,22 +5139,22 @@ public class EffectList
             float calculatedPB = CalculatePB(power_budget, PB.DAMAGE_INCREASE_PER_PB, new List<float> {PB.SPECIALIZATION__FINAL_AMMO});
             return new List<Effect> {
                 new Effect_ChangeStat(Player.Instance.HeavyInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB
+                    PercentageAmount = calculatedPB
                 },
                 new Effect_ChangeStat(Player.Instance.HeavyStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.LightInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.LightStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.RangedInjury, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 },
                 new Effect_ChangeStat(Player.Instance.RangedStagger, new(effect_name)) {
-                    PercentageModifier = calculatedPB 
+                    PercentageAmount = calculatedPB 
                 }
             };
         }

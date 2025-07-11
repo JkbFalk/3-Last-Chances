@@ -31,6 +31,7 @@ public class Ability_Quickdraw : Technique
     
 
     public Ability_Quickdraw(Unit ability_user) : base(ability_user) {
+        Properties.Add(Property.Charged);
         AddCustomSound("TimeSlow", "Ability/TimeSlowDown", 0.5f);
         AddCustomSound("Sheathe", "Longblade/Longblade_Sheathe1", 1f);
         AddCustomSound("Release", "Ability/Ability_Quickdraw_Release", 1f);
@@ -40,7 +41,7 @@ public class Ability_Quickdraw : Technique
         EffectsAffectingUserDuringAbility = new List<Effect> {new Effect_Unstunnable(new(this))};
         EventManager.HitDealt.AddListener(CheckHitDealt);
         NameOfAnimationToAutoPlay = "Quickdraw_" + User.CurrentWeaponClass;
-        DamageSources.Add(new DamageSource(Is(AbilityProperty.Ultimate) ? UltimateInjuryScaling : CounterInjuryScaling, Is(AbilityProperty.Ultimate) ? UltimateStaggerScaling : CounterStaggerScaling, User.CurrentWeaponDamageType) {Knockback = 20});
+        DamageSources.Add(new DamageSource(Is(Property.Ultimate) ? UltimateInjuryScaling : CounterInjuryScaling, Is(Property.Ultimate) ? UltimateStaggerScaling : CounterStaggerScaling, User.CurrentWeaponDamageType) {KnockbackInMeters = 0.2f});
     }
 
     public static List<string> GetDescriptionValues()
@@ -67,7 +68,7 @@ public class Ability_Quickdraw : Technique
         base.OnAbilityStart();
         Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
         ShowChargeBar();
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             PlayCustomSound("TimeSlow");
             GameController.Instance.DefaultTimeSpeed = TimeSpeed;
             CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Slowed Time") as VolumeProfile;
@@ -83,7 +84,7 @@ public class Ability_Quickdraw : Technique
         base.OnAbilityEnd();
         StopCountingTime();
         EventManager.HitDealt.RemoveListener(CheckHitDealt);
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             GameController.Instance.DefaultTimeSpeed = 1f;
             CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
@@ -101,7 +102,7 @@ public class Ability_Quickdraw : Technique
 
     public override void CallAbilityEvent2()
     {
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
             GameController.Instance.DefaultTimeSpeed = 1f;
             CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
@@ -113,7 +114,7 @@ public class Ability_Quickdraw : Technique
     public override void OnAbilityButtonRelease()
     {
         _buttonWasReleased = true;
-        if(UpgradeAUnlocked) {
+        if(Is(Property.UpgradeA)) {
             _preparedForHit = true;
             GameController.Instance.WaitAndRunMethod(0.2f, TurnOffPreparedForHit);
         }
@@ -129,7 +130,7 @@ public class Ability_Quickdraw : Technique
 
     public void CheckHitDealt(Damage damage) {
         if(damage.TargetOfDamage == User && _counteredAnAttack == false && damage.DamagingObject is UnitWeapon) {
-            if(Is(AbilityProperty.Ultimate)) {
+            if(Is(Property.Ultimate)) {
                 GameController.Instance.DefaultTimeSpeed = 1f;
                 CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Regular") as VolumeProfile;
             }
@@ -144,13 +145,13 @@ public class Ability_Quickdraw : Technique
         }
         _createdWindSlash = true;
         PlayCustomSound("WindSlash");
-        if(Is(AbilityProperty.Ultimate)) {
-            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateInjuryScaling / 4, UltimateInjuryScaling), GetValueBasedOnPercentageOfTimePassed(UltimateStaggerScaling / 4, UltimateStaggerScaling), User.CurrentWeaponDamageType, "Quickdraw_Ultimate_WindSlash") {Knockback = 650});
+        if(Is(Property.Ultimate)) {
+            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(UltimateInjuryScaling / 4, UltimateInjuryScaling), GetValueBasedOnPercentageOfTimePassed(UltimateStaggerScaling / 4, UltimateStaggerScaling), User.CurrentWeaponDamageType, "Quickdraw_Ultimate_WindSlash") {KnockbackInMeters = 6.5f});
         }
         else {
-            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(InjuryScaling / 4, InjuryScaling), GetValueBasedOnPercentageOfTimePassed(StaggerScaling / 4, StaggerScaling), User.CurrentWeaponDamageType, "Quickdraw_WindSlash") {Knockback = 250});
+            DamageSources.Add(new DamageSource(GetValueBasedOnPercentageOfTimePassed(InjuryScaling / 4, InjuryScaling), GetValueBasedOnPercentageOfTimePassed(StaggerScaling / 4, StaggerScaling), User.CurrentWeaponDamageType, "Quickdraw_WindSlash") {KnockbackInMeters = 2.5f});
         }
-        Projectile proj = Utils.CreateProjectile(new(this), Is(AbilityProperty.Ultimate) ? "Quickdraw_Ultimate_WindSlash" : "Quickdraw_WindSlash");
+        Projectile proj = Utils.CreateProjectile(new(this), Is(Property.Ultimate) ? "Quickdraw_Ultimate_WindSlash" : "Quickdraw_WindSlash");
         proj.transform.eulerAngles = new Vector3(0, 0, -90);
     }
 
@@ -160,7 +161,7 @@ public class Ability_Quickdraw : Technique
         }
         _counteredAnAttack = true;
         PlayCustomSound("Counter");
-        if(Is(AbilityProperty.Ultimate)) {
+        if(Is(Property.Ultimate)) {
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
             Player.Instance.Health.Current += damage.Injury;
             Player.Instance.StaggerBar.Current -= damage.Stagger;
@@ -181,13 +182,13 @@ public class Ability_Quickdraw : Technique
         }
         _transitionedAnimation = true;
         Unit target = damage.SourceOfDamage.User;
-        GameObject vfx = Utils.CreateVisualEffect(new(this), Is(AbilityProperty.Ultimate) ? "Quickdraw_Ultimate_Counter" : "Quickdraw_Counter");
+        GameObject vfx = Utils.CreateVisualEffect(new(this), Is(Property.Ultimate) ? "Quickdraw_Ultimate_Counter" : "Quickdraw_Counter");
         vfx.transform.SetParent(target.SpriteRenderers["Upper Body"].Bone);
         vfx.transform.localPosition = Vector2.zero;
         vfx.gameObject.name = vfx.gameObject.name + "_PersistsOnDeath";
-        Properties.Add(AbilityProperty.Counter);
+        Properties.Add(Property.Counter);
         HandleEnemyHit(target, User.SpriteRenderers[User.CurrentWeaponDamageType == Constants.DamageType.Light ? "Light Right" : User.CurrentWeaponDamageType.ToString()].Bone.GetComponent<UnitWeapon>(), null);
-        if(UpgradeBUnlocked){
+        if(Is(Property.UpgradeB)){
             target.AddEffect(new Effect_Prone(GetValueBasedOnPercentageOfTimePassed(UpgradeBProneAppliedToCountered / 4, UpgradeBProneAppliedToCountered), new(this)));
         }
     }
@@ -199,7 +200,7 @@ public class Ability_Quickdraw : Technique
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
         base.ExtraBehaviourOnDamage(damage);
-        if(UpgradeBUnlocked) {
+        if(Is(Property.UpgradeB)) {
             damage.TargetOfDamage.AddEffect(new Effect_Prone(GetValueBasedOnPercentageOfTimePassed(UpgradeBProneApplied / 4, UpgradeBProneApplied), new(this)));
         }
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

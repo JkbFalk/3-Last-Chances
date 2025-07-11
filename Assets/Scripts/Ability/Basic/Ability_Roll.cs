@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Ability_Roll : Ability_Dodge {
-    private readonly int _jumpDistance = 50;
+    private readonly float _jumpDistance = 0.5f;
     public float UntargetabilityDurationInSeconds = 0.75f;
 
     public Ability_Roll(Unit ability_user) : base(ability_user) {
@@ -13,7 +13,7 @@ public class Ability_Roll : Ability_Dodge {
 
     public override void OnAbilityStart() {
         base.OnAbilityStart();
-        User.ApplyForce(Direction * 12 * _jumpDistance * User.MovementSpeed.Current, this);
+        User.ApplyForce(Direction * 12 * _jumpDistance * (1 + User.MovementSpeed.Current / 100), this);
     }
 
     public override void CallAbilityEvent1()
@@ -40,7 +40,7 @@ public class Ability_Roll : Ability_Dodge {
 
     public override void CallAbilityEvent2()
     {
-        User.ApplyForce(Direction * 2 * _jumpDistance * User.MovementSpeed.Current, this);
+        User.ApplyForce(Direction * 2 * _jumpDistance * (1 + User.MovementSpeed.Current / 100), this);
     }
 
     public void ForceFinish() {

@@ -11,7 +11,7 @@ public class Helmet_Knight : Item
         Set = ItemSetEnum.Knight;
         Type = Constants.ItemType.Helmet;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainTenacityAfterBeingHit")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageReduction")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Armor")};
     }
 }
 

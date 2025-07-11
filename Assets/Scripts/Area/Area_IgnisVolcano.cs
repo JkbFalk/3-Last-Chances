@@ -336,11 +336,11 @@ public class Area_IgnisVolcano
     }
 
     public static void Aggro3() {
-        new Damage(Utils.GetUnit("Unit_IgnisAssassin1"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateDamage();
-        Utils.GetUnit("Unit_IgnisAssassin1").Actions.PushUnitForward(-350);
+        new Damage(Utils.GetUnit("Unit_IgnisAssassin1"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateAndApplyDamage();
+        Utils.GetUnit("Unit_IgnisAssassin1").Actions.PushUnitForwardSpecifiedMeters(-3.5f);
         Utils.GetUnit("Unit_IgnisAssassin1").AddEffect(new Effect_Onslaught(100, new(Utils.GetUnit("Unit_IgnisAssassin2"))));
-        new Damage(Utils.GetUnit("Unit_IgnisAssassin2"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateDamage();
-        Utils.GetUnit("Unit_IgnisAssassin2").Actions.PushUnitForward(-350);
+        new Damage(Utils.GetUnit("Unit_IgnisAssassin2"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateAndApplyDamage();
+        Utils.GetUnit("Unit_IgnisAssassin2").Actions.PushUnitForwardSpecifiedMeters(-3.5f);
         Utils.GetUnit("Unit_IgnisAssassin2").AddEffect(new Effect_Onslaught(100, new(Utils.GetUnit("Unit_IgnisAssassin2"))));
     }
 
@@ -790,13 +790,15 @@ public class Area_IgnisVolcano
         blaine.Actions.IsFlipped = true;
         Area.Instance.transform.Find("Environment/VisualEffect_RagingInferno").gameObject.SetActive(true);
         Utils.GetUnit("FlameShadow").gameObject.SetActive(true);
-        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatModifier = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Incision", IsRemovable = false};
-        Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatModifier = -25, ShowsInUI = true, PathToEffectGraphic = "Effect/Burn", IsRemovable = false};
+        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToUIGraphic = "Effect/Incision", IsRemovable = false};
+        Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToUIGraphic = "Effect/Burn", IsRemovable = false};
         blaine.AddEffect(e1);
         blaine.AddEffect(e2);
         blaine.AttackPlayer();
         blaine.Actions.UseAbility(typeof(NPCAbility_BlastDash));
-        blaine.AddEffect(new Effect_CannotBeDefeated(true, new(blaine)) {IsRemovable=false});
+        blaine.AddEffect(new Effect_CannotBeDefeated(true, new(blaine)) {
+            IsRemovable = false
+        });
         if(Area.Instance.transform.Find("FakePlunderer") != null) {
             Area.Instance.transform.Find("FakePlunderer").gameObject.SetActive(true);
             Utils.CopyGameObjectAppearance(blaine.SpriteRenderers["Heavy"].SpriteRenderer.gameObject, Area.Instance.transform.Find("FakePlunderer").gameObject);

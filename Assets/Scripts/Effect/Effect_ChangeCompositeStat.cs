@@ -38,7 +38,7 @@ public class Effect_ChangeCompositeStat : Effect {
         get => _percentageModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.PercentageModifier = value;
+                e.PercentageAmount = value;
             }
             _percentageModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
@@ -50,7 +50,7 @@ public class Effect_ChangeCompositeStat : Effect {
         get => _flatModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.BaseModifier = value;
+                e.FlatAmount = value;
             }
             _flatModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
@@ -62,7 +62,7 @@ public class Effect_ChangeCompositeStat : Effect {
         get => _regenerationPercentageModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.RegenerationPercentageModifier = value;
+                e.RegenerationPercentageAmount = value;
             }
             _regenerationPercentageModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
@@ -74,7 +74,7 @@ public class Effect_ChangeCompositeStat : Effect {
         get => _regenerationFlatModifier;
         set {
             foreach(Effect_ChangeStat e in _statChanges) {
-                e.RegenerationFlatModifier = value;
+                e.RegenerationFlatAmount = value;
             }
             _regenerationFlatModifier = value;
             Type = value >= 0 ? EffectType.Buff : EffectType.Debuff;
@@ -86,7 +86,7 @@ public class Effect_ChangeCompositeStat : Effect {
     public Effect_ChangeCompositeStat(Unit unit, CompositeStat composite_stat, SourceOfEffect source_of_effect) : base(source_of_effect) {
         TargetOfEffect = unit;
         Stat = composite_stat;
-        PathToEffectGraphic = "UI/" + composite_stat.ToString();
+        PathToUIGraphic = "UI/" + composite_stat.ToString();
         if (composite_stat == CompositeStat.AttackSpeed)
         {
             _statChanges = new List<Effect_ChangeStat>() {new Effect_ChangeStat(unit.HeavyAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.LightAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.RangedAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.MagicAttackSpeed, SourceOfEffect)};

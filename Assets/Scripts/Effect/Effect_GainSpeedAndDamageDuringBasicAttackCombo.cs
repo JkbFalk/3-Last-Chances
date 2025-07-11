@@ -24,18 +24,27 @@ public class Effect_GainSpeedAndDamageDuringBasicAttackCombo : Effect {
         base.OnInvokeAbilityUsed(ability);
         if(ability is BA_Polearm_F || ability is BA_Polearm_FF || ability is BA_Polearm_FFF) {
             if(HeavySpeed == null || HeavyInjury == null || HeavyStagger == null || HeavySpeed.EffectEnded || HeavyInjury.EffectEnded || HeavyStagger.EffectEnded) {
-                HeavySpeed = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {PercentageModifier = SpeedBonusPerHit, ShowsInUI = true, EffectIndicatorText = Utils.GetFormattedFloat(SpeedBonusPerHit) + "%", PathToEffectGraphic = "UI/HeavyAttackSpeed"};
-                HeavyInjury = new Effect_ChangeStat(Player.Instance.HeavyInjury, SourceOfEffect) {PercentageModifier = DamageBonusPerHit};
-                HeavyStagger = new Effect_ChangeStat(Player.Instance.HeavyStagger, SourceOfEffect) {PercentageModifier = DamageBonusPerHit};
+                HeavySpeed = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {
+                    PercentageAmount = SpeedBonusPerHit, 
+                    ShowsInUI = true, 
+                    UIText = Utils.GetFormattedFloat(SpeedBonusPerHit, 0), 
+                    PathToUIGraphic = "UI/HeavyAttackSpeed"
+                };
+                HeavyInjury = new Effect_ChangeStat(Player.Instance.HeavyInjury, SourceOfEffect) {
+                    PercentageAmount = DamageBonusPerHit
+                };
+                HeavyStagger = new Effect_ChangeStat(Player.Instance.HeavyStagger, SourceOfEffect) {
+                    PercentageAmount = DamageBonusPerHit
+                };
                 Player.Instance.AddEffect(HeavySpeed);
                 Player.Instance.AddEffect(HeavyInjury);
                 Player.Instance.AddEffect(HeavyStagger);
             }
             else {
-                HeavySpeed.PercentageModifier += SpeedBonusPerHit;
-                HeavySpeed.EffectIndicatorText = Utils.GetFormattedFloat(HeavySpeed.PercentageModifier) + "%";
-                HeavyInjury.PercentageModifier += DamageBonusPerHit;
-                HeavyStagger.PercentageModifier += DamageBonusPerHit;
+                HeavySpeed.PercentageAmount += SpeedBonusPerHit;
+                HeavySpeed.UIText = Utils.GetFormattedFloat(HeavySpeed.PercentageAmount, 0);
+                HeavyInjury.PercentageAmount += DamageBonusPerHit;
+                HeavyStagger.PercentageAmount += DamageBonusPerHit;
             }
         }
         else if(HeavySpeed != null && HeavyInjury != null && HeavyStagger != null) {

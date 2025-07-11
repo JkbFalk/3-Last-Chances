@@ -5,7 +5,8 @@ public class Ability_StanceSwitchRight : Ability_StanceSwitch
 {
 
     public Ability_StanceSwitchRight(Unit ability_user) : base(ability_user) {
-
+        int rightIndex = Player.Instance.CurrentStance == SaveFile.Instance.Stances[0] ? 1 : Player.Instance.CurrentStance == SaveFile.Instance.Stances[1] ? 2 : 3;
+        NameOfAnimationToAutoPlay = SaveFile.Instance.Stances[rightIndex].WeaponClass.ToString() + "_StanceSwitch";
     }
 
     public override void OnAbilityStart()

@@ -50,7 +50,7 @@ public class InteractableObject : MonoBehaviour
 
     public void UpdateIndicatorVisiblity() {
         foreach(SpriteRenderer sr in GetComponentsInChildren<SpriteRenderer>(true)) {
-            if(sr.sprite.name == "Info Bubble") {
+            if(sr?.sprite?.name != null && sr.sprite.name == "Info Bubble") {
                 foreach(SpriteRenderer sr2 in sr.GetComponentsInChildren<SpriteRenderer>(true)) {
                     sr2.enabled = CanBeInteractedWith;
                 }
@@ -101,10 +101,7 @@ public class InteractableObject : MonoBehaviour
                             Player.Instance.transform.position = readPosition.transform.position;
                         }
                     }
-                    UIManager.Instance.DialogueInteractIndicator = transform.Find("Interact Indicator");
-                    if(UIManager.Instance.DialogueInteractIndicator != null) {
-                        UIManager.Instance.DialogueInteractIndicator.gameObject.SetActive(false);
-                    }
+                    UIManager.Objects.InteractIndicatorText.gameObject.SetActive(false);
                 }
             }
         }
@@ -119,7 +116,7 @@ public class InteractableObject : MonoBehaviour
         }
         if(!string.IsNullOrWhiteSpace(ItemTypeReceived)) {
             SaveFile.Instance.AcquireItem(ItemTypeReceived, ItemAmount, ItemGrade);
-            transform.Find("Interact Indicator")?.gameObject.SetActive(false);
+            UIManager.Objects.InteractIndicatorText.gameObject.SetActive(false);
         }
         if(AnimationOnInteract != null || !string.IsNullOrWhiteSpace(ItemTypeReceived)) {
             Player.Instance.PlayAnimation(AnimationOnInteract == null ? "PickUpItemFromTheGround" : AnimationOnInteract.name.Replace("Dialogue_", ""));

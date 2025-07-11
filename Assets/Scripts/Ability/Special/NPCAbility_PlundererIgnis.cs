@@ -9,11 +9,11 @@ public class NPCAbility_PlundererIgnis : Ability {
 
     public NPCAbility_PlundererIgnis(Unit ability_user) : base(ability_user) {
         AddCustomSound("Use", "Fire/FlamethrowerLoop1", 1.25f);
-        DamageSources.Add(new DamageSource(200, 100, Constants.DamageType.Heavy) {Knockback = 600});
+        DamageSources.Add(new DamageSource(200, 100, Constants.DamageType.Heavy) {KnockbackInMeters = 6f});
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
         WaitTimeBeforeNextAction = 0.5f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
         TransitionIntoAnimationDuration = 0;
     }

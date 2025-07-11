@@ -4,7 +4,8 @@ using UnityEngine;
 public class Ability_StanceSwitchLeft : Ability_StanceSwitch {
 
     public Ability_StanceSwitchLeft(Unit ability_user) : base(ability_user) {
-
+        int rightIndex = Player.Instance.CurrentStance == SaveFile.Instance.Stances[0] ? 2 : Player.Instance.CurrentStance == SaveFile.Instance.Stances[2] ? 1 : 0;
+        NameOfAnimationToAutoPlay = SaveFile.Instance.Stances[rightIndex].WeaponClass.ToString() + "_StanceSwitch";
     }
 
     public override void OnAbilityStart()

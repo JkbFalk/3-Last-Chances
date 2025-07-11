@@ -8,12 +8,12 @@ public class NPCAbility_BoulderPunch : Ability {
     private GameObject boulderVFX;
 
     public NPCAbility_BoulderPunch(Unit ability_user) : base(ability_user) {
-        DamageSources.Add(new DamageSource(30, 300, Constants.DamageType.Magic) {Knockback = 70, CustomHitSound = "Earth/Earth_Crack6"});
+        DamageSources.Add(new DamageSource(30, 300, Constants.DamageType.Magic) {KnockbackInMeters = 0.7f, CustomHitSound = "Earth/Earth_Crack6"});
         AddCustomSound("Crack", "Earth/Earth_Crack5", 0.6f);
         AddCustomSound("Hit", "Earth/Earth_Punch2", 0.6f);
         HitSoundType = Constants.HitSoundTypeEnum.LargeBlunt;
         WaitTimeBeforeNextAction = 0.1f;
-        Properties.Add(AbilityProperty.ImmuneToFlinch);
+        Properties.Add(Property.ImmuneToFlinch);
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this)) };
     }
 
