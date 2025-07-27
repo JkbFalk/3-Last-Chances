@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7128298155982783002}
   - component: {fileID: 7360704775644328290}
   - component: {fileID: 7292092841456301598}
+  - component: {fileID: 8409843796423896070}
   m_Layer: 0
   m_Name: VisualEffect_ShadowInfusion_Ranged_MasteryA
   m_TagString: Untagged
@@ -4871,3 +4872,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c5dbbb1030d96d438905b0e01caa8d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8409843796423896070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8811104092664692954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dbda1d0f4b696b4f816ba24b177d0f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DestroyAfterSeconds: 1
+  DestroyTime: 1
+  DetachIfParentDestroyed: 1

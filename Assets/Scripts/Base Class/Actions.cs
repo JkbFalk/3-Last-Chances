@@ -168,6 +168,7 @@ public class Actions : MonoBehaviour {
         if (Unit is Player) {
             DecrementQueuedInputTimers();
             if (TryingToMoveInDirection.Count > 0 &&
+                Player.Instance.CannotMoveDueToOwnTechnique == false &&
                 (CurrentActionBeingPerformed == Constants.ActionType.Moving ||
                 (CurrentActionBeingPerformed == Constants.ActionType.UsingAbility && CurrentAbilityBeingPerformed != null && CurrentAbilityBeingPerformed.CanMoveWhileUsing)))
             {
@@ -181,61 +182,61 @@ public class Actions : MonoBehaviour {
         if(Unit == null) {
             Start();
         }
-        Unit.ApplyForce(IsFlipped ? Vector2.left * meters : Vector2.right * meters, _currentAbilityBeingPerformed);
+        Unit.PushInTargetDirection(IsFlipped ? Vector2.left * meters : Vector2.right * meters, _currentAbilityBeingPerformed);
     }
 
     public void PushUnitForwardDuringRiposteOrCounter()
     {
         if(Unit.CurrentWeaponClass == Constants.WeaponClass.Gauntlets) {
-            Utils.PushUnitIntoPosition(Unit, CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1.5f);
+            Unit.PushIntoPosition(CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1.25f);
         }
         if (Unit.CurrentWeaponClass == Constants.WeaponClass.Daggers)
         {
-            Utils.PushUnitIntoPosition(Unit, CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1);
+            Unit.PushIntoPosition(CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1.2f);
         }
         else if (Unit.CurrentWeaponClass == Constants.WeaponClass.TwinBlades || Unit.CurrentWeaponClass == Constants.WeaponClass.Magic)
         {
-            Utils.PushUnitIntoPosition(Unit, CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 0.7f);
+            Unit.PushIntoPosition(CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1.15f);
         }
         else if (Unit.CurrentWeaponClass == Constants.WeaponClass.Greatsword || Unit.CurrentWeaponClass == Constants.WeaponClass.Longblade)
         {
-            Utils.PushUnitIntoPosition(Unit, CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 0.5f);
+            Unit.PushIntoPosition(CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1.1f);
         }
         else if (Unit.CurrentWeaponClass == Constants.WeaponClass.Polearm)
         {
-            Utils.PushUnitIntoPosition(Unit, CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 0.35f);
+            Unit.PushIntoPosition(CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 1.05f);
         }
         else
         {
-            Utils.PushUnitIntoPosition(Unit, CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed, 0.15f);
+            Unit.PushIntoPosition(CurrentAbilityBeingPerformed.Target.transform.position, CurrentAbilityBeingPerformed);
         }
     }
 
     public void PushUnitBackDuringRipostedOrCountered()
     {
-        Unit.ApplyForce(IsFlipped ? Vector2.right * 2 : Vector2.left * 2, _currentAbilityBeingPerformed);
+        Unit.PushInTargetDirection(IsFlipped ? Vector2.right * 2 : Vector2.left * 2, _currentAbilityBeingPerformed);
     }
 
-    public void ConsumeEnergyAndCooldownForTheAbility()
+    public void ConsumeEnergyAndCooldownForTheAbility(Ability ability)
     {
-        if(CurrentAbilityBeingPerformed != null)
+        if (Unit is Player && Player.Instance.PreparingForUltimate)
         {
-            if(Player.Instance.PreparingForUltimate) {
-                CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.Ultimate);
-                SaveFile.Instance.UltimatesUsedInCurrentCombat++;
-                Player.Instance.Energy.Current = 0;
-                GameController.Instance.PlayerControls.StopPreparingUltimate();
-            }
-            CurrentAbilityBeingPerformed.AddOrUpdateCooldown();
-            if (Unit is Player)
+            SaveFile.Instance.UltimatesUsedInCurrentCombat++;
+            GameController.Instance.PlayerControls.StopPreparingUltimate();
+        }
+        else if (Unit is Player)
+        {
+            ability.AddOrUpdateCooldown();
+            float cost = Ability.GetEnergyCost(ability.GetType());
+            if (cost > 0)
             {
-                float cost = Ability.GetEnergyCost(CurrentAbilityBeingPerformed.GetType());
-                if (cost > 0)
-                {
-                    Unit.Energy.Current -= cost;
-                    EventManager.AbilityEnergyConsumed.Invoke(CurrentAbilityBeingPerformed, cost);
-                }
+                Unit.Energy.Current -= cost;
+                EventManager.AbilityEnergyConsumed.Invoke(ability, cost);
             }
+        }
+        else
+        {
+            ability.AddOrUpdateCooldown();
         }
     }
 

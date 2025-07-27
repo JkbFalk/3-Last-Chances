@@ -40,10 +40,8 @@ public class BA_Gauntlets_R5 : BasicAttack {
     {
         base.ExtraBehaviourOnHit(damage);
         if(damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_ProneToKnockout))) {
-            Debug.Log(damage.AbilityDamageSource.InjuryScaling);
             Effect_ProneToKnockout prone = (Effect_ProneToKnockout)damage.TargetOfDamage.GetEffect(typeof(Effect_ProneToKnockout));
             damage.AbilityDamageSource = new DamageSource(prone.DecayingAmount, 40 + prone.DecayingAmount, Constants.DamageType.Light);
-            Debug.Log(damage.AbilityDamageSource.InjuryScaling);
         }
     }
 }

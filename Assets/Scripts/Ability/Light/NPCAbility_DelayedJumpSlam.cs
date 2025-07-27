@@ -16,7 +16,7 @@ public class NPCAbility_DelayedJumpSlam : Ability {
 
     public override void CallAbilityEvent1()
     {
-        User.ApplyForce(new Vector2(0.2f * (User.Actions.IsFlipped ? -1 : 1), 1).normalized * 5, this);
+        User.PushInTargetDirection(new Vector2(0.2f * (User.Actions.IsFlipped ? -1 : 1), 1).normalized * 5, this);
     }
 
     public override void CallAbilityEvent2()

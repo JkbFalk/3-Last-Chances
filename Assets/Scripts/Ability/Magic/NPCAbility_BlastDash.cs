@@ -10,6 +10,7 @@ public class NPCAbility_BlastDash : Ability {
         WaitTimeBeforeNextAction = 0.1f;
         DamageSources.Add(new DamageSource(200, 200, Constants.DamageType.Heavy));
         AddCustomSound("Blast", "Fire/Fire14", 0.5f);
+        NameOfAnimationToAutoPlay = "FireDash";
         Properties.Add(Property.CounteredByBackstep);
     }
 

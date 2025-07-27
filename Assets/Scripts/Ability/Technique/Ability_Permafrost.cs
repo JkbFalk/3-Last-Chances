@@ -30,8 +30,6 @@ public class Ability_Permafrost : Technique
     {
         if (Is(Property.Ultimate))
         {
-            
-            Debug.Log("WWW: " + Is(Property.Ultimate));
             NameOfAnimationToAutoPlay = "Permafrost_Ultimate";
             DamageSources.Add(new DamageSource(0, 0, Constants.DamageType.Magic) { KnockbackInMeters = 1.5f });
         }
@@ -74,7 +72,7 @@ public class Ability_Permafrost : Technique
         {
             return;
         }
-        AddOrUpdateCooldown();
+        ConsumeEnergyAndCooldownForTheAbility();
         EventManager.OneTenthSecondElapsedInGame.AddListener(ResetPotentialTargets);
         EventManager.OneTenthSecondElapsedInGame.AddListener(AddAoE);
         PlayCustomSound("Start");
@@ -89,15 +87,9 @@ public class Ability_Permafrost : Technique
     public override void CallAbilityEvent1()
     {
         PlayCustomSound("Pushback");
-        Debug.Log("GGG1");
-        foreach (Unit enemy in Utils.GetSpecifiedUnits(new System.Func<Unit, bool>(unit => unit.IsHostile)))
-        {
-            Debug.Log("GGG1.5 " + Vector2.Distance(User.transform.position, enemy.transform.position));
-        }
         foreach (Unit enemy in Utils.GetSpecifiedUnits(new System.Func<Unit, bool>(unit => unit.IsHostile && Vector2.Distance(User.transform.position, unit.transform.position) < 5)))
         {
-            Debug.Log("GGG2 " + (User.transform.position - enemy.transform.position).normalized);
-            enemy.ApplyForce(-20 * (User.transform.position - enemy.transform.position).normalized, this);
+            enemy.PushInTargetDirection(-20 * (User.transform.position - enemy.transform.position).normalized, this);
         }
     }
 
@@ -118,7 +110,6 @@ public class Ability_Permafrost : Technique
             float distance = Vector2.Distance(aoe.transform.position, new Vector2(User.transform.position.x, User.transform.position.y - 0.5f));
             lowestDistance = distance < lowestDistance ? distance : lowestDistance;
         }
-        Debug.Log($"LOWEST DISTANCE: {lowestDistance}, AOES: {_aoes.Count}");
         if (lowestDistance > 0.3f)
         {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "PermafrostAoE", User.transform.position.x, User.transform.position.y - 0.5f);
@@ -131,7 +122,6 @@ public class Ability_Permafrost : Technique
         EventManager.OneTenthSecondElapsedInGame.RemoveListener(ResetPotentialTargets);
         if (IsNot(Property.Ultimate))
         {
-            Debug.Log("DESTROYING ALL AOES: " + _aoes.Count);
             EventManager.OneTenthSecondElapsedInGame.RemoveListener(AddAoE);
             foreach (AreaOfEffect aoe in _aoes.ToList())
             {

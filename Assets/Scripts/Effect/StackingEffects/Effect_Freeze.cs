@@ -68,7 +68,6 @@ public class Effect_Freeze : Effect
     public override void OnInvokeEffectStarted(Effect effect) {
         if(effect.TargetOfEffect == TargetOfEffect && effect.GetType().IsSubclassOf(typeof(Effect_Staggered))) {
             float freezeDuration = Constants.DEFAULT_HARD_STAGGERED_DURATION + DecayingAmount / Utils.GetExpectedPowerForLevel(Player.Instance.Level) / effect.TargetOfEffect.StaggerBar.Maximum * 50;
-            Debug.Log("FREEZE DURATION CALCULATION: " + freezeDuration);
             effect.TargetOfEffect.AddEffect(new Effect_Frozen(SourceOfEffect), freezeDuration);
             GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlace");
             vfx.transform.SetParent(effect.TargetOfEffect.SpriteRenderers["Upper Body"].Bone);

@@ -24,7 +24,7 @@ public class NPCAbility_ExtendHandGrab : Ability {
 
     public override void CallAbilityEvent1() {
         if(_enemyHit != null) {
-            Utils.PushUnitIntoPosition(_enemyHit, User.transform.position - new Vector3(0.5f * (User.Actions.IsFlipped ? -1 : 1), 0), this);
+            _enemyHit.PushIntoPosition(User.transform.position - new Vector3(0.5f * (User.Actions.IsFlipped ? -1 : 1), 0), this);
         }
     }
 }

@@ -19,7 +19,7 @@ public class NPCAbility_JumpSlam : Ability {
     public override void CallAbilityEvent1()
     {
         ChaseCurrentTargetAtGivenDegreeAngle(2, 60);
-        User.ApplyForce(new Vector2(0.2f, 1).normalized * 3, this);
+        User.PushInTargetDirection(new Vector2(0.2f, 1).normalized * 3, this);
     }
 
     public override void CallAbilityEvent2()

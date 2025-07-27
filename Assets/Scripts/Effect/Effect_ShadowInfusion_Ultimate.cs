@@ -10,48 +10,51 @@ public class Effect_ShadowInfusion_Ultimate : Effect {
     public float ExtraStagger;
     public float ExtraInjury;
 
-    private List<Ability> EmpoweredAttacks = new List<Ability>();
-
     public Effect_ShadowInfusion_Ultimate( Constants.DamageType weapon_category, SourceOfEffect source_of_effect) : base(source_of_effect) {
         Listeners.Add(EventManager.HitDealt);
         ShowsInUI = true;
-        PathToUIGraphic = "Effect/ShadowInfusion_Ultimate";
+        PathToUIGraphic = "Ability/ShadowInfusion_Ultimate";
         DamageCategory = weapon_category;
         Type = EffectType.Buff;
     }
 
-    public override void OnStart() {
+    public override void OnStart()
+    {
         base.OnStart();
-        if (DamageCategory == Constants.DamageType.Heavy) {
-            _vfx = Utils.CreateVisualEffect(SourceOfEffect, "SpiritWeapon_Heavy");
+        if (DamageCategory == Constants.DamageType.Heavy)
+        {
+            _vfx = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Ultimate_Heavy");
             _vfx.transform.SetParent(TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone").transform);
             _vfx.transform.localPosition = new Vector2(0f, 0);
             _vfx.transform.localRotation = Quaternion.Euler(0, 0, 0);
             Utils.CopyWeaponCollider(_vfx.GetComponent<BoxCollider2D>(), Constants.DamageType.Heavy);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.HeavyAttackSpeed, SourceOfEffect) { PercentageAmount = AttackSpeedBuffAmount };
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
-        else if (DamageCategory == Constants.DamageType.Light) {
-            _vfx = Utils.CreateVisualEffect(SourceOfEffect, "SpiritWeapon_Light");
+        else if (DamageCategory == Constants.DamageType.Light)
+        {
+            _vfx = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Ultimate_Light");
             _vfx.transform.SetParent(TargetOfEffect.SpriteRenderers["Light Right"].SpriteRenderer.transform.Find("Light Right Bone").transform);
             _vfx.transform.localPosition = new Vector2(0f, 0);
             _vfx.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            _vfx2 = Utils.CreateVisualEffect(SourceOfEffect, "SpiritWeapon_Light");
+            _vfx2 = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Ultimate_Light");
             _vfx2.transform.SetParent(TargetOfEffect.SpriteRenderers["Light Left"].SpriteRenderer.transform.Find("Light Left Bone").transform);
             _vfx2.transform.localPosition = new Vector2(0f, 0);
             _vfx2.transform.localRotation = Quaternion.Euler(0, 0, 0);
             Utils.CopyWeaponCollider(_vfx.GetComponent<BoxCollider2D>(), Constants.DamageType.Light);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.LightAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.LightAttackSpeed, SourceOfEffect) { PercentageAmount = AttackSpeedBuffAmount };
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
-        else if (DamageCategory == Constants.DamageType.Ranged) {
-            _vfx = Utils.CreateVisualEffect(SourceOfEffect, "SpiritWeapon_Ranged");
+        else if (DamageCategory == Constants.DamageType.Ranged)
+        {
+            _vfx = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Ultimate_Ranged");
             _vfx.transform.SetParent(TargetOfEffect.SpriteRenderers["Ranged"].SpriteRenderer.transform.Find("Ranged Bone").transform);
             _vfx.transform.localPosition = new Vector2(0f, 0);
             _vfx.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, SourceOfEffect) {PercentageAmount = AttackSpeedBuffAmount};
+            AttackSpeedBuff = new Effect_ChangeStat(Player.Instance.RangedAttackSpeed, SourceOfEffect) { PercentageAmount = AttackSpeedBuffAmount };
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
+        Utils.PlaySoundEffect(Player.Instance.AudioSource, "Ability/Ability_", 0.8f);
     }
 
 
@@ -66,7 +69,7 @@ public class Effect_ShadowInfusion_Ultimate : Effect {
     public override void OnEnd() {
         base.OnEnd();
         _vfx.GetComponent<ParticleSystem>().Stop();
-        _vfx.GetComponent<TemporaryObject>().MakeObjectDisappear();
+        _vfx.GetComponent<DestroyGameObjectAfterGivenTime>().enabled = true;
         if (DamageCategory == Constants.DamageType.Heavy) {
             GameObject go = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Weapon Collider/" + SaveFile.Instance.Stances[0].WeaponClass.ToString())) as GameObject;
             Utils.CopyWeaponCollider(go.GetComponent<BoxCollider2D>(), Constants.DamageType.Heavy);

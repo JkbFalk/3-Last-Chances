@@ -206,7 +206,7 @@
   {
     "Label": "Ability_Deconstruction_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "On use, gain 1 'Deconstruction' stack against target's current attack.\n\n[Riposte]Riposting or [Counter]Countering that specific attack (even from a different enemy) gives 1 extra Deconstruction stack (up to {0} max).\n\nDeconstruction causes your [Riposte]Ripostes and [Counter]Counters against targeted attack to have their [D]Damage multiplied by current amount of stacks.\n\nUsing Deconstruction on a different attack resets the stacks back to 1.",
+    "ENG": "On use, gain 2 'Deconstruction' stacks against target's current attack.\n\nDeconstruction causes your [Riposte]Ripostes and [Counter]Counters against targeted attack to have their [D]Damage multiplied by current amount of stacks.\n\n[Riposte]Riposting, [Counter]Countering or recasting this Technique against that specific attack (even from a different enemy) also gives 1 extra Deconstruction stack (up to {0} max).\n\nUsing Deconstruction on a different attack resets the stacks back to 2.",
     "PL": ""
   },
   {
@@ -218,13 +218,13 @@
   {
     "Label": "Ability_Deconstruction_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "For each Deconstruction stack, gain extra {0}[A]Armor against that attack.\n\nDeconstructing an [Unstoppable]Unstoppable attack gives max stacks from the start.",
+    "ENG": "For each stack, gain extra {0}[A]Armor against Deconstructed attack.\n\nDeconstructing an [Unstoppable]Unstoppable attack gives max stacks just from the start.",
     "PL": ""
   },
   {
     "Label": "Ability_Deconstruction_Ultimate",
     "Category": "Technique",
-    "ENG": "Target Weakness",
+    "ENG": "Exploit Weakness",
     "PL": ""
   },
   {
@@ -236,7 +236,7 @@
   {
     "Label": "Ability_Deconstruction_Ultimate_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Perform a strike that deals {0}[I]({1}%[I] of current weapon) and {2}[S]({3}%[S] of current weapon).\n\nIf enemy hit was performing an attack that was targeted by 'Deconstruction', and you currently have at least {4} Deconstruction stacks, then disable that attack from being used by that enemy until end of combat (does not work on [Unstoppable]Unstoppable attacks).",
+    "ENG": "Perform a strike that deals {0}[I]({1}%[I] of current weapon) and {2}[S]({3}%[S] of current weapon).\n\nIf you currently have at least {4} stacks, then prevent enemy from using Deconstructed attack until end of combat.",
     "PL": ""
   },
   {
@@ -800,25 +800,25 @@
   {
     "Label": "Ability_BlastDash_Description",
     "Category": "Technique",
-    "ENG": "Dash in target direction, dealing {0}[I]/{2}[S] to enemies hit.\n\nIf an enemy is pushed into an obstacle, apply [Stun]Stun ({4} sec).",
+    "ENG": "Dash in target direction, consuming {2}[H] and {4}[SB] and dealing as much to enemies hit.\n\nIf an enemy is pushed into an obstacle, apply [Stun]Stun ({6} sec).",
     "PL": ""
   },
   {
     "Label": "Ability_BlastDash_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Dash in target direction. Coming into contact with enemies inflicts {0}[I]({1}% user's MAX [H])/{2}[S]({3}% user's MAX [SB]) and pushes them together with you. Colliding with an obstacle applies [Stun]Stun ({4} sec) on you. If any enemy was hit before collision, the [Stun]Stun is applied to the enemies instead.",
+    "ENG": "Charge-time Technique ({0} sec).\n\nDash up to {1}m in target direction based on charge time, costing you {2}[H]({3}%[H] MAX Health) and {4}[SB]({5}%[SB] MAX Stagger Bar), which cannot bring you below 1[H] or [Staggered]Stagger you.\n\nComing into contact with enemies inflicts consumed [H]Health as [I] and consumed [SB]Stagger Bar as [S]Stagger and pushes them together with you.\n\nIf collided with an obstacle, apply [Stun]Stun ({6} sec) to enemies hit, but if no enemies were hit, the stun is applied to you instead.",
     "PL": ""
   },
   {
     "Label": "Ability_BlastDash_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "Increase dash range by {0}%.\n\nEnemies pushed into obstacles also receive {0}[Prone].",
+    "ENG": "Increase dash range by {0}%.\n\nEnemies pushed into obstacles also receive {1}[Prone]Prone.",
     "PL": ""
   },
   {
     "Label": "Ability_BlastDash_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "Hitting enemies instead inflicts {1}% user's MISSING [H] / {3}% user's CURRENT [SB].",
+    "ENG": "Increase Area of Effect by {0}%.\n\nFor each enemy hit, refund all [H]Health and [SB]Stagger Bar consumed by the Technique.",
     "PL": ""
   },
   {
@@ -830,7 +830,7 @@
   {
     "Label": "Ability_BlastDash_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "Massively increases dash range and makes it possible to alter direction mid-flight. Increases [Stun]Stun applied to {0} sec.",
+    "ENG": "Remove charge time and increase dash range to {0}m.\n\nFor each enemy hit, MULTIPLY all [D]Damage and [Stun]Stun applied (x2 for 2 enemies, x3 for 3 enemies...).",
     "PL": ""
   },
   {
@@ -854,19 +854,19 @@
   {
     "Label": "Ability_Helmsplitter_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Charge-time Technique ({0} sec).\n\nGain {1}[Barrier], then start consuming your [Barrier] at speed of {1}[Barrier]/sec.\n\nAfter releasing Technique button (or after all [Barrier] is consumed), deal {2}[I]/{3}[S] for every 10[Barrier] consumed to enemies in front of you.",
+    "ENG": "Charge-time Technique ({0} sec).\n\nGain {1}[Barrier] ({2}% MAX [H]Health + {3}% MAX [SB]Stagger Bar), then start consuming {4}%[Barrier]/sec.\n\nAfter releasing Technique button (or after all [Barrier] is consumed), attack enemies in front of you, dealing {5}[D]Damage for every 10[Barrier] consumed.",
     "PL": ""
   },
   {
     "Label": "Ability_Helmsplitter_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "On use, lose [RED]{0}%[/RED] MAX [H] and [PURPLE]{1}%[/PURPLE] MAX [SB] and gain {2}[Barrier] for every 1[H] or 1[SB] lost. This CANNOT bring you below 1[H]Health or make you [Staggered]Staggered.",
+    "ENG": "On use, lose [RED]{0}%[/RED] MAX [H]Health and [PURPLE]{1}%[/PURPLE] MAX [SB]Stagger Bar and gain {2}[Barrier]Barrier for every 10[H]/[SB] consumed.\n\nThis CANNOT bring you below 1[H] or make you [Staggered]Staggered.",
     "PL": ""
   },
   {
     "Label": "Ability_Helmsplitter_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "Gain {0}[A]Armor and [Unstoppable]Unstoppable while Technique is being charged. Apply {1}[Prone]Prone to enemies who attack you during charge time.",
+    "ENG": "While charging, you have +{0}[A]Armor ({1}[A] + {2}% CURRENT [A]) and [Unstoppable]Unstoppable.\n\nApply {3}[Prone]Prone to enemies who attack you during charge time (once per unit).",
     "PL": ""
   },
   {
@@ -878,58 +878,70 @@
   {
     "Label": "Ability_Helmsplitter_Ultimate_Description",
     "Category": "Technique",
-    "ENG": "Charge-time Technique ({0} sec).\n\nWhile Technique is being charged, [Barrier]Barrier is not depleted when taking [D]Damage.\n\nInstead, gain {1}[Barrier] for every {2}[D] taken.",
+    "ENG": "Charge-time Technique ({0} sec).\n\nWhile Technique is being charged, [Barrier]Barrier is not depleted when taking [D]Damage.\n\nInstead, gain {1}[Barrier] for every 10[D] taken.",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap",
+    "Label": "Ability_SentientShadow",
     "Category": "Technique",
-    "ENG": "Shadow Leap",
+    "ENG": "Sentient Shadows",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_FlavorText",
+    "Label": "Ability_SentientShadow_FlavorText",
     "Category": "Technique",
     "ENG": "",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_Description",
+    "Label": "Ability_SentientShadow_Description",
     "Category": "Technique",
-    "ENG": "Throw a grapplig hook, [Stun]Stunning enemies ({0} sec) and pulling yourself to them.",
+    "ENG": "Throw a grapplig hook, in pointed direction for up to {0}m.\n\nUpon hitting an object or an enemy, pull yourself to them and apply [Stun]Stun ({1} sec) to any enemies hit.\n\nThis Technique can be used even while performing other attacks.",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_DescriptionDetailed",
+    "Label": "Ability_SentientShadow_DescriptionDetailed",
     "Category": "Technique",
     "ENG": "Throw a grappling hook, attaching to first hit unit, object or surface and pulling yourself to it.\n\nIf an enemy is hit, apply [Stun]Stun ({0} sec).",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_MasteryA_Description",
+    "Label": "Ability_SentientShadow_MasteryA_Description",
     "Category": "Technique",
-    "ENG": "On enemy hit, apply {0}[Prone]Prone and remove their [ImmunityToBackstabs]Backstab Immunity.",
+    "ENG": "The hook will fly towards targetted enemies.\n\nIf the target cannot be [Stun]Stunned, the hook will instead try to pull the player away from them.\n\nApply {0}[Onslaught]Onslaught to enemies hit.",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_MasteryB_Description",
+    "Label": "Ability_SentientShadow_MasteryA_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "You are [Invincible]Invincible during the Technique.\n\nGain [Stealth]Stealth ({0} sec) if a non-unit was hit.",
+    "ENG": "When an enemy is being targetted, the hook will always fly towards them.\n\nIf targetted enemy is using an [Unstoppable]Unstoppable ability or he is currently [Unstunnable]Unstunnable, the hook will try to pull the player away from them.\n\nAdditionally, apply {0}[Onslaught]Onslaught to enemies hit by the hook.",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_Ultimate",
+    "Label": "Ability_SentientShadow_MasteryB_Description",
     "Category": "Technique",
-    "ENG": "Shadow Descent",
+    "ENG": "Upon hitting a surface with the hook, this Technique can be reused up to 2 additional times within next 5 seconds (this effect has {0}[CD]).\n\nThe hook has {1}% increased range and travel speed.",
     "PL": ""
   },
   {
-    "Label": "Ability_ShadowLeap_Ultimate_Description",
+    "Label": "Ability_SentientShadow_Ultimate",
     "Category": "Technique",
-    "ENG": "Teleport yourself behind target enemy, applying {0}[Incision]Incision if they are performing an [Unstoppable]Unstoppable attack.",
+    "ENG": "Shadow Assault",
     "PL": ""
   },
-    {
+  {
+    "Label": "Ability_SentientShadow_Ultimate_Description",
+    "Category": "Technique",
+    "ENG": "Shadow blades assault target enemy, dealing {0}[I] and inflicting [Stun]Stun ({2} sec).",
+    "PL": ""
+  },
+  {
+    "Label": "Ability_SentientShadow_Ultimate_DescriptionDetailed",
+    "Category": "Technique",
+    "ENG": "Shadow blades assault target enemy, dealing total of {0}[I](5x {1}% current weapon's [I]Injury) and inflicting 5x [Stun]Stun (total {2} sec), interrupting even [Unstoppable]Unstoppable attacks.\n\nThis Technique can be used even while performing other actions.",
+    "PL": ""
+  },
+  {
     "Label": "Ability_ShadowInfusion",
     "Category": "Technique",
     "ENG": "Cutting Wind",
@@ -950,7 +962,7 @@
   {
     "Label": "Ability_ShadowInfusion_DescriptionDetailed",
     "Category": "Technique",
-    "ENG": "Instantly gain 'Cutting Wind' Effect ({0} sec), causing your next [BA]Basic Attack, [Riposte]Riposte, [Counter]Counter or [Backstab]Backstabs with current weapon to deal extra {1}[S]Stagger ({2}%[I] + {3}%[S]). You also gain {4}%[AS]Attack Speed for current Weapon. Technique can be used even while performing other attacks.",
+    "ENG": "Gain 'Cutting Wind' Effect ({0} sec), causing your next [BA]Basic Attack, [Riposte]Riposte, [Counter]Counter or [Backstab]Backstabs with current weapon to deal extra {1}[S]Stagger ({2}%[I] + {3}%[S]). You also gain {4}%[AS]Attack Speed for current Weapon. Technique can be used even while performing other attacks.",
     "PL": "Natychmiast otrzymaj Efekt 'Tnący Wiatr' ({0} sek), sprawiając że następny [BA]Podstawowy Atak,[Riposte] Riposta, [Counter]Kontra lub [Backstab]Atak w Plecy zadaje dodatkowe {1}[S]Zachwiania ({2}%[I] + {3}%[S]). Poza tym także zyskujesz {4}%[AS]Prędkości Ataku dla obecnej Broni. Technika może być użyta nawet w trakcie wykonywania innych ataków."
   },
   {

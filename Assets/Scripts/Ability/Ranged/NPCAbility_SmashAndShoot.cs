@@ -31,7 +31,7 @@ public class NPCAbility_SmashAndShoot : Ability {
         }
         else {
             damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 0.7f);
-            damage.TargetOfDamage.ApplyForce(User.Actions.IsFlipped ? Vector2.left * 9 : Vector2.right * 9, this);
+            damage.TargetOfDamage.PushInTargetDirection(User.Actions.IsFlipped ? Vector2.left * 9 : Vector2.right * 9, this);
         }
     }
 }

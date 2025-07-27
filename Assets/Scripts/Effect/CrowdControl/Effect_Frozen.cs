@@ -5,13 +5,15 @@ public class Effect_Frozen : Effect_HardCrowdControl
 {
 
     private GameObject _vfx;
-    public Effect_Frozen(SourceOfEffect source_of_effect) : base(source_of_effect) {
+    public Effect_Frozen(SourceOfEffect source_of_effect) : base(source_of_effect)
+    {
         AutoPlayEffectAnimation = false;
         SpecialSkinColorDuringHardCrowdControl = new Color(0, 0.5f, 1);
         AdditionalEffectsAffectingTargetDuringEffect = new System.Collections.Generic.List<Effect> { new Effect_RootedInPlace(SourceOfEffect) };
         ShowsInUI = true;
         Listeners.Add(EventManager.HitDealt);
         PriorityLevel = 10;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
     }
 
     public override void OnStart()

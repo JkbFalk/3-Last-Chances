@@ -83,6 +83,7 @@ public class Effect_Block : Effect {
         Counter counter = (Counter)Activator.CreateInstance(riposteType, new object[] { UnitCreatingTheEffect });
         counter.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_RiposteCounter" + variant;
         counter.Target = damage.SourceOfDamage.User;
+        counter.OriginalRipostedAbility = damage.SourceOfDamage.User.Actions.CurrentAbilityBeingPerformed;
         UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed = counter;
         if(UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
         {
@@ -119,6 +120,7 @@ public class Effect_Block : Effect {
         Riposte riposte = (Riposte)Activator.CreateInstance(riposteType, new object[] { UnitCreatingTheEffect });
         riposte.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_Riposte" + variant;
         riposte.Target = damage.SourceOfDamage.User;
+        riposte.OriginalRipostedAbility = damage.SourceOfDamage.User.Actions.CurrentAbilityBeingPerformed;
         UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed = riposte;
         if (UnitCreatingTheEffect.Actions.CurrentAbilityBeingPerformed.IsNot(Ability.Property.AlreadyGeneratedEnergy))
         {

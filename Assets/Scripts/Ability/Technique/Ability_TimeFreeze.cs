@@ -67,7 +67,7 @@ public class Ability_TimeFreeze : Technique
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         PlayCustomSound("Start");
         GameController.Instance.DefaultTimeSpeed = _timeSpeed;
         CameraController.Instance.Camera.GetComponent<Volume>().profile = Resources.Load("Camera Profiles/Time Freeze") as VolumeProfile;

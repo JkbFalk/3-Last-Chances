@@ -388,7 +388,7 @@ public class SaveFile
     public void MakeSureAllCorrectTechniquesAndStancesAreUnlocked() {
         UnlockedAbilities.Clear();
         UnlockedStances.Clear();
-        foreach(Type ability in new List<Type> {typeof(Ability_WindRush), typeof(Ability_HeavySlash), typeof(Ability_ChargedShot), typeof(Ability_Fortify), typeof(Ability_ShadowLeap), typeof(Ability_ReplicaFlank), typeof(Ability_Barrage)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_WindRush), typeof(Ability_HeavySlash), typeof(Ability_ChargedShot), typeof(Ability_Fortify), typeof(Ability_SentientShadow), typeof(Ability_ReplicaFlank), typeof(Ability_Barrage)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
         foreach(Type stance in new List<Type> {typeof(Stance_SingularPursuit), typeof(Stance_OmniMastery), typeof(Stance_HeatOfBattle), typeof(Stance_PlunderingFlame), typeof(Stance_PowerWithoutLimit), typeof(Stance_MindOverMatter)}) {

@@ -69,7 +69,7 @@ public class BA_Polearm_Charge : BasicAttack {
     {
         if(SkeweredEnemies.Count > 0) {
             foreach(Unit u in SkeweredEnemies) {
-                Utils.PushUnitIntoPosition(u, User.Actions.IsFlipped ? (User.transform.position + new Vector3(-2 - SkeweredEnemies.IndexOf(u) * 0.3f, 0)) : (User.transform.position + new Vector3(2 + SkeweredEnemies.IndexOf(u) * 0.3f, 0)), this, 15);
+                u.PushIntoPosition(User.Actions.IsFlipped ? (User.transform.position + new Vector3(-2 - SkeweredEnemies.IndexOf(u) * 0.3f, 0)) : (User.transform.position + new Vector3(2 + SkeweredEnemies.IndexOf(u) * 0.3f, 0)), this);
             }
         }
     }

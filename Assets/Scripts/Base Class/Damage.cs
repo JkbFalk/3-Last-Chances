@@ -282,7 +282,7 @@ public class Damage {
             Transform source = DamagingObject != null ? DamagingObject.transform : SourceOfDamage.User.transform;
             bool source_to_the_left_of_target = SourceOfDamage.User.transform.position.x > TargetOfDamage.transform.position.x ? false : true;
             Vector2 direction_vector_towards_target = (TargetOfDamage.transform.position - (source.position + (source_to_the_left_of_target ? Vector3.left : Vector3.right))).normalized;
-            TargetOfDamage.ApplyForce(direction_vector_towards_target * KnockbackInMeters, SourceOfDamage);
+            TargetOfDamage.PushInTargetDirection(direction_vector_towards_target * KnockbackInMeters, SourceOfDamage);
         }
     }
 

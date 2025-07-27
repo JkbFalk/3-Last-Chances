@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Ability_Flamethrower : Technique
 {
-    private int _cycle = 0;
+    private int _cycles = 0;
     private bool _techniqueEnded = false;
     public static float EnergyCost = 1;
     public static float Cooldown = 1f;
@@ -68,25 +68,23 @@ public class Ability_Flamethrower : Technique
             EndThisAbility();
             return;
         }
-        _cycle++;
-        if(_cycle % 10 == 0) {
-            ResetPotentialTargets();
-        }
-        if(Is(Property.UpgradeA) && _cycle <= 100) {
-            _aoe.transform.localScale = new Vector2(1 + _cycle * 0.01f, 1 + _cycle * 0.01f);
+        _cycles++;
+        ResetPotentialTargets();
+        if(Is(Property.UpgradeA) && _cycles <= 100) {
+            _aoe.transform.localScale = new Vector2(1 + _cycles * 0.01f, 1 + _cycles * 0.01f);
             ParticleSystem.MainModule main = _aoe.GetComponent<ParticleSystem>().main;
             var startSize = main.startSize;
-            startSize.constantMin = 3 - 1.5f * _cycle / 100f;
-            startSize.constantMax = 4 - 2f * _cycle / 100f;
+            startSize.constantMin = 3 - 1.5f * _cycles / 100f;
+            startSize.constantMax = 4 - 2f * _cycles / 100f;
             var emissionModule = _aoe.GetComponent<ParticleSystem>().emission;
-            emissionModule.rateOverTime = 100 + 3f * _cycle;
+            emissionModule.rateOverTime = 100 + 3f * _cycles;
             var velocityOverTimeModule = _aoe.GetComponent<ParticleSystem>().velocityOverLifetime;
             ParticleSystem.MinMaxCurve curve = new ParticleSystem.MinMaxCurve();
             curve.mode = ParticleSystemCurveMode.TwoConstants;
-            curve.constantMin = -1 - 1 * _cycle / 100f;
-            curve.constantMax = 1 + 1 * _cycle / 100f;
+            curve.constantMin = -1 - 1 * _cycles / 100f;
+            curve.constantMax = 1 + 1 * _cycles / 100f;
             velocityOverTimeModule.x = curve;
-            Player.Instance.Animator.SetFloat("Technique Speed", 1 + _cycle * 0.02f);
+            Player.Instance.Animator.SetFloat("Technique Speed", 1 + _cycles * 0.02f);
         }
         GameController.Instance.WaitAndRunMethod(0.1f / Player.Instance.Animator.GetFloat("Technique Speed"), AdvanceCycle);
     }
@@ -103,11 +101,16 @@ public class Ability_Flamethrower : Technique
     {
         base.OnAbilityEnd();
         _techniqueEnded = true;
-        if(_aoe != null && _aoe.IsDestroyed() == false ) {
+        if (_aoe != null && _aoe.IsDestroyed() == false)
+        {
             _aoe.MakeObjectDisappear();
         }
-        if(_ultimateVFX != null && _ultimateVFX.IsDestroyed() == false) {
+        if (_ultimateVFX != null && _ultimateVFX.IsDestroyed() == false)
+        {
             MonoBehaviour.Destroy(_ultimateVFX);
+        }
+        if(IsNot(Property.Ultimate)) {
+            EventManager.OneTenthSecondElapsedInGame.AddListener(AdvanceCycle);
         }
     }
 
@@ -135,7 +138,7 @@ public class Ability_Flamethrower : Technique
                 }
                 if(damage.AbilityDamageSource.ColliderName == "SmallCircleAoE") {
                     Player.Instance.UpdateTechniqueStacksAmount(typeof(Ability_Flamethrower), 0, true);
-                    User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+                    ConsumeEnergyAndCooldownForTheAbility();
                     PlayCustomSound("Hit/Fire_Hit" + UnityEngine.Random.Range(1, 7), 1, damage.TargetOfDamage.AudioSource);
                     MonoBehaviour.Destroy(_ultimateVFX);
                 }
@@ -200,13 +203,14 @@ public class Ability_Flamethrower : Technique
         _aoe.transform.eulerAngles = new Vector3(0, 0, 90 * (User.Actions.IsFlipped ? 1 : -1));
         _cyclesStarted = true;
         if(IsNot(Property.Ultimate)) {
-            AdvanceCycle();
+            EventManager.OneTenthSecondElapsedInGame.AddListener(AdvanceCycle);
         }
     }
 
     public override void CallAbilityEvent2()
     {
-        if(_techniqueEnded == false) {
+        if (_techniqueEnded == false)
+        {
             Player.Instance.PlayAnimation("Flamethrower", 0, 0.2f);
         }
     }

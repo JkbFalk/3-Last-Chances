@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Ability_Fireball : Ability {
+public class Ability_Fireball : Technique {
 
     public static float EnergyCost = 40;
     public static float Cooldown = 30;
@@ -52,7 +52,7 @@ public class Ability_Fireball : Ability {
 
     public override void CallAbilityEvent2()
     {
-        User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         if(Player.Instance.CurrentTarget != null) {
             _intendedDestinations.Add(Player.Instance.CurrentTarget.transform.position);
         }

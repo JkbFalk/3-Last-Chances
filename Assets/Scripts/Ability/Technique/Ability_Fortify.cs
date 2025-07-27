@@ -63,7 +63,7 @@ public class Ability_Fortify : Technique
 
     public override void CallAbilityEvent1()
     {
-        Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         _armorBuff = new Effect_ChangeStat(Player.Instance.Armor, new(this))
         {
             FlatAmount = GetEffectiveArmor()
@@ -149,7 +149,7 @@ public class Ability_Fortify : Technique
         }
         else
         {
-            Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+            ConsumeEnergyAndCooldownForTheAbility();
         }
     }
 

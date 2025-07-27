@@ -19,18 +19,18 @@ public class NPCAbility_TwinBladesZigZag : Ability {
     {
         if(User.CurrentTarget != null) {
             _startByGoingUp = User.CurrentTarget.transform.position.y > (User.transform.position.y - 1.5f);
-            User.ApplyForce(new Vector2(400 * (User.Actions.IsFlipped ? -1 : 1), (User.IsBoss ? 1 : 0.4f) * 5 * (_startByGoingUp ? 1 : -1)), this);
+            User.PushInTargetDirection(new Vector2(400 * (User.Actions.IsFlipped ? -1 : 1), (User.IsBoss ? 1 : 0.4f) * 5 * (_startByGoingUp ? 1 : -1)), this);
         }
     }
 
     public override void CallAbilityEvent2()
     {
-        User.ApplyForce(new Vector2(400 * (User.Actions.IsFlipped ? -1 : 1), (User.IsBoss ? 1 : 0.4f) * 7.5f * (_startByGoingUp ? -1 : 1)), this);
+        User.PushInTargetDirection(new Vector2(400 * (User.Actions.IsFlipped ? -1 : 1), (User.IsBoss ? 1 : 0.4f) * 7.5f * (_startByGoingUp ? -1 : 1)), this);
     }
 
     public override void CallAbilityEvent3()
     {
-        User.ApplyForce(new Vector2(150 * (User.Actions.IsFlipped ? -1 : 1), (User.IsBoss ? 1 : 0.4f) * 3.5f * (_startByGoingUp ? 1 : -1)), this);
+        User.PushInTargetDirection(new Vector2(150 * (User.Actions.IsFlipped ? -1 : 1), (User.IsBoss ? 1 : 0.4f) * 3.5f * (_startByGoingUp ? 1 : -1)), this);
         ChaseCurrentTargetAtGivenDegreeAngle(3, 15);
     }
 }

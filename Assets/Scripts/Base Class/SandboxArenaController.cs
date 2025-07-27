@@ -96,7 +96,7 @@ public class SandboxArenaController : MonoBehaviour
             }
         }
         DebugController.Instance.GiveAllItems(0);
-        DebugController.Instance.ToggleSpamMode(1);
+        //DebugController.Instance.ToggleSpamMode(1);
     }
 
 }

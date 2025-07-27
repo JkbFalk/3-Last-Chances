@@ -16,7 +16,7 @@ public class NPCAbility_Flamethrower : Ability {
         NameOfAnimationToAutoPlay = "FlamethrowerNPC";
     }
 
-    public override void ActionToPerformAfterIntervals() {
+    public void ResetTargets() {
         if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject.IsDestroyed() == false) {
             ResetPotentialTargets();
         }
@@ -26,7 +26,8 @@ public class NPCAbility_Flamethrower : Ability {
     {
         _aoe = Utils.CreateAreaOfEffect(new(this), "FlamethrowerNPC");
         GameController.Instance.WaitAndRunMethod(0.01f, AdjustTransform);
-        PerformActionAfterIntervals(18, 0.25f);
+        EventManager.OneTenthSecondElapsedInGame.AddListener(ResetTargets);
+        GameController.Instance.WaitAndRunMethod(4.5f, new System.Action(() => { EventManager.OneTenthSecondElapsedInGame.RemoveListener(ResetTargets); }));
     }
 
     public void AdjustTransform() {
@@ -44,6 +45,6 @@ public class NPCAbility_Flamethrower : Ability {
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        damage.TargetOfDamage.AddEffect(new Effect_Burn(15 * User.MagicStagger.Current / 100, new(this)));
+        damage.TargetOfDamage.AddEffect(new Effect_Burn(5 * User.MagicStagger.Current / 100, new(this)));
     }
 }

@@ -58,6 +58,13 @@ public class DamagingObject : TemporaryObject {
 
     private void HandleDestructibleHit(Collider2D other)
     {
+        if (gameObject.name == "BlastDash" && Player.Instance.Actions.CurrentAbilityBeingPerformed is Ability_BlastDash)
+        {
+            ((Ability_BlastDash)Player.Instance.Actions.CurrentAbilityBeingPerformed).HandleEnvironmentCollision();
+        }
+        else if (gameObject.name == "SentientShadows") {
+            ((Ability_SentientShadow)SourceAbility).HandleEnvironmentCollision();
+        }
         DestructibleEnvironment dest = other.GetComponent<DestructibleEnvironment>();
         if(dest != null && !string.IsNullOrWhiteSpace(dest.ClassAndMethodCheckIfDestructible)) {
             MethodInfo method = Type.GetType(dest.ClassAndMethodCheckIfDestructible.Split(".")[0]).GetMethod(dest.ClassAndMethodCheckIfDestructible.Split(".")[1], BindingFlags.Public | BindingFlags.Static);
@@ -83,7 +90,7 @@ public class DamagingObject : TemporaryObject {
             Utils.CreateAuditLog("Destructible (" + dest.gameObject + ") is taking " + damage + " damage from ability " + SourceAbility.ToString() + " and source " + source.DamageType);
             dest.HitPoints -= damage;
             AdditionalActionsOnDestructibleHit();
-            if (dest.HitPoints <= 0)
+            if (dest.HitPoints <= 0 || gameObject.name == "BlastDash")
             {
                 dest.DestroyObject();
                 EventManager.DestructibleDestroyed.Invoke(dest);

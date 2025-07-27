@@ -32,7 +32,7 @@ public class Ability_Barrage : Technique
 
     public override void CallAbilityEvent1() {
         counter++;
-        Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         for(int i = 0; i < (Is(Property.UpgradeB) ? 5 : 1); i++) {
             Projectile proj = Utils.CreateProjectile(new(this), "EnergyBarrage", Player.Instance.SpriteRenderers[isRightHand ? "Right Hand" : "Left Hand"].Bone.transform.position.x, Player.Instance.SpriteRenderers[isRightHand ? "Right Hand" : "Left Hand"].Bone.transform.position.y);
             proj.transform.rotation = Quaternion.Euler(0, Player.Instance.Actions.IsFlipped ? 180 : 0, directions[i]);

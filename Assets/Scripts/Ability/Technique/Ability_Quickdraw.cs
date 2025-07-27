@@ -66,7 +66,7 @@ public class Ability_Quickdraw : Technique
 
     public override void OnAbilityStart() {
         base.OnAbilityStart();
-        Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         ShowChargeBar();
         if(Is(Property.Ultimate)) {
             PlayCustomSound("TimeSlow");

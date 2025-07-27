@@ -8,17 +8,12 @@ public class NPCAbility_FlameCage : Ability {
     public static AbilityFamily Family = AbilityFamily.Ignis;
     private AreaOfEffect _aoe;
 
-    public NPCAbility_FlameCage(Unit ability_user) : base(ability_user) {
+    public NPCAbility_FlameCage(Unit ability_user) : base(ability_user)
+    {
         AddCustomSound("Use", "Ability/Ability_Flamethrower", 0.2f);
         DamageSources.Add(new DamageSource(20, 5, Constants.DamageType.Magic));
         HitSoundType = Constants.HitSoundTypeEnum.Fire;
         HitSoundVolume = 0.2f;
-    }
-
-    public override void ActionToPerformAfterIntervals() {
-        if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject.IsDestroyed() == false) {
-            ResetPotentialTargets();
-        }
     }
 
     public override void CallAbilityEvent1()
@@ -27,11 +22,12 @@ public class NPCAbility_FlameCage : Ability {
         _aoe.GetComponentInParent<DestructibleEnvironment>().BaseHitPoints = 100 * Utils.GetExpectedPowerForLevel(User.Level);
         _aoe.GetComponentInParent<DestructibleEnvironment>().HitPoints = 100 * Utils.GetExpectedPowerForLevel(User.Level);
         _aoe.transform.parent.position = Target.transform.position;
-        PerformActionAfterIntervals(80, 0.25f);
+        EventManager.OneSecondElapsedInGame.AddListener(ResetPotentialTargets);
+        GameController.Instance.WaitAndRunMethod(20, new System.Action(() => { EventManager.OneSecondElapsedInGame.RemoveListener(ResetPotentialTargets); }));
     }
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        damage.TargetOfDamage.AddEffect(new Effect_Burn(3 * User.MagicStagger.Current / 100, new(this)));
+        damage.TargetOfDamage.AddEffect(new Effect_Burn(12 * User.MagicStagger.Current / 100, new(this)));
     }
 }

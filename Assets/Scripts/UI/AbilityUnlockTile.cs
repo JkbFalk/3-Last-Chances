@@ -58,7 +58,6 @@ public class AbilityUnlockTile : MonoBehaviour, IPointerClickHandler, ISelectHan
         {
             Start();
         }
-        Debug.Log(AbilityType + " , " + Utils.GetGameObjectPath(gameObject));
         FieldInfo family = AbilityType.GetField("Family", BindingFlags.Public | BindingFlags.Static);
         if (IsUltimateUnlock)
         {

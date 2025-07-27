@@ -319,11 +319,9 @@ public class DebugController : MonoBehaviour
                 IsRemovable = false,
                 RegenerationFlatAmount = 1000
             };
-            Debug.Log("QQ1: " + Player.Instance.Energy.Current + " , " + Player.Instance.CooldownReduction.Current);
             Player.Instance.AddEffect(superCDR);
             Player.Instance.AddEffect(superEG);
             Player.Instance.RemoveAllCooldowns();
-            Debug.Log("QQ2: " + Player.Instance.Energy.Current + " , " + Player.Instance.CooldownReduction.Current);
         }
         else
         {

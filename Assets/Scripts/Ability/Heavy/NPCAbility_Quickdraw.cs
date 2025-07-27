@@ -9,7 +9,7 @@ public class NPCAbility_Quickdraw: Ability {
 
     public NPCAbility_Quickdraw(Unit ability_user) : base(ability_user) {
         AddCustomSound("Draw1", "Longblade/Longblade_Sheathe1", 1f);
-        AddCustomSound("Draw2", "Ability/Ability_SeverVitality_Swing", 1f);
+        AddCustomSound("Draw2", "Ability/Ability_DeathSentence_Swing", 1f);
         AddCustomSound("Indicator", "Ability/QuickdrawIndicator", 0.8f);
         AddCustomSound("Wind", "Ability/Ability_WindBlast_Dash", 0.8f);
         _randomAS = new Effect_ChangeStat(User.HeavyAttackSpeed, new(this)) {PercentageAmount = UnityEngine.Random.Range(0, 25)};

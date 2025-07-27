@@ -210,7 +210,7 @@ public class Utils {
         bool source_to_the_left_of_target = damage.SourceOfDamage.User.transform.position.x > damage.TargetOfDamage.transform.position.x ? false : true;
         Vector2 direction_vector_towards_target = (damage.TargetOfDamage.transform.position - (damage.SourceOfDamage.User.transform.position + (source_to_the_left_of_target ? Vector3.left : Vector3.right))).normalized;
         if(distance < optimal_distance) {
-            damage.TargetOfDamage.ApplyForce(direction_vector_towards_target * (optimal_distance - distance) * 5, damage.SourceOfDamage);
+            damage.TargetOfDamage.PushInTargetDirection(direction_vector_towards_target * (optimal_distance - distance) * 5, damage.SourceOfDamage);
         }
     }
 
@@ -909,11 +909,6 @@ public class Utils {
             return;
         }
         unit.Animator.SetFloat("Special Animation Speed", (4f - (4f * unit.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime)) / countered.RemainingDuration);
-    }
-
-    public static void PushUnitIntoPosition(Unit unit, Vector3 position, Ability source, float intensity = 0.35f)
-    {
-        unit.ApplyForce((position - unit.transform.position) * Vector2.Distance(unit.transform.position, position) * intensity, source);
     }
 
     public static string InsertLabelsIntoText(string text, GameObject game_object = null, string effect_name = "")
@@ -1674,7 +1669,7 @@ public class Utils {
         new_vfx.transform.SetParent(Area.Instance.transform);
         SetUpTransform(source, new_vfx, pos_x, pos_y);
         AddDynamicSortOrders(new_vfx);
-        if (source?.SourceAbility != null)
+        if (source?.SourceAbility != null && source.SourceAbility is not Technique)
         {
             ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_vfx);
         }
@@ -1701,7 +1696,10 @@ public class Utils {
         new_aoe.transform.SetParent(Area.Instance.transform);
         SetUpTransform(source, new_aoe, pos_x, pos_y);
         AddDynamicSortOrders(new_aoe);
-        ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_aoe);
+        if (source.SourceAbility is not Technique)
+        {
+            ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_aoe);
+        }
         AreaOfEffect[] aoes = new_aoe.GetComponentsInChildren<AreaOfEffect>(true);
         for(int i =0; i <aoes.Length; i++)
         {
@@ -1737,14 +1735,17 @@ public class Utils {
 
     public static Projectile CreateProjectile(SourceOfEffect source, string prefab_name, float pos_x = 0, float pos_y = 0)
     {
-        if(Area.Instance == null) {
+        if (Area.Instance == null)
+        {
             return null;
         }
         GameObject new_projectile;
-        if(prefab_name == "GunBasicAttack" && source.User.CheckIfUnderEffect(typeof(Effect_ShadowInfusion_Ultimate)) && ((Effect_ShadowInfusion_Ultimate)source.User.GetEffect(typeof(Effect_ShadowInfusion_Ultimate))).DamageCategory == DamageType.Ranged) {
+        if (prefab_name == "GunBasicAttack" && source.User.CheckIfUnderEffect(typeof(Effect_ShadowInfusion_Ultimate)) && ((Effect_ShadowInfusion_Ultimate)source.User.GetEffect(typeof(Effect_ShadowInfusion_Ultimate))).DamageCategory == DamageType.Ranged)
+        {
             new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_SpiritWeapon")) as GameObject;
         }
-        else if(prefab_name == "CannonBasicAttack" && Player.Instance.CurrentStance.StanceEffect is not Stance_None) {
+        else if (prefab_name == "CannonBasicAttack" && Player.Instance.CurrentStance.StanceEffect is not Stance_None)
+        {
             new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_CannonBasicAttack")) as GameObject;
         }
         else
@@ -1755,7 +1756,10 @@ public class Utils {
         new_projectile.transform.SetParent(Area.Instance.transform);
         SetUpTransform(source, new_projectile, pos_x, pos_y);
         AddDynamicSortOrders(new_projectile);
-        ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_projectile);
+        if (source.SourceAbility is not Technique)
+        {
+            ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_projectile);
+        }
         new_projectile.transform.Rotate(0, 0, source.User.Actions.IsFlipped ? 90 : -90, Space.Self);
         Projectile projectile = new_projectile.GetComponent<Projectile>();
         projectile.SourceAbility = source.SourceAbility;
@@ -1767,11 +1771,12 @@ public class Utils {
         {
             new_projectile.transform.up = Utils.GetDirectionVector(Vector2.zero, source.User.Actions.SavedAimDirection != Vector2.zero ? source.User.Actions.SavedAimDirection : source.User.Actions.GetCurrentAimVector(), source.User.Actions.IsFlipped, 60);
         }
-        if(source.SourceAbility != null) {
+        if (source.SourceAbility != null)
+        {
             source.SourceAbility.AdditionalAbilitySpecificActionsOnShootingProjectile(projectile);
         }
         Transform on_create_vfx = projectile.transform.Find("OnCreate");
-        if(on_create_vfx != null)
+        if (on_create_vfx != null)
         {
             on_create_vfx.gameObject.SetActive(true);
             on_create_vfx.SetParent(on_create_vfx.parent.parent);

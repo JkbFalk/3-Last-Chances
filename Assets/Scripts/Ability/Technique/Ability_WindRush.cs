@@ -44,7 +44,7 @@ public class Ability_WindRush : Technique
 
     public override void CallAbilityEvent1()
     {
-        User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         GameObject vfx = Utils.CreateVisualEffect(new(this), "WindRush");
         vfx.GetComponent<AttachObjectToBodyPart>().Initialize(User);
         vfx.transform.eulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? -90 : 90);
@@ -118,7 +118,8 @@ public class Ability_WindRush : Technique
         _ultimateAoe.transform.parent.position = _targetOfDamage.transform.position;
         _dealingAoEDamage = true;
         EventManager.UnitKnockedOut.AddListener(CheckIfDestroyWall);
-        PerformActionAfterIntervals(40, 0.5f);
+        EventManager.OneSecondElapsedInGame.AddListener(PushTarget);
+        GameController.Instance.WaitAndRunMethod(20, new System.Action(() => { EventManager.OneSecondElapsedInGame.RemoveListener(PushTarget); }));
         GameController.Instance.WaitAndRunMethod(UltimateWallDurationInSeconds, TurnOffUltimateWall);
     }
 
@@ -146,10 +147,10 @@ public class Ability_WindRush : Technique
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
     }
 
-    public override void ActionToPerformAfterIntervals()
+    public void PushTarget()
     {
         ResetPotentialTargets();
-        Utils.PushUnitIntoPosition(_targetOfDamage, _ultimateAoe.transform.parent.position, this, 50);
+        _targetOfDamage.PushIntoPosition(_ultimateAoe.transform.parent.position, this, 1.1f);
     }
 
     public override bool CheckIfDamageTriggerIsValid(Unit unit_getting_attacked, DamagingObject source_of_hit) {

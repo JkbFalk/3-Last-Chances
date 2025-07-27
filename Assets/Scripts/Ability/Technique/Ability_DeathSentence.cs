@@ -6,19 +6,16 @@ using UnityEngine.VFX;
 public class Ability_DeathSentence : Technique
 {
 
-    private static float _chargeTime = 4;
+    private static float _chargeTime = 5;
     private static float _percentageOfHeavyDamageAsInjuryMinimum = 500;
     private static float _percentageOfHeavyDamageAsInjuryMaximum = 1000;
-    private static float _staggeredDamageIncrease = 50;
-    private static float _staggeredStunDuration = 1;
-
     private static float _masteryBRegularEnemyMinimumHealth = 50;
-    private static float _masteryBRegularEnemyMaximumHealth = 99;
-    private static float _masteryBEliteEnemyMinimumHealth = 25;
-    private static float _masteryBEliteEnemyMaximumHealth = 50;
+    private static float _masteryBRegularEnemyMaximumHealth = 100;
+    private static float _masteryBEliteEnemyMinimumHealth = 20;
+    private static float _masteryBEliteEnemyMaximumHealth = 40;
 
-    public static float EnergyCost = 50;
-    public static float Cooldown = 25;
+    public static float EnergyCost = 75;
+    public static float Cooldown = 90;
 
     private GameObject _visualEffect;
 
@@ -37,13 +34,13 @@ public class Ability_DeathSentence : Technique
         Properties.Add(Property.Charged);
         HitSoundVolume = 0.5f;
         DamageSources.Add(new DamageSource(0, 0, Constants.DamageType.Heavy));
-        DamageSources[0].CustomHitSound = "Ability/SeverVitality";
-        AddCustomSound("Charge", "Ability/Ability_SeverVitality_Charge", 0.5f);
+        DamageSources[0].CustomHitSound = "Ability/DeathSentence";
+        AddCustomSound("Charge", "Ability/Ability_DeathSentence_Charge", 0.5f);
     }
 
     public static List<string> GetDescriptionValues()
     {
-        return new List<string> { _chargeTime.ToString(), (Player.Instance.HeavyInjury.Current * _percentageOfHeavyDamageAsInjuryMinimum / 100).ToString(), _percentageOfHeavyDamageAsInjuryMinimum.ToString(), (Player.Instance.HeavyInjury.Current * _percentageOfHeavyDamageAsInjuryMaximum / 100).ToString(), _percentageOfHeavyDamageAsInjuryMaximum.ToString(), _staggeredDamageIncrease.ToString(), _staggeredStunDuration.ToString() };
+        return new List<string> { _chargeTime.ToString(), (Player.Instance.HeavyInjury.Current * _percentageOfHeavyDamageAsInjuryMinimum / 100).ToString(), _percentageOfHeavyDamageAsInjuryMinimum.ToString(), (Player.Instance.HeavyInjury.Current * _percentageOfHeavyDamageAsInjuryMaximum / 100).ToString(), _percentageOfHeavyDamageAsInjuryMaximum.ToString() };
     }
 
     public static List<string> GetMasteryADescriptionValues()
@@ -60,7 +57,7 @@ public class Ability_DeathSentence : Technique
         base.OnAbilityStart();
         StartCountingTime(_chargeTime);
         ShowChargeBar();
-        _visualEffect = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_SeverVitality" + (Is(Property.UpgradeA) ? "_MasteryA" : Is(Property.UpgradeB) ? "_MasteryB" : ""))) as GameObject;
+        _visualEffect = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_DeathSentence" + (Is(Property.UpgradeA) ? "_MasteryA" : Is(Property.UpgradeB) ? "_MasteryB" : ""))) as GameObject;
         _visualEffect.transform.SetParent(User.SpriteRenderers["Heavy"].Bone);
         _visualEffect.transform.localPosition = new Vector2(1f, 0);
         _visualEffect.transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -98,7 +95,7 @@ public class Ability_DeathSentence : Technique
     public void PerformAttack() {
         if (CountingTime) {
             StopCountingTime();
-            User.PlayAnimation("SeverVitality", 0, 0.72f);
+            User.PlayAnimation("DeathSentence", 0, 0.72f);
         }
     }
 
@@ -111,11 +108,6 @@ public class Ability_DeathSentence : Technique
             UpdateAffectedEnemyList(unit_getting_attacked, object_hitting);
             float InjuryAmount = GetValueBasedOnPercentageOfTimePassed(_percentageOfHeavyDamageAsInjuryMinimum, _percentageOfHeavyDamageAsInjuryMaximum) / 100 * User.HeavyInjury.Current;
             Effect_Staggered staggered = (Effect_Staggered)unit_getting_attacked.CurrentEffects.FirstOrDefault(effect => effect.GetType().IsSubclassOf(typeof(Effect_Staggered)));
-            if (staggered != null) {
-                InjuryAmount = InjuryAmount + InjuryAmount *_staggeredDamageIncrease / 100;
-                unit_getting_attacked.EndEffect(staggered);
-                unit_getting_attacked.AddEffect(new Effect_Stun(new(this)), _staggeredStunDuration);
-            }
             if (Is(Property.UpgradeB))
             {
                 float execution_range = unit_getting_attacked.IsBoss ? GetValueBasedOnPercentageOfTimePassed(_masteryBEliteEnemyMinimumHealth, _masteryBEliteEnemyMaximumHealth) : GetValueBasedOnPercentageOfTimePassed(_masteryBRegularEnemyMinimumHealth, _masteryBRegularEnemyMaximumHealth);

@@ -76,7 +76,7 @@ public class Ability_Thunderstrike : Technique
         _releasedButton = true;
         if (CountingTime && !_executedAttack && IsNot(Property.UpgradeB))
         {
-            User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+            ConsumeEnergyAndCooldownForTheAbility();
             CreateRegularThunderStrike();
         }
         if (CountingTime && Is(Property.UpgradeB))
@@ -160,7 +160,7 @@ public class Ability_Thunderstrike : Technique
 
     public override void CallAbilityEvent2()
     {
-        User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         if(Is(Property.UpgradeA))
         {
             CreateMasteryAThunderStrike();

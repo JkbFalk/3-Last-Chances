@@ -15,6 +15,6 @@ public class NPCAbility_SneakJumpAttack : Ability {
         }
         Transform target = User.CurrentTarget.transform;
         Vector2 direction_vector_towards_target = new Vector3(target.position.x + (target.position.x > User.transform.position.x ? -1.1f : 1.1f), target.position.y) - User.transform.position;
-        User.ApplyForce(direction_vector_towards_target * 2.5f, this);
+        User.PushInTargetDirection(direction_vector_towards_target * 2.5f, this);
     }
 }

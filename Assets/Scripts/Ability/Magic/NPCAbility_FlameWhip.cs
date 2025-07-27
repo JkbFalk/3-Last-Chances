@@ -60,7 +60,7 @@ public class NPCAbility_FlameWhip : Ability {
             EndThisAbility();
         }
         else {
-            Utils.PushUnitIntoPosition(EnemyHit, User.transform.position - new Vector3(0.5f * (User.Actions.IsFlipped ? -1 : 1), 0), this);
+            EnemyHit.PushIntoPosition(User.transform.position - new Vector3(0.5f * (User.Actions.IsFlipped ? -1 : 1), 0), this);
         }
     }
 

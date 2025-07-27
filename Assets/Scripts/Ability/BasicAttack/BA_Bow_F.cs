@@ -40,7 +40,7 @@ public class BA_Bow_F : BasicAttack {
             if(!_barrageEquipped) {
                 User.PlayAnimation("Bow_FF", 0, 0);
                 Player.Instance.AddEffect(new Effect_Backstep(new(this)), 0.5f);
-                Player.Instance.ApplyForce(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);
+                Player.Instance.PushInTargetDirection(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);
                 GameController.Instance.WaitAndRunMethod(0.015f, Angle2);
                 GameController.Instance.WaitAndRunMethod(0.03f, Angle3);
                 GameController.Instance.WaitAndRunMethod(0.045f, Angle4);
@@ -61,25 +61,25 @@ public class BA_Bow_F : BasicAttack {
     }
 
     public void Angle2() {
-        Player.Instance.ApplyForce(new Vector2(-0.7f * _flipped, 0.5f) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.7f * _flipped, 0.5f) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void Angle3() {
-        Player.Instance.ApplyForce(new Vector2(-1f * _flipped, 0) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-1f * _flipped, 0) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void Angle4() {
-        Player.Instance.ApplyForce(new Vector2(-0.7f * _flipped, -0.8f) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.7f * _flipped, -0.8f) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void Angle5() {
-        Player.Instance.ApplyForce(new Vector2(-0.6f * _flipped, -1f) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.6f * _flipped, -1f) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public override void CallAbilityEvent3()
     {
         ShotArrow = true;
-        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * PlayerControls.BasicAttackButtonHoldDuration * 2 : Vector2.left * PlayerControls.BasicAttackButtonHoldDuration * 2 , this);
+        User.PushInTargetDirection(User.Actions.IsFlipped ? Vector2.right * PlayerControls.BasicAttackButtonHoldDuration * 2 : Vector2.left * PlayerControls.BasicAttackButtonHoldDuration * 2 , this);
         GameObject vfx = Utils.CreateVisualEffect(new(this), "Friction");
         vfx.transform.SetParent(User.SpriteRenderers["Right Foot"].Bone.parent.transform);
         vfx.transform.position = vfx.transform.parent.position;

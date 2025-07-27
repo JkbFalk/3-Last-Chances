@@ -4832,6 +4832,10 @@ MonoBehaviour:
   YTime: 0
   StartY: 0
   EndY: 0
+  AlphaTime: 0
+  StartAlpha: 0
+  EndAlpha: 0
+  RunsInRealtime: 0
   ScaleTimeWithPlayerAttackSpeed: 0
 --- !u!114 &7682154628315598692
 MonoBehaviour:
@@ -4939,11 +4943,11 @@ MonoBehaviour:
   DeactivateNSecondsAfterStart: 0
   DeactivateTimer: 0
   AlwaysSameSimulationSpeed: 0
-  ParticleSystemRenderer: {fileID: 0}
   IsDisappearing: 0
   DisappearTimeInSeconds: 0.5
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
+  ParticleSystemRenderers: []
   Owner: {fileID: 0}
   CanBeRiposted: 0
   DealingDamage: 0
@@ -4955,6 +4959,10 @@ MonoBehaviour:
   DisappearsAfterNHits: 0
   SlowDownOverTime: 0
   HomingOntoUnit: {fileID: 0}
+  IgnoresWalls: 0
+  DurabilityDoesNotDecreaseOnDestructibleHit: 0
+  OnlyDestroyOnTargetHit: 0
+  IsFinalAmmo: 0
 --- !u!58 &4127723700574437207
 CircleCollider2D:
   m_ObjectHideFlags: 0

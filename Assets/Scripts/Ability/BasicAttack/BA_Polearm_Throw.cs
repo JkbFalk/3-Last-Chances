@@ -27,7 +27,7 @@ public class BA_Polearm_Throw : BasicAttack {
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
         if(damage.AbilityDamageSource.ColliderName == "2") {
-            Utils.PushUnitIntoPosition(damage.TargetOfDamage, User.Actions.IsFlipped ? (User.transform.position + new Vector3(-2.5f, 0)) : (User.transform.position + new Vector3(2.5f, 0)), this, 30);
+            damage.TargetOfDamage.PushIntoPosition(User.Actions.IsFlipped ? (User.transform.position + new Vector3(-2.5f, 0)) : (User.transform.position + new Vector3(2.5f, 0)), this, 1.05f);
         }
         else {
             damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

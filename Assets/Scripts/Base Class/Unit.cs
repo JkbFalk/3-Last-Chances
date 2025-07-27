@@ -144,12 +144,27 @@ public class Unit : PermanentObject {
             }
         }
     }
-    protected List<Cooldown> _techniqueCooldowns = new();
-    public ReadOnlyCollection<Cooldown> TechniqueCooldowns => _techniqueCooldowns.AsReadOnly();
-
-    public Cooldown ToolCooldown {get; protected set;}
-    protected List<Cooldown> _effectCooldowns = new();
-    public ReadOnlyCollection<Cooldown> EffectCooldowns => _effectCooldowns.AsReadOnly();
+    private List<Cooldown> _techniqueCooldowns = new();
+    
+    public List<Cooldown> TechniqueCooldowns
+    {
+        get => _techniqueCooldowns;
+        set
+        {
+            _techniqueCooldowns = value;
+        }
+    }
+    public Cooldown ToolCooldown {get; set;}
+    private List<Cooldown> _effectCooldowns = new();
+    
+    public List<Cooldown> EffectCooldowns
+    {
+        get => _effectCooldowns;
+        set
+        {
+            _effectCooldowns = value;
+        }
+    }
     public int HitStopFramesRemaining = 0;
 
     [HideInInspector]
@@ -873,9 +888,9 @@ public class Unit : PermanentObject {
             StaggerBar.Current = 0;
             UnitAI.CurrentAIBehavior = Constants.AIBehavior.None;
         }
-        _techniqueCooldowns.Clear();
+        TechniqueCooldowns.Clear();
         ToolCooldown = null;
-        _effectCooldowns.Clear();
+        EffectCooldowns.Clear();
         InCombat = false;
         Actions.CurrentActionBeingPerformed = Constants.ActionType.Idle;
     }
@@ -1350,23 +1365,29 @@ public class Unit : PermanentObject {
         if(Time.deltaTime == 0) {
             return;
         }
-        foreach (Cooldown cooldown in TechniqueCooldowns.ToArray()) {
+        foreach (Cooldown cooldown in TechniqueCooldowns.ToArray())
+        {
             cooldown.RemainingDuration -= Time.deltaTime;
-            if(cooldown.RemainingDuration <= 0) {
+            if (cooldown.RemainingDuration <= 0)
+            {
                 bool isStacksBased = cooldown.Type?.GetField("IsStacksBasedTechnique") != null;
                 int maxStacks = 0;
                 bool isUltimate = cooldown.Identifier == "IsUltimate";
-                if(cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "") + "MaxStacks") != null) {
-                    maxStacks = (int)cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "")  + "MaxStacks").GetValue(null);
+                if (cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "") + "MaxStacks") != null)
+                {
+                    maxStacks = (int)cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "") + "MaxStacks").GetValue(null);
                 }
-                if(isStacksBased && ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks))) {
+                if (isStacksBased && ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks)))
+                {
                     Player.Instance.UpdateTechniqueStacksAmount(cooldown.Type, isUltimate ? Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] + 1 : Player.Instance.CurrentTechniqueStacks[cooldown.Type] + 1, isUltimate);
-                    if((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks)) {
+                    if ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks))
+                    {
                         cooldown.RemainingDuration = cooldown.TotalDuration;
                     }
                 }
-                else {
-                    _techniqueCooldowns.Remove(cooldown);
+                else
+                {
+                    TechniqueCooldowns.Remove(cooldown);
                 }
                 cooldown.OnEnd();
             }
@@ -1377,14 +1398,20 @@ public class Unit : PermanentObject {
             cooldown.NewCooldownIndicatorExtraScaleTimer -= Time.deltaTime;
             Utils.UpdateIndicatorScaleBasedOnTime(cooldown.TileInUI, cooldown.NewCooldownIndicatorExtraScaleTimer);
             if(cooldown.RemainingDuration <= 0) {
-                _effectCooldowns.Remove(cooldown);
+                EffectCooldowns.Remove(cooldown);
                 cooldown.OnEnd();
             }
             else if(cooldown.ShowsInUI && cooldown.CooldownDisplay == null) {
                 Transform effectsDisplay = UIManager.Objects.Effects.transform;
                 cooldown.TileInUI = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_CooldownUIIndicator")) as GameObject;
                 cooldown.TileInUI.transform.SetParent(effectsDisplay, false);
+                Debug.Log($"XXX1 {cooldown.TileInUI}");
+                Debug.Log($"XXX1.5 {cooldown.TileInUI.transform.Find("CooldownImage")}");
+                Debug.Log($"XXX1.7 {cooldown.TileInUI.transform.Find("CooldownImage").GetComponent<Image>()}");
+                Debug.Log($"XXX1.9 {cooldown.PathToCooldownGraphic}");
                 cooldown.TileInUI.transform.Find("CooldownImage").GetComponent<Image>().sprite = cooldown.CooldownGraphic != null ? cooldown.CooldownGraphic : Resources.Load("Sprites/" + cooldown.PathToCooldownGraphic, typeof(Sprite)) as Sprite;
+                Debug.Log($"XXX2 {cooldown.TileInUI.transform.Find("CooldownDisplay")}");
+                Debug.Log($"XXX3 {cooldown.TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>()}");
                 cooldown.CooldownDisplay = cooldown.TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>();
                 cooldown.CooldownDisplay.fillAmount = 0;
                 cooldown.TileInUI.transform.localScale = new Vector3(Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, 1);
@@ -1445,24 +1472,30 @@ public class Unit : PermanentObject {
     }
 
     public void AddCooldown(Cooldown cooldown) {
-        if(cooldown.Type.IsSubclassOf(typeof(Effect))) {
-            Cooldown existing_cd = _effectCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type);
-            if(existing_cd != null) {
-                _effectCooldowns.Remove(existing_cd);
+        if (cooldown.Type.IsSubclassOf(typeof(Effect)))
+        {
+            Cooldown existing_cd = EffectCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type);
+            if (existing_cd != null)
+            {
+                EffectCooldowns.Remove(existing_cd);
             }
-            _effectCooldowns.Add(cooldown);
+            EffectCooldowns.Add(cooldown);
         }
-        else if(cooldown.Type.IsSubclassOf(typeof(Ability))) {
-            Cooldown existing_cd = _techniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type && cd.Identifier == cooldown.Identifier);
-            if(existing_cd != null) {
-                _techniqueCooldowns.Remove(existing_cd);
+        else if (cooldown.Type.IsSubclassOf(typeof(Ability)))
+        {
+            Cooldown existing_cd = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type && cd.Identifier == cooldown.Identifier);
+            if (existing_cd != null)
+            {
+                TechniqueCooldowns.Remove(existing_cd);
             }
-            _techniqueCooldowns.Add(cooldown);
+            TechniqueCooldowns.Add(cooldown);
         }
-        else if(cooldown.Type.IsSubclassOf(typeof(Item))) {
+        else if (cooldown.Type.IsSubclassOf(typeof(Item)))
+        {
             ToolCooldown = cooldown;
         }
-        else {
+        else
+        {
             Debug.LogError("Tried to add cooldown for object that is not Effect, Ability or Item: " + cooldown.Type);
         }
         List<Effect> extras = Player.Instance.CurrentEffects.Where(e => e.GetType() == typeof(Effect_AddExtraCooldown) && ((Effect_AddExtraCooldown)e).AbilityItemOrEffectCooldown == cooldown.Type).ToList();
@@ -1476,18 +1509,22 @@ public class Unit : PermanentObject {
     }
 
     public void RemoveCooldown(Cooldown cd) {
-        if(cd == ToolCooldown) {
+        if (cd == ToolCooldown)
+        {
             ToolCooldown = null;
         }
-        else if(_effectCooldowns.Contains(cd)) {
-            _effectCooldowns.Remove(cd);
+        else if (EffectCooldowns.Contains(cd))
+        {
+            EffectCooldowns.Remove(cd);
         }
-        else if(_techniqueCooldowns.Contains(cd)) {
-            _techniqueCooldowns.Remove(cd);
+        else if (TechniqueCooldowns.Contains(cd))
+        {
+            TechniqueCooldowns.Remove(cd);
         }
-        else {
-            Debug.LogError("Tried to remove cooldown that was not found on any cooldown list for unit " + gameObject.name + ": " +  cd.Type);
-            return;           
+        else
+        {
+            Debug.LogError("Tried to remove cooldown that was not found on any cooldown list for unit " + gameObject.name + ": " + cd.Type);
+            return;
         }
         if(cd.ShowsInUI && cd.CooldownDisplay != null) {
             MonoBehaviour.Destroy(cd.CooldownDisplay.transform.parent.gameObject);
@@ -1496,18 +1533,18 @@ public class Unit : PermanentObject {
 
     public void RemoveCooldown(Type cooldown_target_effect_ability_or_item) {
         if(cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Effect))) {
-            Cooldown cd = _effectCooldowns.FirstOrDefault(cd => cd.Type == cooldown_target_effect_ability_or_item.GetType());
+            Cooldown cd = EffectCooldowns.FirstOrDefault(cd => cd.Type == cooldown_target_effect_ability_or_item.GetType());
             if(cd != null) {
-                _effectCooldowns.Remove(cd);
+                EffectCooldowns.Remove(cd);
             }
             else {
                 Debug.LogError("Tried to remove Effect cooldown that does not exist: " + cooldown_target_effect_ability_or_item);
             }
         }
         else if(cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Ability))) {
-            Cooldown cd = _techniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown_target_effect_ability_or_item);
+            Cooldown cd = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown_target_effect_ability_or_item);
             if(cd != null) {
-                _techniqueCooldowns.Remove(cd);
+                TechniqueCooldowns.Remove(cd);
             }
             else {
                 Debug.LogError("Tried to remove Ability cooldown that does not exist: " + cooldown_target_effect_ability_or_item);
@@ -1522,8 +1559,8 @@ public class Unit : PermanentObject {
     }
 
     public void RemoveAllCooldowns() {
-        _effectCooldowns.Clear();
-        _techniqueCooldowns.Clear();
+        EffectCooldowns.Clear();
+        TechniqueCooldowns.Clear();
         ToolCooldown = null;
     }
 
@@ -1542,7 +1579,6 @@ public class Unit : PermanentObject {
             effect_to_add.AdditionalActionsOnSettingTargetOfEffect(this);
         }
         effect_to_add.BaseDuration = seconds;
-        effect_to_add.Id = effect_to_add.TargetOfEffect + "-" + effect_to_add.GetType() + "-" + effect_to_add.BaseDuration + "-" + UnityEngine.Random.Range(0, 100000);
         if(effect_to_add.BehaviourWhenDuplicateEffect != BehaviourWhenDuplicateEffectEnum.AllowDuplicate) {
             if(effect_to_add.CheckIfEffectAlreadyAppliedAndHandleBehaviour()) {
                 return;
@@ -1596,15 +1632,48 @@ public class Unit : PermanentObject {
         Utils.CreateAuditLog("Collision turned " + (should_collide ? "ON" : "OFF"));
     }
 
-    public void ApplyForce(Vector2 vector, Ability source) {
+    public void PushInTargetDirection(Vector2 direction_vector, Ability source) {
         if(!CheckIfUnderEffect(typeof(Effect_Immovable)) || (source != null && source.User == this))
         {
-            Rigidbody2D.AddForce(vector * Constants.FORCE_REQUIRED_TO_PUSH_1M, ForceMode2D.Force);
+            Rigidbody2D.AddForce(direction_vector * Constants.FORCE_REQUIRED_TO_PUSH_1M, ForceMode2D.Force);
+        }
+    }
+    
+    public void PushIntoPosition(Vector3 position, Ability source, float intensity = 1f) {
+        PushInTargetDirection((position - transform.position) * intensity * 1.05f, source);
+    }
+
+    public void PushInTargetDirectionOverTime(Vector2 direction_vector, Ability source, float seconds = 1) {
+        int calls = (int)(seconds * 10);
+        for (int i = 0; i < seconds * 10; i++)
+        {
+            GameController.Instance.WaitAndRunMethod(i * 0.1f, PushInTargetDirectionOverTimeCoroutine, new object[] { direction_vector / calls / 2, source });
         }
     }
 
-    public void OnDestroy() {
-        if (_eliteEnemyIndicator != null) {
+    public void PushIntoPositionOverTime(Vector2 position, Ability source, float seconds = 1, float intensity = 1) {
+        int calls = (int)(seconds * 10);
+        for (int i = 0; i < seconds * 10; i++)
+        {
+            GameController.Instance.WaitAndRunMethod(i * 0.1f, PushIntoPositionOverTimeCoroutine, new object[] { position, source, intensity, calls });
+        }
+    }
+
+    private void PushInTargetDirectionOverTimeCoroutine(object[] parameters)
+    {
+        PushInTargetDirection((Vector2)parameters[0], (Ability)parameters[1]);
+    }
+
+    private void PushIntoPositionOverTimeCoroutine(object[] parameters)
+    {
+        PushIntoPosition((Vector2)parameters[0], (Ability)parameters[1], (float)parameters[2] / (int)parameters[3] * 2f);
+    }
+
+
+    public void OnDestroy()
+    {
+        if (_eliteEnemyIndicator != null)
+        {
             Destroy(_eliteEnemyIndicator.transform.parent.gameObject);
         }
     }

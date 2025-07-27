@@ -24,10 +24,10 @@ public class AI_RoamAround : AI {
         {
             User.UnitAI.NavMeshAgent.SetDestination(intended_position);
         }
-        PerformActionAfterIntervals(10, 0.2f);
+        EventManager.OneTenthSecondElapsedInGame.AddListener(SearchForEnemies);
     }
 
-    public override void ActionToPerformAfterIntervals()
+    public void SearchForEnemies()
     {
         if(_reRoamQueued == false && AbilityEnded == false && User.UnitAI.NavMeshAgent.remainingDistance < 0.1f && User.InCombat == false) {
             _reRoamQueued = true;
@@ -36,7 +36,14 @@ public class AI_RoamAround : AI {
         }
     }
 
-    public void ReRoam() {
+    public override void OnAbilityEnd()
+    {
+        base.OnAbilityEnd();
+        EventManager.OneTenthSecondElapsedInGame.RemoveListener(SearchForEnemies);
+    }
+
+    public void ReRoam()
+    {
         User.Actions.UseAbility(typeof(AI_RoamAround));
     }
 }

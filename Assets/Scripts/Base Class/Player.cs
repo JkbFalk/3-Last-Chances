@@ -14,6 +14,7 @@ using UnityEngine.AI;
 
 public class Player : Unit {
 
+    public bool CannotMoveDueToOwnTechnique = false;
     public float StancePower = 1;
     public float ItemPower = 1;
     public float ToolPower = 1;
@@ -58,7 +59,7 @@ public class Player : Unit {
         {typeof(Ability_Flamethrower), 1},
         {typeof(Ability_SpearsOfIce), 1},
         {typeof(Ability_Fortify), 1},
-        {typeof(Ability_ShadowInfusion), 1},
+        {typeof(Ability_Shadowgifted), 1},
         {typeof(Ability_LightningSpeed), 1},
         {typeof(Ability_FinalBlast), 1}
     };
@@ -68,7 +69,7 @@ public class Player : Unit {
         {typeof(Ability_Flamethrower), 1},
         {typeof(Ability_SpearsOfIce), 1},
         {typeof(Ability_Fortify), 1},
-        {typeof(Ability_ShadowInfusion), 1},
+        {typeof(Ability_Shadowgifted), 1},
         {typeof(Ability_LightningSpeed), 1},
         {typeof(Ability_FinalBlast), 1}
     };
@@ -267,9 +268,9 @@ public class Player : Unit {
         Instance.Initialize();
         Instance.Energy.Current = Constants.FULLY_RESTED_INITIAL_ENERGY;
         Instance.Ammo = Constants.FULLY_RESTED_INITIAL_AMMO;
-        Instance._techniqueCooldowns.Clear();
+        Instance.TechniqueCooldowns.Clear();
         Instance.ToolCooldown = null;
-        Instance._effectCooldowns.Clear();
+        Instance.EffectCooldowns.Clear();
         Instance.PlayAnimation("Idle");
         Instance.Actions.IsFlipped = false;
         SaveFile.Instance.RefreshStances();

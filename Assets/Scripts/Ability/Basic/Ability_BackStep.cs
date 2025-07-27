@@ -16,7 +16,7 @@ public class Ability_BackStep : Ability_Dodge {
         Player.Instance.AddEffect(new Effect_Backstep(new(this)), 0.5f);
         _flipped = User.Actions.IsFlipped ? -1 : 1;
         _movementSpeed = 1 + User.MovementSpeed.Current / 100;
-        Player.Instance.ApplyForce(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);
         GameController.Instance.WaitAndRunMethod(0.02f, Angle2);
         GameController.Instance.WaitAndRunMethod(0.04f, Angle3);
         GameController.Instance.WaitAndRunMethod(0.06f, Angle4);
@@ -24,19 +24,19 @@ public class Ability_BackStep : Ability_Dodge {
     }
 
     public void Angle2() {
-        Player.Instance.ApplyForce(new Vector2(-0.7f * _flipped, 0.5f) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.7f * _flipped, 0.5f) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void Angle3() {
-        Player.Instance.ApplyForce(new Vector2(-1f * _flipped, 0) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-1f * _flipped, 0) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void Angle4() {
-        Player.Instance.ApplyForce(new Vector2(-0.7f * _flipped, -0.8f) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.7f * _flipped, -0.8f) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void Angle5() {
-        Player.Instance.ApplyForce(new Vector2(-0.6f * _flipped, -1f) * 2 * _jumpDistance * _movementSpeed, this);
+        Player.Instance.PushInTargetDirection(new Vector2(-0.6f * _flipped, -1f) * 2 * _jumpDistance * _movementSpeed, this);
     }
 
     public void ForceFinish() {

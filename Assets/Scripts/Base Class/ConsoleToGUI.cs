@@ -6,12 +6,12 @@ public class ConsoleToGUI : MonoBehaviour
 {
     string myLog = "*begin log";
     public static bool ShowOnScreenLogs = false;
-    int kChars = 2200;
+    int kChars = 1400;
     void OnEnable() { Application.logMessageReceived += Log;  }
     void OnDisable() { Application.logMessageReceived -= Log; }
     public void Log(string logString, string stackTrace, LogType type)
     {
-        myLog = myLog + "\n" + logString;
+        myLog = myLog + "\n\n" + logString;
         if (myLog.Length > kChars) { myLog = myLog.Substring(myLog.Length - kChars); }
     }
 

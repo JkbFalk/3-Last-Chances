@@ -3,7 +3,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPCAbility_FireDance : Ability {
-
     public static float Cooldown = 18;
     public static AbilityFamily Family = AbilityFamily.Ignis;
     public Projectile Missile;
@@ -33,16 +32,18 @@ public class NPCAbility_FireDance : Ability {
         Missile.name = "Projectile_FireDance";
         Missile.CleanUpAfter(12 / User.MagicAttackSpeed.Current);
         User.Animator.Rebind();
-        PerformActionAfterIntervals(5, 1);
+        EventManager.OneSecondElapsedInGame.AddListener(ResetTargets);
         GameController.Instance.WaitAndRunMethod(0.01f, StartAnimation);
     }
 
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(Missile != null) {
+        if (Missile != null)
+        {
             Missile.CleanUpObject();
         }
+        EventManager.OneSecondElapsedInGame.RemoveListener(ResetTargets);
     }
 
     public void StartAnimation() {
@@ -67,7 +68,7 @@ public class NPCAbility_FireDance : Ability {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(15 * User.MagicStagger.Current / 100, new(this)));
     }
 
-    public override void ActionToPerformAfterIntervals() {
+    public void ResetTargets() {
         ResetPotentialTargets();
     }
 }

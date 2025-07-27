@@ -8,6 +8,17 @@ using UnityEngine.UI;
 public class Effect_Barrier : Effect
 {
     private Slider _barrierBar;
+    public Slider BarrierBar
+    {
+        get
+        {
+            if (_barrierBar == null)
+            {
+                _barrierBar = TargetOfEffect.Health.HUDSlider.transform.Find("Barrier").GetComponent<Slider>();
+            }
+            return _barrierBar;
+        }
+    }
     public Effect_Barrier(float barrier_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
@@ -20,8 +31,7 @@ public class Effect_Barrier : Effect
 
     public override void ExtraBehaviourOnDecayingAmountChange()
     {
-        _barrierBar = TargetOfEffect.Health.HUDSlider.transform.Find("Barrier").GetComponent<Slider>();
-        _barrierBar.value = TargetOfEffect.Health.Maximum / DecayingAmount;
+        BarrierBar.value = DecayingAmount / TargetOfEffect.Health.Maximum;
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
@@ -52,10 +62,20 @@ public class Effect_Barrier : Effect
         }
     }
 
+    public override void OnStart()
+    {
+        base.OnStart();
+        if (TargetOfEffect is Player)
+        {
+            Player.Instance.Health.HUDSlider.transform.Find("Barrier").gameObject.SetActive(true);
+        }
+    }
+
     public override void OnEnd()
     {
         base.OnEnd();
-        if(TargetOfEffect is Player) {
+        if (TargetOfEffect is Player)
+        {
             Player.Instance.Health.HUDSlider.transform.Find("Barrier").gameObject.SetActive(false);
         }
     }

@@ -562,7 +562,6 @@
     <Compile Include="Assets\Scripts\UI\Colors.cs" />
     <Compile Include="Assets\Scripts\Ability\Special\NPCAbility_SwitchWeapon.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Bow_Backstab.cs" />
-    <Compile Include="Assets\Scripts\Ability\Technique\Ability_ShadowLeap.cs" />
     <Compile Include="Assets\Scripts\Item\Tool\Tool_CrimsonFeather.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_MarketResearch.cs" />
     <Compile Include="Assets\Scripts\Item\Longblade\Longblade_ObsoleteDiscipline.cs" />
@@ -636,6 +635,7 @@
     <Compile Include="Assets\Scripts\Mission\Mission_MarketInvestments.cs" />
     <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_Stun.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_GreatswordWindmill.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_ExploitedWeakness.cs" />
     <Compile Include="Assets\Scripts\Quest\Quest_Exploration.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_AncientFirearmsArmor.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Gun_FF.cs" />
@@ -702,6 +702,7 @@
     <Compile Include="Assets\Scripts\Effect\Effect_Plunderer.cs" />
     <Compile Include="Assets\Scripts\UI\MissionSelectItem.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Jailer.cs" />
+    <Compile Include="Assets\Scripts\Ability\Technique\Ability_SentientShadow.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Longblade_RiposteCounter.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Gauntlets_L1.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Cannon_F.cs" />
@@ -1756,6 +1757,7 @@
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj" />
     <ProjectReference Include="com.rlabrecque.steamworks.net.csproj" />
     <ProjectReference Include="Unity.2D.IK.Runtime.csproj" />
+    <ProjectReference Include="FMODUnityEditor.csproj" />
     <ProjectReference Include="Unity.VisualEffectGraph.Runtime.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.csproj" />
     <ProjectReference Include="Unity.AI.Navigation.csproj" />
@@ -1765,8 +1767,9 @@
     <ProjectReference Include="Unity.2D.PixelPerfect.Editor.csproj" />
     <ProjectReference Include="Unity.Rider.Editor.csproj" />
     <ProjectReference Include="Unity.2D.Aseprite.Common.csproj" />
-    <ProjectReference Include="Unity.2D.Sprite.Editor.csproj" />
+    <ProjectReference Include="FMODUnityResonance.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Universal.Config.Runtime.csproj" />
+    <ProjectReference Include="Unity.2D.Sprite.Editor.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.Editor.csproj" />
     <ProjectReference Include="Unity.VisualEffectGraph.Editor.csproj" />
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj" />
@@ -1776,6 +1779,7 @@
     <ProjectReference Include="Unity.Performance.Profile-Analyzer.Editor.csproj" />
     <ProjectReference Include="Unity.RenderPipelines.Core.ShaderLibrary.csproj" />
     <ProjectReference Include="Unity.Collections.csproj" />
+    <ProjectReference Include="FMODUnity.csproj" />
     <ProjectReference Include="Unity.2D.SpriteShape.Runtime.csproj" />
     <ProjectReference Include="Unity.2D.PixelPerfect.csproj" />
     <ProjectReference Include="PPv2URPConverters.csproj" />
@@ -1818,6 +1822,7 @@
     <ProjectReference Include="Unity.2D.Psdimporter.Editor.csproj" />
     <ProjectReference Include="Unity.AI.Navigation.Updater.csproj" />
     <ProjectReference Include="Unity.VisualScripting.State.Editor.csproj" />
+    <ProjectReference Include="FMODUnityResonanceEditor.csproj" />
     <ProjectReference Include="Unity.Mathematics.csproj" />
     <ProjectReference Include="Unity.2D.Common.Editor.csproj" />
     <ProjectReference Include="NavMeshComponentsEditor.csproj" />

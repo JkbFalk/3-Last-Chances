@@ -66,8 +66,7 @@ public class Ability_ShadowInfusion : Technique
         if(Player.Instance.Energy.Current < EnergyCost || Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == GetType()) != null) {
             return;
         }
-        AddOrUpdateCooldown();
-        Player.Instance.Energy.Current -= EnergyCost;
+        ConsumeEnergyAndCooldownForTheAbility();
         Effect_ShadowInfusion effect = new Effect_ShadowInfusion(StaggerScaling, AttackSpeedBuffAmount, User.CurrentWeaponDamageType, new(this)) {MasteryA = SaveFile.Instance.AbilitiesMasteryA.Contains(GetType()), MasteryB = SaveFile.Instance.AbilitiesMasteryB.Contains(GetType())};
         PlayCustomSound("Ability/Ability_SuperCharge_Use" + UnityEngine.Random.Range(1, 6), 0.9f);
         if (Is(Property.UpgradeA))

@@ -9,7 +9,7 @@ public class BA_Gun_FS : BasicAttack {
     }
 
     public override void CallAbilityEvent1() {
-        User.ApplyForce(User.Actions.IsFlipped ? Vector2.right * 10 : Vector2.left * 10, this);
+        User.PushInTargetDirection(User.Actions.IsFlipped ? Vector2.right * 10 : Vector2.left * 10, this);
     }
 
     public override void OnBasicAttackButtonPress()

@@ -13,7 +13,7 @@ public class Ability_Roll : Ability_Dodge {
 
     public override void OnAbilityStart() {
         base.OnAbilityStart();
-        User.ApplyForce(Direction * 12 * _jumpDistance * (1 + User.MovementSpeed.Current / 100), this);
+        User.PushInTargetDirection(Direction * 12 * _jumpDistance * (1 + User.MovementSpeed.Current / 100), this);
     }
 
     public override void CallAbilityEvent1()
@@ -40,7 +40,7 @@ public class Ability_Roll : Ability_Dodge {
 
     public override void CallAbilityEvent2()
     {
-        User.ApplyForce(Direction * 2 * _jumpDistance * (1 + User.MovementSpeed.Current / 100), this);
+        User.PushInTargetDirection(Direction * 2 * _jumpDistance * (1 + User.MovementSpeed.Current / 100), this);
     }
 
     public void ForceFinish() {

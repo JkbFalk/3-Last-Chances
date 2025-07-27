@@ -29,7 +29,7 @@ public class Effect_ShadowInfusion : Effect {
     public override void OnStart() {
         base.OnStart();
         if (EffectCategory == Constants.DamageType.Heavy) {
-            _visualEffect = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_SuperCharge_Heavy" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""))) as GameObject;
+            _visualEffect = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Heavy" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""));
             _visualEffect.transform.SetParent(TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone").transform);
             _visualEffect.transform.localPosition = new Vector2(1f, 0);
             _visualEffect.transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -37,11 +37,11 @@ public class Effect_ShadowInfusion : Effect {
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         if (EffectCategory == Constants.DamageType.Light) {
-            _visualEffect = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_SuperCharge_Light" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""))) as GameObject;
+            _visualEffect = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Light" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""));
             _visualEffect.transform.SetParent(TargetOfEffect.SpriteRenderers["Light Right"].SpriteRenderer.transform.Find("Light Right Bone").transform);
             _visualEffect.transform.localPosition = new Vector2(0.5f, 0);
             _visualEffect.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            _visualEffect2 = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_SuperCharge_Light" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""))) as GameObject;
+            _visualEffect2 = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Light" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""));
             _visualEffect2.transform.SetParent(TargetOfEffect.SpriteRenderers["Light Left"].SpriteRenderer.transform.Find("Light Left Bone").transform);
             _visualEffect2.transform.localPosition = new Vector2(0.5f, 0);
             _visualEffect2.transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -49,7 +49,7 @@ public class Effect_ShadowInfusion : Effect {
             Player.Instance.AddEffect(AttackSpeedBuff);
         }
         else if (EffectCategory == Constants.DamageType.Ranged) {
-            _visualEffect = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_SuperCharge_Ranged" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""))) as GameObject;
+            _visualEffect = Utils.CreateVisualEffect(SourceOfEffect, "ShadowInfusion_Ranged" + (SourceOfEffect.SourceAbility.Is(Ability.Property.UpgradeA) ? "_MasteryA" : ""));
             _visualEffect.transform.SetParent(TargetOfEffect.SpriteRenderers["Ranged"].SpriteRenderer.transform.Find("Ranged Bone").transform);
             _visualEffect.transform.localPosition = new Vector2(0.25f, 0);
             _visualEffect.transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -86,9 +86,11 @@ public class Effect_ShadowInfusion : Effect {
 
     public override void OnEnd() {
         base.OnEnd();
-        MonoBehaviour.Destroy(_visualEffect);
+        _visualEffect.GetComponent<ParticleSystem>().Pause();
+        _visualEffect.GetComponent<DestroyGameObjectAfterGivenTime>().enabled = true;
         if (_visualEffect2 != null) {
-            MonoBehaviour.Destroy(_visualEffect2);
+            _visualEffect2.GetComponent<ParticleSystem>().Pause();
+            _visualEffect2.GetComponent<DestroyGameObjectAfterGivenTime>().enabled = true;
         }
         AttackSpeedBuff.EndThisEffect();
     }

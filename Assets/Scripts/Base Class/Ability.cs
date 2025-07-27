@@ -202,27 +202,6 @@ public abstract class Ability {
     public virtual void CallAbilityEvent5() {}
     public virtual void CallAbilityEvent6() {}
 
-    private int _intervalActionCount = 0;
-    private int _maxIntervalActions = 0;
-    private float _actionIntervalTime = 0;
-
-    public void PerformActionAfterIntervals(int action_count, float interval_between_actions) {
-        _maxIntervalActions = action_count;
-        _actionIntervalTime = interval_between_actions;
-        _intervalActionCount = 0;
-        GameController.Instance.WaitAndRunMethod(_actionIntervalTime, HandleActionWithIntervals);
-    }
-
-    private void HandleActionWithIntervals() {
-        _intervalActionCount++;
-        ActionToPerformAfterIntervals();
-        if(_intervalActionCount < _maxIntervalActions) {
-            GameController.Instance.WaitAndRunMethod(_actionIntervalTime, HandleActionWithIntervals);
-        }
-    }
-
-    public virtual void ActionToPerformAfterIntervals() {    }
-
     public bool ScaleMaxTimeWithAttackSpeed = false;
     public bool ScaleMaxTimeWithCombatSpeed = false;
     public float TimePassed { get; private set; } = 0;
@@ -331,9 +310,10 @@ public abstract class Ability {
         {
             return;
         }
-        if (ItemBeingUsed != null && User.ToolCooldown == null) {
+        if (ItemBeingUsed != null && User.ToolCooldown == null)
+        {
             User.AddCooldown(ItemBeingUsed);
-            if(ItemBeingUsed.Type == Constants.ItemType.Tool)
+            if (ItemBeingUsed.Type == Constants.ItemType.Tool)
             {
                 ItemBeingUsed.Amount--;
             }
@@ -341,10 +321,12 @@ public abstract class Ability {
         else
         {
             bool isStacksBased = GetType().GetField("IsStacksBasedTechnique") != null;
-            if(isStacksBased) {
+            if (isStacksBased)
+            {
                 Player.Instance.UpdateTechniqueStacksAmount(GetType(), Player.Instance.CurrentTechniqueStacks[GetType()] - 1, Player.Instance.PreparingForUltimate);
             }
-            else {
+            else
+            {
                 User.AddCooldown(this, cd);
             }
         }
@@ -637,26 +619,26 @@ public abstract class Ability {
     public void ChaseCurrentTargetAtGivenDegreeAngle(float max_dash_distance_in_meters, float max_angle, Unit target = null) {
         if (User is Player && Player.Instance.CurrentTarget == null && Settings.Instance.ControlScheme == "Gamepad")
         {
-            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            User.PushInTargetDirection(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
             return;
         }
         else if (User is Player && Player.Instance.CurrentTarget == null)
         {
             float distance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
-            User.ApplyForce(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            User.PushInTargetDirection(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
             return;
         }
         Unit finalTarget = target == null ? User.CurrentTarget : target;
         if(finalTarget == null)
         {
             Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, max_angle);
-            User.ApplyForce(direction_vector_towards_target * max_dash_distance_in_meters, this);
+            User.PushInTargetDirection(direction_vector_towards_target * max_dash_distance_in_meters, this);
         }
         else
         {
             Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, finalTarget.transform.position + new Vector3(User.Actions.IsFlipped ? 0.3f : -0.3f, 0), User.Actions.IsFlipped, max_angle);
             float distance = Vector2.Distance(User.transform.position, finalTarget.transform.position);
-            User.ApplyForce(direction_vector_towards_target * max_dash_distance_in_meters, this);
+            User.PushInTargetDirection(direction_vector_towards_target * max_dash_distance_in_meters, this);
         }
     }
 

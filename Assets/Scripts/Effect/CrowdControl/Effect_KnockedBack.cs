@@ -9,6 +9,7 @@ public class Effect_KnockedBack : Effect_HardCrowdControl
     {
         PriorityLevel = 6;
         _damage = damage;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
     }
 
     public override void OnStart() {
@@ -26,24 +27,20 @@ public class Effect_KnockedBack : Effect_HardCrowdControl
             TargetOfEffect.Actions.IsFlipped = true;
         }
         GameController.Instance.WaitAndRunMethod(0.02f, UnlockKnockedBackStages);
-        Debug.Log($"CALC: tenacity: {Utils.GetEffectiveCrowdControlDuration(_damage.SourceOfDamage.User, TargetOfEffect)}, result: {3f * Utils.GetEffectiveCrowdControlDuration(_damage.SourceOfDamage.User, TargetOfEffect)}");
         GameController.Instance.WaitAndRunMethod(3f * Utils.GetEffectiveCrowdControlDuration(_damage.SourceOfDamage.User, TargetOfEffect), EndKnockedBack);
     }
 
     public void UnlockKnockedBackStages() {
-        Debug.Log("TRANSITION TO STAGE 1");
         _stage = 0;
     }
 
     public override void OnFixedUpdate() {
         if(_stage == 0 && TargetOfEffect.Rigidbody2D.velocity.magnitude < 1) {
             _stage++;
-            Debug.Log("TRANSITION TO STAGE 2");
             TargetOfEffect.PlayAnimation("KnockedBack2", 0.05f);
         }
         else if(_stage == 1 && TargetOfEffect.Rigidbody2D.velocity.magnitude < 0.1f) {
             _stage++;
-            Debug.Log("TRANSITION TO STAGE 3");
             TargetOfEffect.PlayAnimation("KnockedBack3", 0.05f);
             GameController.Instance.WaitAndRunMethod(0.5f / TargetOfEffect.Tenacity.Current / 100, EndKnockedBack);
         }
@@ -51,7 +48,6 @@ public class Effect_KnockedBack : Effect_HardCrowdControl
 
     public void EndKnockedBack() {
         if(!EffectEnded) {
-            Debug.Log("ending knocked back");
             EndThisEffect();
         }
     }

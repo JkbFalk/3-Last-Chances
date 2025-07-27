@@ -48,16 +48,13 @@ public class BA_Longblade_F4 : BasicAttack {
 
     public override void CallAbilityEvent4()
     {
-        Debug.Log($"LONGBLADE1 {IsNot(Property.StrongBasicAttack)}");
         if (IsNot(Property.StrongBasicAttack) && PlayerControls.BasicAttackButtonPressCounter > 1)
         {
-            Debug.Log($"LONGBLADE2");
             FollowUpAttacking = true;
             Player.Instance.Actions.PerformRegularBasicAttack();
         }
         else if (IsNot(Property.StrongBasicAttack))
         {
-            Debug.Log($"LONGBLADE3");
             CanFollowUpAttack = true;
         }
     }
@@ -70,10 +67,8 @@ public class BA_Longblade_F4 : BasicAttack {
     
     public override void CallAbilityEvent6()
     {
-        Debug.Log("ZYZY1: " + User.Animator.IsInTransition(0));
         if (User.Animator.IsInTransition(0) == false)
         {
-            Debug.Log("ZYZY2");
             EndThisAbility();
         }
     }
@@ -94,7 +89,6 @@ public class BA_Longblade_F4 : BasicAttack {
     public override void OnBasicAttackButtonPress()
     {
         base.OnBasicAttackButtonPress();
-        Debug.Log("BUTTON PRESSED2: " + CanFollowUpAttack);
         if (CanFollowUpAttack)
         {
             FollowUpAttacking = true;

@@ -74,7 +74,7 @@ public class Ability_ChargedShot : Technique
             {
                 shotDirection = Utils.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60);
             }
-            User.ApplyForce(-1 * force * shotDirection, this);
+            User.PushInTargetDirection(-1 * force * shotDirection, this);
             Utils.CreateVisualEffect(new(this), "ChargedShot_Flash");
         }
 
@@ -85,7 +85,7 @@ public class Ability_ChargedShot : Technique
         base.OnAbilityStart();
         StartCountingTime(Is(Property.Ultimate) ? _ultimateChargeTime : _chargeTime);
         ShowChargeBar();
-        Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         if (Is(Property.Ultimate))
         {
             EventManager.OneTenthSecondElapsedInGame.AddListener(ApplyUltimateFreeze);
@@ -94,19 +94,16 @@ public class Ability_ChargedShot : Technique
 
     public void ApplyUltimateFreeze()
     {
-        Debug.Log("FREEZE ULT: " + _validTarget);
         if (_validTarget == null)
         {
             return;
         }
-        Debug.Log("APPLYING FREEZE: " + _ultimateFreezeStaggerScalingPerSecond / 10 / 100 * User.MagicStagger.Current);
         _validTarget.AddEffect(new Effect_Freeze(_ultimateFreezeStaggerScalingPerSecond / 10 / 100 * User.MagicStagger.Current, new(this)));
     }
 
     public override void CallAbilityEvent1()
     {
         _validTarget = User.CurrentTarget != null ? User.CurrentTarget : User.GetClosestValidTarget();
-        Debug.Log("CAE1 FREEZE ULT: " + _validTarget);
         if (Is(Property.UpgradeA))
         {
             _validTarget.AddEffect(new Effect_Slow(_upgradeASlowAmount, new(this)));

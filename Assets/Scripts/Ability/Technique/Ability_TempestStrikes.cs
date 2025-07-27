@@ -68,7 +68,7 @@ public class Ability_TempestStrikes : Technique
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         if(Is(Property.Ultimate)) {
             Utils.PlaySoundEffect(Player.Instance.AudioSource, "Ability/Ability_Quickdraw_Counter", 0.9f);
         }
@@ -95,7 +95,7 @@ public class Ability_TempestStrikes : Technique
                 DamageSources.Add(new DamageSource(InjuryScaling * (Is(Property.Ultimate) ? 5 : 3), StaggerScaling * (Is(Property.Ultimate) ? 5 : 3), User.CurrentWeaponDamageType));
                 User.Animator.SetFloat("Technique Speed", Is(Property.Ultimate) ? 0.4f : 0.25f);
             }
-            User.Actions.ConsumeEnergyAndCooldownForTheAbility();
+            ConsumeEnergyAndCooldownForTheAbility();
             _mostRecentAttack = GetNextAnimationNumber();
             User.PlayAnimation("TempestStrikes_" + User.CurrentWeaponClass + _mostRecentAttack, 0.04f);
         }

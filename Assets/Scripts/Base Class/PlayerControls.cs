@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 using UnityEngine.U2D.IK;
 using UnityEngine.UI;
 using static Constants;
@@ -680,14 +681,18 @@ public class PlayerControls : WorldObject {
     public void OnCheatModeButtonRelease() {
         DebugController.Instance.ToggleCheatMode(0);
     }
-    public void OnSpecialAction1ButtonPress() {
+    public void OnSpecialAction1ButtonPress()
+    {
+
     }
 
-    public void OnSpecialAction2ButtonPress() {
-        Settings.Instance.Keybinds.Add(new Settings.Keybind() {ActionName = UnityEngine.Random.Range(1, 1000).ToString(), KeyboardBinding1 = UnityEngine.Random.Range(1, 1000).ToString()});
+    public void OnSpecialAction2ButtonPress()
+    {
+
     }
 
-    public void OnSpecialAction3ButtonPress() {
+    public void OnSpecialAction3ButtonPress()
+    {
 
     }
 

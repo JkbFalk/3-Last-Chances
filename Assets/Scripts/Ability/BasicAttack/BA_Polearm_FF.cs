@@ -29,6 +29,6 @@ public class BA_Polearm_FF : BasicAttack {
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        Utils.PushUnitIntoPosition(damage.TargetOfDamage, User.Actions.IsFlipped ? (User.transform.position + new Vector3(-3.5f, 0)) : (User.transform.position + new Vector3(3.5f, 0)), this, 50);
+        damage.TargetOfDamage.PushIntoPosition(User.Actions.IsFlipped ? (User.transform.position + new Vector3(-3.5f, 0)) : (User.transform.position + new Vector3(3.5f, 0)), this, 1.25f);
     }
 }

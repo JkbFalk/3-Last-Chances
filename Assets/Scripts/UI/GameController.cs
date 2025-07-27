@@ -13,6 +13,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -124,6 +125,11 @@ public class GameController : WorldObject
         StartCoroutine(WaitAndRunMethodCoroutine(seconds, () => nameOfMethodToRun(unit)));
     }
 
+    public void WaitAndRunMethod(float seconds, Action<Ability> nameOfMethodToRun, Ability ability)
+    {
+        StartCoroutine(WaitAndRunMethodCoroutine(seconds, () => nameOfMethodToRun(ability)));
+    }
+
     public void WaitAndRunMethod(float seconds, Action<GameObject> nameOfMethodToRun, GameObject game_object)
     {
         StartCoroutine(WaitAndRunMethodCoroutine(seconds, () => nameOfMethodToRun(game_object)));
@@ -179,6 +185,12 @@ public class GameController : WorldObject
     {
         yield return new WaitForSeconds(seconds);
         nameOfMethodToRun();
+    }
+
+    public IEnumerator WaitAndRunMethodCoroutine(float seconds, Action<Ability> nameOfMethodToRun, Ability ability)
+    {
+        yield return new WaitForSeconds(seconds);
+        nameOfMethodToRun(ability);
     }
 
     public IEnumerator WaitAndRunMethodCoroutine(float seconds, Action<bool> nameOfMethodToRun, bool param)
@@ -388,6 +400,10 @@ public class GameController : WorldObject
     }
 
     public void OneTenthSecondElapsedInGame() {
+        foreach (SortingOrder so in DynamicSortingOrders)
+        {
+            so.UpdateSortingOrder();
+        }
         EventManager.OneTenthSecondElapsedInGame.Invoke();
         WaitAndRunMethod(0.1f, OneTenthSecondElapsedInGame);
     }
@@ -396,24 +412,40 @@ public class GameController : WorldObject
         EventManager.OneTenthSecondElapsedRealtime.Invoke();
         WaitAndRunMethodRealtime(0.1f, OneTenthSecondElapsedRealtime);
     }
+    
+    public void OneSecondElapsedInGame() {
+        EventManager.OneSecondElapsedInGame.Invoke();
+        WaitAndRunMethod(1.0f, OneSecondElapsedInGame);
+    }
 
-    public void ChooseSurvivalType(int option) {
+    public void OneSecondElapsedRealtime() {
+        EventManager.OneSecondElapsedRealtime.Invoke();
+        WaitAndRunMethodRealtime(1.0f, OneSecondElapsedRealtime);
+    }
+
+    public void ChooseSurvivalType(int option)
+    {
         Mission_CompleteSurvival mission = null;
-        if(SurvivalController.StoryModeSurvival) {
+        if (SurvivalController.StoryModeSurvival)
+        {
             mission = (Mission_CompleteSurvival)SaveFile.Instance.CurrentMission;
         }
         CurrentSaveFile = new SaveFile(SurvivalController.StoryModeSurvival ? SaveFile.Instance.Id : "StartScreen", SaveFile.SaveFileTypeEnum.Survival);
-        if(SurvivalController.StoryModeSurvival) {
-            SaveFile.Instance.CurrentMission = mission;   
+        if (SurvivalController.StoryModeSurvival)
+        {
+            SaveFile.Instance.CurrentMission = mission;
         }
-        if(option == 0) {
+        if (option == 0)
+        {
             SaveFile.Instance.SkillTreeSurvivalType = false;
         }
-        SaveFile.Instance.Difficulty = Constants.Difficulty.Regular;  
-        if(SurvivalController.StoryModeSurvival) {
+        SaveFile.Instance.Difficulty = Constants.Difficulty.Regular;
+        if (SurvivalController.StoryModeSurvival)
+        {
             Utils.GetSceneRootObject("Mission Select").transform.Find("Survival Type Selection").gameObject.SetActive(false);
         }
-        else {
+        else
+        {
             Utils.GetSceneRootObject("Start Screen").transform.Find("Survival Type Selection").gameObject.SetActive(false);
         }
         SurvivalController.StartSurvivalMode();
@@ -450,8 +482,10 @@ public class GameController : WorldObject
         SaveFile.Instance.SetCorrectCycle();
     }
 
-    public void ResetAllCoroutinesAndRemoveAllListeners(bool stop_all_coroutines = true) {
-        if(stop_all_coroutines) {
+    public void ResetAllCoroutinesAndRemoveAllListeners(bool stop_all_coroutines = true)
+    {
+        if (stop_all_coroutines)
+        {
             StopAllCoroutines();
         }
         foreach (FieldInfo unityEvent in typeof(EventManager).GetFields())
@@ -463,6 +497,8 @@ public class GameController : WorldObject
         }
         OneTenthSecondElapsedRealtime();
         OneTenthSecondElapsedInGame();
+        OneSecondElapsedRealtime();
+        OneSecondElapsedInGame();
     }
 
     public void ResetGameplay()
@@ -485,14 +521,10 @@ public class GameController : WorldObject
     private int _counter = 0;
     public void FixedUpdate()
     {
-        _counter++;
-        if (_counter == 10)
+        EventManager.OneFrameElapsedRealtime.Invoke();
+        if (Time.timeScale > 0)
         {
-            _counter = 0;
-            foreach (SortingOrder so in DynamicSortingOrders)
-            {
-                so.UpdateSortingOrder();
-            }
+            EventManager.OneFrameElapsedInGame.Invoke();
         }
     }
 

@@ -33,7 +33,7 @@ public class NPCAbility_TectonicPull : Ability {
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        Utils.PushUnitIntoPosition(damage.TargetOfDamage,User.transform.position - new Vector3(0.5f * (User.Actions.IsFlipped ? -1 : 1), 0), this);
+        damage.TargetOfDamage.PushIntoPosition(User.transform.position - new Vector3(0.5f * (User.Actions.IsFlipped ? -1 : 1), 0), this);
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 2.5f);
     }
 }

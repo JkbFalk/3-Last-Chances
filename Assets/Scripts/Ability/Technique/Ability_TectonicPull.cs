@@ -65,7 +65,7 @@ public class Ability_TectonicPull : Technique
             StartCountingTime(Is(Property.UpgradeB) ? _upgradeBChargeTime : _chargeTime);
             ShowChargeBar();
         }
-        Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+        ConsumeEnergyAndCooldownForTheAbility();
         if (Is(Property.UpgradeB))
         {
             Player.Instance.Animator.SetFloat("Technique Speed", 0.5f);
@@ -204,7 +204,7 @@ public class Ability_TectonicPull : Technique
     {
         base.ExtraBehaviourOnDamage(damage);
         Vector2 targetPosition = new Vector2(Player.Instance.transform.position.x + (Player.Instance.Actions.IsFlipped ? -1 : 1), Player.Instance.transform.position.y);
-        Utils.PushUnitIntoPosition(damage.TargetOfDamage, targetPosition, this, 0.4f);
+        damage.TargetOfDamage.PushIntoPosition(targetPosition, this, 1.2f);
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
         if (Is(Property.UpgradeA))
         {

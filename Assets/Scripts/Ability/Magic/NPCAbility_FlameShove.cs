@@ -19,7 +19,7 @@ public class NPCAbility_FlameShove : Ability {
         HitSoundVolume = 0.2f;
     }
 
-    public override void ActionToPerformAfterIntervals() {
+    public void ResetTargets() {
         if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject.IsDestroyed() == false) {
             ResetPotentialTargets();
         }
@@ -31,7 +31,8 @@ public class NPCAbility_FlameShove : Ability {
         _userFlipped = User.Actions.IsFlipped;
         _aoe.transform.localScale = new Vector2(0.05f, 0.05f);
         GameController.Instance.WaitAndRunMethod(0.025f, AdvanceFlameShove);
-        PerformActionAfterIntervals(4, 0.5f);
+        EventManager.OneTenthSecondElapsedInGame.AddListener(ResetTargets);
+        GameController.Instance.WaitAndRunMethod(2, new System.Action(() => { EventManager.OneTenthSecondElapsedInGame.RemoveListener(ResetTargets); }));
     }
 
     public void AdvanceFlameShove() {
@@ -45,6 +46,6 @@ public class NPCAbility_FlameShove : Ability {
 
     public override void ExtraBehaviourOnDamage(Damage damage)
     {
-        damage.TargetOfDamage.AddEffect(new Effect_Burn(10 * User.MagicStagger.Current / 100, new(this)));
+        damage.TargetOfDamage.AddEffect(new Effect_Burn(2 * User.MagicStagger.Current / 100, new(this)));
     }
 }

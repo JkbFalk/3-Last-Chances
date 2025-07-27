@@ -48,7 +48,7 @@ public static class Constants {
     public static float FOLLOW_UP_HEALTH_BAR_FREEZE_TIME = 1f;
     public static float FOLLOW_UP_HEALTH_BAR_DECREASE_SPEED = 0.02f;
     public static float MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS = 0.2f;
-    public static float FORCE_REQUIRED_TO_PUSH_1M = 100;
+    public static float FORCE_REQUIRED_TO_PUSH_1M = 245;
 
     public const float PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_REGULAR_FLINCH = 40;
     public const float PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_BOSS_FLINCH = 30;

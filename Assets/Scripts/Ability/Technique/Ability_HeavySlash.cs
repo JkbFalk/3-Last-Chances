@@ -102,7 +102,7 @@ public class Ability_HeavySlash : Technique
             StartCountingTime(UltimateChargeTime);
         }
         else {
-            Player.Instance.Actions.ConsumeEnergyAndCooldownForTheAbility();
+            ConsumeEnergyAndCooldownForTheAbility();
             if(_buttonWasReleased && _transitionedAnimation == false) {
                 Player.Instance.PlayAnimation("HeavySlash_" + User.CurrentWeaponClass, 0.02f, 0.54f);
                 _transitionedAnimation = true;

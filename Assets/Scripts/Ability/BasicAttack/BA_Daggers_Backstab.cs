@@ -6,7 +6,7 @@ public class BA_Daggers_Backstab : Backstab {
         Properties.Add(Property.Backstab);
         DamageSources.Add(new DamageSource(User.InCombat ? 300 / 2 : 600 / 2, User.InCombat ? 750 / 2 : 1500 / 2, Constants.DamageType.Light));
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitExceptTwinWeapon;
-        CustomHitSound = "Ability/Ability_SeverVitality";
+        CustomHitSound = "Ability/Ability_DeathSentence";
     }
 
     public override void CallAbilityEvent1()

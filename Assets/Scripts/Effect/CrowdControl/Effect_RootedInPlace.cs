@@ -5,7 +5,7 @@ public class Effect_RootedInPlace : Effect {
 
     public Effect_RootedInPlace(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Neutral;
-
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
     }
 
     public override void OnStart()

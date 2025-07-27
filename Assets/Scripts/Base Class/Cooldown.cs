@@ -20,7 +20,8 @@ public class Cooldown {
         get => _remainingDuration;
         set {
             _remainingDuration = value;
-            if(CooldownDisplay != null && !(Type.IsSubclassOf(typeof(Ability)) && Player.Instance.PreparingForUltimate)) {
+            if (CooldownDisplay != null && !(Type.IsSubclassOf(typeof(Ability)) && Player.Instance.PreparingForUltimate))
+            {
                 CooldownDisplay.fillAmount = _remainingDuration / TotalDuration;
             }
         }
@@ -43,13 +44,34 @@ public class Cooldown {
         }
     }
 
-    public void OnEnd() {
-        if(ShowsInUI && TileInUI != null) {
+    public void EndThisCooldown()
+    {
+        if (Type.IsSubclassOf(typeof(Technique)))
+        {
+            CooldownTarget.TechniqueCooldowns.Remove(this);
+        }
+        else if (Type.IsSubclassOf(typeof(Item)))
+        {
+            CooldownTarget.ToolCooldown = null;
+        }
+        else if (Type.IsSubclassOf(typeof(Effect)))
+        {
+            CooldownTarget.EffectCooldowns.Remove(this);
+        }
+        OnEnd();
+    }
+
+    public void OnEnd()
+    {
+        if (ShowsInUI && TileInUI != null)
+        {
             MonoBehaviour.Destroy(TileInUI);
         }
-        if(Identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
+        if (Identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect))))
+        {
             Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == Identifier);
-            if(hiddenEffect != null && hiddenEffect.UICooldownDisplay == null) {
+            if (hiddenEffect != null && hiddenEffect.UICooldownDisplay == null)
+            {
                 hiddenEffect.ShowInUI();
             }
         }
