@@ -10,9 +10,9 @@ public class Daggers_DragonsClaws : Item
         Set = ItemSetEnum.Assassin;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(95, 80, 1.1f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksPerformedWhileInStealthCountAsBackstab")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BackstabDamage")};
+        SetBaseWeaponStats(9.5f, 8, 1.1f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksAndTechniquesPerformedWhileInStealthCountAsBackstab")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksAndTechniquesDontEndStealthImmediately")};
     }
 }
 

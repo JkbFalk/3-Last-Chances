@@ -9,7 +9,7 @@ public class Polearm_AzureMoon : Item
         Set = ItemSetEnum.ShadowGifted;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
-        SetBaseWeaponStats(110, 80, 0.95f);
+        SetBaseWeaponStats(11, 8, 0.95f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("OnHitApplyRandomStackingEffectYouDoNotCurrentlyPossess")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("EffectCooldownReduction")};
     }

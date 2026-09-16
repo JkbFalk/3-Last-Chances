@@ -7,7 +7,7 @@ public class EnemyDetection : MonoBehaviour {
     private Unit _unit;
 
     private void Start() {
-        Type AbilityType = Type.GetType(gameObject.name);
+        Type AbilityType = AbilityTypeRegistry.GetByName(gameObject.name);
         if (AbilityType == null) {
             throw new System.Exception("Could not find ability with name: " + gameObject.name);
         }

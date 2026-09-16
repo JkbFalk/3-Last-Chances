@@ -7,6 +7,7 @@ public class Ability_Fireball : Technique {
 
     public static float EnergyCost = 40;
     public static float Cooldown = 30;
+    public static AbilityFamily Family = AbilityFamily.Ignis;
     public static float MagicInjuryScalingExplosion = 250;
     public static float MagicBurnScalingExplosion = 60;
     public static float MagicInjuryScalingMasteryB = 200;
@@ -15,8 +16,6 @@ public class Ability_Fireball : Technique {
     public static float MagicBurnScalingUltimate = 200;
     public static float UpgradeAStunMinDuration = 2;
     public static float UpgradeAStunMaxDuration = 5;
-    public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
     private List<Projectile> _fireBalls = new();
     private List<Vector3> _intendedDestinations = new();
     private List<float> _distances = new();
@@ -57,7 +56,7 @@ public class Ability_Fireball : Technique {
             _intendedDestinations.Add(Player.Instance.CurrentTarget.transform.position);
         }
         else {
-            _intendedDestinations.Add(GameController.Instance.PlayerInput.currentControlScheme == "Mouse and Keyboard" ? GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition : new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y) + GameController.Instance.PlayerControls.CurrentLeftStickPosition * 3);
+            _intendedDestinations.Add(Settings.Instance.ControlScheme == "Keyboard" ? GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition : new Vector2(Player.Instance.transform.position.x, Player.Instance.transform.position.y) + GameController.Instance.PlayerControls.CurrentLeftStickPosition * 3);
         }
         Vector3 relativePosition = _intendedDestinations[0] - Player.Instance.transform.position;
         if(User.Actions.IsFlipped && relativePosition.x > -3.5f) {
@@ -100,11 +99,11 @@ public class Ability_Fireball : Technique {
             else {
                 if (User.CurrentTarget != null)
                 {
-                    _fireBalls[i].transform.up = Utils.GetDirectionVector(User.ProjectileSpawnLocation.transform.position, User.CurrentTarget.transform.position, User.Actions.IsFlipped, 45);
+                    _fireBalls[i].transform.up = CombatMath.GetDirectionVector(User.ProjectileSpawnLocation.transform.position, User.CurrentTarget.transform.position, User.Actions.IsFlipped, 45);
                 }
                 else
                 {
-                    _fireBalls[i].transform.up = Utils.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 45);
+                    _fireBalls[i].transform.up = CombatMath.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 45);
                 }
             }
         }
@@ -131,7 +130,7 @@ public class Ability_Fireball : Technique {
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if(damage.DamagingObject.gameObject.name == "AoE") {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(MagicBurnScalingExplosion * User.MagicStagger.Current / 100, new(this)));
@@ -144,7 +143,7 @@ public class Ability_Fireball : Technique {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(Is(Property.UpgradeA)) {
             damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), Utils.GetValueBasedOnMinAndMax(Vector2.Distance(damage.TargetOfDamage.transform.position, damage.DamagingObject.transform.position), 0, 3, UpgradeAStunMaxDuration, UpgradeAStunMinDuration));

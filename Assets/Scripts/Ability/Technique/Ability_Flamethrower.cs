@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Ability_Flamethrower : Technique
 {
-    private int _cycles = 0;
-    private bool _techniqueEnded = false;
     public static float EnergyCost = 1;
     public static float Cooldown = 1f;
+    public static AbilityFamily Family = AbilityFamily.Ignis;
+    private int _cycles = 0;
+    private bool _techniqueEnded = false;
     private AreaOfEffect _aoe;
     private GameObject _ultimateVFX;
     private bool _ultimateHitATarget = false;
@@ -32,9 +33,6 @@ public class Ability_Flamethrower : Technique
     }
     private List<Unit> _alreadyAffectedEnemies = new();
     private Dictionary<Unit, float> UltimateEnemiesAndBurn = new();
-
-    public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
 
     public Ability_Flamethrower(Unit ability_user) : base(ability_user)
     {
@@ -122,7 +120,7 @@ public class Ability_Flamethrower : Technique
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(Is(Property.Ultimate)) {
             if((damage.AbilityDamageSource.ColliderName != "SmallCircleAoE" || !_ultimateHitATarget) && !UltimateEnemiesAndBurn.ContainsKey(damage.TargetOfDamage)) {
@@ -162,7 +160,7 @@ public class Ability_Flamethrower : Technique
             MonoBehaviour.Destroy(enemy.SpriteRenderers["Upper Body"].Bone.transform.Find("Flamethrower_Ultimate_Marker").gameObject);
         }
         AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "Flamethrower_Ultimate", enemy.transform.position.x, enemy.transform.position.y);
-        Damage d = new Damage(enemy, this, aoe) {AbilityDamageSource = new(0, 0, Constants.DamageType.Magic), Injury = UltimateMagicInjuryPerBurn * UltimateEnemiesAndBurn[enemy]};
+        DamageInstance d = new DamageInstance(enemy, this, aoe) {AbilityDamageSource = new(0, 0, Constants.DamageType.Magic), Injury = UltimateMagicInjuryPerBurn * UltimateEnemiesAndBurn[enemy]};
         d.CalculateAndApplyDamage();
     }
 

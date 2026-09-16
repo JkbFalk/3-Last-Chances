@@ -8,20 +8,31 @@ using UnityEngine.UI;
 public class ColorChange : MonoBehaviour, IMaterialModifier
 {
     public bool IgnoreSpriteParent = false;
+    private SpriteRenderer _spriteRenderer;
     public Color Grey;
+    [Range(1.0f, 5.0f)]
     public float GreyBorder1 = 0.4f;
+    [Range(1.0f, 5.0f)]
     public float GreyBorder2 = 0.8f;
     public Color Brown;
+    [Range(1.0f, 5.0f)]
     public float BrownBorder1 = 0.4f;
+    [Range(1.0f, 5.0f)]
     public float BrownBorder2 = 0.8f;
     public Color Red;
+    [Range(1.0f, 5.0f)]
     public float RedBorder1 = 0.4f;
+    [Range(1.0f, 5.0f)]
     public float RedBorder2 = 0.8f;
     public Color Green;
+    [Range(1.0f, 5.0f)]
     public float GreenBorder1 = 0.4f;
+    [Range(1.0f, 5.0f)]
     public float GreenBorder2 = 0.8f;
     public Color Blue;
+    [Range(1.0f, 5.0f)]
     public float BlueBorder1 = 0.4f;
+    [Range(1.0f, 5.0f)]
     public float BlueBorder2 = 0.8f;
     [HideInInspector]
     public Color SpecialSkinColor;
@@ -47,25 +58,35 @@ public class ColorChange : MonoBehaviour, IMaterialModifier
     public string TextureName;
 
     private void OnValidate() {
-        if (isActiveAndEnabled) {
+        if (_spriteRenderer == null)
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        if (isActiveAndEnabled)
+        {
             UpdateMaterialProperties();
         }
     }
 
     private void Awake() {
-        if (isActiveAndEnabled) {
+        if (_spriteRenderer == null)
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
+        if (isActiveAndEnabled)
+        {
             UpdateMaterialProperties();
         }
     }
 
     public void UpdateMaterialProperties() {
-        if (GetComponent<SpriteRenderer>() == null)
+        if (_spriteRenderer == null)
         {
             return;
         }
-        Texture texture = GetComponent<SpriteRenderer>().sprite.texture;
+        Texture texture = _spriteRenderer.sprite.texture;
         if (texture == null) {
-            throw new MissingReferenceException(Utils.GetGameObjectPath(gameObject) + " Could not find texture for: " + GetComponent<SpriteRenderer>().sprite);
+            throw new MissingReferenceException($"Failed to find texture for SpriteRenderer: {Utils.GetGameObjectPath(gameObject)}");
         }
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         mpb.SetTexture("_MainTex", texture);
@@ -94,7 +115,7 @@ public class ColorChange : MonoBehaviour, IMaterialModifier
         mpb.SetColor("_Eye", Eye);
         mpb.SetFloat("_Eye_Border_1", EyeBorder1);
         mpb.SetFloat("_Eye_Border_2", EyeBorder2);
-        GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+        _spriteRenderer.SetPropertyBlock(mpb);
     }
 
     public Material GetModifiedMaterial(Material baseMaterial)

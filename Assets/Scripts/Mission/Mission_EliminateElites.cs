@@ -63,11 +63,11 @@ public class Mission_EliminateElites : Mission
     }
 
     public override void OnFinishedLoadingArea() {
-        foreach(Unit u in Utils.SpawnUnits(BossEnemies, EnemyLevel, Utils.GetAggresivenessBasedOnUnitCount(BossEnemies.Count), true)) {
+        foreach(Unit u in Utils.SpawnUnits(BossEnemies, EnemyLevel, CombatMath.GetAggresivenessBasedOnUnitCount(BossEnemies.Count), true)) {
             u.IsBoss = true;
         }
         if(RegularEnemies.Count > 0) {
-            Utils.SpawnUnits(RegularEnemies, EnemyLevel - 5, Utils.GetAggresivenessBasedOnUnitCount(RegularEnemies.Count));
+            Utils.SpawnUnits(RegularEnemies, EnemyLevel - 5, CombatMath.GetAggresivenessBasedOnUnitCount(RegularEnemies.Count));
         }
         Quest_EliminateAllEnemies quest = new Quest_EliminateAllEnemies() {Icon = Icon};
         quest.StartQuest();

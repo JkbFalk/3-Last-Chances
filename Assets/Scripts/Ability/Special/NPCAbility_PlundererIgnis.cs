@@ -34,7 +34,7 @@ public class NPCAbility_PlundererIgnis : Ability {
     }
 
     public void AdjustRotation() {
-        _aoe.transform.up = Utils.GetDirectionVector(_aoe.transform.position, Target.transform.position, User.Actions.IsFlipped, 30);
+        _aoe.transform.up = CombatMath.GetDirectionVector(_aoe.transform.position, Target.transform.position, User.Actions.IsFlipped, 30);
     }
 
     public void ExtendWave() {
@@ -58,7 +58,7 @@ public class NPCAbility_PlundererIgnis : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(40 * User.MagicStagger.Current / 100, new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

@@ -10,6 +10,6 @@ public class Outfit_Executioner : Item
         Set = ItemSetEnum.Executioner;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("Every5thHitDealsMassivelyIncreasedDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Injury", 0.5f), new ItemEffect("TechniqueDamage", 0.5f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Every5thHitLifesteals")};
     }
 }

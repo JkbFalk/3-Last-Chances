@@ -11,7 +11,7 @@ public class Greatsword_Plunderer : Item
         Set = ItemSetEnum.Knight;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
-        SetBaseWeaponStats(110, 130, 0.75f);
+        SetBaseWeaponStats(11, 13, 0.75f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("PlundererEmpower")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("PlundererArmor")};
     }

@@ -12,13 +12,14 @@ public class Effect_Analysis : Effect
         Type = EffectType.Buff;
         _initialDecayingAmount = damage_increase;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        StackingEffectIntensityLevel = DecayingAmount < 20 ? 1 : DecayingAmount < 50 ? 2 : 3;
     }
 
     public override void OnStart()
@@ -60,10 +61,9 @@ public class Effect_Analysis : Effect
         }*/
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && damage.SourceOfDamage.Is(Ability.Property.Technique)) || (damage?.SourceOfDamage?.User is not Player && damage.DamageType == Constants.DamageType.Magic))) {
-            damage.InjuryDealtPercentageModifier += DecayingAmount;
-            damage.StaggerDealtPercentageModifier += DecayingAmount;
+            damage.DamageDealtPercentageModifier += DecayingAmount;
             base.OnInvokeHitDealt(damage);
         }
     }

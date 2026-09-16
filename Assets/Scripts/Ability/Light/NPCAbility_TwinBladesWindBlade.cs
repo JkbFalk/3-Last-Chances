@@ -15,6 +15,7 @@ public class NPCAbility_TwinBladesWindBlade : Ability {
     public override void CallAbilityEvent1()
     {
         Projectile proj = Utils.CreateProjectile(new(this), "TwinBladesWindBlade");
-        proj.transform.eulerAngles = new Vector3(0, User.Actions.IsFlipped ? 180 : 0, -90);
+        proj.transform.eulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? 90 : -90);
+        Utils.Apply2DFlip(proj.gameObject, User.Actions.IsFlipped);
     }
 }

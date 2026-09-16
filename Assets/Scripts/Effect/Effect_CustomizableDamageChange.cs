@@ -11,11 +11,11 @@ public class Effect_CustomizableDamageChange : Effect
     public float DamagePercentageModifier = 0;
     public float InjuryPercentageModifier = 0;
     public float StaggerPercentageModifier = 0;
-    public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnHitDealt;
-    public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckAfterHitDamageCalculation;
-    public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnAboutToHandleFatalBlow;
-    public Func<Damage, Effect_CustomizableDamageChange, bool> ConditionCheckOnDamageDealt;
-    public Action<Damage, Effect_CustomizableDamageChange> Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
+    public Func<DamageInstance, Effect_CustomizableDamageChange, bool> ConditionCheckOnHitDealt;
+    public Func<DamageInstance, Effect_CustomizableDamageChange, bool> ConditionCheckAfterHitDamageCalculation;
+    public Func<DamageInstance, Effect_CustomizableDamageChange, bool> ConditionCheckOnAboutToHandleFatalBlow;
+    public Func<DamageInstance, Effect_CustomizableDamageChange, bool> ConditionCheckOnDamageDealt;
+    public Action<DamageInstance, Effect_CustomizableDamageChange> Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
             if(effect.DamagePercentageModifier != 0) {
                 damage.InjuryDealtPercentageModifier += effect.DamagePercentageModifier;
                 damage.StaggerDealtPercentageModifier += effect.DamagePercentageModifier;
@@ -39,7 +39,7 @@ public class Effect_CustomizableDamageChange : Effect
         Listeners = new List<UnityEventBase> {EventManager.HitDealt, EventManager.AfterHitDamageCalculation, EventManager.DamageDealt};
     }
 
-    public override void OnInvokeHitDealt(Damage damage)
+    public override void OnInvokeHitDealt(DamageInstance damage)
     {
         if(ConditionCheckOnHitDealt != null && ConditionCheckOnHitDealt.Invoke(damage, this)){
             Action.Invoke(damage, this);
@@ -47,7 +47,7 @@ public class Effect_CustomizableDamageChange : Effect
         }
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage)
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
     {
         if(ConditionCheckAfterHitDamageCalculation != null && ConditionCheckAfterHitDamageCalculation.Invoke(damage, this)){
             Action.Invoke(damage, this);
@@ -55,7 +55,7 @@ public class Effect_CustomizableDamageChange : Effect
         }
     }    
 
-    public override void OnInvokeAboutToHandleFatalBlow(Damage damage)
+    public override void OnInvokeAboutToHandleFatalBlow(DamageInstance damage)
     {
         if(ConditionCheckOnAboutToHandleFatalBlow != null && ConditionCheckOnAboutToHandleFatalBlow.Invoke(damage, this)){
             Action.Invoke(damage, this);
@@ -63,7 +63,7 @@ public class Effect_CustomizableDamageChange : Effect
         }
     }    
 
-    public override void OnInvokeDamageDealt(Damage damage)
+    public override void OnInvokeDamageDealt(DamageInstance damage)
     {
         if(ConditionCheckOnDamageDealt != null && ConditionCheckOnDamageDealt.Invoke(damage, this)){
             Action.Invoke(damage, this);

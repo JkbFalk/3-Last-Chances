@@ -9,7 +9,7 @@ public class Gloves_Survivor : Item
     {
         Set = ItemSetEnum.Survivor;
         Type = Constants.ItemType.Gloves;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreDamageWhileAtFullHealth")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorWhileAtFullHealth")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainInvincibleUponFallingBelow25PHealth")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("HealFromInjury")};
     }
 }

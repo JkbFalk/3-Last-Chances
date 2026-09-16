@@ -10,6 +10,6 @@ public class Gloves_Arbiter : Item
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Gloves;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("StaggeringAnEnemyHealsOnceEveryNSeconds")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Stagger")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGainFromStaggering")};
     }
 }

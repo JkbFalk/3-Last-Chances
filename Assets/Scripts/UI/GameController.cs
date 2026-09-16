@@ -274,6 +274,7 @@ public class GameController : WorldObject
             if (_gameplayMode == Constants.GameplayMode.InMenu && value != Constants.GameplayMode.InMenu)
             {
                 EventManager.ExitMenu.Invoke();
+                MenuManager.Instance?.OnMenuClosed();
             }
             Utils.CreateAuditLog("Changing gameplay mode: " + _gameplayMode + " -> " + value);
             _gameplayMode = value;
@@ -298,7 +299,7 @@ public class GameController : WorldObject
                 PlayerInput.SwitchCurrentActionMap("Dialogue");
                 ToggleScreenNotifications(true);
                 Player.Instance.Actions.TryingToMoveInDirection.Clear();
-                Player.Instance.Rigidbody2D.velocity = Vector2.zero;
+                Player.Instance.Rigidbody2D.linearVelocity = Vector2.zero;
                 Player.Instance.GetComponent<NavMeshObstacle>().enabled = false;
                 if (Player.Instance?.UnitAI?.NavMeshAgent != null)
                 {
@@ -310,7 +311,8 @@ public class GameController : WorldObject
             {
                 Time.timeScale = 0;
                 Utils.SetActiveOnCanvasGroup(Utils.CanvasType.Menu, true);
-                MenuManager.Instance.SelectedSubMenu = MenuManager.Instance.SelectedSubMenu;
+                MenuManager.Instance.OnMenuOpened();
+                
                 ToggleScreenNotifications(false);
                 PlayerInput.SwitchCurrentActionMap("Menu");
                 Utils.DestroyAllChildren(MenuManager.Objects.Notifications.transform);
@@ -318,9 +320,6 @@ public class GameController : WorldObject
                 int count = Player.Instance.CurrentEffects.Where(effect => effect.ShowsInMenu).ToArray().Length;
                 MenuManager.Instance.transform.Find("Character Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
                 MenuManager.Instance.transform.Find("Character Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
-                if(MenuManager.Instance.SelectedSubMenu == 0) {
-                    MenuManager.Objects.CharacterSheet.gameObject.SetActive(true);
-                } 
             }
             else if (_gameplayMode == Constants.GameplayMode.Paused)
             {
@@ -389,7 +388,11 @@ public class GameController : WorldObject
                     Player.Instance.GetComponent<NavMeshObstacle>().enabled = Player.Instance.InCombat && Player.Instance.CollisionTurnedOn;
                 }
             }
-            transform.Find("UI/Pause Screen/Buttons/Save").GetComponent<Button>().interactable = SaveFile.Instance.CheckIfCurrentlyCanSave();
+            Button pauseSaveButton = MenuManager.Objects.OtherSaveButton;
+            if (pauseSaveButton != null)
+            {
+                pauseSaveButton.interactable = SaveFile.Instance.CheckIfCurrentlyCanSave();
+            }
             CameraController.Instance.Camera.enabled = !isInMissionSelect;
             if(isInMissionSelect) {
                 Utils.GetSceneRootObject("Mission Select").Find("Camera").GetComponent<Camera>().enabled = isInMissionSelect;
@@ -405,6 +408,7 @@ public class GameController : WorldObject
             so.UpdateSortingOrder();
         }
         EventManager.OneTenthSecondElapsedInGame.Invoke();
+        Player.Instance.PlayerSavedPosition = Player.Instance.transform.position;
         WaitAndRunMethod(0.1f, OneTenthSecondElapsedInGame);
     }
 
@@ -505,10 +509,11 @@ public class GameController : WorldObject
     {
         DefaultTimeSpeed = 1;
         ResetAllCoroutinesAndRemoveAllListeners();
-        if (Player.Instance != null)
+        if (Player.HasInstance())
         {
             Player.Instance.gameObject.tag = "Unit";
             MonoBehaviour.Destroy(Player.Instance.gameObject);
+            Player.Instance = null;
         }
         foreach (Transform child in UIManager.Objects.ObjectivesDisplay.transform)
         {
@@ -965,7 +970,7 @@ public class GameController : WorldObject
         }
         if (unit.KnockedOut)
         {
-            Damage.DeactivateUnit(unit);
+            DamageInstance.DeactivateUnit(unit);
         }
         unit.InCombat = false;
     }
@@ -1032,7 +1037,7 @@ public class GameController : WorldObject
     }
 
     public void QuitGame() {
-        ShowPauseScreenModal(Label.Get("QuitPlayingConfirmation"), ConfirmedQuitGame);
+        ShowConfirmModal(Label.Get("QuitPlayingConfirmation"), ConfirmedQuitGame);
     }
 
     public void ConfirmedQuitGame() {
@@ -1040,7 +1045,7 @@ public class GameController : WorldObject
     }
 
     public void ReturnToTitle() {
-        ShowPauseScreenModal(Label.Get("QuitPlayingConfirmation"), ConfirmedReturnToTitle);
+        ShowConfirmModal(Label.Get("QuitPlayingConfirmation"), ConfirmedReturnToTitle);
     }
 
     public void ConfirmedReturnToTitle() {
@@ -1077,43 +1082,76 @@ public class GameController : WorldObject
         ConfirmPromptActive = false;
     }
     
-    public void ShowConfirmModal(string description, Action function_to_execute_on_confirm, string special_confirm_button_label = "")
+public void ShowConfirmModal(string description, Action function_to_execute_on_confirm, string special_confirm_button_label = "")
     {
         ConfirmPromptActive = true;
-        Objects.ConfirmPrompt.SetActive(true);
+        GameObject modal = Objects.ConfirmPrompt;
+        if (modal == null)
+        {
+            Debug.LogError("ConfirmPrompt modal GameObject could not be found!");
+            return;
+        }
+        modal.transform.SetAsLastSibling();
+        modal.SetActive(true);
         Objects.ConfirmPromptDescription.text = description;
         FunctionToExecuteOnConfirm = function_to_execute_on_confirm;
-        if(Settings.Instance.ControlScheme == "Gamepad")
+        Button confirmBtn = Objects.ConfirmPromptConfirmButton;
+        if (confirmBtn != null)
         {
-            Objects.ConfirmPromptConfirmButton.Select();
-            EventManager.CancelButtonPressed.AddListener(ModalCanceled);
-            EventManager.ExitMenu.AddListener(ModalCanceled);
+            confirmBtn.onClick.RemoveAllListeners();
+            confirmBtn.onClick.AddListener(ModalConfirmed);
+            confirmBtn.Select();
         }
-        Objects.ConfirmPromptConfirmButtonText.text = special_confirm_button_label == "" ? Label.Get("ButtonConfirm") : Label.Get(special_confirm_button_label);
+        Button cancelBtn = modal.transform.Find("Cancel Button")?.GetComponent<Button>()
+                        ?? modal.transform.Find("Cancel")?.GetComponent<Button>()
+                        ?? modal.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b != confirmBtn);
+        if (cancelBtn != null)
+        {
+            cancelBtn.onClick.RemoveAllListeners();
+            cancelBtn.onClick.AddListener(ModalCanceled);
+        }
+        EventManager.CancelButtonPressed.RemoveListener(ModalCanceled);
+        EventManager.CancelButtonPressed.AddListener(ModalCanceled);
+        EventManager.ExitMenu.RemoveListener(ModalCanceled);
+        EventManager.ExitMenu.AddListener(ModalCanceled);
+        Objects.ConfirmPromptConfirmButtonText.text = special_confirm_button_label == "" 
+            ? Label.Get("ButtonConfirm") 
+            : Label.Get(special_confirm_button_label);
     }
 
     public void ModalConfirmed()
     {
-        FunctionToExecuteOnConfirm.Invoke();
-        Objects.ConfirmPrompt.SetActive(false);
+        EventManager.CancelButtonPressed.RemoveListener(ModalCanceled);
+        EventManager.ExitMenu.RemoveListener(ModalCanceled);
+        Action actionToExecute = FunctionToExecuteOnConfirm;
+        FunctionToExecuteOnConfirm = null;
+
+        if (Objects.ConfirmPrompt != null)
+        {
+            Objects.ConfirmPrompt.SetActive(false);
+        }
         ConfirmPromptActive = false;
+        actionToExecute?.Invoke();
     }
 
     public void ModalCanceled()
     {
         EventManager.CancelButtonPressed.RemoveListener(ModalCanceled);
         EventManager.ExitMenu.RemoveListener(ModalCanceled);
-        Objects.ConfirmPrompt.SetActive(false);
+        FunctionToExecuteOnConfirm = null;
+        if (Objects.ConfirmPrompt != null)
+        {
+            Objects.ConfirmPrompt.SetActive(false);
+        }
         ConfirmPromptActive = false;
     }
 
-    public void AbandonMission()
-    {
-        if(SaveFile.Instance.CurrentMission.NumberOfWeeksConsumed == 0) {
+    public void AbandonMission() {
+        if (SaveFile.Instance.CurrentMission != null && SaveFile.Instance.CurrentMission.NumberOfWeeksConsumed == 0) {
             SaveFile.Instance.CurrentMission.AbandonMission();
         }
         else {
-            ShowPauseScreenModal(Label.Get("AbandonMissionConfirmation"), ConfirmedAbandonMission);
+            ShowConfirmModal(Label.Get("AbandonMissionConfirmation"), ConfirmedAbandonMission);
         }  
     }
 

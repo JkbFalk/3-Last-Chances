@@ -12,7 +12,7 @@ public class NPCAbility_RunningAndSlashing : Ability {
     }
 
     public override void CallAbilityEvent1() {
-        Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, User.CurrentTarget != null ? User.CurrentTarget.transform.position : User.Actions.IsFlipped ? User.transform.position + Vector3.left : User.transform.position + Vector3.right, User.Actions.IsFlipped, 35);
+        Vector2 direction_vector_towards_target = CombatMath.GetDirectionVector(User.transform.position, User.CurrentTarget != null ? User.CurrentTarget.transform.position : User.Actions.IsFlipped ? User.transform.position + Vector3.left : User.transform.position + Vector3.right, User.Actions.IsFlipped, 35);
         User.PushInTargetDirection(direction_vector_towards_target * 3, this);
     }
 

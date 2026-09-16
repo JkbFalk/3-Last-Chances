@@ -14,10 +14,10 @@ public class Effect_Acceleration : Effect
         _initialDecayingAmount = speedup;
         ShowsInUI = true;
         PathToUIGraphic = "UI/AttackSpeed";
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         if(ASBuffEffect == null) {
             return;

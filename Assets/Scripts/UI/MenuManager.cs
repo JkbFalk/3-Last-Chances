@@ -64,16 +64,22 @@ public class MenuManager : MonoBehaviour {
 
     public string AbilityBeingChanged;
     public string StanceBeingChanged;
+
     public static MenuManager Instance
     {
         get
         {
-            if (_instance == null)
+            if (_instance == null && GameController.Instance != null)
             {
-                _instance = GameController.Instance.GetComponentInChildren<MenuManager>();
+                _instance = GameController.Instance.GetComponentInChildren<MenuManager>(true);
             }
             return _instance;
         }
+    }
+
+    private void Awake()
+    {
+        _instance = this;
     }
 
     public List<Item> EquippedItems {
@@ -115,56 +121,79 @@ public class MenuManager : MonoBehaviour {
         }
     }
 
-    private List<string> _subMenus = new List<string> { "Character", "Inventory", "Skill Tree", "Archive", "Tutorials", "Options", };
+    private List<string> _subMenus = new List<string> { "Character", "Inventory", "Skill Tree", "Archive", "Tutorials", "Options", "Other" };
     private int _selectedSubMenu = 0;
     public int SelectedSubMenu
     {
-        get
+        get => _selectedSubMenu;
+        set => SwitchSubMenu(value, false);
+    }
+
+    public void SwitchSubMenu(int targetIndex, bool forceRefresh = false)
+    {
+        int formatted_value = targetIndex < 0 ? _subMenus.Count - 1 : targetIndex > _subMenus.Count - 1 ? 0 : targetIndex;
+
+        Transform currentWindowTransform = transform.Find(_subMenus[_selectedSubMenu] + " Window");
+        if (_selectedSubMenu == formatted_value && !forceRefresh && currentWindowTransform != null && currentWindowTransform.gameObject.activeSelf)
         {
-            return _selectedSubMenu;
+            return;
         }
-        set
+
+        for (int i = 0; i < _subMenus.Count; i++)
         {
-            if(_selectedSubMenu == value) {
-                return;
-            }
-            int formatted_value = value < 0 ? _subMenus.Count - 1 : value > _subMenus.Count - 1 ? 0 : value;
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark (Selected)").gameObject.SetActive(false);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark").gameObject.SetActive(true);
-            transform.Find(_subMenus[_selectedSubMenu] + " Window").gameObject.SetActive(false);
-            _selectedSubMenu = formatted_value;
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark (Selected)").gameObject.SetActive(true);
-            transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark").gameObject.SetActive(false);
-            transform.Find(_subMenus[_selectedSubMenu] + " Window").gameObject.SetActive(true);
-            if(_selectedSubMenu == 0)
-            {
-                MenuManager.Instance.HideEffects();
-                int count = Player.Instance.CurrentEffects.Where(effect => effect.ShowsInMenu).ToArray().Length;
-                transform.Find("Character Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
-                transform.Find("Character Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
-            }
-            if(_selectedSubMenu == 1 && SaveFile.Instance.Inventory.Count > 0)
-            {
-                MenuManager.Instance.ChangeSelectedInventoryCategory(0);
-            }
-            if(_selectedSubMenu == 2) {
-                for(int i = 0; i < 7; i++) {
-                    Utils.ScrollToTopOrBottom(transform.Find("Skill Tree Window/Skill Tree").GetChild(i)); // This canvas contains the scroll rect
-                    transform.Find("Skill Tree Window/Skill Tree").GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
-                }
-            }
-            if(_selectedSubMenu == 4 && Objects.MenuArchive.transform.childCount > 0) {
-                Objects.MenuArchive.transform.parent.Find("Scrollbar").GetComponent<Scrollbar>().value = 0;
-                for(int i = 0; i < 5; i++) {
-                    GameController.Instance.WaitAndRunMethodRealtime(0.05f * i, UpdateHistoryScrollbarPosition);
-                }
-            }
-            if(_selectedSubMenu == 5)
-            {
-                transform.Find("Tutorials Window/UI_Window/Viewport/Items/UI_TutorialItem").GetComponent<Button>().Select();
-            }
-            PlayerControls.GamepadSelectObjectClosestToCenter();
+            transform.Find("Menu Selection/" + _subMenus[i] + "/Background/Checkmark (Selected)")?.gameObject.SetActive(false);
+            transform.Find("Menu Selection/" + _subMenus[i] + "/Background/Checkmark")?.gameObject.SetActive(true);
+            transform.Find(_subMenus[i] + " Window")?.gameObject.SetActive(false);
         }
+
+        _selectedSubMenu = formatted_value;
+
+        transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark (Selected)")?.gameObject.SetActive(true);
+        transform.Find("Menu Selection/" + _subMenus[_selectedSubMenu] + "/Background/Checkmark")?.gameObject.SetActive(false);
+        
+        Transform targetWindow = transform.Find(_subMenus[_selectedSubMenu] + " Window");
+        if (targetWindow != null)
+        {
+            targetWindow.gameObject.SetActive(true);
+        }
+
+        if (_subMenus[_selectedSubMenu] == "Character")
+        {
+            HideEffects();
+            int count = Player.Instance.CurrentEffects.Where(effect => effect.ShowsInMenu).ToArray().Length;
+            transform.Find("Character Window/Abilities/Right-side Panel/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+            transform.Find("Character Window/Abilities/UI_DisabledInCombat/ActiveEffects").GetComponent<TextMeshProUGUI>().text = Label.Get("UI_ActiveEffectCount") + count;
+        }
+        else if (_subMenus[_selectedSubMenu] == "Inventory")
+        {
+            ChangeSelectedInventoryCategory(SelectedSortingIndex);
+        }
+        else if (_subMenus[_selectedSubMenu] == "Skill Tree")
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                Utils.ScrollToTopOrBottom(transform.Find("Skill Tree Window/Skill Tree").GetChild(i));
+                transform.Find("Skill Tree Window/Skill Tree").GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1f;
+            }
+        }
+        else if (_subMenus[_selectedSubMenu] == "Tutorials" && Objects.MenuArchive.transform.childCount > 0)
+        {
+            Objects.MenuArchive.transform.parent.Find("Scrollbar").GetComponent<Scrollbar>().value = 0;
+            for (int i = 0; i < 5; i++)
+            {
+                GameController.Instance.WaitAndRunMethodRealtime(0.05f * i, UpdateHistoryScrollbarPosition);
+            }
+        }
+        else if (_subMenus[_selectedSubMenu] == "Other")
+        {
+            Button saveBtn = Objects.OtherSaveButton;
+            if (saveBtn != null)
+            {
+                saveBtn.interactable = SaveFile.Instance.CheckIfCurrentlyCanSave();
+            }
+        }
+
+        PlayerControls.GamepadSelectObjectClosestToCenter();
     }
 
     public void ResetAndRefreshAllMenus() {
@@ -299,7 +328,7 @@ public class MenuManager : MonoBehaviour {
         foreach(PassivePowerUpTile unlock in MenuManager.Instance.GetComponentsInChildren<PassivePowerUpTile>(true)) {
             PowerUpTiles.Add(unlock);
         }
-        foreach(string submenu in new List<string> {"Character", "Inventory", "Skill Tree", "Archive", "Tutorials", "Options"}) {
+        foreach(string submenu in new List<string> {"Character", "Inventory", "Skill Tree", "Archive", "Tutorials", "Options", "Other"}) {
             transform.Find(submenu + " Window").gameObject.SetActive(false);
         }
     }
@@ -416,6 +445,37 @@ public class MenuManager : MonoBehaviour {
     {
         float sliderValue = Objects.OptionsInWorldDialogueSpeedSlider.GetComponent<Slider>().value;
         Settings.Instance.InWorldDialogueBubbleSpeed = sliderValue / 100;
+    }
+
+    public void SetScreenShake()
+    {
+        float sliderValue = Objects.OptionsScreenShakeSlider.GetComponent<Slider>().value;
+        Settings.Instance.ScreenShake = sliderValue / 100;
+    }
+
+    public void OnMenuOpened()
+    {
+        SwitchSubMenu(_selectedSubMenu, true);
+    }
+
+    public void OnMenuClosed()
+    {
+        if (CurrentOpenDropdown != null)
+        {
+            CurrentOpenDropdown.Hide();
+        }
+        HideItemDetailsWindow();
+        HideAbilitySelection();
+        HideStanceSelection();
+        HideEnergySelection();
+        for (int i = 0; i < _subMenus.Count; i++)
+        {
+            Transform window = transform.Find(_subMenus[i] + " Window");
+            if (window != null)
+            {
+                window.gameObject.SetActive(false);
+            }
+        }
     }
 
     public void ChangeDisplayedTutorial(string tutorial_name)
@@ -890,7 +950,7 @@ public class MenuManager : MonoBehaviour {
 
     public void ChangeSelectedInventoryCategory(int sort)
     {
-        if(SelectedSorting != null)
+        if (SelectedSorting != null)
         {
             SelectedSorting.transform.Find("Background/Checkmark (Selected)").gameObject.SetActive(false);
             SelectedSorting.transform.Find("Background/Checkmark").gameObject.SetActive(true);
@@ -898,28 +958,39 @@ public class MenuManager : MonoBehaviour {
         Transform items = transform.Find("Inventory Window/Inventory/Viewport/Items");
         for (int i = 0; i < items.childCount; i++)
         {
-            if(items.GetChild(i).gameObject.name.Contains("Set_")) {
-                items.GetChild(i).gameObject.SetActive(false);
+            Transform child = items.GetChild(i);
+            if (child.gameObject.name.Contains("Set_"))
+            {
+                child.gameObject.SetActive(false);
             }
-            else {
-                items.GetChild(i).gameObject.SetActive(sort == 0);
-            }
-        }
-        foreach(InventoryTile item in items.GetComponentsInChildren<InventoryTile>(true)) {
-            if(sort != 1 || item.Item.Type == Constants.ItemType.Tool || item.Item.Type == Constants.ItemType.Quest) {
-                item.transform.SetParent(items.Find(item.Item.Type.ToString()+"/Items"));
-            }
-            else {
-                item.transform.SetParent(items.Find("Set_" + item.Item.Set.ToString()+"/Items"));
+            else
+            {
+                child.gameObject.SetActive(sort == 0);
             }
         }
-        if(sort != 0 && sort != 1)
+        InventoryTile[] allTiles = items.GetComponentsInChildren<InventoryTile>(true);
+        foreach (InventoryTile item in allTiles)
         {
-            transform.Find("Inventory Window/Inventory/Viewport/Items").GetChild(sort - 2).gameObject.SetActive(true);
+            Transform targetParent = (sort != 1 || item.Item.Type == Constants.ItemType.Tool || item.Item.Type == Constants.ItemType.Quest)
+                ? items.Find(item.Item.Type.ToString() + "/Items")
+                : items.Find("Set_" + item.Item.Set.ToString() + "/Items");
+
+            if (targetParent != null && item.transform.parent != targetParent)
+            {
+                item.transform.SetParent(targetParent, false);
+            }
         }
-        else if(sort == 1) {
-            foreach(Transform child in items) {
-                if(child.gameObject.name.Contains("Set_") && child.Find("Items").childCount > 0) {
+
+        if (sort != 0 && sort != 1)
+        {
+            items.GetChild(sort - 2).gameObject.SetActive(true);
+        }
+        else if (sort == 1)
+        {
+            foreach (Transform child in items)
+            {
+                if (child.gameObject.name.Contains("Set_") && child.Find("Items").childCount > 0)
+                {
                     child.gameObject.SetActive(true);
                 }
             }
@@ -928,45 +999,65 @@ public class MenuManager : MonoBehaviour {
         SelectedSorting.transform.Find("Background/Checkmark (Selected)").gameObject.SetActive(true);
         SelectedSorting.transform.Find("Background/Checkmark").gameObject.SetActive(false);
         SelectedSortingIndex = sort;
-        if(Settings.Instance.ControlScheme == "Gamepad" && items.GetChild(sort == 0 ? 0 : sort - 2).Find("Items").childCount > 0)
+        if (Settings.Instance.ControlScheme == "Gamepad" && items.GetChild(sort == 0 ? 0 : sort - 2).Find("Items").childCount > 0)
         {
             InventoryTile tile = items.GetChild(sort == 0 ? 0 : sort - 2).Find("Items").GetChild(0).GetComponent<InventoryTile>();
             if (CurrentlySelectedTile != null && CurrentlySelectedTile != tile)
             {
                 CurrentlySelectedTile.OnDeselect(null);
             }
-            if(CurrentlySelectedTile != tile)
+            if (CurrentlySelectedTile != tile)
             {
                 CurrentlySelectedTile = tile;
                 CurrentlySelectedTile.GetComponent<Button>().Select();
             }
         }
         items.position = new Vector2(items.position.x, 0);
-        foreach(Transform child in items) {
-            if(child.gameObject.activeSelf) {
-                List<Item> consideredItems = new();
-                List<Item> weaponItems = new();
-                List<Item> nonWeaponItems = new();
-                foreach(InventoryTile tile in child.GetComponentsInChildren<InventoryTile>()) {
-                    consideredItems.Add(tile.Item);
-                    if(sort == 1 && (tile.Item.Type == Constants.ItemType.Heavy || tile.Item.Type == Constants.ItemType.Light || tile.Item.Type == Constants.ItemType.Ranged)) {
-                        weaponItems.Add(tile.Item);
-                    }
-                    else if(sort == 1){
-                        nonWeaponItems.Add(tile.Item);
-                    }
-                }
-                List<Item> sortedItems;
-                if(sort == 1) {
-                    weaponItems = weaponItems.OrderBy(item => item.Type).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
-                    nonWeaponItems = nonWeaponItems.OrderBy(item => item.Type).ThenBy(item => item.GetType().ToString()).ThenByDescending(item => item.Grade).ToList();
-                    sortedItems = nonWeaponItems.Concat(weaponItems).ToList();
-                }
-                else {
-                    sortedItems = consideredItems.OrderBy(item => item.Type).ThenBy(item => item.Set).ThenByDescending(item => item.Grade).ToList();
-                } 
-                for(int i = 0; i < sortedItems.Count; i++) {
-                    sortedItems[i].TileInInventory.transform.SetSiblingIndex(i);
+        foreach (Transform child in items)
+        {
+            if (!child.gameObject.activeSelf)
+            {
+                continue;
+            }
+            Transform container = child.Find("Items");
+            if (container == null || container.childCount <= 1)
+            {
+                continue;
+            }
+            InventoryTile[] containerTiles = container.GetComponentsInChildren<InventoryTile>();
+            List<Item> sortedItems;
+            if (sort == 1)
+            {
+                var weaponItems = containerTiles
+                    .Where(t => t.Item.Type == Constants.ItemType.Heavy || t.Item.Type == Constants.ItemType.Light || t.Item.Type == Constants.ItemType.Ranged)
+                    .Select(t => t.Item)
+                    .OrderBy(item => item.Type)
+                    .ThenBy(item => item.GetType().ToString())
+                    .ThenByDescending(item => item.Grade);
+                var nonWeaponItems = containerTiles
+                    .Where(t => t.Item.Type != Constants.ItemType.Heavy && t.Item.Type != Constants.ItemType.Light && t.Item.Type != Constants.ItemType.Ranged)
+                    .Select(t => t.Item)
+                    .OrderBy(item => item.Type)
+                    .ThenBy(item => item.GetType().ToString())
+                    .ThenByDescending(item => item.Grade);
+
+                sortedItems = nonWeaponItems.Concat(weaponItems).ToList();
+            }
+            else
+            {
+                sortedItems = containerTiles
+                    .Select(t => t.Item)
+                    .OrderBy(item => item.Type)
+                    .ThenBy(item => item.Set)
+                    .ThenByDescending(item => item.Grade)
+                    .ToList();
+            }
+            for (int i = 0; i < sortedItems.Count; i++)
+            {
+                Transform tileTransform = sortedItems[i].TileInInventory.transform;
+                if (tileTransform.GetSiblingIndex() != i)
+                {
+                    tileTransform.SetSiblingIndex(i);
                 }
             }
         }
@@ -1587,6 +1678,8 @@ public class MenuManager : MonoBehaviour {
         public static GameObject CharacterEffectList => Utils.GetGameObject("Menu/Character Window/Effects/Viewport/Items");
         public static Slider OptionsInWorldDialogueSpeedSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/InGame Dialogue Speed/Slider", typeof(Slider));
         public static LabelInitializer OptionsInWorldDialogueSpeedLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/InGame Dialogue Speed/Label", typeof(LabelInitializer));
+        public static Slider OptionsScreenShakeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Screen Shake/Slider", typeof(Slider));
+        public static LabelInitializer OptionsScreenShakeLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Screen Shake/Label", typeof(LabelInitializer));
         public static Slider OptionsDialogueTextSpeedSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Dialogue Text Speed/Slider", typeof(Slider));
         public static LabelInitializer OptionsDialogueTextSpeedLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Dialogue Text Speed/Label", typeof(LabelInitializer));
         public static Slider OptionsMasterVolumeSlider => (Slider)Utils.GetComponent("Menu/Options Window/Options/Audio/Items/Master Volume/Slider", typeof(Slider));
@@ -1613,5 +1706,10 @@ public class MenuManager : MonoBehaviour {
         public static TMP_Dropdown OptionsControlsDropdown => (TMP_Dropdown)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Controls/Dropdown", typeof(TMP_Dropdown));
         public static LabelInitializer OptionsControlsLabel => (LabelInitializer)Utils.GetComponent("Menu/Options Window/Options/Gameplay/Items/Controls/Dropdown/Label", typeof(LabelInitializer));
         public static TextMeshProUGUI InventoryMoneyText => (TextMeshProUGUI)Utils.GetComponent("Menu/Inventory Window/Equipment/Money/Amount", typeof(TextMeshProUGUI));
+        public static GameObject OtherWindow => Utils.GetGameObject("Menu/Other Window");
+        public static Button OtherSaveButton => (Button)Utils.GetComponent("Menu/Other Window/Buttons/Save", typeof(Button));
+        public static GameObject EscapeMissionButton => Utils.GetGameObject("Menu/Other Window/Buttons/Escape Button");
+        public static LabelInitializer EscapeMissionButtonLabel => 
+            (LabelInitializer)Utils.GetComponent("Menu/Other Window/Buttons/Escape Button/Text", typeof(LabelInitializer));
     }
 }

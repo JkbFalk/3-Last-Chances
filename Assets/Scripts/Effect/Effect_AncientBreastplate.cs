@@ -33,7 +33,7 @@ public class Effect_AncientBreastplate : Effect {
     }
 
     public void AddBuffs() {
-        DamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = FirstParameter};
+        DamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = PercentageAmount};
         Player.Instance.AddEffect(DamageBuff);
     }
 }

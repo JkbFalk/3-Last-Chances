@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect_GainASForDistancelTravelled : Effect
+public class Effect_GainSuperchargeBasedOnDistanceTravelledInLast5Sec : Effect
 {
     private float[] _distanceTravelledInGivenSecond = new float[50] {0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0,0, 0, 0, 0, 0};
-    public float ASPer1MTravelled;
+    public float SuperchargePer1MTravelled;
     public Vector2 _prevPosition;
     private Effect_ChangeCompositeStat ASBuff;
-    public Effect_GainASForDistancelTravelled(float as_per_1m_travelled, SourceOfEffect source_of_effect) : base(source_of_effect)
+    public Effect_GainSuperchargeBasedOnDistanceTravelledInLast5Sec(float as_per_1m_travelled, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
-        ASPer1MTravelled = as_per_1m_travelled;
+        SuperchargePer1MTravelled = as_per_1m_travelled;
         Listeners.Add(EventManager.OneTenthSecondElapsedInGame);
     }
 
@@ -42,7 +42,7 @@ public class Effect_GainASForDistancelTravelled : Effect
         for(int i = 0; i < 50; i++) {
             travelledTotal += _distanceTravelledInGivenSecond[i] * (1 - 0.04f * i);
         }
-        ASBuff.PercentageModifier = travelledTotal * ASPer1MTravelled;
+        ASBuff.PercentageModifier = travelledTotal * SuperchargePer1MTravelled;
         ASBuff.UIText = Utils.GetFormattedFloat(ASBuff.PercentageModifier, 0);
     }
 

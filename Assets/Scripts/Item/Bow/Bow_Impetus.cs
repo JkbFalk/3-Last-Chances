@@ -10,8 +10,8 @@ public class Bow_Impetus : Item
         Set = ItemSetEnum.Gunslinger;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Bow;
-        SetBaseWeaponStats(80, 160, 0.6f);
+        SetBaseWeaponStats(8, 16, 0.6f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealIncreasedDamageBasedOnFlightTime")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedStagger")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorPenetrationBasedOnFlightTime")};
     }
 }

@@ -45,7 +45,7 @@ public class Effect_AncientFirearmsDamage : Effect {
         if(SaveFile.Instance.EquippedBoots is Boots_Ancient) {
             ancientCount++;
         }
-        DamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = ancientCount * FirstParameter};
+        DamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, SourceOfEffect) {PercentageModifier = ancientCount * PercentageAmount};
         Player.Instance.AddEffect(DamageBuff);
     }
 }

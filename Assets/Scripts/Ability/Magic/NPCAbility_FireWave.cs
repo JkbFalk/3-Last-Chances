@@ -21,7 +21,7 @@ public class NPCAbility_FireWave : Ability {
         Bullet.transform.up = (Target.transform.position - Bullet.transform.position).normalized;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(40 * User.MagicStagger.Current / 100, new(this)));
     }

@@ -16,7 +16,7 @@ public class NPCAbility_CannonsBlast : Ability {
         EffectsAffectingUserDuringAbility = new List<Effect>() { new Effect_Immovable(new(this)), new Effect_RootedInPlace(new(this))};
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

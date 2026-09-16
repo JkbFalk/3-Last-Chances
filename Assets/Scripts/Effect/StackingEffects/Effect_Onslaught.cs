@@ -12,11 +12,11 @@ public class Effect_Onslaught : Effect
         Type = EffectType.Buff;
         _initialDecayingAmount = damage_increase;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
@@ -60,7 +60,7 @@ public class Effect_Onslaught : Effect
         }*/
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && damage.SourceOfDamage.Is(Ability.Property.BasicAttack)) || (damage?.SourceOfDamage?.User is not Player && damage.SourceOfDamage.Is(Ability.Property.Counter) == false && damage.SourceOfDamage.Is(Ability.Property.Unstoppable) == false))) {
             damage.InjuryDealtPercentageModifier += DecayingAmount;
             damage.StaggerDealtPercentageModifier += DecayingAmount;

@@ -23,7 +23,7 @@ public class NPCAbility_PlundererInfuse : Ability {
                     Player.Instance.AddEffect(new Effect_BlockTechniquesFromGivenFamily(family, new(this)) {UIText=Label.Get("Effect_TechniquesBlockedIndicator")}, 20);
                 }
                 else {
-                    Player.Instance.AddEffect(new Effect_PlundererAbilityAmplify(-50, new(this)) {AmplifiedFamily = family}, 20);
+                    Player.Instance.AddEffect(new Effect_PlundererAbilityAmplify(new(this)) {AmplifiedFamily = family, PercentageAmount = -50}, 20);
                 }
             }
         }
@@ -32,7 +32,7 @@ public class NPCAbility_PlundererInfuse : Ability {
                 Player.Instance.AddEffect(new Effect_BlockTechniquesFromGivenFamily(_blockedFamily, new(this)) {UIText=Label.Get("Effect_TechniquesBlockedIndicator")}, 20);
             }
             else {
-                Player.Instance.AddEffect(new Effect_PlundererAbilityAmplify(-75, new(this)) {AmplifiedFamily = _blockedFamily}, 20);
+                Player.Instance.AddEffect(new Effect_PlundererAbilityAmplify(new(this)) {AmplifiedFamily = _blockedFamily, PercentageAmount = -75}, 20);
             }
         }
         GameObject vfx = Utils.CreateVisualEffect(new(this), "Plunderer_" + (_isOmni ? "Omni" : _blockedFamily));
@@ -53,7 +53,12 @@ public class NPCAbility_PlundererInfuse : Ability {
     public override void CallAbilityEvent2()
     {
         EndThisAbility();
-        User.Actions.UseAbility(Type.GetType("NPCAbility_Plunderer" + (_isOmni ? "Omni" : _blockedFamily)));
+        Type followUp = AbilityTypeRegistry.GetPlundererFollowUp(_blockedFamily, _isOmni);
+        if (followUp == null)
+        {
+            return;
+        }
+        User.Actions.UseAbility(followUp);
         User.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.Unstoppable);
     }
 

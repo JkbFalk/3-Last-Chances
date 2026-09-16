@@ -143,8 +143,8 @@ public class StartScreen : MonoBehaviour {
             newestSf = SaveFile.RetrieveSaveFile("AutoSave.es3");
         }
         for(int i = 1; i < Constants.MAXIMUM_AMOUNT_OF_SAVE_FILES + 1; i++) {
-            if(ES3.FileExists("SaveFile" + i + ".es3")) {
-                SaveFile sf = SaveFile.RetrieveSaveFile("SaveFile" + i + ".es3");
+            if(ES3.FileExists("SaveFile_" + i + ".es3")) {
+                SaveFile sf = SaveFile.RetrieveSaveFile("SaveFile_" + i + ".es3");
                 if(newestSf == null || newestSf.SavedTimeStamp < sf.SavedTimeStamp) {
                     newestSf = sf;
                 }

@@ -9,7 +9,7 @@ public class Boots_ShadowGifted : Item
     {
         Set = ItemSetEnum.ShadowGifted;
         Type = Constants.ItemType.Boots;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnPositiveStackingEffectsOnYouAndNegativeOnEnemy")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Damage")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnNegativeStackingEffectsOnEnemy")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnPositiveStackingEffectsOnYou")};
     }
 }

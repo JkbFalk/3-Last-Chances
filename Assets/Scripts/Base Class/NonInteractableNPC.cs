@@ -12,7 +12,7 @@ public class NonInteractableNPC : MonoBehaviour
     void Start()
     {
         InitializeSpriteRenderers();
-        Damage.DeactivateUnit(GetComponent<Unit>());
+        DamageInstance.DeactivateUnit(GetComponent<Unit>());
         if(DefaultAnimation != null && !String.IsNullOrWhiteSpace(DefaultAnimation)) {
             GetComponent<Animator>().Play(DefaultAnimation);
         }

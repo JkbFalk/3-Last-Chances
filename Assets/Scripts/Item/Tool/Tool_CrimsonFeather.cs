@@ -33,7 +33,7 @@ public class Tool_CrimsonFeather : Item
         EventManager.UnitWouldBeDefeated.RemoveListener(Activate);
     }
 
-    public void Activate(Damage damage) {
+    public void Activate(DamageInstance damage) {
         if(damage.TargetOfDamage is Player && damage.OverkillInjury > 0 && Player.Instance.ToolCooldown == null && SaveFile.Instance.ToolRemainingAmounts[typeof(Tool_CrimsonFeather)] > 0) {
             Player.Instance.Health.Current += 5 * GetMultiplierForGrade();
             Player.Instance.AddEffect(new Effect_Stun(new(this)), 1);

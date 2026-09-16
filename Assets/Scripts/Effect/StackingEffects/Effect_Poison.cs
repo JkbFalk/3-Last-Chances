@@ -15,10 +15,10 @@ public class Effect_Poison : Effect
         Type = EffectType.Debuff;
         ShowsInUI = true;
         _initialDecayingAmount = poison_amount;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         if((TargetOfEffect is Player && Regen == null) || (TargetOfEffect is not Player && CDIncreasedEffect == null)) {
             return;

@@ -6,7 +6,7 @@ public class Ability_ShadowInfusion : Technique
 {
     public static float EnergyCost = 25;
     public static float Cooldown = 15;
-
+    public static AbilityFamily Family = AbilityFamily.Salutis;
     public static float BaseEffectDuration = 3;
     public static float UltimateEffectDuration = 20;
     public static float InjuryScaling = 250;
@@ -17,13 +17,6 @@ public class Ability_ShadowInfusion : Technique
     public static float UpgradeALifestealAmount = 30;
     public static float UpgradeBArmor = 75;
     public static float AttackSpeedBuffAmount = 100;
-
-    public static AbilityFamily Family = AbilityFamily.Salutis;
-    public static Constants.DamageType TechniqueDamageType {
-        get {
-            return Player.Instance.CurrentStance.DamageType;
-        }
-    }
 
     public static bool CanBeUsedDuringOtherAbilities
     {

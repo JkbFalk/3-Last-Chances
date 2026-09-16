@@ -9,8 +9,8 @@ public class Daggers_CrimsonCarvers : Item
     {
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(120, 0, 1.25f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksApplyIncision")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("IncisionArmor")};
+        SetBaseWeaponStats(12, 0, 1.25f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksApplyBleed")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BleedArmor")};
     }
 }

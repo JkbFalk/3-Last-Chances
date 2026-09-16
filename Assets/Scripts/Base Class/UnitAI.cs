@@ -94,13 +94,6 @@ public class UnitAI : MonoBehaviour {
         if(GameController.Instance.GameplayMode != Constants.GameplayMode.Regular || _unit.InCombat == false) {
             return;
         }
-        if(!NavMeshAgent.isOnNavMesh) {
-            NavMeshHit myNavHit;
-            if(NavMesh.SamplePosition(transform.position, out myNavHit, 100 , -1))
-            {
-                transform.position = myNavHit.position;
-            }
-        }
         if (CanMove && CurrentDirectionType != DirectionType.DontChangeFacingDirection) {
             if (CurrentDirectionType == DirectionType.AlwaysFaceTargetUnit && _unit.CurrentTarget != null && transform.position.x > _unit.CurrentTarget.transform.position.x && _unit.Actions.IsFlipped == false) {
                 _unit.Actions.IsFlipped = true;
@@ -243,19 +236,19 @@ public class UnitAI : MonoBehaviour {
             }
             catch(Exception ex) {
                 Debug.LogError("Incorrect action on UnitAI (" + _unit.gameObject.name + "): " + item + ": " + ex.Message);
+                continue;
             }
-            if(!action_name.Contains("AI_")) {
-                action_name = "NPCAbility_" + action_name;
+            Type actionType = AbilityTypeRegistry.ResolveUnitAIAction(action_name);
+            if(actionType == null) {
+                continue;
             }
-            if(Type.GetType(action_name) == null) {
-                Debug.LogError("Could not find ability type with name: " + action_name);
-            }
-            dict.Add(Type.GetType(action_name), Int32.Parse(item.Split(',')[0]));
-            MethodInfo extraActionsForAbility = Type.GetType(action_name).GetMethod("AdditionalActionsOnSettingsAbilityAsPotentialAction", BindingFlags.Public | BindingFlags.Static);
+            action_name = actionType.Name;
+            dict.Add(actionType, Int32.Parse(item.Split(',')[0]));
+            MethodInfo extraActionsForAbility = actionType.GetMethod("AdditionalActionsOnSettingsAbilityAsPotentialAction", BindingFlags.Public | BindingFlags.Static);
             if(extraActionsForAbility != null) {
                 extraActionsForAbility.Invoke(null, new object[] {_unit});
             }
-            FieldInfo does_not_require_target = Type.GetType(action_name).GetField("DoesNotRequireTarget", BindingFlags.Public | BindingFlags.Static);
+            FieldInfo does_not_require_target = actionType.GetField("DoesNotRequireTarget", BindingFlags.Public | BindingFlags.Static);
             if(does_not_require_target == null || (bool)does_not_require_target.GetValue(null) == false) {
                 if(!action_name.Contains("AI_") && (_unit.EnemyDetection.transform.Find(action_name) == null || _unit.EnemyDetection.transform.Find(action_name).tag == "Marked For Destruction")) {
                     try {
@@ -307,6 +300,7 @@ public class UnitAI : MonoBehaviour {
     }
 
     public void PerformAction(Type action, Unit target = null) {
+        Utils.CreateAuditLog($"Unit {_unit.gameObject.name} decided on next action {action.ToString()} (target: {target})");
         CurrentAIBehavior = Constants.AIBehavior.UsingAbility;
         if (EnemiesInRangeForAbility.ContainsKey(action.ToString())) {
             _unit.CurrentTarget = EnemiesInRangeForAbility[action.ToString()];

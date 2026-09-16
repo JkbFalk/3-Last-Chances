@@ -10,6 +10,6 @@ public class Helmet_Survivor : Item
         Set = ItemSetEnum.Survivor;
         Type = Constants.ItemType.Helmet;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("HealthRestorationPower")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ConvertHealthToInjury")};
     }
 }

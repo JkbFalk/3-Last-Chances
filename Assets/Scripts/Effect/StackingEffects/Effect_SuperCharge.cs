@@ -11,11 +11,11 @@ public class Effect_Supercharge : Effect
         Type = EffectType.Buff;
         _initialDecayingAmount = damage_increase;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.DamageDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
@@ -59,12 +59,12 @@ public class Effect_Supercharge : Effect
         }*/
     }
 
-    public override void OnInvokeDamageDealt(Damage damage) {
-        if(damage.SourceOfDamage?.User == TargetOfEffect && damage.IsNot(Damage.DamageProperty.DamageOverTime) && damage.IsNot(Damage.DamageProperty.ExtraDamage)) {
-            Damage d = new Damage(damage.TargetOfDamage, new Ability_SourcelessDamage(TargetOfEffect), damage.DamagingObject) {
+    public override void OnInvokeDamageDealt(DamageInstance damage) {
+        if(damage.SourceOfDamage?.User == TargetOfEffect && damage.IsNot(DamageInstance.DamageProperty.DamageOverTime) && damage.IsNot(DamageInstance.DamageProperty.ExtraDamage)) {
+            DamageInstance d = new DamageInstance(damage.TargetOfDamage, new Ability_SourcelessDamage(TargetOfEffect), damage.DamagingObject) {
                 AbilityDamageSource = new(0, 0, Constants.DamageType.None), 
                 Injury = DecayingAmount, 
-                Properties = new() {Damage.DamageProperty.Supercharge, Damage.DamageProperty.ExtraDamage}};
+                Properties = new() {DamageInstance.DamageProperty.Supercharge, DamageInstance.DamageProperty.ExtraDamage}};
             d.CalculateAndApplyDamage();
             base.OnInvokeDamageDealt(damage);
         }

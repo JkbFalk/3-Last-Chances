@@ -20,7 +20,7 @@ public class NPCAbility_TripleHeavySlash : Ability {
         ChaseCurrentTargetAtGivenDegreeAngle(_stage == 0 ? 2 : _stage == 1 ? 1.4f : 0.7f, 45);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(WeaponCollisionName == "Default") {
             User.PlayAnimation("TripleHeavySlash", 0.05f, 0.26f);

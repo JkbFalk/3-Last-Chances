@@ -9,8 +9,8 @@ public class Gun_JudicalCodex : Item
         Set = ItemSetEnum.Judge;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
-        SetBaseWeaponStats(85, 155, 0.6f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksStunEnemies")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedStagger")};
+        SetBaseWeaponStats(8.5f, 15.5f, 0.6f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ApplyStunWithBasicAttacks")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToStunned")};
     }
 }

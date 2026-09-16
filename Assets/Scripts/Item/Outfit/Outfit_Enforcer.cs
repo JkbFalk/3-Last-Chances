@@ -9,6 +9,6 @@ public class Outfit_Enforcer : Item
         Set = ItemSetEnum.Enforcer;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("WhileAtFullEnergyBasicAttacksDealMoreDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGain", 0.5f), new ItemEffect("StrongBasicAttackDamage", 0.5f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGainFromBasicAttacks")};
     }
 }

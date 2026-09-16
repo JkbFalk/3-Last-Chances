@@ -75,8 +75,8 @@ MonoBehaviour:
     And the first thing he noticed was the excruciating pain, threatening to rip
     him to shreds.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1a0c05ced5bc68f40be244fef01c2015, type: 2}
-  m_sharedMaterial: {fileID: -5627577078273541024, guid: 1a0c05ced5bc68f40be244fef01c2015,
+  m_fontAsset: {fileID: 11400000, guid: cb68be14997498143a14e639cd7098a1, type: 2}
+  m_sharedMaterial: {fileID: 2263827286215516253, guid: cb68be14997498143a14e639cd7098a1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -117,15 +117,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -157,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OriginalValue: 
   string_params: []
+  DisableDetailedDescription: 0
 --- !u!114 &8373543410004421261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,8 +172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281ceb96f79a47645a3a9b3f1503bcc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TextMeshPro: {fileID: 0}
   Id: 
   IsSelected: 0
+  CurrentlyReadingSpeech: 0
 --- !u!114 &8240501523426122724
 MonoBehaviour:
   m_ObjectHideFlags: 0

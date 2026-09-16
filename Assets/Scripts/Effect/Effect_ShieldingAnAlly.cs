@@ -5,7 +5,7 @@ public class Effect_ShieldingAnAlly : Effect {
         ScaleWithControlAndTenacity = false;
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage.TargetOfDamage != TargetOfEffect) {
             return;
         }

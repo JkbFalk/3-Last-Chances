@@ -9,7 +9,7 @@ public class Daggers_VipersFangs : Item
     {
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(60, 70, 1.35f);
+        SetBaseWeaponStats(6, 7, 1.35f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksApplyPoison")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightAttackSpeed")};
     }

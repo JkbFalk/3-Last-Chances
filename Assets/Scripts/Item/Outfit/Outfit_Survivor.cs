@@ -9,7 +9,7 @@ public class Outfit_Survivor : Item
     {
         Set = ItemSetEnum.Survivor;
         Type = Constants.ItemType.Outfit;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainHealthRegenerationThatIsDoubledWhenBelowHalfHealth")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health", 0.5f), new ItemEffect("StaggerBar", 0.5f)};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainHealthRegenerationThatIsTripledWhenBelowHalfHealth")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatHealth", 0.5f), new ItemEffect("Health", 0.5f)};
     }
 }

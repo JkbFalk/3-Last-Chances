@@ -9,7 +9,7 @@ public Constants.DamageType Type;
             MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find(type.ToString() + "Injury/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
-        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
+        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * CombatMath.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
         Maximum = Base;
         Current = Base;
         Type = type;

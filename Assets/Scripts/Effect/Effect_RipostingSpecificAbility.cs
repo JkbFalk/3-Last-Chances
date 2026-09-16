@@ -15,7 +15,7 @@ public class Effect_RipostingSpecificAbility : Effect
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage)
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
     {
         if(damage?.TargetOfDamage != TargetOfEffect || TargetOfEffect.EffectCooldowns.FirstOrDefault(e => e.Type == GetType()) != null || damage.DamagingObject == null || damage.DamagingObject is not Projectile) {
             return;

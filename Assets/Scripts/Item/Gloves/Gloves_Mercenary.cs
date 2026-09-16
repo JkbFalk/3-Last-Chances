@@ -8,7 +8,7 @@ public class Gloves_Mercenary : Item
     {
         Set = ItemSetEnum.Mercenary;
         Type = Constants.ItemType.Gloves; 
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertHealthToStaggerBar", 0.5f), new ItemEffect("ConvertHealthToStaggerBar", 0.5f)};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Tenacity")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainBarrierUponFallingBelow25PHealth")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("HealthRegenWhileBarrier")};
     }
 }

@@ -8,7 +8,7 @@ public class Greatsword_Reckoning : Item
     {
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
-        SetBaseWeaponStats(145, 145, 0.65f);
+        SetBaseWeaponStats(14.5f, 14.5f, 0.65f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttacksReducePercentageOfEnemyStaggerBar")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("HeavyAttackSpeed")};
     }

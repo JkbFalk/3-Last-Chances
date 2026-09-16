@@ -9,7 +9,7 @@ public class Helmet_Alacrity : Item
     {
         Set = ItemSetEnum.Alacrity;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AfterDodgingEmpowerNextAttack")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("IncreaseInvincibilityTimeOfDodge")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DodgingDamageGivesSupercharge")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DodgingDamageEmpowersNextAttack")};
     }
 }

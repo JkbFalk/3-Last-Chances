@@ -15,7 +15,7 @@ public class NPCAbility_WindmillStab : Ability {
         Properties.Add(Property.CounteredByRoll);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

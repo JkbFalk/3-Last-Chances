@@ -69,7 +69,7 @@ public class NPCAbility_LeoWindmill : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_Burn(20 * User.MagicStagger.Current / 100, new(this)));

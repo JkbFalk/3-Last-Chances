@@ -7,23 +7,16 @@ using UnityEngine;
 public class Effect_Freeze : Effect
 {
     public GameObject Vfx;
-    public override int StackingEffectIntensityLevel {
-        get { 
-            return 
-            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 2.5f ? 1 :
-            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 5 ? 2 : 3;
-        }
-    }
     public Effect_Freeze(float decaying_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
         _initialDecayingAmount = decaying_amount;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.EffectStarted);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
         AddVisualEffect();
@@ -32,6 +25,7 @@ public class Effect_Freeze : Effect
     public override void OnStart()
     {
         base.OnStart();
+        StackingEffectIntensityLevel = DecayingAmount < TargetOfEffect.StaggerBar.Maximum * 0.1f ? 1 : DecayingAmount < TargetOfEffect.StaggerBar.Maximum * 0.25f ? 2 : 3;
         BaseDuration = Constants.DEFAULT_STACKING_EFFECT_BASE_DURATION_IN_SECONDS;
         AddVisualEffect();
         EventManager.OneTenthSecondElapsedInGame.AddListener(ApplyFreeze);
@@ -67,9 +61,9 @@ public class Effect_Freeze : Effect
 
     public override void OnInvokeEffectStarted(Effect effect) {
         if(effect.TargetOfEffect == TargetOfEffect && effect.GetType().IsSubclassOf(typeof(Effect_Staggered))) {
-            float freezeDuration = Constants.DEFAULT_HARD_STAGGERED_DURATION + DecayingAmount / Utils.GetExpectedPowerForLevel(Player.Instance.Level) / effect.TargetOfEffect.StaggerBar.Maximum * 50;
+            float freezeDuration = Constants.DEFAULT_HARD_STAGGERED_DURATION + DecayingAmount / CombatMath.GetExpectedPowerForLevel(Player.Instance.Level) / effect.TargetOfEffect.StaggerBar.Maximum * 50;
             effect.TargetOfEffect.AddEffect(new Effect_Frozen(SourceOfEffect), freezeDuration);
-            GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlace");
+            GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "Frozen");
             vfx.transform.SetParent(effect.TargetOfEffect.SpriteRenderers["Upper Body"].Bone);
             vfx.transform.localPosition = Vector2.zero;
             float size = 0.7f + StackingEffectIntensityLevel * 0.25f;
@@ -85,10 +79,10 @@ public class Effect_Freeze : Effect
         {
             return;
         }
-        new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null)
+        new DamageInstance(TargetOfEffect, SourceOfEffect.SourceAbility, null)
         {
             AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None),
-            Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.DamageOverTime },
+            Properties = new List<DamageInstance.DamageProperty> { DamageInstance.DamageProperty.Freeze, DamageInstance.DamageProperty.DamageOverTime },
             Stagger = DecayingAmount / 10,
             PlaySoundOnEnemyHit = false
         }.CalculateAndApplyDamage();

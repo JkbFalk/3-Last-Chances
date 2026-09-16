@@ -9,6 +9,32 @@ public class SetChildActiveAfterNSeconds : MonoBehaviour
     public bool SetActive = true;
     public float ChangeBackAfterNSeconds = 0;
     private float _elapsedSeconds = 0;
+    private float _originalSeconds;
+    private float _originalChangeBackAfterNSeconds;
+    private bool _originalSetActive;
+    private bool _capturedOriginals;
+
+    private void Awake() {
+        CaptureOriginals();
+    }
+
+    private void CaptureOriginals() {
+        if (_capturedOriginals) {
+            return;
+        }
+        _originalSeconds = Seconds;
+        _originalChangeBackAfterNSeconds = ChangeBackAfterNSeconds;
+        _originalSetActive = SetActive;
+        _capturedOriginals = true;
+    }
+
+    public void ResetForReuse() {
+        CaptureOriginals();
+        Seconds = _originalSeconds;
+        ChangeBackAfterNSeconds = _originalChangeBackAfterNSeconds;
+        SetActive = _originalSetActive;
+        _elapsedSeconds = 0;
+    }
 
     void Update()
     {

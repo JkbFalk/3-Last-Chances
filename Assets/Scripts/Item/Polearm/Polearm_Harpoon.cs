@@ -8,7 +8,7 @@ public class Polearm_Harpoon : Item
     {
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
-        SetBaseWeaponStats(70, 130, 0.85f);
+        SetBaseWeaponStats(7, 13, 0.85f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReplaceAllBasicAttacksWithThrowAddPullAndIncreaseStagger")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("HeavyStagger")};
     }

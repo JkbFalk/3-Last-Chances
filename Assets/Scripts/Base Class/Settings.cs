@@ -184,6 +184,24 @@ public class Settings {
         }
     }
 
+    public float _screenShake = 1f;
+
+    public float ScreenShake
+    {
+        get => _screenShake;
+        set
+        {
+            MenuManager.Objects.OptionsScreenShakeSlider.value = value * 100;
+            MenuManager.Objects.OptionsScreenShakeLabel.string_params = new List<string> {(value * 100).ToString()};
+            MenuManager.Objects.OptionsScreenShakeLabel.LoadLabel();
+            _screenShake = value;
+            if (GameController.Instance.AutoSaveSettings)
+            {
+                Save();
+            }
+        }
+    }
+
     public float _dialogueTextSpeed = 1f;
 
     public float DialogueTextSpeed

@@ -19,7 +19,7 @@ public class NPCAbility_HeavyRush : Ability {
     public override void CallAbilityEvent1() {
         PlayCustomSound("Charge");
         ResetPotentialTargets();
-        Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, User.CurrentTarget != null ? User.CurrentTarget.transform.position : User.Actions.IsFlipped ? User.transform.position + Vector3.left : User.transform.position + Vector3.right, User.Actions.IsFlipped, 45);
+        Vector2 direction_vector_towards_target = CombatMath.GetDirectionVector(User.transform.position, User.CurrentTarget != null ? User.CurrentTarget.transform.position : User.Actions.IsFlipped ? User.transform.position + Vector3.left : User.transform.position + Vector3.right, User.Actions.IsFlipped, 45);
         User.PushInTargetDirection(direction_vector_towards_target * 4, this);
     }
 
@@ -39,7 +39,7 @@ public class NPCAbility_HeavyRush : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(damage.AbilityDamageSource.ColliderName != "Generic") {
             damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

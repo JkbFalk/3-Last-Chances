@@ -188,7 +188,7 @@ public class DebugController : MonoBehaviour
 
     public void ToggleCheatMode(int turned_on)
     {
-        _cheatModeActive = CheatModeCanBeToggled ? turned_on != 0 : false;
+        _cheatModeActive = CheatModeCanBeToggled ? (turned_on == -1 ? !_cheatModeActive : turned_on != 0) : false;
         RefreshCheatMode();
         EventManager.PlayerObjectReinitialized.AddListener(RefreshCheatMode);
     }
@@ -200,25 +200,25 @@ public class DebugController : MonoBehaviour
                     e.EndThisEffect();
                 }
             }
-            superInjury = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new("Cheat")) {
+            superInjury = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Injury, new("Cheat Injury")) {
                 IsRemovable = false, 
                 PercentageModifier = 100000
             };
-            superAS = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat")) {
+            superAS = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, new("Cheat Attack Speed")) {
                 IsRemovable = false,
-                PercentageModifier = 100
+                PercentageModifier = 1000
             };
-            superDef = new Effect_ChangeStat(Player.Instance.Armor, new("Cheat")) {
+            superDef = new Effect_ChangeStat(Player.Instance.Armor, new("Cheat Defense")) {
                 IsRemovable = false, 
-                PercentageAmount = 5000
+                FlatAmount = 5000 // was PercentageAmount
             };
-            superRes = new Effect_ChangeStat(Player.Instance.Tenacity, new("Cheat")) {
+            superRes = new Effect_ChangeStat(Player.Instance.Tenacity, new("Cheat Tenacity")) {
                 IsRemovable = false, 
-                PercentageAmount = 1000
+                FlatAmount = 1000 // was PercentageAmount
             };
-            superSpeed = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("Cheat")) {
+            superSpeed = new Effect_ChangeStat(Player.Instance.MovementSpeed, new("Cheat Movement Speed")) {
                 IsRemovable = false, 
-                PercentageAmount = 250
+                FlatAmount = 250 // was PercentageAmount
             };
             foreach(Effect e in new List<Effect> {superInjury, superAS, superDef, superRes, superSpeed}) {
                 Player.Instance.AddEffect(e);
@@ -370,7 +370,7 @@ public class DebugController : MonoBehaviour
         foreach(Unit unit in Utils.GetAllUnits(true, true))
         {
             for(int i = 0; i < unit.HealthBars.Count; i++) {
-                Damage damage = new Damage(unit, new Ability_SourcelessDamage(Player.Instance), null).SetDamageSource(10 * unit.Health.Maximum / unit.GetComponent<Unit>().Armor.Current, 0);
+                DamageInstance damage = new DamageInstance(unit, new Ability_SourcelessDamage(Player.Instance), null).SetDamageSource(10 * unit.Health.Maximum / unit.GetComponent<Unit>().Armor.Current, 0);
                 damage.CalculateAndApplyDamage();
             }
         }

@@ -9,7 +9,7 @@ public class NPCAbility_SpearThrow: Ability {
         DamageSources.Add(new DamageSource(100, 500, Constants.DamageType.Ranged) {KnockbackInMeters=10f});
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         base.ExtraBehaviourOnHit(damage);
         Utils.CreateVisualEffect(new(this), "PowerfulHit", damage.TargetOfDamage.transform.position.x, damage.TargetOfDamage.transform.position.y);

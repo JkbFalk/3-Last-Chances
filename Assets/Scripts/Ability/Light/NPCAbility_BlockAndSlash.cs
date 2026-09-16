@@ -32,7 +32,7 @@ public class NPCAbility_BlockAndSlash : Ability {
         EndThisAbility();
     }
 
-    public void CheckHit(Damage damage) {
+    public void CheckHit(DamageInstance damage) {
         if(damage.TargetOfDamage == User && _blockEffect != null && _blockEffect.EffectEnded == false) {
             _blockEffect.EndThisEffect();
             Utils.PlaySoundEffect(User.AudioSource, "Steel/SteelBlock7", 0.8f);

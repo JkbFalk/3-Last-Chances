@@ -9,8 +9,8 @@ public class TwinBlades_DawnAndDusk : Item
     {
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
-        SetBaseWeaponStats(95, 95, 1.1f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreInjuryOrStaggerAndCanSwitchUsingBlock")};
+        SetBaseWeaponStats(9, 9, 1.2f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreLightInjuryOrStaggerAndCanSwitchUsingBlock")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightTechniqueDamage")};
     }
 }

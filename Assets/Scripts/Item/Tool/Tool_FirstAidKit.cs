@@ -72,7 +72,7 @@ public class Tool_FirstAidKit : Item
     {
         if (ItemUseAbility.AffectedEnemies.Count == 1)
         {
-            new Damage(ItemUseAbility.AffectedEnemies.First().Key, ItemUseAbility, null).SetDamageSource(0, 20 * GetMultiplierForGrade()).CalculateAndApplyDamage();
+            new DamageInstance(ItemUseAbility.AffectedEnemies.First().Key, ItemUseAbility, null).SetDamageSource(0, 20 * GetMultiplierForGrade()).CalculateAndApplyDamage();
         }
         else
         {

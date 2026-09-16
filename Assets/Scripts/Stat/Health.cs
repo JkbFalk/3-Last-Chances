@@ -22,7 +22,7 @@ public class Health : Stat {
             FollowUpHealthBarSlider = Owner.transform.Find("World Space Canvas/Follow-up Health").GetComponent<Slider>();
         }
         Owner = stat_owner;
-        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
+        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * CombatMath.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
         Maximum = Base;
         CannotBeLowerThan1 = true;
         CurrentCanBeLowerThanMaximum = true;
@@ -42,7 +42,6 @@ public class Health : Stat {
             ChangeCurrentValueWithoutInvoking(0);
             return;
         }
-        EventManager.UnitHealthChanged.Invoke(Owner);
     }
 
     public override void AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount()

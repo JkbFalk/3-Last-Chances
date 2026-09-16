@@ -8,9 +8,7 @@ public class Ability_Quickdraw : Technique
 {
     public static float EnergyCost = 50;
     public static float Cooldown = 50;
-
     public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.CurrentWeapon;
     private bool _canFinishAbility = false;
     private bool _buttonWasReleased = false;
     private bool _preparedForHit = false;
@@ -128,7 +126,7 @@ public class Ability_Quickdraw : Technique
         _preparedForHit = false;
     }
 
-    public void CheckHitDealt(Damage damage) {
+    public void CheckHitDealt(DamageInstance damage) {
         if(damage.TargetOfDamage == User && _counteredAnAttack == false && damage.DamagingObject is UnitWeapon) {
             if(Is(Property.Ultimate)) {
                 GameController.Instance.DefaultTimeSpeed = 1f;
@@ -155,7 +153,7 @@ public class Ability_Quickdraw : Technique
         proj.transform.eulerAngles = new Vector3(0, 0, -90);
     }
 
-    public void CounterEnemyAttack(Damage damage) {
+    public void CounterEnemyAttack(DamageInstance damage) {
         if((_createdWindSlash || _counteredAnAttack) && !(_preparedForHit && _counteredAnAttack == false)) {
             return;
         }
@@ -197,7 +195,7 @@ public class Ability_Quickdraw : Technique
         Utils.PlaySoundEffect(Player.Instance.AudioSource, sound_number[0], 1);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         if(Is(Property.UpgradeB)) {

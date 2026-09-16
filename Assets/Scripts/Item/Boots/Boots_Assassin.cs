@@ -9,7 +9,7 @@ public class Boots_Assassin : Item
     {
         Set = ItemSetEnum.Assassin;
         Type = Constants.ItemType.Boots;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("StealthDuration")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainStealthOnceEveryNSeconds")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("MovementSpeedDuringStealth")};
     }
 }

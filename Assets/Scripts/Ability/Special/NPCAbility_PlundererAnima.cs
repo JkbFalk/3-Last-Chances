@@ -26,7 +26,7 @@ public class NPCAbility_PlundererAnima : Ability {
     public override void CallAbilityEvent1()
     {
         _aoe = Utils.CreateAreaOfEffect(new(this), "PlundererAnima");
-        _aoe.transform.parent.localEulerAngles = new Vector3(0, User.Actions.IsFlipped ? 180 : 0, 0);
+        Utils.Apply2DFlip(_aoe.transform.parent.gameObject, User.Actions.IsFlipped);
         _aoe.transform.localEulerAngles = new Vector3(0, 0, 0);
         PlayCustomSound("Use");
         AdjustSize();
@@ -47,9 +47,9 @@ public class NPCAbility_PlundererAnima : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
-        damage.TargetOfDamage.AddEffect(new Effect_Incision(20 * User.HeavyInjury.Current / 100, new(this)));
+        damage.TargetOfDamage.AddEffect(new Effect_Bleed(20 * User.HeavyInjury.Current / 100, new(this)));
     }
 }

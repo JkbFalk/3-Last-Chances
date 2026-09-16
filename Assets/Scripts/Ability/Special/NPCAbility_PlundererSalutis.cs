@@ -17,7 +17,7 @@ public class NPCAbility_PlundererSalutis : Ability {
         User.Actions.FaceCurrentTarget();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Prone(50, new(this)), 10);
     }

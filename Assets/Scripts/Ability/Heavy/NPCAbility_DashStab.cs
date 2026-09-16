@@ -16,7 +16,7 @@ public class NPCAbility_DashStab : Ability {
         User.Actions.DisplayExtremeDangerSign();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         //damage.TargetOfDamage.AddEffect(new Effect_Slow(50, this));
     }

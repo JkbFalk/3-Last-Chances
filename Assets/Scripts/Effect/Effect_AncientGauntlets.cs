@@ -33,7 +33,7 @@ public class Effect_AncientGauntlets : Effect {
     }
 
     public void AddBuffs() {
-        EnergyGainBuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {PercentageAmount = FirstParameter};
+        EnergyGainBuff = new Effect_ChangeStat(Player.Instance.EnergyGain, SourceOfEffect) {FlatAmount = FlatAmount};
         Player.Instance.AddEffect(EnergyGainBuff);
     }
 }

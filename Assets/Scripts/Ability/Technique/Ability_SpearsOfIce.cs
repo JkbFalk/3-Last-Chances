@@ -7,6 +7,7 @@ public class Ability_SpearsOfIce : Technique
 {
     public static float EnergyCost = 5;
     public static float Cooldown = 3;
+    public static AbilityFamily Family = AbilityFamily.Glacies;
     public static bool IsStacksBasedTechnique = true;
     public static int MaxStacks
     {
@@ -22,8 +23,6 @@ public class Ability_SpearsOfIce : Technique
             return 100;
         }
     }
-    public static AbilityFamily Family = AbilityFamily.Glacies;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
     public static float _upgradeBExtraMagicInjuryScaling = 50;
     public static float _upgradeBTechniqueSpeedIncrease = 50;
     public static float _magicInjuryScaling = 50;
@@ -111,7 +110,7 @@ public class Ability_SpearsOfIce : Technique
         User.PlayAnimation("SpearsOfIce" + (Is(Property.Ultimate) ? "_Ultimate" : ""), 0, 0.48f);
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         base.ExtraBehaviourOnHit(damage);
         if (Is(Property.UpgradeA) && IsNot(Property.Ultimate))
@@ -120,7 +119,7 @@ public class Ability_SpearsOfIce : Technique
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_Freeze(_magicStaggerFreezeScaling / 100 * User.MagicStagger.Current, new(this)));

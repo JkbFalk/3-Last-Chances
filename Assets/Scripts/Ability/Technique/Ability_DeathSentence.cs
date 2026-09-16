@@ -5,7 +5,9 @@ using UnityEngine.VFX;
 
 public class Ability_DeathSentence : Technique
 {
-
+    public static float EnergyCost = 75;
+    public static float Cooldown = 90;
+    public static AbilityFamily Family = AbilityFamily.Salutis;
     private static float _chargeTime = 5;
     private static float _percentageOfHeavyDamageAsInjuryMinimum = 500;
     private static float _percentageOfHeavyDamageAsInjuryMaximum = 1000;
@@ -14,20 +16,11 @@ public class Ability_DeathSentence : Technique
     private static float _masteryBEliteEnemyMinimumHealth = 20;
     private static float _masteryBEliteEnemyMaximumHealth = 40;
 
-    public static float EnergyCost = 75;
-    public static float Cooldown = 90;
-
     private GameObject _visualEffect;
 
     private List<Unit> _validTargetsForMasteryBExecute = new List<Unit>();
     private List<GameObject> _executeVfx = new List<GameObject>();
 
-    public static AbilityFamily Family = AbilityFamily.Salutis;
-    public static Constants.DamageType TechniqueDamageType {
-        get {
-            return Player.Instance.CurrentStance.DamageType == Constants.DamageType.Light ? Constants.DamageType.Light : Constants.DamageType.Heavy;
-        }
-    }
 
     public Ability_DeathSentence(Unit ability_user) : base(ability_user) {
         HitSoundType = Constants.HitSoundTypeEnum.Shadow;
@@ -116,7 +109,7 @@ public class Ability_DeathSentence : Technique
                     InjuryAmount = Constants.EXECUTE_DAMAGE_AMOUNT;
                 }
             }
-            Damage damage = new Damage(unit_getting_attacked, this, object_hitting)
+            DamageInstance damage = new DamageInstance(unit_getting_attacked, this, object_hitting)
             .SetDamageSource(InjuryAmount, 0, Constants.DamageType.Heavy)
             .CalculateAndApplyDamage();
             if (Is(Property.UpgradeA) && damage.DamageKilledTheTarget) {

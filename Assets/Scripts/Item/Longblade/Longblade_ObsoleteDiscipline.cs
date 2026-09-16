@@ -10,7 +10,7 @@ public class Longblade_ObsoleteDiscipline : Item
         Set = ItemSetEnum.Jailer;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Longblade;
-        SetBaseWeaponStats(100, 150, 0.7f);
+        SetBaseWeaponStats(10, 15, 0.7f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ApplySelfChainedToEnemies")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainChainedOnHeavyDamage")};
     }

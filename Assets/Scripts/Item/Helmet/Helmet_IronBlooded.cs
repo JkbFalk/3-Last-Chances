@@ -9,7 +9,7 @@ public class Helmet_IronBlooded : Item
     {
         Set = ItemSetEnum.IronBlooded;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertHealthToInjury")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("RegeneratePortionOfInjuryTakenAsHealthOver30Seconds")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatHealth")};
     }
 }

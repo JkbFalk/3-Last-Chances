@@ -8,7 +8,6 @@ public class Ability_LightningSpeed : Technique
     public static float EnergyCost = 20;
     public static float Cooldown = 30;
     public static AbilityFamily Family = AbilityFamily.Tonitrui;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
 
     public Ability_LightningSpeed(Unit ability_user) : base(ability_user)
     {

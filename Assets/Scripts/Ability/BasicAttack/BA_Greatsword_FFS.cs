@@ -8,7 +8,7 @@ public class BA_Greatsword_FFS : BasicAttack {
         AddCustomSound("Explosion", "Explosion/Ground Explosion", 0.3f);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 1);

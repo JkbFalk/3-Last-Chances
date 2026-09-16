@@ -5,6 +5,9 @@ using UnityEngine.VFX;
 
 public class Ability_Thunderstrike : Technique
 {
+    public static float EnergyCost = 50;
+    public static float Cooldown = 10;
+    public static AbilityFamily Family = AbilityFamily.Tonitrui;
     private GameObject _masteryBVFX;
     private bool _releasedButton;
     private int _masteryBThunderStrikeCounter = 0;
@@ -30,12 +33,6 @@ public class Ability_Thunderstrike : Technique
     private static int _masteryBMaxThunderStrikes = 30;
     private static float _masteryBInjury = 150;
     private static float _masteryBStagger = 150;
-
-    public static float EnergyCost = 50;
-    public static float Cooldown = 10;
-
-    public static AbilityFamily Family = AbilityFamily.Tonitrui;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
 
     public Ability_Thunderstrike(Unit ability_user) : base(ability_user)
     {
@@ -171,7 +168,7 @@ public class Ability_Thunderstrike : Technique
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if(_upgradedThunderStrike)
         {

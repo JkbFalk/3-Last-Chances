@@ -11,7 +11,7 @@ public class TwinBlades_ShacklesOfDuty : Item
         Set = ItemSetEnum.Jailer;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
-        SetBaseWeaponStats(120, 40, 1.25f);
+        SetBaseWeaponStats(12, 4, 1.25f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertCurrentHealthIntoChained")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksRestoreHealth")};
     }

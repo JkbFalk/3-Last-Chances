@@ -16,10 +16,10 @@ public class Effect_Slow : Effect
         _initialDecayingAmount = slow_amount;
         ShowsInUI = true;
         DefaultDecaySpeed = 0.25f;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         if (MSSlowEffect == null)
         {

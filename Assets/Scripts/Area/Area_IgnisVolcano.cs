@@ -142,7 +142,7 @@ public class Area_IgnisVolcano
         SaveFile.Instance.GetQuest("Ignis").AdvanceObjective(100, new() {SaveFile.Instance.IgnisEnergy.ToString()});
     }
 
-    public static void CheckDefeatedEnemy(Damage damage) {
+    public static void CheckDefeatedEnemy(DamageInstance damage) {
         if(damage.TargetOfDamage.gameObject.name.Contains("FireElemental")) {
             _slainElementals++;
             if(_slainElementals >= 8 && SaveFile.Instance.HasFlag("IgnisVolcano_TalkedFlameShadow3")) {
@@ -336,10 +336,10 @@ public class Area_IgnisVolcano
     }
 
     public static void Aggro3() {
-        new Damage(Utils.GetUnit("Unit_IgnisAssassin1"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateAndApplyDamage();
+        new DamageInstance(Utils.GetUnit("Unit_IgnisAssassin1"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateAndApplyDamage();
         Utils.GetUnit("Unit_IgnisAssassin1").Actions.PushUnitForwardSpecifiedMeters(-3.5f);
         Utils.GetUnit("Unit_IgnisAssassin1").AddEffect(new Effect_Onslaught(100, new(Utils.GetUnit("Unit_IgnisAssassin2"))));
-        new Damage(Utils.GetUnit("Unit_IgnisAssassin2"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateAndApplyDamage();
+        new DamageInstance(Utils.GetUnit("Unit_IgnisAssassin2"), new Ability_SourcelessDamage(Player.Instance), null) {Stagger = 5000}.CalculateAndApplyDamage();
         Utils.GetUnit("Unit_IgnisAssassin2").Actions.PushUnitForwardSpecifiedMeters(-3.5f);
         Utils.GetUnit("Unit_IgnisAssassin2").AddEffect(new Effect_Onslaught(100, new(Utils.GetUnit("Unit_IgnisAssassin2"))));
     }
@@ -714,7 +714,7 @@ public class Area_IgnisVolcano
             ps.Stop();
         }
         Utils.GetUnit("SentientArmor").Rigidbody2D.bodyType = RigidbodyType2D.Static;
-        Damage.DeactivateUnit(Utils.GetUnit("SentientArmor"));
+        DamageInstance.DeactivateUnit(Utils.GetUnit("SentientArmor"));
     }
 
     public static void IgnisVolcano_FinalVolcano_20() {
@@ -790,7 +790,7 @@ public class Area_IgnisVolcano
         blaine.Actions.IsFlipped = true;
         Area.Instance.transform.Find("Environment/VisualEffect_RagingInferno").gameObject.SetActive(true);
         Utils.GetUnit("FlameShadow").gameObject.SetActive(true);
-        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToUIGraphic = "Effect/Incision", IsRemovable = false};
+        Effect_ChangeStat e1 = new Effect_ChangeStat(blaine.Health, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToUIGraphic = "Effect/Bleed", IsRemovable = false};
         Effect_ChangeStat e2 = new Effect_ChangeStat(blaine.StaggerBar, new(blaine)) {RegenerationFlatAmount = -25, ShowsInUI = true, PathToUIGraphic = "Effect/Burn", IsRemovable = false};
         blaine.AddEffect(e1);
         blaine.AddEffect(e2);
@@ -804,30 +804,30 @@ public class Area_IgnisVolcano
             Utils.CopyGameObjectAppearance(blaine.SpriteRenderers["Heavy"].SpriteRenderer.gameObject, Area.Instance.transform.Find("FakePlunderer").gameObject);
         }
         EventManager.UnitWouldBeDefeated.AddListener(CheckIfBlaineDefeated);
-        EventManager.UnitHealthChanged.AddListener(CheckIfBlaineQuote);
+        EventManager.UnitStatCurrentAmountChanged.AddListener(CheckIfBlaineQuote);
     }
 
     private static int _blaineQuoteCounter = 0;
 
-    public static void CheckIfBlaineQuote(Unit unit) {
-        if(unit.gameObject.name.Contains("Blaine") == false) {
+    public static void CheckIfBlaineQuote(Stat stat, float amount) {
+        if(stat is Health && stat.Owner.gameObject.name.Contains("Blaine") == false) {
             return;
         }
-        if(_blaineQuoteCounter == 0 && unit.Health.Current < unit.Health.Maximum * 0.6f) {
+        if(_blaineQuoteCounter == 0 && stat.Owner.Health.Current < stat.Owner.Health.Maximum * 0.6f) {
             _blaineQuoteCounter++;
             NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisVolcano_BlaineMidFightQuote_10", SpeakerUnit=Utils.GetUnit("Blaine")});
         }
-        else if(_blaineQuoteCounter == 1 && unit.CurrentHealthBars == 1) {
+        else if(_blaineQuoteCounter == 1 && stat.Owner.CurrentHealthBars == 1) {
             _blaineQuoteCounter++;
             NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisVolcano_BlaineMidFightQuote_20", SpeakerUnit=Utils.GetUnit("Blaine")});
         }
-        else if(_blaineQuoteCounter == 2 && unit.CurrentHealthBars == 1 && unit.Health.Current < unit.Health.Maximum * 0.6f) {
+        else if(_blaineQuoteCounter == 2 && stat.Owner.CurrentHealthBars == 1 && stat.Owner.Health.Current < stat.Owner.Health.Maximum * 0.6f) {
             _blaineQuoteCounter++;
             NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisVolcano_BlaineMidFightQuote_30", SpeakerUnit=Utils.GetUnit("Blaine")});
         }
     }
 
-    public static void CheckIfBlaineDefeated(Damage damage) {
+    public static void CheckIfBlaineDefeated(DamageInstance damage) {
         if(damage.TargetOfDamage.gameObject.name.Contains("Blaine")) {
             Utils.SetDefaultMusic("Sadness_45");
             UIManager.Instance.StartDialogue(FarewellToBlaine());

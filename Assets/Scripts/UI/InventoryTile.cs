@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -49,14 +50,17 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
             transform.Find("Background").GetComponent<Image>().color = Colors.EquipmentTileBackground;
         }
     }
+    
     public void InitializeOptions() 
     {
-        if(Item == null)
+        if (Item == null)
         {
             return;
         }
+
         AvailableActions.Clear();
-        if(Item.Type == Constants.ItemType.Tool)
+
+        if (Item.Type == Constants.ItemType.Tool)
         {
             AvailableActions.Add(InventoryActions.Use);
         }
@@ -76,17 +80,17 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         {
             AvailableActions.Add(InventoryActions.EquipTo2);
         }
-        if(Item.IsEquipped == false && Item.Type != Constants.ItemType.Quest && Item.Type != Constants.ItemType.Tool)
+        if (Item.IsEquipped == false && Item.Type != Constants.ItemType.Quest && Item.Type != Constants.ItemType.Tool)
         {
             AvailableActions.Add(InventoryActions.Sell);
         }
-        if(SaveFile.Instance.EquippedItem1 == Item) {
+        if (SaveFile.Instance.EquippedItem1 == Item) {
             AvailableActions.Add(InventoryActions.UnequipFrom1);
         }
-        if(SaveFile.Instance.EquippedItem2 == Item) {
+        if (SaveFile.Instance.EquippedItem2 == Item) {
             AvailableActions.Add(InventoryActions.UnequipFrom2);
         }
-        if(Item.Type != Constants.ItemType.Quest && Item.Type != Constants.ItemType.Tool && Item.Grade != Item.ItemGrade.Ultimate) {
+        if (Item.Type != Constants.ItemType.Quest && Item.Type != Constants.ItemType.Tool && Item.Grade != Item.ItemGrade.Ultimate) {
             AvailableActions.Add(InventoryActions.Upgrade);
         }
         if ((Item.Type == Constants.ItemType.Tool) && SaveFile.Instance.ToolGrades[Item.GetType()] != Item.ItemGrade.Ultimate)
@@ -97,36 +101,37 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
         {
             AvailableActions.Add(InventoryActions.UpgradeUsesTool);
         }
+
         Dropdown = transform.Find("Dropdown").GetComponent<ButtonDropdown>();
         Dropdown.Item = Item;
         Dropdown.Actions = AvailableActions;
-        if(EquipmentTile == false || Item != null)
+
+        if (!EquipmentTile || Item != null)
         {
-            if(EquipmentTile) {
-                switch (Item.Grade)
-                {
-                    case Item.ItemGrade.Regular: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeRegularDarker); break;
-                    case Item.ItemGrade.Excellent: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeExcellentDarker); break;
-                    case Item.ItemGrade.Masterful: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeMasterfulDarker); break;
-                    case Item.ItemGrade.Flawless: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeFlawlessDarker); break;
-                    case Item.ItemGrade.Ultimate: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeUltimateDarker); break;
-                }
-            }
-            else {
-                switch (Item.Grade)
-                {
-                    case Item.ItemGrade.Regular: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeRegular); break;
-                    case Item.ItemGrade.Excellent: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeExcellent); break;
-                    case Item.ItemGrade.Masterful: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeMasterful); break;
-                    case Item.ItemGrade.Flawless: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeFlawless); break;
-                    case Item.ItemGrade.Ultimate: transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(Colors.ItemGradeUltimate); break;
-                }
-            }
+            string colorCode = EquipmentTile
+                ? (Item.Grade switch {
+                    Item.ItemGrade.Regular => Colors.ItemGradeRegularDarker,
+                    Item.ItemGrade.Excellent => Colors.ItemGradeExcellentDarker,
+                    Item.ItemGrade.Masterful => Colors.ItemGradeMasterfulDarker,
+                    Item.ItemGrade.Flawless => Colors.ItemGradeFlawlessDarker,
+                    Item.ItemGrade.Ultimate => Colors.ItemGradeUltimateDarker,
+                    _ => Colors.ItemGradeRegularDarker
+                })
+                : (Item.Grade switch {
+                    Item.ItemGrade.Regular => Colors.ItemGradeRegular,
+                    Item.ItemGrade.Excellent => Colors.ItemGradeExcellent,
+                    Item.ItemGrade.Masterful => Colors.ItemGradeMasterful,
+                    Item.ItemGrade.Flawless => Colors.ItemGradeFlawless,
+                    Item.ItemGrade.Ultimate => Colors.ItemGradeUltimate,
+                    _ => Colors.ItemGradeRegular
+                });
+
+            transform.Find("Grade Indicator").GetComponent<Image>().color = Colors.GetColorFromCode(colorCode);
         }
-        else if(EquipmentTile && Item == null) {
+        else if (EquipmentTile && Item == null)
+        {
             transform.Find("Grade Indicator").GetComponent<Image>().color = new Color(255, 255, 255, 0);
         }
-        Dropdown.SetOptions();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -525,12 +530,18 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         CursorHoveringOver = true;
-        Dropdown.ShowDropdownOverTime();
+        if (Dropdown != null && Dropdown.IsDestroyed() == false)
+        {
+            Dropdown.ShowDropdownOverTime();
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         CursorHoveringOver = false;
-        Dropdown.HideDropdownOverTime();
+        if (Dropdown != null && Dropdown.IsDestroyed() == false)
+        {
+            Dropdown.HideDropdownOverTime();
+        }
     }
 }

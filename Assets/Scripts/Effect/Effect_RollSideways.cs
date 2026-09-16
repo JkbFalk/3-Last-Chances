@@ -7,7 +7,7 @@ public class Effect_RollSideways : Effect {
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage) {
         if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfInteractsWithCounters() == false) {
             return;
         }

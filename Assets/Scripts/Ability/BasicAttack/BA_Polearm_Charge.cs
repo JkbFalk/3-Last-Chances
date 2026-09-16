@@ -23,7 +23,7 @@ public class BA_Polearm_Charge : BasicAttack {
 
     public override void CallAbilityEvent1()
     {
-        if(SaveFile.Instance.EquippedHeavyWeapon is not Polearm_ChargeLance || User.Energy.Current < 2 || PlayerControls.BasicAttackButtonHoldDuration == 0) {
+        if(!Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithChargeAndImproveDamage") || User.Energy.Current < 2 || PlayerControls.BasicAttackButtonHoldDuration == 0) {
             User.PlayAnimation("Polearm_Charge", 0f, 0.52f);
         }
         else {
@@ -74,13 +74,13 @@ public class BA_Polearm_Charge : BasicAttack {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
         SkeweredEnemies.Add(damage.TargetOfDamage);
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if(_powerLevel > 0) {
             damage.Stagger += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3f * (_powerLevel / 20);

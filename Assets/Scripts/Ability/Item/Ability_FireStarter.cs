@@ -46,7 +46,7 @@ public class Ability_FireStarter : Ability
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_Burn(3 * ItemBeingUsed.GetMultiplierForGrade(), new(this)));

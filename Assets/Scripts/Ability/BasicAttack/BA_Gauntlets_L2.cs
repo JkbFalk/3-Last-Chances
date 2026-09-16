@@ -35,7 +35,7 @@ public class BA_Gauntlets_L2 : BasicAttack {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_ProneToKnockout(Constants.PRONE_TO_KNOCKOUT_AMOUNT_ADDED_BY_GAUNTLET_BA, new(this)));

@@ -13,7 +13,7 @@ public class NPCAbility_ThrowTwinBlades: Ability {
 
     public override void CallAbilityEvent4()
     {
-        if(Utils.CheckIfCurrenTargetIsInFrontOfUnit(User) == false) {
+        if(CombatMath.CheckIfCurrenTargetIsInFrontOfUnit(User) == false) {
             EndThisAbility();
         }
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnit;

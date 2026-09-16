@@ -7,7 +7,6 @@ using Steamworks;
 using Unity.VisualScripting;
 
 public class Cooldown {
-    public float ExtraCooldownReduction;
     public bool ShowsInUI = false;
     public string PathToCooldownGraphic = "";
     public Sprite CooldownGraphic;
@@ -20,24 +19,34 @@ public class Cooldown {
         get => _remainingDuration;
         set {
             _remainingDuration = value;
-            if (CooldownDisplay != null && !(Type.IsSubclassOf(typeof(Ability)) && Player.Instance.PreparingForUltimate))
+            if (CooldownIndicator != null && !(Type.IsSubclassOf(typeof(Ability)) && Player.Instance.PreparingForUltimate))
             {
-                CooldownDisplay.fillAmount = _remainingDuration / TotalDuration;
+                CooldownIndicator.fillAmount = _remainingDuration / TotalDuration;
             }
         }
     }
-    public string Identifier = "";
-    public Image CooldownDisplay;
+    public string Id = "";
+    public Image CooldownIndicator;
     public GameObject TileInUI;
 
-    public Cooldown(Type type, float total_duration, Unit target, string identifier = "") {
+    public Cooldown(Type type, float total_duration, Unit target, string id = "")
+    {
         Type = type;
         CooldownTarget = target;
-        Identifier = identifier;
-        TotalDuration = total_duration / (1 + (CooldownTarget.CooldownReduction.Current + ExtraCooldownReduction) / 100);
+        Id = id;
+        TotalDuration = total_duration;
+    }
+
+    public void OnStart()
+    {
+        float cdrAmount =
+            Type.IsSubclassOf(typeof(Effect)) ? CooldownTarget.CooldownReduction.GetEffectCooldownReduction(Type) :
+            Type.IsSubclassOf(typeof(Item)) ? CooldownTarget.CooldownReduction.GetToolCooldownReduction(Type) :
+            Type.IsSubclassOf(typeof(Ability)) ? CooldownTarget.CooldownReduction.GetTechniqueCooldownReduction(Type) : 0;
+        TotalDuration = TotalDuration / (1 + (cdrAmount / 100));
         RemainingDuration = TotalDuration;
-        if(identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
-            Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == identifier);
+        if(Id != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect)))) {
+            Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == Id);
             if(hiddenEffect != null && hiddenEffect.TileInUI != null) {
                 MonoBehaviour.Destroy(hiddenEffect.TileInUI);
             }
@@ -67,20 +76,14 @@ public class Cooldown {
         {
             MonoBehaviour.Destroy(TileInUI);
         }
-        if (Identifier != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect))))
+        if (Id != "" && (Type == typeof(Effect) || Type.IsSubclassOf(typeof(Effect))))
         {
-            Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == Identifier);
+            Effect hiddenEffect = Player.Instance.CurrentEffects.FirstOrDefault(e => e.HideInUIWhileCooldownWithIdExists == Id);
             if (hiddenEffect != null && hiddenEffect.UICooldownDisplay == null)
             {
                 hiddenEffect.ShowInUI();
             }
         }
-    }
-
-    public string GetCooldownTechniqueFamily() {
-        if(Type == null || Type.IsSubclassOf(typeof(Ability))) {
-            return "";
-        }
-        return Ability.GetFamily(Type).ToString();
+        EventManager.CooldownEnded.Invoke(this);
     }
 }

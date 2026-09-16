@@ -10,8 +10,8 @@ public class Daggers_StilettoSeriesMark3 : Item
         Set = ItemSetEnum.Alacrity;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(90, 80, 1.1f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainAlacrityOnLightDamage")};
+        SetBaseWeaponStats(9, 8, 1.1f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainAccelerationOnLightDamage")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("ApplyLethargyOnLightDamage")};
     }
 }

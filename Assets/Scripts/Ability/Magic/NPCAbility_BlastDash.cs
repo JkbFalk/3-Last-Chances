@@ -22,7 +22,7 @@ public class NPCAbility_BlastDash : Ability {
         ChaseCurrentTargetAtGivenDegreeAngle(12, 10);
         User.Actions.PlayAbilityCustomSound("Blast");
     }
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(60 * User.HeavyStagger.Current / 100, new(this)));
     }

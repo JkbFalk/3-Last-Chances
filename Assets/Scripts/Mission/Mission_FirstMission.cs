@@ -318,7 +318,7 @@ public class Mission_FirstMission : Mission
         SaveFile.Instance.AddFlag("FirstMission_LostToClariseAtLeastOnce");
     }
 
-    public void OnClariseDefeated(Damage damage) {
+    public void OnClariseDefeated(DamageInstance damage) {
         if(damage.TargetOfDamage.gameObject.name.Contains("Clarise1")) {
             UIManager.Instance.ShowBlackScreen(1);
             GameController.Instance.WaitAndRunMethod(1, StartClariseDialogue);

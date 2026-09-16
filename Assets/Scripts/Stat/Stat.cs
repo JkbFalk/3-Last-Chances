@@ -59,10 +59,6 @@ public class Stat {
         Current = amount;
     }
 
-    private void ReattachPlayerAsOwner() {
-        Owner = Player.Instance;
-    }
-
     private float _base = 0;
 
     public float Base {
@@ -93,12 +89,23 @@ public class Stat {
             AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount();
         }
     }
+    
+    public float Missing
+    {
+        get => _maximum - _current;
+    }
 
-    public Stat(Unit stat_owner, float base_amount) {
+    public float CurrentPercentage
+    {
+        get => _current / _maximum * 100;
+    }
+
+    public Stat(Unit stat_owner, float base_amount)
+    {
         Owner = stat_owner;
-        Base = base_amount;
-        Maximum = base_amount;
-        Current = base_amount;
+        _base = base_amount > MaximumValue ? MaximumValue : base_amount;
+        _maximum = _base;
+        _current = _base;
         Id = Owner?.name + "-" + GetType() + "-" + Guid.NewGuid().ToString();
     }
 

@@ -16,7 +16,17 @@ public class Projectile : DamagingObject {
     public bool IsFinalAmmo = false;
 
     private void Start() {
-        Owner = SourceAbility.User;
+        ApplySpawnState();
+    }
+
+    private void OnEnable() {
+        ApplySpawnState();
+    }
+
+    private void ApplySpawnState() {
+        if (SourceAbility != null) {
+            Owner = SourceAbility.User;
+        }
         StartLocation = transform.position;
     }
 

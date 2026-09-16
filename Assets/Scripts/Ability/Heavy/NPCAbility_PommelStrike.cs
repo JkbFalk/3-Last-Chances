@@ -11,7 +11,7 @@ public class NPCAbility_PommelStrike : Ability {
         Properties.Add(Property.CounteredByBlock);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 0.8f);
         User.UnitAI.PerformAnAttack();

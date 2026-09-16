@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Ability_ChargedShot : Technique
 {
+
+    public static float EnergyCost = 50;
+    public static float Cooldown = 40;
+    public static AbilityFamily Family = AbilityFamily.Glacies;
     private static float _chargeTime = 4;
     private static float _ultimateChargeTime = 8;
     private static float _minimumInjury = 300;
@@ -14,11 +18,6 @@ public class Ability_ChargedShot : Technique
     private static float _upgradeASlowAmount = 250;
     private static float _upgradeBProneAmount = 50;
     private static Unit _validTarget;
-    public static float Cooldown = 40;
-    public static float EnergyCost = 50;
-
-    public static AbilityFamily Family = AbilityFamily.Glacies;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Ranged;
 
     public Ability_ChargedShot(Unit ability_user) : base(ability_user)
     {
@@ -68,11 +67,11 @@ public class Ability_ChargedShot : Technique
             Vector2 shotDirection;
             if (User.CurrentTarget != null)
             {
-                shotDirection = Utils.GetDirectionVector(User.transform.position, User.CurrentTarget.transform.position, User.Actions.IsFlipped, 60);
+                shotDirection = CombatMath.GetDirectionVector(User.transform.position, User.CurrentTarget.transform.position, User.Actions.IsFlipped, 60);
             }
             else
             {
-                shotDirection = Utils.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60);
+                shotDirection = CombatMath.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60);
             }
             User.PushInTargetDirection(-1 * force * shotDirection, this);
             Utils.CreateVisualEffect(new(this), "ChargedShot_Flash");
@@ -127,7 +126,7 @@ public class Ability_ChargedShot : Technique
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         float freezeScaling = GetValueBasedOnPercentageOfTimePassed(_minimumFreezeStaggerScaling, _minimumFreezeStaggerScaling * (1 + (Is(Property.Ultimate) ? _ultimatePercentagePowerIncreaseAtMaxCharge : _percentagePowerIncreaseAtMaxCharge) / 100));
         damage.TargetOfDamage.AddEffect(new Effect_Freeze(freezeScaling / 100 * User.MagicStagger.Current, new(this)));

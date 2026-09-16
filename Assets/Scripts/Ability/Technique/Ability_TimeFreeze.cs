@@ -7,14 +7,14 @@ using UnityEngine.Rendering;
 
 public class Ability_TimeFreeze : Technique
 {
+    public static float EnergyCost = 100;
+    public static float Cooldown = 120;
+    public static AbilityFamily Family = AbilityFamily.Glacies;
     private bool _shootingBullet = false;
     private Unit _enemyMarked;
     private int _shotsCount = 0;
     private GameObject _vfx;
     private List<GameObject> _marks = new List<GameObject>();
-
-    public static float EnergyCost = 100;
-    public static float Cooldown = 120;
 
     private static float _timeSpeed = 0.2f;
     private static float _rangedInjuryScaling = 150f;
@@ -29,9 +29,6 @@ public class Ability_TimeFreeze : Technique
     private static float _upgradeAAmmoGained = 10;
     private static float _markCount = 5;
     private static float _ultimateTechniqueSpeedIncrease = 100;
-
-    public static AbilityFamily Family = AbilityFamily.Glacies;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Ranged;
 
     public Ability_TimeFreeze(Unit ability_user) : base(ability_user) {
         HitSoundType = Constants.HitSoundTypeEnum.Ice;
@@ -114,7 +111,7 @@ public class Ability_TimeFreeze : Technique
 
     public void FinishAbility()
     {
-        
+        EndThisAbility();
     }
 
     public override void OnAbilityEnd()
@@ -209,7 +206,7 @@ public class Ability_TimeFreeze : Technique
             unit_getting_attacked.AddEffect(new Effect_Freeze(Player.Instance.MagicStagger.Current * _magicStaggerFreezeScaling / 100, new(this)));
             if (_enemyMarked != null && _marks.Count == 0)
             {
-                Damage explosionDamage = new Damage(unit_getting_attacked, this, object_hitting);
+                DamageInstance explosionDamage = new DamageInstance(unit_getting_attacked, this, object_hitting);
                 DamageSource source = new DamageSource(null, new Dictionary<Constants.DamageType, float>() { { Constants.DamageType.Ranged, _allMarksHitStaggerRangedScaling }, { Constants.DamageType.Magic, _allMarksHitStaggerMagicScaling } }, Constants.DamageType.Magic);
                 explosionDamage.AbilityDamageSource = source;
                 explosionDamage.CalculateAndApplyDamage();
@@ -231,7 +228,7 @@ public class Ability_TimeFreeze : Technique
         }
     }
 
-    public void ConvertInjuryIntoStagger(Damage damage)
+    public void ConvertInjuryIntoStagger(DamageInstance damage)
     {
         if (damage.SourceOfDamage.User == Player.Instance)
         {

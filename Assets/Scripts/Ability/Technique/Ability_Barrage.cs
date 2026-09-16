@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class Ability_Barrage : Technique
 {
-    public static float EnergyCost = 5;
-    public static float Cooldown = 12;
-
+    public static float EnergyCost = 10;
+    public static float Cooldown = 15;
+    public static AbilityFamily Family = AbilityFamily.Proprius;
     private bool isRightHand = true;
     private int counter = 0;
     private int[] directions = new int[] { - 90, -60, -75, -105, -120};
     private Dictionary<Unit, List<int>> enemies_hit = new Dictionary<Unit, List<int>>();
-
-    public static AbilityFamily Family = AbilityFamily.Proprius;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
     public static bool IsVariableEnergyTechnique = true;
 
     public static float HealthScaling = 70;
@@ -35,7 +32,9 @@ public class Ability_Barrage : Technique
         ConsumeEnergyAndCooldownForTheAbility();
         for(int i = 0; i < (Is(Property.UpgradeB) ? 5 : 1); i++) {
             Projectile proj = Utils.CreateProjectile(new(this), "EnergyBarrage", Player.Instance.SpriteRenderers[isRightHand ? "Right Hand" : "Left Hand"].Bone.transform.position.x, Player.Instance.SpriteRenderers[isRightHand ? "Right Hand" : "Left Hand"].Bone.transform.position.y);
-            proj.transform.rotation = Quaternion.Euler(0, Player.Instance.Actions.IsFlipped ? 180 : 0, directions[i]);
+            float zAngle = Player.Instance.Actions.IsFlipped ? -180f - directions[i] : directions[i];
+            proj.transform.rotation = Quaternion.Euler(0, 0, zAngle);
+            Utils.Apply2DFlip(proj.gameObject, Player.Instance.Actions.IsFlipped);
             proj.gameObject.name = "EnergyBarrage_" + counter.ToString();
             proj.CleanUpAfter(6);
         }
@@ -75,7 +74,7 @@ public class Ability_Barrage : Technique
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage) {
+    public override void ExtraBehaviourOnHit(DamageInstance damage) {
         if(Is(Property.UpgradeA)) {
             damage.TargetOfDamage.AddEffect(new Effect_Analysis(MasteryAAnalyzedApplied, new(this)) {PlaySoundEffect = false});
         }

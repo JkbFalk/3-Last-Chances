@@ -136,7 +136,7 @@ public class Area_IgnisManor
         SaveFile.Instance.AddFlag("IgnisManor_GainedEntrance");
     }
 
-    public static void CheckIfGuardDefeated(Damage damage) {
+    public static void CheckIfGuardDefeated(DamageInstance damage) {
         if(damage.TargetOfDamage == Utils.GetUnit("IgnisManorGuard")) {
             Utils.GetUnit("IgnisManorGuard").SetToNeutralNPC();
             UIManager.Instance.ShowBlackScreen(1);
@@ -363,7 +363,7 @@ public class Area_IgnisManor
         SaveFile.Instance.AddPermanentPowerUp("IgnisManor_BurningPowerUp", 10);
     }
 
-    public static void CheckIfBlaineDefeated(Damage dmg) {
+    public static void CheckIfBlaineDefeated(DamageInstance dmg) {
         if(dmg.TargetOfDamage.gameObject.name.Contains("Blaine3")) {
             SaveFile.Instance.ChangeIgnisEnergy(30);
             Utils.GetUnit("Blaine3").SetToNeutralNPC();
@@ -676,7 +676,7 @@ public class Area_IgnisManor
         EventManager.UnitKnockedOut.AddListener(CheckIfColten2Defeated);
     }
 
-    public static void CheckIfColten2Defeated(Damage damage) {
+    public static void CheckIfColten2Defeated(DamageInstance damage) {
         if(damage.TargetOfDamage.gameObject.name == "Unit_Colten2") {
             Area.Instance.transform.Find("Interactables/Colten Info").gameObject.SetActive(true);
             Area.Instance.transform.Find("Interactables/Colten Info").transform.position = damage.TargetOfDamage.transform.position;
@@ -905,7 +905,7 @@ public class Area_IgnisManor
         return counter >= 3;
     }
 
-    public static void FinishDuel(Damage damage) {
+    public static void FinishDuel(DamageInstance damage) {
         EventManager.UnitWouldBeDefeated.RemoveListener(FinishDuel);
         if(damage.TargetOfDamage is Player) {
             PlayerLostDuel(damage);
@@ -945,7 +945,7 @@ public class Area_IgnisManor
         }
     }
 
-    public static void PlayerLostDuel(Damage damage) {
+    public static void PlayerLostDuel(DamageInstance damage) {
         damage.SourceOfDamage.User.SetToNeutralNPC();
         if(damage.SourceOfDamage.User.gameObject.name == "IgnisSwordmaster") {
             NotificationController.ShowCustomizedDialogueNotification(new () {Id ="IgnisManor_DuelQuips_Swordmaster_20", SpeakerUnit=Utils.GetUnit("IgnisJudge")});

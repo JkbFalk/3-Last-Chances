@@ -8,7 +8,7 @@ public class NPCAbility_StandingStab : Ability {
         Properties.Add(Property.CounteredByRoll);
         Properties.Add(Property.CounteredByRiposte);
     }
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         //damage.TargetOfDamage.AddEffect(new Effect_Stun(this), 2);
     }

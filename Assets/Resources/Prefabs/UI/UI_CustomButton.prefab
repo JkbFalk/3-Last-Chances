@@ -154,7 +154,7 @@ MonoBehaviour:
   m_UseGraphicAlpha: 1
 --- !u!95 &4532920233929208593
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -168,6 +168,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -255,8 +256,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: '{TEST}'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bf5632e6fd64b514b97e8134019bdf7d, type: 2}
-  m_sharedMaterial: {fileID: 2263827286215516253, guid: bf5632e6fd64b514b97e8134019bdf7d,
+  m_fontAsset: {fileID: 11400000, guid: 82d051d16874fc24894870c94c5ab7e1, type: 2}
+  m_sharedMaterial: {fileID: 2263827286215516253, guid: 82d051d16874fc24894870c94c5ab7e1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -297,15 +298,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0

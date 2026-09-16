@@ -10,7 +10,7 @@ public class Gun_AncientFirearms : Item
         Set = ItemSetEnum.Ancient;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
-        SetBaseWeaponStats(130, 100, 0.75f);
+        SetBaseWeaponStats(13, 10, 0.75f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsDamage")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("AncientFirearmsArmor")};
     }

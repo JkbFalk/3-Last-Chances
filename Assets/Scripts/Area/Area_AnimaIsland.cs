@@ -45,13 +45,13 @@ public class Area_AnimaIsland
     public static void StartAllDuels() {
         foreach(Unit u in Utils.GetAllUnits()) {
             if(u.Faction == Constants.Faction.DuelingEachOther) {
-                u.AddEffect(new Effect_ChangeStat(u.Health, new(u)) {RegenerationPercentageAmount = 15, Identifier="DuelRegeneration"});
+                u.AddEffect(new Effect_ChangeStat(u.Health, new(u)) {RegenerationPercentageAmount = 15, Id="DuelRegeneration"});
                 u.CurrentTarget = u.GetClosestValidTarget();
             }
         }
     }
 
-    public static void CheckDefeatedEnemy(Damage damage) {
+    public static void CheckDefeatedEnemy(DamageInstance damage) {
         if(SaveFile.Instance.Cycle == 1 && damage.TargetOfDamage.gameObject.name.Contains("Unit_AnimaHound") && SaveFile.Instance.HasFlag("AnimaIsland_FoughtMaginhart")) {
             List<Unit> units = Utils.GetSpecifiedUnits(new Func<Unit, bool>((unit) => (unit.gameObject.name.Contains("Unit_AnimaHound") && unit.InCombat && unit.KnockedOut == false)));
             if(units.Count == 0) {

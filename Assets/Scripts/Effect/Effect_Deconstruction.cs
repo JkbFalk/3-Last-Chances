@@ -27,7 +27,7 @@ public class Effect_Deconstruction : Effect
         UIText = "x" + Stacks.ToString();
     }
 
-    public override void OnInvokeHitDealt(Damage damage)
+    public override void OnInvokeHitDealt(DamageInstance damage)
     {
         base.OnInvokeHitDealt(damage);
         if (UpgradeB && damage.TargetOfDamage == TargetOfEffect && damage.SourceOfDamage.GetType() == DeconstructionTarget)

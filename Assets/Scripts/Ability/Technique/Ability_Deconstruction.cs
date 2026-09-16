@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class Ability_Deconstruction : Technique
 {
-    public static float EnergyCost = 50;
-    public static float Cooldown = 30;
+    public static float EnergyCost = 40;
+    public static float Cooldown = 25;
+    public static AbilityFamily Family = AbilityFamily.Anima;
     public static int MaxStacks = 5;
     public static int UpgradeAMaxStacks = 7;
     private static float _upgradeADamageIncreasePerUniqueDeconstruction = 30;
@@ -15,8 +16,6 @@ public class Ability_Deconstruction : Technique
     private static float _ultimateInjuryScaling = 500;
     private static float _ultimateStaggerScaling = 500;
     private Effect_ChangeCompositeStat _upgradeADamageBuff;
-    public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.None;
     public static bool CanBeUsedDuringOtherAbilities
     {
         get
@@ -65,7 +64,7 @@ public class Ability_Deconstruction : Technique
     public override void CallAbilityEvent1()
     {
         AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "Deconstruction_Ultimate", Player.Instance.transform.position.x, Player.Instance.transform.position.y);
-        aoe.transform.parent.eulerAngles = new Vector3(0, Player.Instance.Actions.IsFlipped ? 180 : 0, 0);
+        Utils.Apply2DFlip(aoe.transform.parent.gameObject, Player.Instance.Actions.IsFlipped);
     }
 
     public override void ActionsToPerformDuringAnotherAbility()
@@ -111,12 +110,12 @@ public class Ability_Deconstruction : Technique
         if (Is(Property.UpgradeA) && Effect_Deconstruction.UniqueDeconstructions.Contains(targetAbilityType) == false)
         {
             Effect_Deconstruction.UniqueDeconstructions.Add(targetAbilityType);
-            if (Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Identifier == "DeconstructionUpgradeADamageBuff")) != null)
+            if (Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Id == "DeconstructionUpgradeADamageBuff")) != null)
             {
-                _upgradeADamageBuff = (Effect_ChangeCompositeStat)Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Identifier == "DeconstructionUpgradeADamageBuff"));
+                _upgradeADamageBuff = (Effect_ChangeCompositeStat)Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Id == "DeconstructionUpgradeADamageBuff"));
             }
             else {
-                _upgradeADamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(this)) { ShowsInUI = true, Identifier = "DeconstructionUpgradeADamageBuff" };
+                _upgradeADamageBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.Damage, new(this)) { ShowsInUI = true, Id = "DeconstructionUpgradeADamageBuff" };
                 Player.Instance.AddEffect(_upgradeADamageBuff);
             }
             _upgradeADamageBuff.PercentageAmount = Effect_Deconstruction.UniqueDeconstructions.Count * _upgradeADamageIncreasePerUniqueDeconstruction;
@@ -124,7 +123,7 @@ public class Ability_Deconstruction : Technique
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         Effect_Deconstruction deconstruction = (Effect_Deconstruction)Player.Instance.GetEffect(typeof(Effect_Deconstruction));

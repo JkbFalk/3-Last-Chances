@@ -13,7 +13,7 @@ public class Ability_BackStep : Ability_Dodge {
     }
 
     public override void CallAbilityEvent1() {
-        Player.Instance.AddEffect(new Effect_Backstep(new(this)), 0.5f);
+        Player.Instance.AddEffect(new Effect_Backstep(new(this)), 0.5f * (Player.Instance.CheckIfUnderEffectWithGivenId("IncreaseInvincibilityTimeOfDodge") ? Player.Instance.GetEffectWithGivenId("IncreaseInvincibilityTimeOfDodge").PercentageAmount : 1));
         _flipped = User.Actions.IsFlipped ? -1 : 1;
         _movementSpeed = 1 + User.MovementSpeed.Current / 100;
         Player.Instance.PushInTargetDirection(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);

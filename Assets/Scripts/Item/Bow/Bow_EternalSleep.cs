@@ -10,8 +10,8 @@ public class Bow_EternalSleep : Item
         Set = ItemSetEnum.Judge;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Bow;
-        SetBaseWeaponStats(80, 160, 0.6f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ApplySleepToEnemiesHit")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Control")};
+        SetBaseWeaponStats(8, 16, 0.6f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DamageToSleeping", 0.5f), new ItemEffect("RangedTechniqueDamage", 0.5f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ApplySleepWithBasicAttacks")};
     }
 }

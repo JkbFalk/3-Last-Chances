@@ -39,7 +39,7 @@ public class Actions : MonoBehaviour {
             }
             Constants.ActionType previousAction = _currentActionBeingPerformed;
 
-            Effect HardCrowdControlEffect = Unit.CurrentEffects.Where(effect => effect.IsHardCrowdControl()).FirstOrDefault();
+            Effect HardCrowdControlEffect = Unit.CurrentEffects.Where(effect => effect.IsHardCrowdControl).FirstOrDefault();
             if (CurrentActionBeingPerformed != Constants.ActionType.UnderHardCrowdControl && value == Constants.ActionType.UnderHardCrowdControl)
             {
                 EndCurrentAbility();
@@ -54,16 +54,18 @@ public class Actions : MonoBehaviour {
             if (QueuedInputs.Count > 0 && Utils.CheckIfUnitCanPerformActions(Unit)) {
                 PerformQueuedActions();
             }
-            else if (value == Constants.ActionType.Idle && CurrentAbilityBeingPerformed == null) {
-                if (TryingToMoveInDirection.Count > 0) {
-                    CurrentActionBeingPerformed = Constants.ActionType.Moving;
+            if (CurrentAbilityBeingPerformed == null) {
+                if (value == Constants.ActionType.Idle) {
+                    if (TryingToMoveInDirection.Count > 0) {
+                        CurrentActionBeingPerformed = Constants.ActionType.Moving;
+                    }
+                    else {
+                        Unit.PlayAnimation(Unit.InCombat ? "IdleInCombat" : "Idle", _previousAbilityBeingPerformed?.TransitionOutOfAnimationDuration != null ? _previousAbilityBeingPerformed.TransitionOutOfAnimationDuration : Constants.DEFAULT_CROSSFADE_DURATION);
+                    }
                 }
-                else {
-                    Unit.PlayAnimation(Unit.InCombat ? "IdleInCombat" : "Idle", _previousAbilityBeingPerformed?.TransitionOutOfAnimationDuration != null ? _previousAbilityBeingPerformed.TransitionOutOfAnimationDuration : Constants.DEFAULT_CROSSFADE_DURATION);
+                else if (value == Constants.ActionType.Moving && previousAction != Constants.ActionType.Moving && CanMove) {
+                    Unit.PlayAnimation(IsWalking || !Unit.CanRun ? "Walk" : "Run", _previousAbilityBeingPerformed?.TransitionOutOfAnimationDuration != null ? _previousAbilityBeingPerformed.TransitionOutOfAnimationDuration : 0.04f);
                 }
-            }
-            else if (value == Constants.ActionType.Moving && previousAction != Constants.ActionType.Moving && CurrentAbilityBeingPerformed == null && CanMove) {
-                Unit.PlayAnimation(IsWalking || !Unit.CanRun ? "Walk" : "Run", _previousAbilityBeingPerformed?.TransitionOutOfAnimationDuration != null ? _previousAbilityBeingPerformed.TransitionOutOfAnimationDuration : 0.04f);
             }
             if(Unit is not Player && prevValue == Constants.ActionType.UnderHardCrowdControl && value != Constants.ActionType.UnderHardCrowdControl) {
                 LineOfSight.HandleExitCrowdControl();
@@ -230,8 +232,9 @@ public class Actions : MonoBehaviour {
             float cost = Ability.GetEnergyCost(ability.GetType());
             if (cost > 0)
             {
+                bool wasFullEnergy = Unit.Energy.Current >= Unit.Energy.Maximum;
                 Unit.Energy.Current -= cost;
-                EventManager.AbilityEnergyConsumed.Invoke(ability, cost);
+                EventManager.AbilityEnergyConsumed.Invoke(ability, cost, wasFullEnergy);
             }
         }
         else
@@ -594,7 +597,12 @@ public class Actions : MonoBehaviour {
         }
         else
         {
-            Type attackType = Type.GetType("BA_" + Unit.CurrentWeaponClass + "_Backstab");
+            Type attackType = AbilityTypeRegistry.GetBackstab(Unit.CurrentWeaponClass);
+            if (attackType == null)
+            {
+                PerformRegularBasicAttack();
+                return;
+            }
             Ability backstab = (Backstab)Activator.CreateInstance(attackType, new object[] { Unit });
             if (Ability.CheckIfCanPerformAbility(Player.Instance, attackType) && (CurrentAbilityBeingPerformed == null && Utils.CheckIfUnitCanPerformActions(Unit)) || (CurrentAbilityBeingPerformed != null && CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(Ability.AbilityInterruptType.BasicAttack)))
             {
@@ -620,18 +628,22 @@ public class Actions : MonoBehaviour {
         else if (Player.Instance.CurrentWeaponClass == Constants.WeaponClass.Gauntlets)
         {
             int number = Player.Instance.GetGauntletBANumber();
-            basicAttackType = Type.GetType("BA_Gauntlets_L" + number);
+            basicAttackType = AbilityTypeRegistry.GetGauntletBasicAttack(number);
             Player.Instance.MostRecentGauntletBANumber = number;
         }
         else if (Player.Instance.CurrentWeaponClass == Constants.WeaponClass.Longblade)
         {
             int number = Player.Instance.GetLongbladeBANumber();
-            basicAttackType = Type.GetType("BA_Longblade_F" + number);
+            basicAttackType = AbilityTypeRegistry.GetLongbladeBasicAttack(number);
             Player.Instance.MostRecentLongbladeBANumber = number;
         }
         else
         {
-            basicAttackType = Type.GetType("BA_" + Unit.CurrentWeaponClass + "_F");
+            basicAttackType = AbilityTypeRegistry.GetRegularBasicAttack(Unit.CurrentWeaponClass);
+        }
+        if (basicAttackType == null)
+        {
+            return;
         }
         BasicAttack basicAttack = (BasicAttack)Activator.CreateInstance(basicAttackType, new object[] { Unit });
         if (Ability.CheckIfCanPerformAbility(Player.Instance, basicAttackType))
@@ -737,7 +749,7 @@ public class Actions : MonoBehaviour {
 
     public void PlayFootstepsSound() {
         Area.FootstepsType footstepsType = Area.FootstepsType.None;
-        if (Unit.GetEffect(new Func<Effect, bool>(effect => effect.Identifier == "StandingOnPermafrost")) != null)
+        if (Unit.GetEffect(new Func<Effect, bool>(effect => effect.Id == "StandingOnPermafrost")) != null)
         {
             footstepsType = Area.FootstepsType.Ice;
         }
@@ -784,18 +796,40 @@ public class Actions : MonoBehaviour {
 
     public void PlayOtherCrowdControlAnimations()
     {
-        Effect HardCrowdControlEffect = Unit.CurrentEffects.Where(effect => effect.IsHardCrowdControl()).FirstOrDefault();
-        if(HardCrowdControlEffect != null)
+        Effect highestPriorityCC = Unit.CurrentEffects
+            .Where(effect => effect.IsHardCrowdControl && effect.AutoPlayEffectAnimation && effect.RemainingDuration > 0.1f)
+            .OrderByDescending(effect => effect.PriorityLevel)
+            .FirstOrDefault();
+
+        if (highestPriorityCC != null)
         {
-            Unit.PlayAnimation(HardCrowdControlEffect.GetType().Name);
+            string animName = !string.IsNullOrWhiteSpace(highestPriorityCC.NameOfAnimationToAutoPlay) 
+                ? highestPriorityCC.NameOfAnimationToAutoPlay 
+                : highestPriorityCC.GetType().Name;
+
+            string currentAnim = Unit.Animator.GetCurrentAnimatorClipInfo(0).Length > 0 
+                ? Unit.Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name 
+                : "";
+
+            string extractedName = animName.Replace("BA_", "").Replace("NPCAbility_", "").Replace("Effect_", "").Replace("Ability_", "");
+            if (currentAnim != extractedName)
+            {
+                Unit.EffectAnimationBeingPlayed = highestPriorityCC;
+                Unit.PlayAnimation(animName);
+            }
         }
-    } 
+        else
+        {
+            Unit.EffectAnimationBeingPlayed = null;
+            CurrentActionBeingPerformed = Constants.ActionType.Idle;
+        }
+    }
 
     private void CalculateMovement() {
         bool isBlocking = Unit.CheckIfUnderEffect(typeof(Effect_Block));
         Vector3 primary_vector = GetDirectionVector(TryingToMoveInDirection[0]);
         Vector3 main_move_direction = (IsWalking ? Constants.PLAYER_WALK_SPEED : isBlocking ? Constants.PLAYER_BLOCK_MOVE_SPEED : Constants.PLAYER_RUN_SPEED) * (1 + Unit.MovementSpeed.Current / 100) * primary_vector * Time.fixedDeltaTime;
-        if (TryingToMoveInDirection.Count > 1 && !Utils.GetAreOppositeDirections(TryingToMoveInDirection[0], TryingToMoveInDirection[1])) {
+        if (TryingToMoveInDirection.Count > 1 && !CombatMath.GetAreOppositeDirections(TryingToMoveInDirection[0], TryingToMoveInDirection[1])) {
             Vector3 secondaryVector = GetDirectionVector(TryingToMoveInDirection[1]) * (IsWalking ? Constants.PLAYER_WALK_SPEED : isBlocking ? Constants.PLAYER_BLOCK_MOVE_SPEED : Constants.PLAYER_RUN_SPEED) * (1 + Unit.MovementSpeed.Current / 100) * Time.fixedDeltaTime;
             Unit.Rigidbody2D.MovePosition(Unit.transform.position + main_move_direction + secondaryVector);
         }
@@ -806,9 +840,9 @@ public class Actions : MonoBehaviour {
 
     private Vector3 GetDirectionVector(string direction) {
         return direction switch {
-            "Up" => Vector3.up,
+            "Up" => Vector3.up * Constants.EFFECTIVNESS_WHEN_MOVING_VERTICALLY,
             "Right" => Vector3.right,
-            "Down" => Vector3.down,
+            "Down" => Vector3.down * Constants.EFFECTIVNESS_WHEN_MOVING_VERTICALLY,
             "Left" => Vector3.left,
             _ => Vector3.zero,
         };
@@ -892,15 +926,19 @@ public class Actions : MonoBehaviour {
         {
             CurrentAbilityBeingPerformed = (Ability)Activator.CreateInstance(ability_to_use, ability_to_use.IsSubclassOf(typeof(AI)) ? new object[] { Unit, target } : item_to_use != null ? new object[] { Unit, item_to_use } : new object[] { Unit });
         }
-        else if (allow_to_queue_ability && Ability.CheckIfEnoughResourceToUseAbility(Player.Instance, ability_to_use))
+        else if (allow_to_queue_ability && CurrentAbilityBeingPerformed != null && !CurrentAbilityBeingPerformed.CanInterruptCurrentAbility)
         {
-            QueuedInputs.Add(new QueuedInput("UseAbility", ability_to_use, item_to_use));
+            bool toolUnavailable = item_to_use != null && (Unit.ToolCooldown != null || item_to_use.Amount <= 0);
+            if (!toolUnavailable && Ability.CheckIfEnoughResourceToUseAbility(Player.Instance, ability_to_use, item_to_use))
+            {
+                QueuedInputs.Add(new QueuedInput("UseAbility", ability_to_use, item_to_use));
+            }
         }
     }
 
     public void CleanseAllHardCrowdControl() {
         foreach(Effect e in Unit.CurrentEffects.ToList()) {
-            if(e.IsHardCrowdControl()) {
+            if(e.IsHardCrowdControl) {
                 e.EndThisEffect();
             }
         }
@@ -962,12 +1000,12 @@ public class Actions : MonoBehaviour {
     {
         if (Player.Instance.CurrentTarget == null)
         {
-            if (GameController.Instance.PlayerInput.currentControlScheme == "Mouse and Keyboard")
+            if (Settings.Instance.ControlScheme == "Keyboard")
             {
                 Vector3 target_vector = GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition;
                 return (target_vector - Player.Instance.ProjectileSpawnLocation.transform.position).normalized;
             }
-            else if (GameController.Instance.PlayerInput.currentControlScheme == "Gamepad")
+            else if (Settings.Instance.ControlScheme == "Gamepad")
             {
                 Vector3 target_vector = GameController.Instance.PlayerControls.CurrentLeftStickPosition;
                 if (target_vector == Vector3.zero)
@@ -1115,15 +1153,15 @@ public class Actions : MonoBehaviour {
             bool previous_value = _flipDirection;
             _flipDirection = value;
             if (_flipDirection && transform.localEulerAngles.y == 0) {
-                transform.localEulerAngles = new Vector3(0, 180, 0);
+                transform.localEulerAngles = new Vector3(Constants.WORLD_TILT_ANGLE, 180, 0);
             }
             else if (!_flipDirection && transform.localEulerAngles.y != 0) {
-                transform.localEulerAngles = new Vector3(0, 0, 0);
+                transform.localEulerAngles = new Vector3(-Constants.WORLD_TILT_ANGLE, 0, 0);
             }
             if(previous_value != value)
             {
                 EventManager.UnitChangedDirection.Invoke(Unit);
-                if(Unit is Player)
+                if (Unit is Player)
                 {
                     foreach (string element in new List<string> { "Hand", "Arm", "Leg", "Foot", "Light" })
                     {

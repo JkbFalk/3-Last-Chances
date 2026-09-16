@@ -8,7 +8,7 @@ public class Polearm_ChargeLance : Item
     {
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
-        SetBaseWeaponStats(115, 115, 0.85f);
+        SetBaseWeaponStats(12, 11, 0.85f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReplaceAllBasicAttacksWithChargeAndImproveDamage")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGain")};
     }

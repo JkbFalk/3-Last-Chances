@@ -10,8 +10,8 @@ public class Gauntlets_IronheartSunderers : Item
         Set = ItemSetEnum.Unbreakable;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
-        SetBaseWeaponStats(80, 80, 1.3f);
+        SetBaseWeaponStats(8, 8, 1.3f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksRestorePercentageOfStaggerBar")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggerBar")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightAttackSpeed")};
     }
 }

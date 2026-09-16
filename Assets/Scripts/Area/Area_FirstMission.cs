@@ -17,7 +17,7 @@ public class Area_FirstMission
         }
     }
 
-    public static void CheckIfActivateMapPickUp(Damage dmg) {
+    public static void CheckIfActivateMapPickUp(DamageInstance dmg) {
         if(dmg.TargetOfDamage.gameObject.name.Contains("Unit_Leader")) {
             Utils.GetUnit("Leader").transform.Find("Map").gameObject.SetActive(true);
             Utils.GetUnit("Leader").transform.Find("Map").transform.SetParent(Area.Instance.transform);

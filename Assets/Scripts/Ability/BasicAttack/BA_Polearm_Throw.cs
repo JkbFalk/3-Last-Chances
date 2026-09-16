@@ -9,22 +9,22 @@ public class BA_Polearm_Throw : BasicAttack {
         DamageSources.Add(new DamageSource(0, 50, Constants.DamageType.Heavy, "2"));
         AddCustomSound("Swing1", "Polearm/Polearm_Throw2", 1f);
         AddCustomSound("Swing2", "Polearm/Polearm_Throw1", 1f);
-        NameOfAnimationToAutoPlay = SaveFile.Instance.EquippedHeavyWeapon is Polearm_Harpoon ? "Polearm_ThrowAndPull" : "Polearm_Throw";
+        NameOfAnimationToAutoPlay = Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithThrowAddPullAndIncreaseStagger") ? "Polearm_ThrowAndPull" : "Polearm_Throw";
         TransitionIntoAnimationDuration = 0.02f;
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
-        if(damage.AbilityDamageSource.ColliderName != "2" && SaveFile.Instance.EquippedHeavyWeapon is Polearm_Harpoon) {
+        if(damage.AbilityDamageSource.ColliderName != "2" && Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithThrowAddPullAndIncreaseStagger")) {
             damage.Stagger += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 4.6875f;
         }
-        else if(damage.AbilityDamageSource.ColliderName != "2" && SaveFile.Instance.EquippedHeavyWeapon is Polearm_Javelin) {
+        else if(damage.AbilityDamageSource.ColliderName != "2" && Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithThrowAndIncreaseInjury")) {
             damage.Stagger += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3.125f;
             damage.Injury += Player.Instance.CurrentStance.Weapon.GetItemFirstEffectPB() * 3.125f;
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(damage.AbilityDamageSource.ColliderName == "2") {
             damage.TargetOfDamage.PushIntoPosition(User.Actions.IsFlipped ? (User.transform.position + new Vector3(-2.5f, 0)) : (User.transform.position + new Vector3(2.5f, 0)), this, 1.05f);

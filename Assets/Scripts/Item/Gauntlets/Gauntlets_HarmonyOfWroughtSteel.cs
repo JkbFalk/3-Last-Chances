@@ -10,8 +10,8 @@ public class Gauntlets_HarmonyOfWroughtSteel : Item
         Set = ItemSetEnum.Survivor;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
-        SetBaseWeaponStats(80, 80, 1.3f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncisionRestoresHealthInsteadOfDealingInjury")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("IncisionDecay")};
+        SetBaseWeaponStats(8, 8, 1.3f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BleedRestoresHealthInsteadOfDealingInjury")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BleedDecay")};
     }
 }

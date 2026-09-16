@@ -23,7 +23,7 @@ public class SurvivalController
         LoadNextLevel();
     }
 
-    public static float PlayerRemainingHealth = 1000;
+    public static float PlayerRemainingHealth = 100;
     public static int RemainingHeals;
     public static float PlayerRemainingAmmo = 6;
 
@@ -305,7 +305,7 @@ public class SurvivalController
         EventManager.UnitKnockedOut.RemoveListener(CheckEnemyDefeatedCount);
     }
 
-    public static void CheckEnemyDefeatedCount(Damage damage)
+    public static void CheckEnemyDefeatedCount(DamageInstance damage)
     {
         Utils.DestroyAllChildren(UIManager.Objects.ObjectivesDisplay.transform);
         int enemyCount = Utils.GetAllUnits(true, true).Count;

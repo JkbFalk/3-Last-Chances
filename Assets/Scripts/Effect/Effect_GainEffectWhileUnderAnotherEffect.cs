@@ -7,13 +7,11 @@ public class Effect_GainEffectWhileUnderAnotherEffect : Effect
 {
     public Type EffectNeededToCreateEffect;
     public Effect CreatedEffect;
-    public float PercentageAmount;
     public Effect_GainEffectWhileUnderAnotherEffect(Type effect_needed, SourceOfEffect source_of_effect) : base(source_of_effect) {
         EffectNeededToCreateEffect = effect_needed;
         Type = EffectType.Buff;
         Listeners.Add(EventManager.EffectStarted);
         Listeners.Add(EventManager.EffectEnded);
-        TriggersOncePerAbility = true;
     }
 
     public Func<Effect_GainEffectWhileUnderAnotherEffect, Effect> CreateEffect;

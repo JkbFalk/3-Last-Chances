@@ -16,7 +16,6 @@ public class Effect_GainDamageAndArmorForEachDebuff : Effect
         Type = EffectType.Buff;
         Listeners.Add(EventManager.EffectStarted);
         Listeners.Add(EventManager.EffectEnded);
-        TriggersOncePerAbility = true;
     }
 
 

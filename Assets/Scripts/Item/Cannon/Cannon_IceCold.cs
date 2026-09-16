@@ -10,8 +10,8 @@ public class Cannon_IceCold : Item
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Cannon;
-        SetBaseWeaponStats(70, 140, 0.85f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("OnSwitchingToWeaponSpawnAMarkerThatDealsMAssiveStaggerAndStunOnHit")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Stagger", 0.5f), new ItemEffect("Control", 0.5f)};
+        SetBaseWeaponStats(7, 14, 0.85f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("OnSwitchingToWeaponSpawnAMarkerThatDealsMassiveStaggerAndStunOnHit")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedStagger", 0.5f), new ItemEffect("Control", 0.5f)};
     }
 }

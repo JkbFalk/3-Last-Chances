@@ -7,6 +7,7 @@ public class Ability_Fortify : Technique
 {
     public static float EnergyCost = 1;
     public static float Cooldown = 2;
+    public static AbilityFamily Family = AbilityFamily.Molis;
     private Effect_ChangeStat _armorBuff;
     private Effect_Unstunnable _unstunnableBuff;
     private Effect_ChangeStat _upgradeAEnergyGain;
@@ -18,8 +19,6 @@ public class Ability_Fortify : Technique
     private static float _upgradeBBarrierGainedPer1StackHealthScaling = 0.5f;
     private static float _upgradeBBarrierGainedPer1StackStaggerBarScaling = 0.5f;
     private static float _ultimatePercentageOfDamageReflected = 50f;
-    public static AbilityFamily Family = AbilityFamily.Molis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.None;
     public static bool IsStacksBasedTechnique = true;
     public static int MaxStacks
     {
@@ -74,8 +73,8 @@ public class Ability_Fortify : Technique
         EventManager.OneTenthSecondElapsedInGame.AddListener(Activate);
         if (Is(Property.UpgradeA))
         {
-            RefreshUpgradeABuff(Player.Instance);
-            EventManager.UnitHealthChanged.AddListener(RefreshUpgradeABuff);
+            RefreshUpgradeABuff(Player.Instance.Health, 0);
+            EventManager.UnitStatCurrentAmountChanged.AddListener(RefreshUpgradeABuff);
         }
         if (Is(Property.UpgradeB))
         {
@@ -88,9 +87,9 @@ public class Ability_Fortify : Technique
         }
     }
 
-    public void RefreshUpgradeABuff(Unit unit)
+    public void RefreshUpgradeABuff(Stat stat, float amount)
     {
-        if (unit == Player.Instance)
+        if (stat is Health && stat.Owner == Player.Instance)
         {
             if (_upgradeAEnergyGain != null && _upgradeAEnergyGain.EffectEnded == false)
             {
@@ -107,7 +106,7 @@ public class Ability_Fortify : Technique
             }
             else
             {
-                _upgradeAHealing = new Effect_ChangeStat(Player.Instance.Health, new(this)) { RegenerationFlatAmount = (Player.Instance.Health.Maximum - Player.Instance.Health.Current) * _upgradeAPercentageMissingHealthRestoredPerSecond / 100 };
+                _upgradeAHealing = new Effect_ChangeStat(Player.Instance.Health, new(this)) { RegenerationFlatAmount = Player.Instance.Health.Missing * _upgradeAPercentageMissingHealthRestoredPerSecond / 100 };
                 Player.Instance.AddEffect(_upgradeAHealing);
             }
         }
@@ -123,7 +122,7 @@ public class Ability_Fortify : Technique
         EventManager.DamageDealt.RemoveListener(AddStacks);
     }
 
-    public static void AddStacks(Damage damage)
+    public static void AddStacks(DamageInstance damage)
     {
         if (damage.TargetOfDamage == Player.Instance && SaveFile.Instance.ActiveUpgrades.Contains("Ability_Fortify_UpgradeB"))
         {
@@ -172,7 +171,7 @@ public class Ability_Fortify : Technique
         EventManager.OneTenthSecondElapsedInGame.RemoveListener(Activate);
         if (Is(Property.UpgradeA))
         {
-            EventManager.UnitHealthChanged.RemoveListener(RefreshUpgradeABuff);
+            EventManager.UnitStatCurrentAmountChanged.RemoveListener(RefreshUpgradeABuff);
         }
         if (Is(Property.Ultimate))
         {
@@ -185,11 +184,11 @@ public class Ability_Fortify : Technique
         return _baseArmorGained + Player.Instance.Armor.Current * _percentageArmorGained / 100;
     }
 
-    public void ReflectDamageTaken(Damage damage)
+    public void ReflectDamageTaken(DamageInstance damage)
     {
         if (damage.TargetOfDamage == Player.Instance)
         {
-            Damage reflection = new Damage(damage.SourceOfDamage.User, this, null);
+            DamageInstance reflection = new DamageInstance(damage.SourceOfDamage.User, this, null);
             reflection.Injury = damage.PreMitigationInjury * _ultimatePercentageOfDamageReflected / 100;
             reflection.Stagger = damage.PreMitigationStagger * _ultimatePercentageOfDamageReflected / 100;
             reflection.CalculateAndApplyDamage();

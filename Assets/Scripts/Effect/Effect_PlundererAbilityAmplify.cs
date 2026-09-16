@@ -8,9 +8,8 @@ public class Effect_PlundererAbilityAmplify : Effect
 {
     private GameObject _vfx;
     public Ability.AbilityFamily AmplifiedFamily = Ability.AbilityFamily.None;
-    public Effect_PlundererAbilityAmplify(float amount, SourceOfEffect source_of_effect) : base(source_of_effect) {
+    public Effect_PlundererAbilityAmplify(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
-        FirstParameter = amount;
         ShowsInUI = true;
         Listeners.Add(EventManager.HitDealt);
     }
@@ -19,8 +18,8 @@ public class Effect_PlundererAbilityAmplify : Effect
     {
         PathToUIGraphic = "UI/" + AmplifiedFamily;
         base.OnStart();
-        UIText = Utils.GetFormattedFloat(FirstParameter, 0);
-        if(FirstParameter <= 0) {
+        UIText = Utils.GetFormattedFloat(PercentageAmount, 0);
+        if(PercentageAmount <= 0) {
             return;
         }
         _vfx = Utils.CreateVisualEffect(SourceOfEffect, "Plunderer_" + AmplifiedFamily.ToString());
@@ -36,18 +35,10 @@ public class Effect_PlundererAbilityAmplify : Effect
         }
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         FieldInfo family = damage.SourceOfDamage.GetType().GetField("Family", BindingFlags.Public | BindingFlags.Static);
         if(damage.SourceOfDamage.User == TargetOfEffect && family != null && family.GetValue(null).ToString() == AmplifiedFamily.ToString()) {
-            damage.DamageDealtPercentageModifier = FirstParameter;
-            Effect extraArmor = TargetOfEffect.GetEffect(new System.Func<Effect, bool> (effect => effect.Identifier == "PlundererArmor"));
-            if(extraArmor != null) {
-                TargetOfEffect.AddEffect(
-                    new Effect_ChangeStat(TargetOfEffect.Armor, SourceOfEffect) {
-                        PercentageAmount = extraArmor.FirstParameter,
-                    }
-                , extraArmor.SecondParameter); 
-            }
+            damage.DamageDealtPercentageModifier = PercentageAmount;
             EndThisEffect();
             base.OnInvokeHitDealt(damage);
         } 

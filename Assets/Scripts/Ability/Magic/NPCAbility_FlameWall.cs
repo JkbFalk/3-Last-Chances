@@ -30,7 +30,7 @@ public class NPCAbility_FlameWall : Ability {
         GameController.Instance.WaitAndRunMethod(12.5f, new System.Action(() => { EventManager.OneTenthSecondElapsedInGame.RemoveListener(ResetTargets); }));
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(4 * User.MagicStagger.Current / 100, new(this)));
     }

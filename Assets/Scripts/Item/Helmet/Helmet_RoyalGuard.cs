@@ -9,7 +9,7 @@ public class Helmet_RoyalGuard : Item
         Set = ItemSetEnum.RoyalGuard;
         Type = Constants.ItemType.Helmet;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksGiveAnalysis")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AttackSpeed")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AnalysisArmor")};
     }
 }
 

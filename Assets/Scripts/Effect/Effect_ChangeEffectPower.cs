@@ -41,7 +41,7 @@ public class Effect_ChangeEffectPower : Effect
     }
 
     public Type AffectedEffectType;
-    public enum AffectedUnitsTypeEnum {Enemies, Player};
+    public enum AffectedUnitsTypeEnum {Enemies, Player, Both};
     public enum ChangeTypeEnum {AffectAmountAdded, AffectDecaySpeed}
     public ChangeTypeEnum ChangeType;
     public AffectedUnitsTypeEnum AffectedUnitsType = AffectedUnitsTypeEnum.Enemies;

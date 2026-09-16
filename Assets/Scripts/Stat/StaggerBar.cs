@@ -7,29 +7,36 @@ using UnityEngine.UI;
 public class StaggerBar : Stat {
     public Image HUDFill;
     public GameObject StaggerBars;
+    public float Remaining
+    {
+        get => Maximum - Current;
+    }
 
-    public StaggerBar(Unit stat_owner, float base_amount) : base(stat_owner, base_amount) {
+    public StaggerBar(Unit stat_owner, float base_amount) : base(stat_owner, base_amount)
+    {
         Owner = stat_owner;
-        if (Owner is Player) {
+        if (Owner is Player)
+        {
             HUDSlider = UIManager.Objects.ResourceBars.transform.Find("Stagger Bar Container/Stagger Bar").GetComponent<Slider>();
             HUDFill = HUDSlider.transform.Find("Fill Area/Fill").GetComponent<Image>();
             MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find("StaggerBar/Value").GetComponent<TextMeshProUGUI>();
         }
-        else if (Owner.IsBoss == false) {
+        else if (Owner.IsBoss == false)
+        {
             HUDSlider = Owner.transform.Find("World Space Canvas/Stagger Bar").GetComponent<Slider>();
             HUDFill = HUDSlider.transform.Find("Fill Area/Fill").GetComponent<Image>();
             StaggerBars = Owner.transform.Find("World Space Canvas/Stagger Bar/Extra Stagger Bars").gameObject;
         }
-        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
+        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * CombatMath.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
         Maximum = Base;
         CannotBeLowerThan1 = true;
         CurrentCanBeLowerThanMaximum = true;
         Current = 0;
-        AddPercentageRegeneration(Constants.StatSource.Base, Owner.DefaultStaggerBarRegenPercentage);   
+        AddPercentageRegeneration(Constants.StatSource.Base, Owner.DefaultStaggerBarRegenPercentage);
         AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount();
     }
 
-    public void DealStaggerDamage(Damage damage) {
+    public void DealStaggerDamage(DamageInstance damage) {
         if(Current + damage.StaggerDealt > Maximum) {
             damage.StaggerDealt = Maximum - Current + 0.1f;
         }
@@ -37,7 +44,7 @@ public class StaggerBar : Stat {
             damage.StaggerDealt = damage.Stagger;
         }
         Current += damage.StaggerDealt;
-        if(Current + damage.Stagger > Maximum && damage.Properties.Contains(Damage.DamageProperty.CannotStagger)) {
+        if(Current + damage.Stagger > Maximum && damage.Properties.Contains(DamageInstance.DamageProperty.CannotStagger)) {
             Current = Maximum - 0.1f;
             return;
         }
@@ -53,7 +60,7 @@ public class StaggerBar : Stat {
             }
             else {
                 Owner.CurrentStaggerBars--;
-                Owner.StaggerBar.Maximum = Owner.StaggerBars[Owner.StaggerBars.Count - Owner.CurrentStaggerBars]* (Owner.IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
+                Owner.StaggerBar.Maximum = Owner.StaggerBars[Owner.StaggerBars.Count - Owner.CurrentStaggerBars]* (Owner.IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1);
                 Owner.AddEffect(new Effect_SoftStaggered(new(damage.SourceOfDamage)), Constants.DEFAULT_SOFT_STAGGERED_DURATION);
             }
             if(Owner.IsHostile) {

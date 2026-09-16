@@ -100,8 +100,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Go to the left side of the area
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bf5632e6fd64b514b97e8134019bdf7d, type: 2}
-  m_sharedMaterial: {fileID: 2263827286215516253, guid: bf5632e6fd64b514b97e8134019bdf7d,
+  m_fontAsset: {fileID: 11400000, guid: 82d051d16874fc24894870c94c5ab7e1, type: 2}
+  m_sharedMaterial: {fileID: 2263827286215516253, guid: 82d051d16874fc24894870c94c5ab7e1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -142,15 +142,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -182,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OriginalValue: 
   string_params: []
+  DisableDetailedDescription: 0
 --- !u!1 &3766089487292201629
 GameObject:
   m_ObjectHideFlags: 0

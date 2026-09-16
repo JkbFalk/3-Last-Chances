@@ -10,7 +10,7 @@ public class Daggers_OnyxShards : Item
         Set = ItemSetEnum.Assassin;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(95, 80, 1.1f);
+        SetBaseWeaponStats(9.5f, 8, 1.1f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("TakedownsGiveStealthAndEmpowerNextAttack")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BackstabDamage")};
     }

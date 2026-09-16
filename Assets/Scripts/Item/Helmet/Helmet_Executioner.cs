@@ -10,6 +10,6 @@ public class Helmet_Executioner : Item
         Set = ItemSetEnum.Executioner;
         Type = Constants.ItemType.Helmet;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertStaggerDealtIntoInjury")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Damage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("SalutisTechniqueDamage")};
     }
 }

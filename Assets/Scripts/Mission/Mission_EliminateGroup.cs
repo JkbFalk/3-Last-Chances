@@ -36,7 +36,7 @@ public class Mission_EliminateGroup : Mission
     }
 
     public override void OnFinishedLoadingArea() {
-        Utils.SpawnUnits(Enemies, Utils.GetLevelAdjustmentBasedOnUnitCount(Enemies.Count), Utils.GetAggresivenessBasedOnUnitCount(Enemies.Count));
+        Utils.SpawnUnits(Enemies, CombatMath.GetLevelAdjustmentBasedOnUnitCount(Enemies.Count), CombatMath.GetAggresivenessBasedOnUnitCount(Enemies.Count));
         Quest_EliminateAllEnemies quest = new Quest_EliminateAllEnemies() {Icon = Icon};
         quest.StartQuest();
     }

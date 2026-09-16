@@ -8,6 +8,6 @@ public class Effect_Stun : Effect_HardCrowdControl
     {
         ShowsInUI = true;
         PriorityLevel = 1;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.ExtendDuration;
     }
 }

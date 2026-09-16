@@ -27,12 +27,12 @@ public class NPCAbility_FlankingSlash : Ability {
         ChaseCurrentTargetAtGivenDegreeAngle(10, 80);
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if(!damage.DamagingObject.gameObject.name.Contains("FlankingBlade")) {
             return;
         }
-        if(Utils.CheckIfGameObjectIsBehindUnit(damage.DamagingObject.gameObject, damage.TargetOfDamage)) {
+        if(CombatMath.CheckIfGameObjectIsBehindUnit(damage.DamagingObject.gameObject, damage.TargetOfDamage)) {
             damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 2);
             User.PlayAnimation("FlankingSlash", 0.05f, 0.8f);
         }

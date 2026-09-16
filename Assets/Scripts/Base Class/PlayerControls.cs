@@ -546,17 +546,21 @@ public class PlayerControls : WorldObject {
         if(Player.Instance.CurrentStance.DamageType == damage_type) {
             return;
         }
-        if(Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl && SaveFile.Instance.Stances[0].StanceEffect is Stance_OmniMastery && ((Stance_OmniMastery)SaveFile.Instance.Stances[0].StanceEffect).UnlockedUpgrade1 && Player.Instance.EffectCooldowns.FirstOrDefault(e => e.Type == typeof(Stance_OmniMastery) && e.Identifier == damage_type.ToString()) == null) {
+        int stanceIndex = damage_type == DamageType.Heavy ? 0 : damage_type == DamageType.Light ? 1 : damage_type == DamageType.Ranged ? 2 : 0;
+        bool cleanseCC = false;
+        if (Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UnderHardCrowdControl && SaveFile.Instance.Stances[stanceIndex].StanceEffect is Stance_OmniMastery && SaveFile.Instance.StanceUpgrades.Contains("Stance_OmniMastery1") && !Player.Instance.CheckIfEffectWithGivenIdIsOnCooldown("Stance_OmniMastery1"))
+        {
             Player.Instance.Actions.CleanseAllHardCrowdControl();
-            Player.Instance.Actions.UseAbility(GetStanceSwitch(damage_type));
-            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_OmniMastery), Stance_OmniMastery.CleanseCooldownDuration, Player.Instance, damage_type.ToString()));
-            Player.Instance.AddCooldown(new Cooldown(typeof(Ability_StanceSwitch), Constants.STANCE_SWITCH_COOLDOWN_OMNIMASTERY, Player.Instance));
+            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_OmniMastery), Stance_OmniMastery.CCCleanseCooldown, Player.Instance, "Stance_OmniMastery1")
+            {
+                CooldownIndicator = ((Stance_OmniMastery)SaveFile.Instance.Stances[stanceIndex].StanceEffect).CleanseGauge
+            });
+            cleanseCC = true;
         }
-        else if (!Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_StanceSwitch)) && Ability.CheckIfCanPerformAbility(Player.Instance, GetStanceSwitch(damage_type)))
+        if (cleanseCC || (!Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_StanceSwitch)) && Ability.CheckIfCanPerformAbility(Player.Instance, GetStanceSwitch(damage_type))))
         {
             Player.Instance.Actions.UseAbility(GetStanceSwitch(damage_type));
-            bool shorterCd = Player.Instance._currentStance.StanceEffect is Stance_OmniMastery || Player.Instance.GetStanceOnTheRight().StanceEffect is Stance_OmniMastery;
-            Player.Instance.AddCooldown(new Cooldown(typeof(Ability_StanceSwitch), shorterCd ? Constants.STANCE_SWITCH_COOLDOWN_OMNIMASTERY : Constants.STANCE_SWITCH_COOLDOWN, Player.Instance));
+            Player.Instance.AddCooldown(new Cooldown(typeof(Ability_StanceSwitch), Constants.STANCE_SWITCH_COOLDOWN, Player.Instance));
         }
     }
 
@@ -608,7 +612,7 @@ public class PlayerControls : WorldObject {
     }
 
     public void OnPrepareUltimateButtonPress() {
-        if(Player.Instance.Energy.Current >= Constants.ENERGY_REQUIRED_TO_USE_ULTIMATE && SaveFile.Instance.UltimatesUsedInCurrentCombat < SaveFile.Instance.MaxUltimateUsesPerCombat) {
+        if(Player.Instance.Energy.Current >= Constants.ENERGY_REQUIRED_TO_USE_ULTIMATE && SaveFile.Instance.UltimatesUsedInCurrentCombat < SaveFile.Instance.MaxUltimateUsesPerCombat && !Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_PreparingForUltimate))) {
             PrepareUltimate();
         }
         else 
@@ -643,52 +647,27 @@ public class PlayerControls : WorldObject {
         if(Utils.CheckIfUnitCanPerformActions(Player.Instance) == false) {
             return;
         }
-        Player.Instance.PreparingForUltimate = true;
-        Player.Instance.PlayAnimation("PreparingForUltimate_" + ((Player.Instance.CurrentStance.StanceEffect is Stance_MindOverMatter || Player.Instance.CurrentStance.StanceEffect is Stance_PowerWithoutLimit) ? "Magic" : Player.Instance.CurrentWeaponDamageType));
-        foreach(Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
-            if(ability.Type != null) {
-                ability.Icon.sprite = Resources.Load("Sprites/Ability/" + ability.Type.ToString().Replace("Ability_", "") + "_Ultimate", typeof(Sprite)) as Sprite;
-                ability.CostLabel.text = "<sprite name=\"" + Ability.GetFamily(ability.Type).ToString() + "\"/>";
-                ability.CooldownDisplay.fillAmount = 0;
-            }
-        }
-        foreach(Transform child in UIManager.Objects.UltimateUses.transform) {
-            Image img = child.GetComponent<Image>();
-            if(img.sprite.name.Contains("CanBeUsed")) {
-                child.GetComponent<Image>().color = Colors.Gold;
-            }
-        } 
-        UIManager.Instance.NotEnoughUltimateUsesWarningCounter = 75;
+        Player.Instance.Actions.UseAbility(typeof(Ability_PreparingForUltimate));
     }
 
     public void StopPreparingUltimate() {
-        Player.Instance.PreparingForUltimate = false;
-        if(Player.Instance.Actions.CurrentActionBeingPerformed == ActionType.Idle) {
-            Player.Instance.PlayAnimation(Player.Instance.InCombat ? "IdleInCombat" : "Idle");
+        if(Player.Instance.PreparingForUltimate && Player.Instance.Actions.CurrentActionBeingPerformed == Constants.ActionType.UsingAbility)
+        {
+            Player.Instance.Actions.CurrentActionBeingPerformed = Constants.ActionType.Idle;
         }
-        foreach(Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
-            ability.RefreshDisplayForEquippedAbility();
-        }
-        foreach(Transform child in UIManager.Objects.UltimateUses.transform) {
-            child.GetComponent<Image>().color = Color.white;
-        } 
     }
 
     public void OnCheatModeButtonPress() {
-        DebugController.Instance.ToggleCheatMode(1);
+        DebugController.Instance.ToggleCheatMode(-1);
     }
 
-    public void OnCheatModeButtonRelease() {
-        DebugController.Instance.ToggleCheatMode(0);
-    }
     public void OnSpecialAction1ButtonPress()
     {
-
+        Player.Instance.GetClosestValidTarget().AddEffect(new Effect_Stun(new SourceOfEffect(new Ability_SourcelessDamage(Player.Instance))), 5);
     }
 
     public void OnSpecialAction2ButtonPress()
     {
-
     }
 
     public void OnSpecialAction3ButtonPress()
@@ -773,21 +752,57 @@ public class PlayerControls : WorldObject {
     }
 
     public void OnToggleTargetButtonPress() {
-        Player.Instance.PotentialTargets = Player.Instance.PotentialTargets.Where(unit => unit != null).ToList();
+        Player.Instance.PotentialTargets = Player.Instance.PotentialTargets
+            .Where(unit => unit != null && _player.CheckIfValidTarget(unit))
+            .ToList();
+
+        if (_player.CurrentTarget == null) {
+            if (Settings.Instance.ControlScheme == "Keyboard") {
+                Vector2 cursorPosition = CurrentWorldspacePointerPosition;
+                if (GameController.Instance?.Camera != null && Mouse.current != null) {
+                    cursorPosition = GameController.Instance.Camera.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                }
+                List<Unit> candidates = _player.PotentialTargets
+                    .Where(u => u != null && _player.CheckIfValidTarget(u))
+                    .ToList();
+
+                if (candidates.Count == 0) {
+                    candidates = Utils.GetSpecifiedUnits(u => 
+                        _player.CheckIfValidTarget(u) && Vector2.Distance(u.transform.position, _player.transform.position) < 20f);
+                }
+
+                Unit closestToCursor = candidates
+                    .OrderBy(u => Vector2.Distance(u.transform.position, cursorPosition))
+                    .FirstOrDefault();
+
+                if (closestToCursor != null) {
+                    if (!_player.PotentialTargets.Contains(closestToCursor)) {
+                        _player.PotentialTargets.Add(closestToCursor);
+                    }
+                    _player.CurrentTarget = closestToCursor;
+                    return;
+                }
+            }
+            if (_player.PotentialTargets.Count >= 1) {
+                _player.CurrentTarget = _player.PotentialTargets[0];
+            }
+            return;
+        }
+
         if (_player.PotentialTargets.Count == 1 && _player.CurrentTarget == _player.PotentialTargets[0]) {
             _player.CurrentTarget = null;
         }
-        else if (_player.PotentialTargets.Count == 1 || (_player.CurrentTarget == null && _player.PotentialTargets.Count >= 1)) {
-            _player.CurrentTarget = _player.PotentialTargets[0];
-        }
         else if (_player.PotentialTargets.Count > 1) {
             int indexOfCurrentTarget = _player.PotentialTargets.IndexOf(_player.CurrentTarget);
-            if (indexOfCurrentTarget == _player.PotentialTargets.Count - 1) {
+            if (indexOfCurrentTarget == -1 || indexOfCurrentTarget == _player.PotentialTargets.Count - 1) {
                 _player.CurrentTarget = _player.PotentialTargets[0];
             }
             else {
                 _player.CurrentTarget = _player.PotentialTargets[indexOfCurrentTarget + 1];
             }
+        }
+        else {
+            _player.CurrentTarget = null;
         }
     }
 

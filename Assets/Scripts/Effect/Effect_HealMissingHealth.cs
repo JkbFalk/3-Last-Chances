@@ -15,6 +15,6 @@ public class Effect_HealMissingHealth : Effect {
         if(TargetOfEffect.Health.Current == TargetOfEffect.Health.Maximum) {
             return;
         }
-        TargetOfEffect.Health.Current += (TargetOfEffect.Health.Maximum - TargetOfEffect.Health.Current) / 50 * HealAmount / 100;
+        TargetOfEffect.Health.Current += TargetOfEffect.Health.Missing / 50 * HealAmount / 100;
     }
 }

@@ -10,7 +10,7 @@ public class TwinBlades_Oath : Item
         Set = ItemSetEnum.Enforcer;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
-        SetBaseWeaponStats(80, 80, 1.4f);
+        SetBaseWeaponStats(8, 8, 1.4f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("NonStrongBasicAttacksEmpowerYourNextStrongBasicAttack")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttackInjury")};
     }

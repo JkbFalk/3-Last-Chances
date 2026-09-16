@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Ability_TectonicPull : Technique
 {
+    public static float EnergyCost = 40;
+    public static float Cooldown = 60;
+    public static AbilityFamily Family = AbilityFamily.Molis;
     private AreaOfEffect _aoe;
     private GameObject _ultimateWall;
     private Vector2 _wallPosition;
@@ -12,8 +15,6 @@ public class Ability_TectonicPull : Technique
     private bool _releasedTechniqueButton = false;
     private bool _charging = false;
     private bool _finished = false;
-    public static float EnergyCost = 40;
-    public static float Cooldown = 60;
     private static float _chargeTime = 2;
     private static float _upgradeBChargeTime = 4;
     private static float _injuryHeavyScaling = 200;
@@ -23,8 +24,6 @@ public class Ability_TectonicPull : Technique
     private static float _upgradeAStunDuration = 5;
     private static float _upgradeBMaxChargeDamageMultiplier = 2.5f;
     private static float _ultimateWallDuration = 20;
-    public static AbilityFamily Family = AbilityFamily.Molis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
 
     public Ability_TectonicPull(Unit ability_user) : base(ability_user)
     {
@@ -84,7 +83,7 @@ public class Ability_TectonicPull : Technique
             _charging = true;
         }
         _aoe = Utils.CreateAreaOfEffect(new(this), "TectonicPull");
-        _aoe.transform.eulerAngles = new Vector3(0, Player.Instance.Actions.IsFlipped ? 180 : 0, 0);
+        Utils.Apply2DFlip(_aoe.transform.parent != null ? _aoe.transform.parent.gameObject : _aoe.gameObject, Player.Instance.Actions.IsFlipped);
         if (Is(Property.UpgradeA))
         {
             _aoe.transform.parent.Find("Indicator").gameObject.SetActive(false);
@@ -148,7 +147,7 @@ public class Ability_TectonicPull : Technique
     private void CreateWall()
     {
         _ultimateWall = Utils.CreateVisualEffect(new(this), "TectonicPullWall", _wallPosition.x, _wallPosition.y);
-        _ultimateWall.transform.eulerAngles = new Vector3(0, _wallFlipped ? 180 : 0, 0);
+        Utils.Apply2DFlip(_ultimateWall, _wallFlipped);
         GameController.Instance.WaitAndRunMethod(1, PauseWall);
     }
 
@@ -190,7 +189,7 @@ public class Ability_TectonicPull : Technique
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         base.ExtraBehaviourOnHit(damage);
         if (Is(Property.UpgradeB))
@@ -200,7 +199,7 @@ public class Ability_TectonicPull : Technique
         
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         Vector2 targetPosition = new Vector2(Player.Instance.transform.position.x + (Player.Instance.Actions.IsFlipped ? -1 : 1), Player.Instance.transform.position.y);

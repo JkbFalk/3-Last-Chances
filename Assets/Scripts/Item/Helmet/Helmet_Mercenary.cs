@@ -8,7 +8,7 @@ public class Helmet_Mercenary : Item
     {
         Set = ItemSetEnum.Mercenary;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertHealthToInjury", 0.5f), new ItemEffect("ConvertStaggerBarToStagger", 0.5f)};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health", 0.5f), new ItemEffect("StaggerBar", 0.5f)};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttacksGiveBarrier")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BarrierArmor")};
     }
 }

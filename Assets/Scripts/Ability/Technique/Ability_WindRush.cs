@@ -7,6 +7,7 @@ public class Ability_WindRush : Technique
 {
     public static float EnergyCost = 20;
     public static float Cooldown = 30;
+    public static AbilityFamily Family = AbilityFamily.Anima;
     public static float InjuryScaling = 300;
     public static float UltimateInjuryScaling = 1000;
     public static float StaggerScaling = 300;
@@ -22,9 +23,6 @@ public class Ability_WindRush : Technique
     private AreaOfEffect _ultimateAoe;
     private bool _dealingAoEDamage = false;
     private Unit _targetOfDamage = null;
-
-    public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.CurrentWeapon;
 
     public Ability_WindRush(Unit ability_user) : base(ability_user)
     {
@@ -89,7 +87,7 @@ public class Ability_WindRush : Technique
         return new List<string> {(Player.Instance.CurrentWeaponInjury.Current * UltimateInjuryScaling / 100).ToString(), UltimateInjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * UltimateStaggerScaling / 100).ToString(), UltimateStaggerScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * UltimateStaggerAoEScalingPerSecond / 100).ToString(), UltimateStaggerAoEScalingPerSecond.ToString(), UltimateWallDurationInSeconds.ToString() };
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if(damage.TargetOfDamage == _intendedTarget && _intendedTargetWasHit == false) {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Knockback");
@@ -123,7 +121,7 @@ public class Ability_WindRush : Technique
         GameController.Instance.WaitAndRunMethod(UltimateWallDurationInSeconds, TurnOffUltimateWall);
     }
 
-    public void CheckIfDestroyWall(Damage damage) {
+    public void CheckIfDestroyWall(DamageInstance damage) {
         if(damage.TargetOfDamage == _targetOfDamage && _ultimateAoe != null && _ultimateAoe.IsDestroyed() == false && _ultimateAoe.gameObject.IsDestroyed() == false) {
             MonoBehaviour.Destroy(_ultimateAoe.gameObject);
         }

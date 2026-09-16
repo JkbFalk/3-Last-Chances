@@ -9,8 +9,8 @@ public class Gun_PartingGift : Item
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
-        SetBaseWeaponStats(60, 120, 1.2f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreStaggerAndKnockbackTheCloserEnemiesHitAreEveryNSeconds")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedDamageToStaggered")};
+        SetBaseWeaponStats(6, 12, 1.2f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealExtraRangedStaggerWithCooldown")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedTechniqueDamage")};
     }
 }

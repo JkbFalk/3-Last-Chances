@@ -9,7 +9,7 @@ public class Helmet_Judge : Item
     {
         Set = ItemSetEnum.Judge;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("WhenEnemyExitsCrowdControlApplyExtraFrozenInPlace")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToFrozen")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("WhenEnemyExitsCrowdControlApplyExtraFrozen")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainEnergyWhenApplyingFrozen")};
     }
 }

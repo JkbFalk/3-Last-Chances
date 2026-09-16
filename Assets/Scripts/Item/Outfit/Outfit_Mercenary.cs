@@ -8,7 +8,7 @@ public class Outfit_Mercenary : Item
     {
         Set = ItemSetEnum.Mercenary;
         Type = Constants.ItemType.Outfit; 
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnBarrierAmount")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreDamageBasedOnBarrier")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BarrierAmount", 0.5f), new ItemEffect("BarrierDecay", 0.5f)};
     }
 }

@@ -8,7 +8,6 @@ public class Ability_Permafrost : Technique
     public static float EnergyCost = 40;
     public static float Cooldown = 60;
     public static AbilityFamily Family = AbilityFamily.Glacies;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Magic;
     private List<AreaOfEffect> _aoes = new List<AreaOfEffect>();
     private GameObject _vfx;
     private static float _freezeStaggerScalingPerSecond = 10;
@@ -79,7 +78,7 @@ public class Ability_Permafrost : Technique
         _vfx = Utils.CreateVisualEffect(new(this), "Permafrost");
         _vfx.transform.SetParent(Player.Instance.SpriteRenderers["Lower Body"].Bone);
         _vfx.transform.localPosition = new Vector2(0.5f, 0);
-        Player.Instance.AddEffect(new Effect_Description(new(this)) { Identifier = "StandingOnPermafrost" }, 15);
+        Player.Instance.AddEffect(new Effect_Id("StandingOnPermafrost", new(this)), 15);
         GameController.Instance.WaitAndRunMethod(15, EndAbility);
         
     }
@@ -102,7 +101,7 @@ public class Ability_Permafrost : Technique
     {
         if (Is(Property.UpgradeB))
         {
-            Player.Instance.Health.Current += (Player.Instance.Health.Maximum - Player.Instance.Health.Current) * _upgradeBHealPercentPerSecond / 100 / 10;
+            Player.Instance.Health.Current += Player.Instance.Health.Missing * _upgradeBHealPercentPerSecond / 100 / 10;
         }
         float lowestDistance = 999;
         foreach (AreaOfEffect aoe in _aoes.Where(a => a != null && a.IsDestroyed() == false))
@@ -130,17 +129,17 @@ public class Ability_Permafrost : Technique
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         base.ExtraBehaviourOnHit(damage);
         if (IsNot(Property.Ultimate))
         {
             damage.TargetOfDamage.AddEffect(new Effect_Freeze(_freezeStaggerScalingPerSecond / 100 / 10 * User.MagicStagger.Current, new(this)));
             damage.TargetOfDamage.AddEffect(new Effect_Slow(_slowAppliedPerSecond / 10, new(this)));
-            Player.Instance.AddEffect(new Effect_Description(new(this)) { Identifier = "StandingOnPermafrost" }, 0.2f);
+            Player.Instance.AddEffect(new Effect_Id("StandingOnPermafrost", new(this)), 0.2f);
             if (Is(Property.UpgradeA))
             {
-                Effect tenacityDebuff = damage.TargetOfDamage.GetEffect(new System.Func<Effect, bool>(effect => effect.Identifier == "PermafrostTenacityDebuff"));
+                Effect tenacityDebuff = damage.TargetOfDamage.GetEffect(new System.Func<Effect, bool>(effect => effect.Id == "PermafrostTenacityDebuff"));
                 if (tenacityDebuff != null)
                 {
                     tenacityDebuff.FlatAmount -= _upgradeATenacityReductionPerSecond / 10;
@@ -150,7 +149,7 @@ public class Ability_Permafrost : Technique
                 }
                 else
                 {
-                    damage.TargetOfDamage.AddEffect(new Effect_ChangeStat(damage.TargetOfDamage.Tenacity, new(this)) { FlatAmount = -_upgradeATenacityReductionPerSecond / 10, Identifier = "PermafrostTenacityDebuff", ShowsInUI = true, PathToUIGraphic = "UI/Control", UIText = Utils.GetFormattedFloat(_upgradeATenacityReductionPerSecond / 10) }, 15);
+                    damage.TargetOfDamage.AddEffect(new Effect_ChangeStat(damage.TargetOfDamage.Tenacity, new(this)) { FlatAmount = -_upgradeATenacityReductionPerSecond / 10, Id = "PermafrostTenacityDebuff", ShowsInUI = true, PathToUIGraphic = "UI/Control", UIText = Utils.GetFormattedFloat(_upgradeATenacityReductionPerSecond / 10) }, 15);
                 }
             }
         }

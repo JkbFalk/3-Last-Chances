@@ -11,7 +11,7 @@ public class TwinBlades_BerserkersBlades : Item
         Set = ItemSetEnum.BattleBorn;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
-        SetBaseWeaponStats(150, 30, 0.75f);
+        SetBaseWeaponStats(15, 3, 0.75f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksRestoreHealBasedOnMissingHealth")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksDealMoreDamageBasedOnMissingHealth")};
     }

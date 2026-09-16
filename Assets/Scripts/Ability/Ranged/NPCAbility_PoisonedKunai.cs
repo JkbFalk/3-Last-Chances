@@ -8,7 +8,7 @@ public class NPCAbility_PoisonedKunai : Ability {
         WaitTimeBeforeNextAction = 0.1f;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Poison(2, new(this)));
     }

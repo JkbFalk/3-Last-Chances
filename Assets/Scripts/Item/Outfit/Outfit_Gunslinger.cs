@@ -10,6 +10,6 @@ public class Outfit_Gunslinger : Item
         Set = ItemSetEnum.Gunslinger;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("WhileInRangedStanceDecreaseArmorButIncreaseDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorPenetration")};
     }
 }

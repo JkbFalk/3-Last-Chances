@@ -9,7 +9,7 @@ public class Gloves_Unbreakable : Item
     {
         Set = ItemSetEnum.Unbreakable;
         Type = Constants.ItemType.Gloves;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("OnceEveryNSecondsWhenAboutToBeStaggeredRestoreStaggerBarInstead")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorWhileBlocking")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("CancelPlayerStaggeredPerCooldown")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatStaggerBar")};
     }
 }

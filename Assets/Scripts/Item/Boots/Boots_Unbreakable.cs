@@ -10,6 +10,6 @@ public class Boots_Unbreakable : Item
         Set = ItemSetEnum.Unbreakable;
         Type = Constants.ItemType.Boots;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertXPercentOfInjuryDealtToYouIntoStagger")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggerBar")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ConverStaggerBarToStagger")};
     }
 }

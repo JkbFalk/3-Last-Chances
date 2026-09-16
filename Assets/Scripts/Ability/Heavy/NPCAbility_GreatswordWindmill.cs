@@ -12,7 +12,7 @@ public class NPCAbility_GreatswordWindmill : Ability {
         Properties.Add(Property.CounteredByRiposte);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

@@ -22,7 +22,7 @@ public class NPCAbility_SmashAndShoot : Ability {
         Properties.Clear();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(damage.DamagingObject.gameObject.name == "AoE") {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(50 * User.MagicStagger.Current / 100, new(this)));

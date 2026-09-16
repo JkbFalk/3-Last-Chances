@@ -6,16 +6,19 @@ using UnityEngine;
 
 public class Effect_GainProjectileSpeedAndDamageWithDistanceTravelled : Effect
 {
-    public float MaxRangeBuff = 0.25f;
+    public float MaxRangeInMeters = 15;
+    public float MaxDistanceBuffPercentage;
     public float FlightSpeedBuff = 0.125f;
-    public float DamageBuff = 0.2f;
+    public float DamageBuffPercentage;
     private float _originalSpeed;
     private Dictionary<Projectile, Vector2> _buffedProjectilesAndLastPositions = new();
     private Dictionary<Projectile, Vector2> _buffedProjectilesAndStartPositions = new();
 
-    public Effect_GainProjectileSpeedAndDamageWithDistanceTravelled(SourceOfEffect source_of_effect) : base(source_of_effect) {
+    public Effect_GainProjectileSpeedAndDamageWithDistanceTravelled(float damage_increase_at_max_range, float distance_increase, SourceOfEffect source_of_effect) : base(source_of_effect) {
+        DamageBuffPercentage = damage_increase_at_max_range;
+        MaxDistanceBuffPercentage = distance_increase;
         Type = EffectType.Buff;
-        TriggersOncePerAbility = true;
+        DescriptionParameters = new List<string>() { Utils.GetFormattedFloat(DamageBuffPercentage), Utils.GetFormattedFloat(MaxRangeInMeters), Utils.GetFormattedFloat(MaxDistanceBuffPercentage) };
         Listeners.Add(EventManager.ProjectileCreated);
         Listeners.Add(EventManager.HitDealt);
     }
@@ -28,7 +31,7 @@ public class Effect_GainProjectileSpeedAndDamageWithDistanceTravelled : Effect
         base.OnInvokeProjectileCreated(projectile);
         _buffedProjectilesAndLastPositions.Add(projectile, projectile.transform.position);
         _buffedProjectilesAndStartPositions.Add(projectile, projectile.transform.position);
-        projectile.MaxFlightDistance *= 1 + MaxRangeBuff / 100;
+        projectile.MaxFlightDistance *= 1 + MaxDistanceBuffPercentage / 100;
         projectile.FlightSpeed *= 0.5f;
         _originalSpeed = projectile.FlightSpeed;
     }
@@ -47,14 +50,19 @@ public class Effect_GainProjectileSpeedAndDamageWithDistanceTravelled : Effect
         }
     }
 
-    public override void OnInvokeHitDealt(Damage damage)
+    public override void OnInvokeHitDealt(DamageInstance damage)
     {
         base.OnInvokeHitDealt(damage);
-        if(damage.SourceOfDamage.User is not Player || damage.DamagingObject == null || _buffedProjectilesAndStartPositions.Keys.Contains(damage.DamagingObject) == false) {
+        if (damage.SourceOfDamage.User is not Player || damage.DamagingObject == null || _buffedProjectilesAndStartPositions.Keys.Contains(damage.DamagingObject) == false)
+        {
             return;
         }
         Projectile proj = (Projectile)damage.DamagingObject;
-        damage.InjuryDealtPercentageModifier += DamageBuff * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
-        damage.StaggerDealtPercentageModifier += DamageBuff * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
+        damage.DamageDealtPercentageModifier += DamageBuffPercentage * Vector2.Distance(_buffedProjectilesAndStartPositions[proj], proj.transform.position);
+        Effect armorPen = Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Id == "ArmorPenetrationBasedOnFlightTime"));
+        if (armorPen != null)
+        {
+            damage.ArmorPenetrationModifier += armorPen.PercentageAmount;
+        }
     }
 }

@@ -35,10 +35,10 @@ public abstract class BasicAttack : Ability {
     }
 
     public static BasicAttack GetPolearmStrongAttack(int combo_counter) {
-        if(SaveFile.Instance.EquippedHeavyWeapon is Polearm_ChargeLance) {
+        if(Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithChargeAndImproveDamage")) {
             return new BA_Polearm_Charge(Player.Instance);
         }
-        else if(SaveFile.Instance.EquippedHeavyWeapon is Polearm_Harpoon || SaveFile.Instance.EquippedHeavyWeapon is Polearm_Javelin) {
+        else if(Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithThrowAddPullAndIncreaseStagger") || Player.Instance.CheckIfUnderEffectWithGivenId("ReplaceAllBasicAttacksWithThrowAndIncreaseInjury")) {
             return new BA_Polearm_Throw(Player.Instance);
         }
         Unit closestTarget = Player.Instance.GetClosestValidTarget(true);

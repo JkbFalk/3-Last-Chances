@@ -9,8 +9,8 @@ public class Helmet_Ancient : Item
     {
         Set = ItemSetEnum.Ancient;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientHelmet")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Tenacity")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientHelmet", 0.2f), new ItemEffect("CooldownReduction", 0.8f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health")};
     }
 }
 

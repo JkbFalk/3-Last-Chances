@@ -34,7 +34,11 @@ public class DamagingObject : TemporaryObject {
         }
         else if (other != null && other.IsDestroyed() == false && other.GetComponent<Projectile>() != null && other.GetComponent<Projectile>().SourceAbility?.User != Owner && Owner != null && Owner.Actions.CurrentAbilityBeingPerformed != null && Owner.Actions.CurrentAbilityBeingPerformed.Is(Property.BasicAttack) && other.GetComponent<Projectile>().DealingDamage && other.GetComponent<Projectile>().CanBeRiposted && ((BasicAttack)Owner.Actions.CurrentAbilityBeingPerformed).DealingDamage) {
             Projectile projectile = other.GetComponent<Projectile>();
-            Type riposteType = System.Type.GetType(Owner.CurrentWeaponClass.ToString() + "_Riposte");
+            Type riposteType = AbilityTypeRegistry.GetRiposte(Owner.CurrentWeaponClass);
+            if (riposteType == null)
+            {
+                return;
+            }
             Riposte riposte = (Riposte)Activator.CreateInstance(riposteType, new object[] { Owner });
             riposte.Target = projectile.SourceAbility.User;
             if (Owner.Actions.CurrentAbilityBeingPerformed.IsNot(Property.AlreadyGeneratedEnergy))
@@ -42,10 +46,10 @@ public class DamagingObject : TemporaryObject {
                 Owner.Energy.GenerateEnergy(Constants.EnergyGainSource.Riposte, projectile.SourceAbility.User.IsBoss);
                 Owner.Actions.CurrentAbilityBeingPerformed.Properties.Add(Ability.Property.AlreadyGeneratedEnergy);
             }
-            Damage attemptedDamage = new(Owner, projectile.SourceAbility, projectile);
+            DamageInstance attemptedDamage = new(Owner, projectile.SourceAbility, projectile);
             Utils.SendProjectileBackTowardsSource(attemptedDamage, Owner, riposte, true);
         }
-        else if(other.CompareTag("Hitbox") == true && (other is CapsuleCollider2D || other is BoxCollider2D)){
+        else if(other.CompareTag("Hitbox") == true && (other is CapsuleCollider2D || other is BoxCollider2D || other is PolygonCollider2D)){
             Unit unit_being_attacked = other.GetComponentInParent<Unit>();
             if (unit_being_attacked != null && unit_being_attacked != SourceAbility.User && SourceAbility.User.CheckIfHostileTowards(unit_being_attacked.Faction)) {
                 SourceAbility.HandleEnemyHit(unit_being_attacked, this, other);

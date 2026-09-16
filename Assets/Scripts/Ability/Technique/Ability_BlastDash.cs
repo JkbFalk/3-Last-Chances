@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Ability_BlastDash : Technique
 {
+    public static float EnergyCost = 25;
+    public static float Cooldown = 20;
+    public static AbilityFamily Family = AbilityFamily.Molis;
     private static float _maxChargeTime = 2;
     private static float _maxDashRangeInMeters = 10;
     private static float _ultimateDashRangeInMeters = 25;
@@ -16,8 +19,6 @@ public class Ability_BlastDash : Technique
     private List<AreaOfEffect> _aoes = new List<AreaOfEffect>();
     private static float _percentageOfMaxHealthConsumed = 20;
     private static float _percentageOfMaxStaggerBarConsumed = 20;
-    public static float EnergyCost = 30;
-    public static float Cooldown = 30;
     private static float _stunDuration = 4;
     private static float _ultimateStunDuration = 8;
     private static float _upgradeAProneApplied = 50;
@@ -25,8 +26,6 @@ public class Ability_BlastDash : Technique
     private static float _upgradeBAreaOfEffectIncrease = 30;
     private float _healthConsumed;
     private float _staggerBarConsumed;
-    public static AbilityFamily Family = AbilityFamily.Molis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.None;
 
     public Ability_BlastDash(Unit ability_user) : base(ability_user)
     {
@@ -95,7 +94,7 @@ public class Ability_BlastDash : Technique
         }
         if (Player.Instance.StaggerBar.Current + Player.Instance.StaggerBar.Maximum * _percentageOfMaxStaggerBarConsumed / 100 > Player.Instance.StaggerBar.Maximum)
         {
-            _staggerBarConsumed = Player.Instance.StaggerBar.Maximum - Player.Instance.StaggerBar.Current - 1;
+            _staggerBarConsumed = Player.Instance.StaggerBar.Remaining - 1;
             Player.Instance.StaggerBar.Current = Player.Instance.StaggerBar.Maximum - 1;
         }
         else
@@ -109,11 +108,11 @@ public class Ability_BlastDash : Technique
         Vector2 dashDirection;
         if (User.CurrentTarget != null)
         {
-            dashDirection = Utils.GetDirectionVector(User.transform.position, User.CurrentTarget.transform.position, User.Actions.IsFlipped, 60);
+            dashDirection = CombatMath.GetDirectionVector(User.transform.position, User.CurrentTarget.transform.position, User.Actions.IsFlipped, 60);
         }
         else
         {
-            dashDirection = Utils.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60);
+            dashDirection = CombatMath.GetDirectionVector(Vector2.zero, User.Actions.SavedAimDirection != Vector2.zero ? User.Actions.SavedAimDirection : User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60);
         }
         if (Is(Property.Ultimate))
         {
@@ -150,7 +149,7 @@ public class Ability_BlastDash : Technique
             PlayCustomSound("Collide");
             foreach (Unit enemy in _enemiesHit)
             {
-                Damage d = new Damage(enemy, this, null);
+                DamageInstance d = new DamageInstance(enemy, this, null);
                 d.InjuryDealtFlatModifier = _healthConsumed;
                 d.StaggerDealtFlatModifier = _staggerBarConsumed;
                 if (Is(Property.Ultimate))
@@ -190,7 +189,7 @@ public class Ability_BlastDash : Technique
         Player.Instance.PlayAnimation("BlastDash", 0f, 0.57f);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         _enemiesHit.Add(damage.TargetOfDamage);

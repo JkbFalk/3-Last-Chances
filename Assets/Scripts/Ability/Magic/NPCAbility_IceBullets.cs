@@ -14,7 +14,7 @@ public class NPCAbility_IceBullets : Ability {
         DamageTriggerLimit = DamageTriggerLimitType.OncePerUnitFromEachSource;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage) {
+    public override void ExtraBehaviourOnDamage(DamageInstance damage) {
         if (damage.DamagingObject.gameObject.name == "Criminal_FreezeCaster_IceShots_Basic") {
             damage.TargetOfDamage.AddEffect(new Effect_Slow(50, new(this)), 0.3f);
         }

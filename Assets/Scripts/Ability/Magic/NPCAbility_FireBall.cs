@@ -69,7 +69,7 @@ public class NPCAbility_Fireball : Ability {
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {    
         if(damage.DamagingObject.gameObject.name != "AoE") {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion");
@@ -78,7 +78,7 @@ public class NPCAbility_Fireball : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(damage.DamagingObject.gameObject.name == "AoE") {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(60 * User.MagicStagger.Current / 100, new(this)));

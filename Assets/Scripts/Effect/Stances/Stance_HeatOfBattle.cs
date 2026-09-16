@@ -4,125 +4,135 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Linq;
-using Unity.VisualScripting;
 
 public class Stance_HeatOfBattle : Effect_Stance
 {
     public static Ability.AbilityFamily Family = Ability.AbilityFamily.Ignis;
-
-    private int _counter = 0;
-    private Image _cooldownDisplay;
-    private Image _healIndicator;
-    private TextMeshProUGUI _amountDisplay;
-    private GameObject _burnVfx;
-
-    public static float PercentageHealthHealed = 5;
-    public static float StaggerBurnScaling = 10;
-    public static float MaximumDamageIncreasedAgainstBurn = 50;
-    public static float HealthRestoredPerBurn = 5;
-
-    public Stance_HeatOfBattle(SourceOfEffect source_of_effect) : base(source_of_effect) {
-        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.EffectStarted, EventManager.UnitStatCurrentAmountChanged};
-    }
-
-    public override void OnInvokeHitDealt(Damage damage)
+    public static float BurnScalingAppliedToEnemiesIn3mRange
     {
-        if(IsActive && UnlockedUpgrade2 && damage?.SourceOfDamage?.User != null && damage.SourceOfDamage.User is Player && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Burn)) && damage.TargetOfDamage.IsHostile) {
-            base.OnInvokeHitDealt(damage);
-            float increaseAmount = damage.TargetOfDamage.GetEffect(typeof(Effect_Burn)).DecayingAmount * 0.5f;
-            damage.InjuryDealtPercentageModifier += increaseAmount;
-            damage.StaggerDealtPercentageModifier += increaseAmount;
+        get
+        {
+            return EffectList.CalculatePB(StancePB * 0.5f, PB.APPLY_STACKING_EFFECT_PER_PB, new List<float> { PB.BURN_PER_PB, PB.AFFECTS_ONLY__ENEMIES_WITHIN_3M_RANGE });
         }
     }
-
-    public override void OnStanceActivated() {
-        if(UnlockedUpgrade1) {
-            _burnVfx = Utils.CreateVisualEffect(SourceOfEffect, "HeatOfBattle");
-            _burnVfx.transform.SetParent(Player.Instance.transform);
-            _burnVfx.transform.localPosition = new Vector2(0, -0.5f);
-        }
-    }
-
-    public override void OnStanceDeactivated()
+    public static float BurnExplosionDamageMultiplier
     {
-        if(UnlockedUpgrade1 && _burnVfx != null && !_burnVfx.IsDestroyed()) {
-            _burnVfx.GetComponent<TemporaryObject>().MakeObjectDisappear();
+        get
+        {
+            return EffectList.CalculatePB(StancePB * 0.5f, PB.DAMAGE_MULTIPLIER_PER_PB, new List<float> { PB.AFFECTS_ONLY__BURN_EXPLOSION_DAMAGE });
         }
     }
-
-    public override void OnFixedUpdate()
+    public static float Upgrade1DamageIncreaseBasedOnBurnAmount
     {
-        if(IsActive && _counter == 10) {
-            _counter = 0;
-            if(Utils.GetAllUnits(true).FirstOrDefault(enemy => enemy.CheckIfUnderEffect(typeof(Effect_Burn)) && Vector2.Distance(enemy.transform.position, Player.Instance.transform.position) <= 3) != null) {
-                _healIndicator.gameObject.SetActive(false);
-                Player.Instance.Health.Current += Player.Instance.Health.Maximum * PercentageHealthHealed / 5 / 100;
-            }
-            else {
-                _healIndicator.gameObject.SetActive(true);
-            }
-            if(UnlockedUpgrade1) {
-                foreach(Unit enemy in Utils.GetAllUnits(true).Where(enemy => Vector2.Distance(enemy.transform.position, Player.Instance.transform.position) <= 3)) {
-                    float burnAmount = Player.Instance.HeavyStagger.Current > Player.Instance.MagicStagger.Current ? Player.Instance.HeavyStagger.Current * StaggerBurnScaling / 100 : Player.Instance.MagicStagger.Current * StaggerBurnScaling / 100;
-                    enemy.AddEffect(new Effect_Burn(burnAmount / 50, SourceOfEffect));
-                }
-            }
-            if(UnlockedUpgrade3) {
-                float BurnTotal = 0;
-                foreach(Unit enemy in Utils.GetAllUnits(true).Where(enemy => enemy.CheckIfUnderEffect(typeof(Effect_Burn)))) {
-                    BurnTotal += enemy.GetEffect(typeof(Effect_Burn)).DecayingAmount;
-                }
-                _amountDisplay.text = Utils.GetFormattedFloat(BurnTotal * HealthRestoredPerBurn);
-            }
-            else {
-                _amountDisplay.text = "";
-            }
-        }
-        else if(IsActive){
-            _counter++;
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade1PB, PB.DAMAGE_INCREASE_PER_PB, new List<float> { 1 / (PB.EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_ENEMY * PB.BURN_PER_PB) });
         }
     }
-
-    public override void CreateStanceDisplay() {
-        base.CreateStanceDisplay();
-        _healIndicator = Player.Instance.CurrentStanceGauge.transform.Find("Gauge/HealIndicator").GetComponent<Image>();
-        _cooldownDisplay = Player.Instance.CurrentStanceGauge.transform.Find("Gauge/Cooldown").GetComponent<Image>();
-        _amountDisplay = Player.Instance.CurrentStanceGauge.transform.Find("Gauge/Amount").GetComponent<TextMeshProUGUI>();
+    public static float Upgrade2ArmorGainedBasedOnBurnOfEnemiesIn3mRange
+    {
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade2PB, PB.ARMOR_PER_PB, new List<float> { 1 / (PB.EXPECTED_AMOUNT_OF_DAMAGING_STACKING_EFFECT_ON_ENEMY * PB.BURN_PER_PB), PB.AFFECTS_ONLY__ENEMIES_WITHIN_3M_RANGE });
+        }
     }
-
-    public override void OnInvokeUnitStatCurrentAmountChanged(Stat stat, float amount) {
-        if(IsActive && UnlockedUpgrade3 && stat is Health && stat.Owner is Player && Player.Instance.Health.Current <= 0 && Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == typeof(Stance_HeatOfBattle)) == null) {
-            float BurnTotal = 0;
-            foreach(Unit enemy in Utils.GetAllUnits(true).Where(enemy => enemy.CheckIfUnderEffect(typeof(Effect_Burn)))) {
-                BurnTotal += enemy.GetEffect(typeof(Effect_Burn)).DecayingAmount;
-                enemy.GetEffect(typeof(Effect_Burn)).EndThisEffect();
-            }
-            Player.Instance.Health.Current = BurnTotal * HealthRestoredPerBurn;
-            Utils.PlaySoundEffect(Player.Instance.AudioSource, "Fire/Fire13", 2f);
-            Utils.CreateVisualEffect(SourceOfEffect, "HeatOfBattleSave", Player.Instance.SpriteRenderers["Upper Body"].Bone.position.x, Player.Instance.SpriteRenderers["Upper Body"].Bone.position.y);
-            _amountDisplay.text = "0";
-            Player.Instance.AddCooldown(new Cooldown(typeof(Stance_HeatOfBattle), 60, Player.Instance) {CooldownDisplay = _cooldownDisplay});
+    public static float Upgrade3LeaveBehindBurnStacksPercentage
+    {
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade3PB * 0.3f, PB.LEAVE_BEHIND_PERCENTAGE_OF_STACKS_ON_STAGGERING_PER_PB, new List<float> { PB.REQUIRES__BURN });
+        }
+    }
+    public static float Upgrade3ReduceAllCooldowns
+    {
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade3PB * 0.3f, PB.REDUCE_ALL_REMAINING_COOLDOWNS_PERCENTAGE_PER_PB, new List<float> { PB.HAPPENS_UPON__STAGGERING_AN_ENEMY, PB.REQUIRES__BURN });
+        }
+    }
+    public static float Upgrade3HealFromBurnDamageDealt
+    {
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade3PB * 0.4f, PB.PERCENTAGE_OF_HEAL_DAMAGE_DEALT_PER_PB, new List<float> { PB.AFFECTS_ONLY__BURN_DAMAGE });
         }
     }
 
     public static List<string> GetDescriptionValues()
     {
-        return new List<string> {PercentageHealthHealed.ToString()};
+        return new List<string> { Utils.GetFormattedFloat(BurnScalingAppliedToEnemiesIn3mRange), Utils.GetFormattedFloat(1 + BurnExplosionDamageMultiplier, 1) };
     }
 
     public static List<string> GetDescriptionUpgrade1Values()
     {
-        return new List<string> {(Player.Instance.HeavyStagger.Current > Player.Instance.MagicStagger.Current ? Player.Instance.HeavyStagger.Current * StaggerBurnScaling / 100 : Player.Instance.MagicStagger.Current * StaggerBurnScaling / 100).ToString(), StaggerBurnScaling.ToString()};
+        return new List<string> { Utils.GetFormattedFloat(Upgrade1DamageIncreaseBasedOnBurnAmount) };
     }
 
     public static List<string> GetDescriptionUpgrade2Values()
     {
-        return new List<string> {MaximumDamageIncreasedAgainstBurn.ToString()};
+        return new List<string> { Utils.GetFormattedFloat(Upgrade2ArmorGainedBasedOnBurnOfEnemiesIn3mRange) };
     }
 
     public static List<string> GetDescriptionUpgrade3Values()
     {
-        return new List<string> {"100", "20"};
+        return new List<string> { Utils.GetFormattedFloat(Upgrade3LeaveBehindBurnStacksPercentage), Utils.GetFormattedFloat(Upgrade3ReduceAllCooldowns), Utils.GetFormattedFloat(Upgrade3HealFromBurnDamageDealt) };
+    }
+
+    public Stance_HeatOfBattle(SourceOfEffect source_of_effect) : base(source_of_effect)
+    {
+        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.OneTenthSecondElapsedInGame, EventManager.EffectStarted, EventManager.DamageDealt };
+    }
+
+    public override void OnInvokeOneTenthSecondElapsedInGame()
+    {
+        if (IsActive)
+        {
+            float burnTotal = 0;
+            foreach (Unit enemy in Utils.GetSpecifiedUnits(unit => unit.IsHostile && Vector2.Distance(unit.transform.position, Player.Instance.transform.position) < 3))
+            {
+                enemy.AddEffect(new Effect_Burn(Player.Instance.MagicStagger.Current * BurnScalingAppliedToEnemiesIn3mRange / 100 / 10, new(Player.Instance)));
+                burnTotal += enemy.GetEffect(typeof(Effect_Burn)).DecayingAmount;
+            }
+            Player.Instance.CurrentStanceGauge.transform.Find("BurnAmount").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedFloat(burnTotal, 0);
+        }
+        base.OnInvokeOneTenthSecondElapsedInGame();
+    }
+
+    public override void OnInvokeHitDealt(DamageInstance damage)
+    {
+        if (IsActive && damage.TargetOfDamage.IsHostile && damage.Is(DamageInstance.DamageProperty.BurnExplosion))
+        {
+            damage.DamageDealtMultiplier += BurnExplosionDamageMultiplier;
+        }
+        if (IsActive && UnlockedUpgrade1 && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Burn)) && damage.TargetOfDamage.IsHostile)
+        {
+            damage.DamageDealtPercentageModifier += damage.TargetOfDamage.GetEffect(typeof(Effect_Burn)).DecayingAmount * Upgrade1DamageIncreaseBasedOnBurnAmount / 100;
+        }
+        if (IsActive && UnlockedUpgrade2 && damage.TargetOfDamage == Player.Instance)
+        {
+            foreach (Unit enemy in Utils.GetSpecifiedUnits(unit => unit.IsHostile && unit.CheckIfUnderEffect(typeof(Effect_Burn)) && Vector2.Distance(unit.transform.position, Player.Instance.transform.position) < 3))
+            {
+                damage.ArmorModifier += enemy.GetEffect(typeof(Effect_Burn)).DecayingAmount * Upgrade2ArmorGainedBasedOnBurnOfEnemiesIn3mRange / 100;
+            }
+        }
+        base.OnInvokeHitDealt(damage);
+    }
+
+    public override void OnInvokeDamageDealt(DamageInstance damage)
+    {
+        if (IsActive && UnlockedUpgrade3 && Vector2.Distance(Player.Instance.transform.position, damage.TargetOfDamage.transform.position) < 15 && damage.TargetOfDamage.IsHostile && (damage.Is(DamageInstance.DamageProperty.BurnExplosion) || damage.Is(DamageInstance.DamageProperty.Burn)))
+        {
+            Player.Instance.Health.Current += (damage.Injury + damage.Stagger) * Upgrade3HealFromBurnDamageDealt / 100;
+        }
+        base.OnInvokeDamageDealt(damage);
+    }
+
+    public override void OnInvokeEffectStarted(Effect effect)
+    {
+        if (IsActive && UnlockedUpgrade3 && Vector2.Distance(Player.Instance.transform.position, effect.TargetOfEffect.transform.position) < 15 && effect.TargetOfEffect.IsHostile && effect.GetType().IsSubclassOf(typeof(Effect_Staggered)) && effect.TargetOfEffect.CheckIfUnderEffect(typeof(Effect_Burn)))
+        {
+            Player.Instance.ReduceAllRemainingCooldowns(Upgrade3ReduceAllCooldowns);
+        }
+        base.OnInvokeEffectStarted(effect);
     }
 }

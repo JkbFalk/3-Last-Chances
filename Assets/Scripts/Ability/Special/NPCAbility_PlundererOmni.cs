@@ -23,11 +23,12 @@ public class NPCAbility_PlundererOmni : Ability {
     {
         Projectile proj = Utils.CreateProjectile(new(this), "PlundererOmni");
         proj.CleanUpAfter(5);
-        proj.transform.localEulerAngles = new Vector3(0, User.Actions.IsFlipped ? 180 : 0, -90);
+        proj.transform.localEulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? 90 : -90);
+        Utils.Apply2DFlip(proj.gameObject, User.Actions.IsFlipped);
         PlayCustomSound("Use");
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_Enfeebled(50, new(this)), 10);

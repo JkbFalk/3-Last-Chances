@@ -36,7 +36,7 @@ public class Effect_Inflame : Effect {
         }
     }
 
-    public override void OnInvokeDamageDealt(Damage damage)
+    public override void OnInvokeDamageDealt(DamageInstance damage)
     {
         if(EffectEnded || damage?.SourceOfDamage?.User != TargetOfEffect || damage?.AbilityDamageSource?.DamageType != DamageCategory || (damage?.InjuryWasHigherThan0 == false && damage?.StaggerWasHigherThan0 == false)) {
             return;

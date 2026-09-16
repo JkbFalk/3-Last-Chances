@@ -10,6 +10,6 @@ public class Outfit_Arbiter : Item
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealingDamageProlongsStaggered")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Stagger")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToStaggered")};
     }
 }

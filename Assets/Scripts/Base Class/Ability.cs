@@ -49,11 +49,15 @@ public abstract class Ability {
         return (AbilityFamily)field.GetValue(null);
     }
 
-    public enum AbilityInterruptType { Damage, Dodge, BasicAttack, Block, EnergyAbility, StanceSwitch }
+    public enum AbilityInterruptType { Damage, Dodge, BasicAttack, Block, EnergyAbility, StanceSwitch}
     public enum Property { BasicAttack, StrongBasicAttack, Technique, Riposte, Counter, Backstab, Ultimate, UpgradeA, UpgradeB, Unstoppable, Charged, AlreadyGeneratedEnergy, ImmuneToFlinch, CounteredByBackstep, CounteredByBlock, CounteredByRiposte, CounteredByRoll, CountersBackstep, CountersBlock, CountersRiposte, CountersRoll, IgnoresImmunityToHits};
     public List<Property> Properties = new List<Property>();    
     public bool AbilityEnded = false;
     public List<Effect> TriggeredEffects = new List<Effect>();
+    public bool TriggeredEffectWithId(string effect_id)
+    {
+        return TriggeredEffects.FirstOrDefault(effect => effect.Id == effect_id) != null;
+    }
     private bool _canInterruptCurrentAbility = false;
     public bool CanInterruptCurrentAbility {
         get {
@@ -93,8 +97,14 @@ public abstract class Ability {
     public bool ShowWeaponTrails { get; protected set; } = false;
 
     public enum AbilityFamily { Ignis, Glacies, Anima, Molis, Salutis, Tonitrui, Proprius, None }
+    
+    public static List<Ability.AbilityFamily> GetAllAbilityFamilies()
+    {
+        return new List<Ability.AbilityFamily> { Ability.AbilityFamily.Anima, Ability.AbilityFamily.Ignis, Ability.AbilityFamily.Glacies, Ability.AbilityFamily.Molis, Ability.AbilityFamily.Salutis, Ability.AbilityFamily.Tonitrui, Ability.AbilityFamily.Proprius };
+    }
 
-    public bool Is(Property property) {
+    public bool Is(Property property)
+    {
         return Properties.Contains(property);
     }
 
@@ -275,8 +285,8 @@ public abstract class Ability {
 
     public virtual void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile) {
         if (GetAmmoRequiredToUseAbility(GetType()) > 0) {
-            User.Ammo--;
-            if(User.Ammo < 1) {
+            Player.Instance.Ammo--;
+            if(Player.Instance.Ammo < 1) {
                 projectile.IsFinalAmmo = true;
             }
         }
@@ -428,10 +438,10 @@ public abstract class Ability {
     public virtual void OnDodgeButtonRelease() {
     }
 
-    public virtual void ExtraBehaviourOnHit(Damage damage) {
+    public virtual void ExtraBehaviourOnHit(DamageInstance damage) {
     }
 
-    public virtual void ExtraBehaviourOnDamage(Damage damage) {
+    public virtual void ExtraBehaviourOnDamage(DamageInstance damage) {
     }
 
     public Ability(Unit ability_user) {
@@ -461,7 +471,7 @@ public abstract class Ability {
         {
             UIManager.Instance.DisplayNotEnoughEnergyWarningForGivenAbilityType(ability_type);
         }
-        if (canPerformTheAbility && GetAmmoRequiredToUseAbility(ability_type) > 0 && user.Ammo < GetAmmoRequiredToUseAbility(ability_type) && user is Player)
+        if (canPerformTheAbility && GetAmmoRequiredToUseAbility(ability_type) > 0 && Player.Instance.Ammo < GetAmmoRequiredToUseAbility(ability_type) && user is Player)
         {
             UIManager.Instance.DisplayNotEnoughAmmoWarning();
             enoughResource = false;
@@ -541,7 +551,7 @@ public abstract class Ability {
             if(source == null) {
                 return;
             }
-            Damage damage_dealt = new Damage(unit_getting_attacked, this, object_hitting) {
+            DamageInstance damage_dealt = new DamageInstance(unit_getting_attacked, this, object_hitting) {
                 KnockbackInMeters = source.KnockbackInMeters,
                 SoundVolume = HitSoundVolume,
                 AbilityDamageSource = source,
@@ -619,24 +629,24 @@ public abstract class Ability {
     public void ChaseCurrentTargetAtGivenDegreeAngle(float max_dash_distance_in_meters, float max_angle, Unit target = null) {
         if (User is Player && Player.Instance.CurrentTarget == null && Settings.Instance.ControlScheme == "Gamepad")
         {
-            User.PushInTargetDirection(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            User.PushInTargetDirection(CombatMath.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
             return;
         }
         else if (User is Player && Player.Instance.CurrentTarget == null)
         {
             float distance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
-            User.PushInTargetDirection(Utils.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            User.PushInTargetDirection(CombatMath.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
             return;
         }
         Unit finalTarget = target == null ? User.CurrentTarget : target;
         if(finalTarget == null)
         {
-            Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, max_angle);
+            Vector2 direction_vector_towards_target = CombatMath.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, max_angle);
             User.PushInTargetDirection(direction_vector_towards_target * max_dash_distance_in_meters, this);
         }
         else
         {
-            Vector2 direction_vector_towards_target = Utils.GetDirectionVector(User.transform.position, finalTarget.transform.position + new Vector3(User.Actions.IsFlipped ? 0.3f : -0.3f, 0), User.Actions.IsFlipped, max_angle);
+            Vector2 direction_vector_towards_target = CombatMath.GetDirectionVector(User.transform.position, finalTarget.transform.position + new Vector3(User.Actions.IsFlipped ? 0.3f : -0.3f, 0), User.Actions.IsFlipped, max_angle);
             float distance = Vector2.Distance(User.transform.position, finalTarget.transform.position);
             User.PushInTargetDirection(direction_vector_towards_target * max_dash_distance_in_meters, this);
         }
@@ -698,7 +708,9 @@ public abstract class Ability {
     public class DamageSource{
         public string ColliderName;
         public float InjuryScaling = 0;
+        public float FlatInjury = 0;
         public float StaggerScaling = 0;
+        public float FlatStagger = 0;
         public Constants.DamageType DamageType;
         public float KnockbackInMeters = 0;
         public string CustomHitSound;

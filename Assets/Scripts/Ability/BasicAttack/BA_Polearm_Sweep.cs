@@ -7,7 +7,7 @@ public class BA_Polearm_Sweep : BasicAttack {
         TransitionIntoAnimationDuration = 0.05f;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

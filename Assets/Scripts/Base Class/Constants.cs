@@ -36,7 +36,7 @@ public static class Constants {
     public const float DEFAULT_HARD_STAGGERED_DURATION = 12f;
     public const int DEFAULT_FIXED_FRAMES_UNTIL_EXITING_COMBAT = 500;
     public const float STANCE_SWITCH_COOLDOWN = 2f;
-    public const float STANCE_SWITCH_COOLDOWN_OMNIMASTERY = 0.5f;
+    public const float PREPARING_FOR_ULTIMATE_COOLDOWN = 2f;
     public const float EXECUTE_DAMAGE_AMOUNT = 9999999;
     public const int MAX_DIALOGUE_SPEED = 50;
     public const int MELEE_HITSTOP_DURATION_IN_FIXED_FRAMES = 4;
@@ -49,6 +49,10 @@ public static class Constants {
     public static float FOLLOW_UP_HEALTH_BAR_DECREASE_SPEED = 0.02f;
     public static float MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS = 0.2f;
     public static float FORCE_REQUIRED_TO_PUSH_1M = 245;
+
+    public static float WORLD_TILT_ANGLE = 0;
+    public static float CAMERA_DISTANCE_AWAY_FROM_PLAYER = 0;
+    public static float EFFECTIVNESS_WHEN_MOVING_VERTICALLY = 0.65f;
 
     public const float PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_REGULAR_FLINCH = 40;
     public const float PERCENTAGE_OF_MAX_STAGGER_BAR_NEEDED_FOR_BOSS_FLINCH = 30;

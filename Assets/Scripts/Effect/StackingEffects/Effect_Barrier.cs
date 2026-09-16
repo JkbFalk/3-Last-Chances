@@ -25,17 +25,28 @@ public class Effect_Barrier : Effect
         _initialDecayingAmount = barrier_amount;
         ShowsInUI = true;
         PathToUIGraphic = "Effect/Barrier";
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
+        if (TargetOfEffect is Player && Player.Instance.CurrentStance.StanceEffect is Stance_BodyOfSteel && SaveFile.Instance.ActiveUpgrades.Contains("Stance_BodyOfSteel3") && amount_decayed > 0)
+        {
+            Player.Instance.AddEffect(new Effect_Empowered(-amount_changed * Stance_BodyOfSteel.Upgrade3PercentageOfDecayedBarrierConvertedIntoEmpowered / 100, new(Player.Instance.CurrentStance.StanceEffect)));
+        }
+        else if (TargetOfEffect is Player && Player.Instance.CurrentStance.StanceEffect is Stance_BodyOfSteel && SaveFile.Instance.ActiveUpgrades.Contains("Stance_BodyOfSteel3") && amount_changed < 0)
+        {
+            Player.Instance.Health.Current += amount_decayed * Stance_BodyOfSteel.Upgrade3PercentageOfUsedBarrierRestoringHealthAndStaggerBar / 100;
+            Player.Instance.StaggerBar.Current += amount_decayed * Stance_BodyOfSteel.Upgrade3PercentageOfUsedBarrierRestoringHealthAndStaggerBar / 100;
+        }
+        float healthAndStaggerBarTotal = TargetOfEffect.Health.Maximum + TargetOfEffect.StaggerBar.Maximum;
+        StackingEffectIntensityLevel = DecayingAmount < healthAndStaggerBarTotal * 0.1f ? 1 : DecayingAmount < healthAndStaggerBarTotal * 0.25f ? 2 : 3;
         BarrierBar.value = DecayingAmount / TargetOfEffect.Health.Maximum;
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage)
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
     {
         if(damage.TargetOfDamage != TargetOfEffect) {
             return;

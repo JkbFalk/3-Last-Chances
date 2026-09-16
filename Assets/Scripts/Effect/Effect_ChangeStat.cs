@@ -198,7 +198,7 @@ public class Effect_ChangeStat : Effect {
 
     public Effect_ChangeStat(Stat stat_affected, SourceOfEffect source_of_effect) : base(source_of_effect) {
         StatAffected = stat_affected;
-        PathToUIGraphic = "UI/" + stat_affected.ToString();
+        PathToUIGraphic = stat_affected != null ? "UI/" + stat_affected.ToString() : "";
         if(StatAffected?.Owner is Player) {
             EventManager.PlayerObjectReinitialized.AddListener(UpdateAffectedStat);
         }

@@ -24,7 +24,7 @@ public class Quest_EliminateAllEnemies : Quest {
         Utils.PlaySoundEffect(null, "UI/QuestCompleted", 0.8f);
     }
 
-    public void UpdateDefeatedEnemiesCount(Damage damage) {
+    public void UpdateDefeatedEnemiesCount(DamageInstance damage) {
         int enemy_count = Utils.GetAllUnits(true).Count;
         Objectives[0].ShowAsMissionObjective(new List<string> {enemy_count.ToString()});
         if(enemy_count <= 0) {

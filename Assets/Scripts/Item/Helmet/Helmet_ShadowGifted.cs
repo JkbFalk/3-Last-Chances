@@ -10,6 +10,6 @@ public class Helmet_ShadowGifted : Item
         Set = ItemSetEnum.ShadowGifted;
         Type = Constants.ItemType.Helmet;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealMoreDamageBasedOnPositiveStackingEffectsOnYouAndNegativeOnEnemy")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Armor")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksGiveOnslaught")};
     }
 }

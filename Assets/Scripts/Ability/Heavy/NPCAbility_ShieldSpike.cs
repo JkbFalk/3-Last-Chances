@@ -26,7 +26,7 @@ public class NPCAbility_ShieldSpike : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(damage.AbilityDamageSource.ColliderName == "AoE Weaker") {
             damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

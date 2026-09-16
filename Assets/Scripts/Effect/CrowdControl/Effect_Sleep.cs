@@ -8,7 +8,7 @@ public class Effect_Sleep : Effect_HardCrowdControl
     public Effect_Sleep(SourceOfEffect source_of_effect) : base(source_of_effect) {
         ShowsInUI = true;
         Listeners.Add(EventManager.DamageDealt);
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.ExtendDuration;
     }
 
     public override void OnStart()
@@ -24,7 +24,7 @@ public class Effect_Sleep : Effect_HardCrowdControl
         TargetOfEffect.PlayAnimation("WobblyGetUp");
     }
 
-    public override void OnInvokeDamageDealt(Damage damage)
+    public override void OnInvokeDamageDealt(DamageInstance damage)
     {
         base.OnInvokeDamageDealt(damage);
         if(damage.TargetOfDamage == TargetOfEffect && (damage.InjuryDealt > 0)) {

@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEngine;
 
 public class MovementSpeed : Stat {
 
@@ -12,7 +13,6 @@ public class MovementSpeed : Stat {
         Maximum = base_amount;
         Current = base_amount;
     }
-
     public override void AdditionalStatSpecificActionsAfterCurrentValueChanged() {
         Owner.Animator.SetFloat("Movement Speed",  1 + Current / 100);
         if (Owner.UnitAI != null && Owner.UnitAI.NavMeshAgent != null) {

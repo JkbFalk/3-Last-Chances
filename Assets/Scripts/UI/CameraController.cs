@@ -19,6 +19,7 @@ public class CameraController : MonoBehaviour {
             {
                 _instance = GameController.Instance.GetComponentInChildren<CameraController>();
                 _instance.Camera = _instance.GetComponent<Camera>();
+                _instance.transform.eulerAngles = new Vector3(-Constants.WORLD_TILT_ANGLE, 0, 0);
             }
             return _instance;
         }
@@ -36,21 +37,25 @@ public class CameraController : MonoBehaviour {
             Vector2 newPosition = transform.parent.position + (CenteredOnObject.transform.position - transform.parent.position) * 0.15f;
             transform.parent.position = new Vector3(newPosition.x, newPosition.y, -100);
         }
-        else if(CenteredOnObject == null) {
+        else if(CenteredOnObject == null && Player.HasInstance() && GameController.Instance.GameplayMode != Constants.GameplayMode.OnStartScreen) {
             transform.parent.position = new Vector3(Player.Instance.transform.position.x, Player.Instance.transform.position.y, -100);
         }
         if (CenteredOnObject == null && _duration > 0) {
-            transform.localPosition = new Vector3(Random.insideUnitCircle.x * _magnitude, Random.insideUnitCircle.y * _magnitude, 0);
+            transform.localPosition = new Vector3(Random.insideUnitCircle.x * _magnitude, Random.insideUnitCircle.y * _magnitude - Constants.CAMERA_DISTANCE_AWAY_FROM_PLAYER, 0);
             _duration -= Time.deltaTime * _damping;
         }
         else if (_duration <= 0) {
-            transform.localPosition = Vector3.zero;
+            transform.localPosition = new Vector3(0, -Constants.CAMERA_DISTANCE_AWAY_FROM_PLAYER, 0);
         }
     }
 
     public void ShakeScreen(float duration = 0.1f, float magnitude = 0.05f, float damping = 1.0f) {
-        _duration = duration;
-        _magnitude = magnitude;
-        _damping = damping;
+        if(Settings.Instance.ScreenShake <= 0)
+        {
+            return;
+        }
+        _duration = duration * Settings.Instance.ScreenShake;
+        _magnitude = magnitude * Settings.Instance.ScreenShake;
+        _damping = damping * Settings.Instance.ScreenShake;
     }
 }

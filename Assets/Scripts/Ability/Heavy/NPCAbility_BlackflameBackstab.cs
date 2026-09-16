@@ -56,7 +56,7 @@ public class NPCAbility_BlackflameBackstab : Ability {
         ChaseCurrentTargetAtGivenDegreeAngle(100, 20);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         if(SaveFile.Instance != null && SaveFile.Instance.CurrentMission != null && SaveFile.Instance.CurrentMission is Mission_Ignis3) {

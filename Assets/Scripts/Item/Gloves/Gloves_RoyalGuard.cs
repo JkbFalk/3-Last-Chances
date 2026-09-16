@@ -9,6 +9,6 @@ public class Gloves_RoyalGuard : Item
         Set = ItemSetEnum.RoyalGuard;
         Type = Constants.ItemType.Gloves;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("AnalysisAlsoIncreasesWeaponDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("WeaponDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AnalysisAmount", 0.5f), new ItemEffect("AnalysisDecay", 0.5f)};
     }
 }

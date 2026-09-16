@@ -8,7 +8,7 @@ public class Gun_Twilight : Item
     {
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Gun;
-        SetBaseWeaponStats(115, 115, 0.8f);
+        SetBaseWeaponStats(11.5f, 11.5f, 0.8f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertAllInjuryIntoStaggerOrViceVersaDependingOnWhichIsLowerForEnemy")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttackDamage")};
     }

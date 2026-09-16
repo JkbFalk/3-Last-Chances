@@ -42,19 +42,6 @@ public class Utils {
         return null;
     }
 
-    public static bool CheckIfCurrenTargetIsInFrontOfUnit(Unit unit, float max_distance = 2) {
-        if(unit.CurrentTarget == null) {
-            return false;
-        }
-        if(unit.Actions.IsFlipped && unit.CurrentTarget.transform.position.x > unit.transform.position.x) {
-            return false;
-        }
-        if(!unit.Actions.IsFlipped && unit.CurrentTarget.transform.position.x < unit.transform.position.x) {
-            return false;
-        }
-        return Vector2.Distance(unit.transform.position, unit.CurrentTarget.transform.position) < max_distance;
-    }
-
     public static string ConvertCharacterFromForeignLanguages(string character) {
         switch(character) {
             case "Ą": return "A";
@@ -199,18 +186,6 @@ public class Utils {
         }
         else {
             return WeaponClass.Magic;
-        }
-    }
-
-    public static void KnockbackEnemyBasedOnMeleeWeaponDistance(Damage damage, float optimal_distance) {
-        float distance = Vector2.Distance(damage.TargetOfDamage.transform.position, damage.SourceOfDamage.User.transform.position);
-        if(distance >= optimal_distance) {
-            return;
-        }
-        bool source_to_the_left_of_target = damage.SourceOfDamage.User.transform.position.x > damage.TargetOfDamage.transform.position.x ? false : true;
-        Vector2 direction_vector_towards_target = (damage.TargetOfDamage.transform.position - (damage.SourceOfDamage.User.transform.position + (source_to_the_left_of_target ? Vector3.left : Vector3.right))).normalized;
-        if(distance < optimal_distance) {
-            damage.TargetOfDamage.PushInTargetDirection(direction_vector_towards_target * (optimal_distance - distance) * 5, damage.SourceOfDamage);
         }
     }
 
@@ -461,45 +436,7 @@ public class Utils {
         if(string.IsNullOrWhiteSpace(ability_type) || ability_type == "Null") {
             return null;
         }
-        return Resources.Load("Sprites/Ability/" + ability_type.ToString().Replace("Ability_", ""), typeof(Sprite)) as Sprite;
-    }
-
-    public static Vector2 GetDirectionVector(Vector2 source, Vector2 target, bool source_faces_left, float max_angle = 90) {
-        Vector2 direction_vector = (target - source).normalized;
-        Vector2 absolute_vector = new Vector2(Math.Abs(direction_vector.x), Math.Abs(direction_vector.y));
-        float angle_of_direction_vector = ConvertRadiansToDegrees((float)Math.Atan(absolute_vector.y / absolute_vector.x));
-        if ((source_faces_left && direction_vector.x > 0) || (!source_faces_left && direction_vector.x < 0)) {
-            Vector2 vector_reduced_to_max_angle = new Vector2((float)(Math.Sin(ConvertDegreesToRadians(90 - max_angle)) / Math.Sin(ConvertDegreesToRadians(max_angle))), 1).normalized;
-            return new Vector2(direction_vector.x > 0 ? -vector_reduced_to_max_angle.x : vector_reduced_to_max_angle.x, direction_vector.y > 0 ? vector_reduced_to_max_angle.y : -vector_reduced_to_max_angle.y).normalized;
-        }
-        if (angle_of_direction_vector > max_angle) {
-            Vector2 vector_reduced_to_max_angle = new Vector2((float)(Math.Sin(ConvertDegreesToRadians(90 - max_angle)) / Math.Sin(ConvertDegreesToRadians(max_angle))), 1).normalized;
-            return new Vector2(direction_vector.x > 0 ? vector_reduced_to_max_angle.x : -vector_reduced_to_max_angle.x, direction_vector.y > 0 ? vector_reduced_to_max_angle.y : -vector_reduced_to_max_angle.y).normalized;
-        }
-        return direction_vector;
-    }
-
-    public static bool GetAreOppositeDirections(string direction1, string direction2) {
-        if ((direction1 == "Up" && direction2 == "Down") || (direction1 == "Down" && direction2 == "Up")) {
-            return true;
-        }
-        if ((direction1 == "Left" && direction2 == "Right") || (direction1 == "Right" && direction2 == "Left")) {
-            return true;
-        }
-        return false;
-    }
-
-    public static Vector2 GetPositionGivenDistanceAwayBasedOnTwoPoints(Vector2 center_point, Vector2 direction_point, float distance) {
-        Vector2 reposition_vector = new Vector2(direction_point.x - center_point.x, direction_point.y - center_point.y).normalized * distance;
-        return center_point + reposition_vector;
-    }
-
-    public static float ConvertDegreesToRadians(float angle_in_degrees) {
-        return (float)(Math.PI / 180 * angle_in_degrees);
-    }
-
-    public static float ConvertRadiansToDegrees(float angle_in_radians) {
-        return (float)(angle_in_radians * (180 / Math.PI));
+        return ResourceCache.LoadSprite("Sprites/Ability/" + ability_type.ToString().Replace("Ability_", ""));
     }
 
     public static string GetCurrentAndNextAnimationName(Animator animator) {
@@ -527,7 +464,7 @@ public class Utils {
         return GameController.Instance.GameplayMode == Constants.GameplayMode.Regular && (other.gameObject.layer == LayerMask.NameToLayer("Environment") || (other.CompareTag("Hitbox") == true && other is CapsuleCollider2D));
     }
 
-    public static Projectile SendProjectileBackTowardsSource(Damage damage, Unit unit_riposting, Ability source_of_redirection, bool send_towards_current_target_if_not_null = false) {
+    public static Projectile SendProjectileBackTowardsSource(DamageInstance damage, Unit unit_riposting, Ability source_of_redirection, bool send_towards_current_target_if_not_null = false) {
         damage.Injury = 0;
         damage.Stagger = 0;
         GameObject cloned_projectile = MonoBehaviour.Instantiate(damage.DamagingObject.gameObject);
@@ -556,31 +493,6 @@ public class Utils {
             MonoBehaviour.Destroy(damage.DamagingObject.gameObject);
         }
         return projectile;
-    }
-
-    /// <summary>
-    /// For ranges set to 10 - 20, and values set to 100 - 200, if given range is 15 then returns 150
-    /// </summary>
-    /// <param name="range"></param>
-    /// <param name="min_range"></param>
-    /// <param name="max_range"></param>
-    /// <param name="value_at_min_range"></param>
-    /// <param name="value_at_max_range"></param>
-    /// <returns></returns>
-    public static float GetValueBasedOnMinAndMax(float range, float min_range, float max_range, float value_at_min_range, float value_at_max_range) {
-        if ((max_range > min_range && range >= max_range) || (max_range < min_range && range <= max_range)) {
-            return value_at_max_range;
-        }
-        if ((max_range > min_range && range <= min_range) || (max_range < min_range && range >= min_range)) {
-            return value_at_min_range;
-        }
-        else {
-            float range1 = max_range - min_range;
-            float range2 = value_at_max_range - value_at_min_range;
-            float step = range2 / range1;
-            float range_above_min = range - min_range;
-            return value_at_min_range + step * range_above_min;
-        }
     }
 
     public static string DetermineHitTypeBasedOnAbilityWeaponClass(Constants.WeaponClass weapon_class, bool is_projectile = false) {
@@ -720,8 +632,11 @@ public class Utils {
         UnityEngine.UI.Slider loadingBar = GameController.Objects.TransitionLoadProgress.GetComponent<UnityEngine.UI.Slider>();
         while (!asyncLoad.isDone)
         {
-            loadingBar.value = asyncLoad.progress;
+            loadingBar.value = asyncLoad.progress * 0.7f;
             yield return null;
+        }
+        if (Area.ComponentInstance != null) {
+            yield return Area.ComponentInstance.PreloadCombatAssets(progress => loadingBar.value = 0.7f + 0.3f * progress);
         }
         Player.ResetPlayer();
         Player.ChangeInCombatDependantUI(false);
@@ -1126,22 +1041,22 @@ public class Utils {
             }
             return "???";
         }
-        else if(phrase=="RED") {
+        else if(phrase=="RED"|| phrase=="R") {
             return $"<color={Colors.LabelHealth}>";
         }
-        else if(phrase=="/RED") {
+        else if(phrase=="/RED"|| phrase=="/R") {
             return "</color>";
         }
-        else if(phrase=="PURPLE") {
+        else if(phrase=="PURPLE"|| phrase=="P") {
             return $"<color={Colors.LabelStagger}>";
         }
-        else if(phrase=="/PURPLE") {
+        else if(phrase=="/PURPLE"|| phrase=="/P") {
             return "</color>";
         }
-        else if(phrase=="BLUE") {
+        else if(phrase=="BLUE"|| phrase=="B") {
             return $"<color={Colors.LabelEnergy}>";
         }
-        else if(phrase=="/BLUE") {
+        else if(phrase=="/BLUE"|| phrase=="/B") {
             return "</color>";
         }
         else if(phrase=="GREY") {
@@ -1150,10 +1065,10 @@ public class Utils {
         else if(phrase=="/GREY") {
             return "</color>";
         }
-        else if(phrase=="GREEN") {
+        else if(phrase=="GREEN" || phrase=="G") {
             return $"<color={Colors.LabelDamage}>";
         }
-        else if(phrase=="/GREEN") {
+        else if(phrase=="/GREEN" || phrase=="/G") {
             return "</color>";
         }
         else if(phrase=="/C") {
@@ -1218,11 +1133,6 @@ public class Utils {
         {"BA", "BasicAttack"},
     };
 
-    public static bool CheckIfPlayerIsFacingUnit(Unit unit)
-    {
-        return (Player.Instance.transform.position.x > unit.transform.position.x && Player.Instance.Actions.IsFlipped) || (Player.Instance.transform.position.x <= unit.transform.position.x && Player.Instance.Actions.IsFlipped == false);
-    }
-
     public static string GetImageNameForStat(string stat_name) 
     {
         switch(stat_name)
@@ -1238,18 +1148,18 @@ public class Utils {
 
     public static void AddPowerUpToPlayer(string power_up) {
         if(power_up.Contains("Stance_")) {
-            Type type = Type.GetType(power_up.Replace("_Unlock", "").Replace("_Upgrade1", "").Replace("_Upgrade2", "").Replace("_Upgrade3", ""));
+            Type type = AbilityTypeRegistry.GetRequiredByName(power_up.Replace("_Unlock", "").Replace("_Upgrade1", "").Replace("_Upgrade2", "").Replace("_Upgrade3", ""));
             string upgrade = power_up.Contains("_Upgrade1") ? "1" : power_up.Contains("_Upgrade2") ? "2" : power_up.Contains("_Upgrade3") ? "3" : "0";
             SaveFile.Instance.UnlockStance(type, upgrade);
         }
         else if(power_up.Contains("_Unlock")) {
-            SaveFile.Instance.UnlockAbility(Type.GetType(power_up.Replace("_Unlock", "")));
+            SaveFile.Instance.UnlockAbility(AbilityTypeRegistry.GetRequiredByName(power_up.Replace("_Unlock", "")));
         }
         else if(power_up.Contains("_UpgradeA")) {
-            SaveFile.Instance.UnlockAbilityMasteryA(Type.GetType(power_up.Replace("_UpgradeA", "")));
+            SaveFile.Instance.UnlockAbilityMasteryA(AbilityTypeRegistry.GetRequiredByName(power_up.Replace("_UpgradeA", "")));
         }
         else if(power_up.Contains("_UpgradeB")) {
-            SaveFile.Instance.UnlockAbilityMasteryB(Type.GetType(power_up.Replace("_UpgradeB", "")));
+            SaveFile.Instance.UnlockAbilityMasteryB(AbilityTypeRegistry.GetRequiredByName(power_up.Replace("_UpgradeB", "")));
         }
         else {
             SaveFile.Instance.SurvivalPowerUps.Add(power_up);
@@ -1317,37 +1227,20 @@ public class Utils {
         return rounded_params;
     }
 
-    public static float GetExpectedPowerForLevel(int level)
+    public static float GetValueBasedOnMinAndMax(float range, float minRange, float maxRange, float valueAtMinRange, float valueAtMaxRange)
     {
-        if (level < 1)
-        {
-            return GetValueBasedOnMinAndMax(level, -25, 1, 0.3f, Constants.EXPECTED_POWER_AT_LEVEL_1);
-        }
-        else if(level <= 10)
-        {
-            return GetValueBasedOnMinAndMax(level, 1, 10, Constants.EXPECTED_POWER_AT_LEVEL_1, Constants.EXPECTED_POWER_AT_LEVEL_10);
-        }
-        else if (level <= 20)
-        {
-            return GetValueBasedOnMinAndMax(level, 10, 20, Constants.EXPECTED_POWER_AT_LEVEL_10, Constants.EXPECTED_POWER_AT_LEVEL_20);
-        }
-        else if (level <= 30)
-        {
-            return GetValueBasedOnMinAndMax(level, 20, 30, Constants.EXPECTED_POWER_AT_LEVEL_20, Constants.EXPECTED_POWER_AT_LEVEL_30);
-        }
-        else if (level <= 40)
-        {
-            return GetValueBasedOnMinAndMax(level, 30, 40, Constants.EXPECTED_POWER_AT_LEVEL_30, Constants.EXPECTED_POWER_AT_LEVEL_40);
-        }
-        else if (level <= 50)
-        {
-            return GetValueBasedOnMinAndMax(level, 40, 50, Constants.EXPECTED_POWER_AT_LEVEL_40, Constants.EXPECTED_POWER_AT_LEVEL_50);
-        }
-        else
-        {
-            return GetValueBasedOnMinAndMax(level, 50, 100, Constants.EXPECTED_POWER_AT_LEVEL_50, Constants.EXPECTED_POWER_AT_LEVEL_100);
-        }
+        if ((maxRange > minRange && range >= maxRange) || (maxRange < minRange && range <= maxRange))
+            return valueAtMaxRange;
+        if ((maxRange > minRange && range <= minRange) || (maxRange < minRange && range >= minRange))
+            return valueAtMinRange;
+
+        float rangeDiff = maxRange - minRange;
+        float valueDiff = valueAtMaxRange - valueAtMinRange;
+        float step = valueDiff / rangeDiff;
+        float rangeAboveMin = range - minRange;
+        return valueAtMinRange + step * rangeAboveMin;
     }
+
 
     public static int GetScaledExperienceGain(int level, int base_exp)
     {
@@ -1381,66 +1274,22 @@ public class Utils {
         }
     }
 
-    public static float GetExpectedControlLevel(int level)
-    {
-        if (level < 1)
-        {
-            return GetValueBasedOnMinAndMax(level, -25, 1, 0.5f, 1);
-        }
-        else if (level <= 10)
-        {
-            return GetValueBasedOnMinAndMax(level, 1, 10, 1, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_10);
-        }
-        else if (level <= 20)
-        {
-            return GetValueBasedOnMinAndMax(level, 10, 20, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_10, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_20);
-        }
-        else if (level <= 30)
-        {
-            return GetValueBasedOnMinAndMax(level, 20, 30, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_20, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_30);
-        }
-        else if (level <= 40)
-        {
-            return GetValueBasedOnMinAndMax(level, 30, 40, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_30, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_40);
-        }
-        else if (level <= 50)
-        {
-            return GetValueBasedOnMinAndMax(level, 40, 50, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_40, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_50);
-        }
-        else
-        {
-            return GetValueBasedOnMinAndMax(level, 50, 100, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_50, Constants.CONTROL_AND_TENACITY_MULTIPLIER_AT_LEVEL_100);
-        }
-    }
-
     public static int GetCalculatedGain(int amount) {
         int scaled_amount = (int)(SaveFile.Instance.DifficultyLevel == 0 ? amount * 1.5f : amount);
         return scaled_amount - (scaled_amount % 10);
     }
 
-    public static int GetLevelAdjustmentBasedOnUnitCount(int unit_count) {
-        switch(unit_count) {
-            case 0: return 0;
-            case 1: return 10;
-            case 2: return 6;
-            case 3: return 2;
-            case 4: return -1;
-            case 5: return -3;
-            case 6: return -5;
-            default: return unit_count * -1;
-        }
-    }
-
-    public static float GetAggresivenessBasedOnUnitCount(int unit_count) {
-        return 2.5f / unit_count + 0.5f;
-    }
-
     public static Sprite LoadSpriteFromMultiple(string fileName, string spriteName) {
+        string cacheKey = "Sprites/" + fileName + "#" + spriteName;
+        if (LoadedSprites.TryGetValue(cacheKey, out Sprite cached) && cached != null) {
+            return cached;
+        }
         Sprite[] all = Resources.LoadAll<Sprite>("Sprites/" + fileName);
         foreach( var s in all)
         {
             if (s.name == spriteName)
             {
+                LoadedSprites[cacheKey] = s;
                 return s;
             }
         }
@@ -1487,10 +1336,6 @@ public class Utils {
             path = "/" + obj.name + path;
         }
         return path;
-    }
-
-    public static bool CheckIfGivenUnitIsInFrontOfUnit(Unit unit, Unit unit_to_check_if_in_front) {
-        return (unit.Actions.IsFlipped && unit_to_check_if_in_front.transform.position.x < unit.transform.position.x) || (!unit.Actions.IsFlipped && unit_to_check_if_in_front.transform.position.x > unit.transform.position.x);
     }
 
     public static void UpdateIndicatorScaleBasedOnTime(GameObject indicator, float remaining_time) {
@@ -1581,16 +1426,6 @@ public class Utils {
         MonoBehaviour.Destroy(item_to_copy_appearance_from);
     }
 
-    public static bool CheckIfGameObjectIsBehindUnit(GameObject game_object, Unit unit) {
-        if(unit.Actions.IsFlipped && game_object.transform.position.x > unit.transform.position.x) {
-            return true;
-        }
-        if(unit.Actions.IsFlipped == false && game_object.transform.position.x < unit.transform.position.x) {
-            return true;
-        }
-        return false;
-    }
-
     public static void FlipNonSymmetricSpritePlacement(string element_name, Unit unit)
     {
         string primary_element = unit.Actions.IsFlipped ? "Left " + element_name : "Right " + element_name;
@@ -1664,47 +1499,48 @@ public class Utils {
         if(Area.Instance == null) {
             return null;
         }
-        GameObject new_vfx = MonoBehaviour.Instantiate(Resources.Load("Prefabs/VisualEffect/VisualEffect_" + prefab_name)) as GameObject;
+        GameObject new_vfx = ObjectPool.Spawn("Prefabs/VisualEffect/VisualEffect_" + prefab_name, Area.Instance.transform);
+        if (new_vfx == null) {
+            return null;
+        }
         new_vfx.name = prefab_name;
-        new_vfx.transform.SetParent(Area.Instance.transform);
         SetUpTransform(source, new_vfx, pos_x, pos_y);
         AddDynamicSortOrders(new_vfx);
         if (source?.SourceAbility != null && source.SourceAbility is not Technique)
         {
             ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_vfx);
         }
+        new_vfx.SetActive(true);
         return new_vfx;
     }
 
     public static AreaOfEffect CreateAreaOfEffect(SourceOfEffect source, string prefab_name, float pos_x = 0, float pos_y = 0)
     {
-        if(Area.Instance == null) {
+        if (Area.Instance == null) {
             return null;
         }
-        UnityEngine.Object flipped_asset = Resources.Load("Prefabs/AreaOfEffect/AreaOfEffect_" + prefab_name + "_Flipped");
-        GameObject new_aoe;
-        if (source.User.Actions.IsFlipped && flipped_asset != null)
-        {
-            new_aoe = MonoBehaviour.Instantiate(flipped_asset) as GameObject;
-            new_aoe.name = prefab_name + "_Flipped";
+        bool isFlipped = source != null && source.User != null && source.User.Actions.IsFlipped;
+        string keyToSpawn = prefab_name;
+        GameObject new_aoe = ObjectPool.Spawn("Prefabs/AreaOfEffect/AreaOfEffect_" + keyToSpawn, Area.Instance.transform);
+        if (new_aoe == null) {
+            return null;
         }
-        else
-        {
-            new_aoe = MonoBehaviour.Instantiate(Resources.Load("Prefabs/AreaOfEffect/AreaOfEffect_" + prefab_name)) as GameObject;
-            new_aoe.name = prefab_name;
-        }
-        new_aoe.transform.SetParent(Area.Instance.transform);
+        new_aoe.name = keyToSpawn;
+
         SetUpTransform(source, new_aoe, pos_x, pos_y);
         AddDynamicSortOrders(new_aoe);
+
         if (source.SourceAbility is not Technique)
         {
             ScaleParticleSystemsWithAttackSpeed(source.SourceAbility.AttackSpeed, new_aoe);
         }
+
         AreaOfEffect[] aoes = new_aoe.GetComponentsInChildren<AreaOfEffect>(true);
-        for(int i =0; i <aoes.Length; i++)
+        for (int i = 0; i < aoes.Length; i++)
         {
             aoes[i].SourceAbility = source.SourceAbility;
         }
+        new_aoe.SetActive(true);
         return aoes[0];
     }
 
@@ -1723,16 +1559,6 @@ public class Utils {
         return null;
     }
 
-    public static float GetEffectiveCrowdControlDuration(Unit source_of_cc, Unit target_of_cc) {
-        float controlVsTenacity = source_of_cc.Control.Current - target_of_cc.Tenacity.Current;
-        if(controlVsTenacity >= 0) {
-            return 1 + controlVsTenacity / 100;
-        }
-        else {
-            return 1 / (1 + Math.Abs(controlVsTenacity / 100));
-        }
-    }
-
     public static Projectile CreateProjectile(SourceOfEffect source, string prefab_name, float pos_x = 0, float pos_y = 0)
     {
         if (Area.Instance == null)
@@ -1742,18 +1568,20 @@ public class Utils {
         GameObject new_projectile;
         if (prefab_name == "GunBasicAttack" && source.User.CheckIfUnderEffect(typeof(Effect_ShadowInfusion_Ultimate)) && ((Effect_ShadowInfusion_Ultimate)source.User.GetEffect(typeof(Effect_ShadowInfusion_Ultimate))).DamageCategory == DamageType.Ranged)
         {
-            new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_SpiritWeapon")) as GameObject;
+            new_projectile = ObjectPool.Spawn("Prefabs/Projectile/Projectile_SpiritWeapon", Area.Instance.transform);
         }
         else if (prefab_name == "CannonBasicAttack" && Player.Instance.CurrentStance.StanceEffect is not Stance_None)
         {
-            new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_CannonBasicAttack")) as GameObject;
+            new_projectile = ObjectPool.Spawn("Prefabs/Projectile/Projectile_CannonBasicAttack", Area.Instance.transform);
         }
         else
         {
-            new_projectile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Projectile/Projectile_" + prefab_name)) as GameObject;
+            new_projectile = ObjectPool.Spawn("Prefabs/Projectile/Projectile_" + prefab_name, Area.Instance.transform);
+        }
+        if (new_projectile == null) {
+            return null;
         }
         new_projectile.name = prefab_name;
-        new_projectile.transform.SetParent(Area.Instance.transform);
         SetUpTransform(source, new_projectile, pos_x, pos_y);
         AddDynamicSortOrders(new_projectile);
         if (source.SourceAbility is not Technique)
@@ -1765,11 +1593,11 @@ public class Utils {
         projectile.SourceAbility = source.SourceAbility;
         if (source.User.CurrentTarget != null)
         {
-            new_projectile.transform.up = Utils.GetDirectionVector(source.User.ProjectileSpawnLocation.transform.position, source.User.CurrentTarget.transform.position, source.User.Actions.IsFlipped, 60);
+            new_projectile.transform.up = CombatMath.GetDirectionVector(source.User.ProjectileSpawnLocation.transform.position, source.User.CurrentTarget.transform.position, source.User.Actions.IsFlipped, 60);
         }
         else
         {
-            new_projectile.transform.up = Utils.GetDirectionVector(Vector2.zero, source.User.Actions.SavedAimDirection != Vector2.zero ? source.User.Actions.SavedAimDirection : source.User.Actions.GetCurrentAimVector(), source.User.Actions.IsFlipped, 60);
+            new_projectile.transform.up = CombatMath.GetDirectionVector(Vector2.zero, source.User.Actions.SavedAimDirection != Vector2.zero ? source.User.Actions.SavedAimDirection : source.User.Actions.GetCurrentAimVector(), source.User.Actions.IsFlipped, 60);
         }
         if (source.SourceAbility != null)
         {
@@ -1779,26 +1607,31 @@ public class Utils {
         if (on_create_vfx != null)
         {
             on_create_vfx.gameObject.SetActive(true);
-            on_create_vfx.SetParent(on_create_vfx.parent.parent);
+            if (projectile.GetComponent<PooledObject>() == null) {
+                on_create_vfx.SetParent(on_create_vfx.parent.parent);
+            }
         }
+        new_projectile.SetActive(true);
         EventManager.ProjectileCreated.Invoke(projectile);
         return projectile;
     }
     
     private static void SetUpTransform(SourceOfEffect source, GameObject game_object, float pos_x, float pos_y)
     {
+        bool shouldFlip = source != null && source.User != null && source.User.Actions.IsFlipped;
+
         if (pos_x == 0 && pos_y == 0 && source != null)
         {
             game_object.transform.position = source.User.ProjectileSpawnLocation.transform.position;
-            game_object.transform.localEulerAngles = new Vector3(source.User.ProjectileSpawnLocation.transform.eulerAngles.x, source.User.ProjectileSpawnLocation.transform.eulerAngles.y, source.User.ProjectileSpawnLocation.transform.eulerAngles.z);
+            game_object.transform.localEulerAngles = Vector3.zero;
         }
         else
         {
             game_object.transform.position = new Vector2(pos_x, pos_y);
-            if(source != null) {
-                game_object.transform.localEulerAngles = new Vector3(0, source.User.Actions.IsFlipped ? 180 : 0, 0);
-            }
+            game_object.transform.localEulerAngles = Vector3.zero;
         }
+        Apply2DFlip(game_object, shouldFlip);
+
         foreach(AttachObjectToBodyPart attach in game_object.GetComponentsInChildren<AttachObjectToBodyPart>())
         {
             attach.Unit = source != null ? source.User : null;
@@ -1817,6 +1650,35 @@ public class Utils {
         foreach(AudioSource audioSource in game_object.GetComponentsInChildren<AudioSource>(true)) {
             Area.ComponentInstance.AudioSourceOriginalVolumes.Add(audioSource, audioSource.volume);
             audioSource.volume *= Settings.Instance.SoundVolume;
+        }
+    }
+
+    public static void Apply2DFlip(GameObject obj, bool isFlipped)
+    {
+        if (obj == null) return;
+        Vector3 scale = obj.transform.localScale;
+        scale.x = isFlipped ? -Mathf.Abs(scale.x) : Mathf.Abs(scale.x);
+        obj.transform.localScale = scale;
+        Vector3 angles = obj.transform.localEulerAngles;
+        angles.y = 0;
+        obj.transform.localEulerAngles = angles;
+        foreach (ParticleSystem ps in obj.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            var main = ps.main;
+            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+            var velocity = ps.velocityOverLifetime;
+            if (velocity.enabled && main.simulationSpace == ParticleSystemSimulationSpace.World && isFlipped)
+            {
+                velocity.xMultiplier = -Mathf.Abs(velocity.xMultiplier);
+            }
+        }
+        ChangeTransformOverTime changeTransform = obj.GetComponent<ChangeTransformOverTime>();
+        if (changeTransform != null && isFlipped)
+        {
+            changeTransform.StartScale = -Mathf.Abs(changeTransform.StartScale);
+            changeTransform.EndScale = -Mathf.Abs(changeTransform.EndScale);
+            changeTransform.StartX = -changeTransform.StartX;
+            changeTransform.EndX = -changeTransform.EndX;
         }
     }
 
@@ -1903,16 +1765,26 @@ public class Utils {
 
     public static void SetActiveOnCanvasGroup(CanvasType canvas_type, bool is_active)
     {
-        GameObject gameObject = 
+        GameObject targetObject = 
             canvas_type == CanvasType.UI ? UIManager.Instance?.gameObject : 
             canvas_type == CanvasType.Menu ? MenuManager.Instance?.gameObject : 
             canvas_type == CanvasType.Shop ? GameController.Objects.Shop?.gameObject :
             canvas_type == CanvasType.StartScreen ? Utils.GetSceneRootObject("Start Screen")?.gameObject : null;
-        if(gameObject != null) {
-            CanvasGroup item = gameObject.GetComponent<CanvasGroup>();
-            item.alpha = is_active ? 1 : 0;
-            item.interactable = is_active;
-            item.blocksRaycasts = is_active;
+
+        if (targetObject != null) 
+        {
+            CanvasGroup group = targetObject.GetComponent<CanvasGroup>();
+            if (group != null)
+            {
+                group.alpha = is_active ? 1 : 0;
+                group.interactable = is_active;
+                group.blocksRaycasts = is_active;
+            }
+            Canvas[] canvases = targetObject.GetComponentsInChildren<Canvas>(true);
+            for (int i = 0; i < canvases.Length; i++)
+            {
+                canvases[i].enabled = is_active;
+            }
         }
     }
 }

@@ -19,6 +19,6 @@ public class Gun_BackstepCounter : Counter
     public override void OnAbilityStart()
     {
         base.OnAbilityStart();
-        User.Rigidbody2D.velocity = Vector2.zero;
+        User.Rigidbody2D.linearVelocity = Vector2.zero;
     }
 }

@@ -11,7 +11,7 @@ public class NPCAbility_Kick : Ability {
         WaitTimeBeforeNextAction = 1f;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 0.5f);
         damage.TargetOfDamage.AddEffect(new Effect_Onslaught(50, new(this)), 5);

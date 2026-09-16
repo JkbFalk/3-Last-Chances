@@ -11,13 +11,13 @@ public class Effect_ShieldedByAlly : Effect {
         AddVisualEffectOnTarget("VisualEffect_ShieldedByAlly");
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage) {
         if(damage.TargetOfDamage != TargetOfEffect) {
             return;
         }
         if(!SourceOfEffect.User.KnockedOut)
         {
-        Damage damage2 = new Damage(UnitCreatingTheEffect, damage.SourceOfDamage, damage.DamagingObject);
+        DamageInstance damage2 = new DamageInstance(UnitCreatingTheEffect, damage.SourceOfDamage, damage.DamagingObject);
         damage2.Injury = damage.Injury;
         damage2.Stagger = damage.Stagger;
         damage2.CalculateAndApplyDamage();

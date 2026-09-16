@@ -10,8 +10,8 @@ public class Daggers_ZephyrsTalons : Item
         Set = ItemSetEnum.Alacrity;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(95, 80, 1.1f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainAlacrityBasedOnDistanceTravelledInLast5Seconds")};
+        SetBaseWeaponStats(9.5f, 8, 1.1f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainAccelerationBasedOnDistanceTravelledInLast5Seconds")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightDamage")};
     }
 }

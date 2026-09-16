@@ -29,7 +29,7 @@ public class Quest_DefeatSpawningEnemies : Quest {
         Utils.PlaySoundEffect(null, "UI/QuestCompleted", 0.8f);
     }
 
-    public void UpdateDefeatedEnemiesCount(Damage damage) {
+    public void UpdateDefeatedEnemiesCount(DamageInstance damage) {
         DefeatedEnemyCount++;
         int enemy_count = Utils.GetAllUnits(true).Count;
         Objectives[0].ShowAsMissionObjective(new List<string> {DefeatedEnemyCount.ToString()});

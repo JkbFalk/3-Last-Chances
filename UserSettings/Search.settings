@@ -9,6 +9,13 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
+	"last_search.66F56946" = "t:TextMeshProUGUI"
+	"OpenInspectorPreview.66F56946" = "0"
+	"currentGroup.66F56946" = "scene"
+	"picker_window_position_offset.00000000" = "148;493;320;550"
+	"picker_visibility_flags.00000000" = "0"
+	"picker_item_size.00000000" = "1"
+	"picker_inspector.00000000" = "0"
 }
 providers = {
 	adb = {
@@ -61,10 +68,18 @@ providers = {
 		priority = 100
 		defaultAction = null
 	}
+	presets_provider = {
+		active = false
+		priority = -10
+		defaultAction = null
+	}
 }
 objectSelectors = {
 }
 recentSearches = [
+	"t:TextMeshProUGUI"
+	""
+	"#DialogueLineItem.TextMeshPro=<$object:none,TMPro.TextMeshProUGUI$>"
 	"E"
 ]
 searchItemFavorites = [
@@ -72,11 +87,11 @@ searchItemFavorites = [
 savedSearchesSortOrder = 0
 showSavedSearchPanel = true
 hideTabs = false
-expandedQueries = [
-]
+expandedQueries = [-1765347274 961552606]
 queryBuilder = true
 ignoredProperties = "id;name;classname;imagecontentshash"
 helperWidgetCurrentArea = "all"
 disabledIndexers = ""
 minIndexVariations = 2
 findProviderIndexHelper = true
+itemIconSize = 32

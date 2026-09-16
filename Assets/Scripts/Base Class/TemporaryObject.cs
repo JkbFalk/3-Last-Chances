@@ -160,6 +160,53 @@ public class TemporaryObject : WorldObject {
             }
     }
         IsDestroyed = true;
+        ResetVisualsForPool();
+        if (GetComponent<PooledObject>() != null) {
+            ObjectPool.Release(gameObject);
+            return;
+        }
         MonoBehaviour.Destroy(gameObject);
+    }
+
+    public void ResetForPoolReuse() {
+        IsDestroyed = false;
+        IsDisappearing = false;
+        RemainingDuration = BaseDuration > 0 ? (int)(50 * BaseDuration) : 0;
+        enabled = true;
+        if (DeactivateNSecondsAfterStart != 0) {
+            DeactivateTimer = DeactivateNSecondsAfterStart * 50;
+        }
+        if (this is DamagingObject damagingObject) {
+            damagingObject.DealingDamage = true;
+            damagingObject.WasStopped = false;
+        }
+        ResetVisualsForPool();
+        foreach (ParticleSystem system in GetComponentsInChildren<ParticleSystem>(true)) {
+            system.Clear(true);
+            system.Play(true);
+        }
+        foreach (SetChildActiveAfterNSeconds timedChild in GetComponentsInChildren<SetChildActiveAfterNSeconds>(true)) {
+            timedChild.ResetForReuse();
+        }
+    }
+
+    private void ResetVisualsForPool() {
+        if (WeaponSpriteRenderer != null) {
+            Color color = WeaponSpriteRenderer.color;
+            WeaponSpriteRenderer.color = new Color(color.r, color.g, color.b, 1f);
+        }
+        if (ParticleSystemRenderers == null) {
+            return;
+        }
+        foreach (ParticleSystemRenderer psr in ParticleSystemRenderers) {
+            if (psr == null) {
+                continue;
+            }
+            if (psr.material.HasFloat("_Alpha")) {
+                psr.material.SetFloat("_Alpha", 1f);
+            }
+            Color color = psr.material.color;
+            psr.material.color = new Color(color.r, color.g, color.b, 1f);
+        }
     }
 }

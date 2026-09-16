@@ -87,17 +87,28 @@ public class Effect_ChangeCompositeStat : Effect {
         TargetOfEffect = unit;
         Stat = composite_stat;
         PathToUIGraphic = "UI/" + composite_stat.ToString();
+        if (unit == null) return;
+
         if (composite_stat == CompositeStat.AttackSpeed)
         {
-            _statChanges = new List<Effect_ChangeStat>() {new Effect_ChangeStat(unit.HeavyAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.LightAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.RangedAttackSpeed, SourceOfEffect), new Effect_ChangeStat(unit.MagicAttackSpeed, SourceOfEffect)};
+            if (unit.HeavyAttackSpeed != null) _statChanges.Add(new Effect_ChangeStat(unit.HeavyAttackSpeed, SourceOfEffect));
+            if (unit.LightAttackSpeed != null) _statChanges.Add(new Effect_ChangeStat(unit.LightAttackSpeed, SourceOfEffect));
+            if (unit.RangedAttackSpeed != null) _statChanges.Add(new Effect_ChangeStat(unit.RangedAttackSpeed, SourceOfEffect));
+            if (unit.MagicAttackSpeed != null) _statChanges.Add(new Effect_ChangeStat(unit.MagicAttackSpeed, SourceOfEffect));
         }
         else if (composite_stat == CompositeStat.Injury || composite_stat == CompositeStat.Damage)
         {
-            _statChanges = _statChanges.Concat(new List<Effect_ChangeStat> {new Effect_ChangeStat(unit.HeavyInjury, SourceOfEffect), new Effect_ChangeStat(unit.LightInjury, SourceOfEffect), new Effect_ChangeStat(unit.RangedInjury, SourceOfEffect), new Effect_ChangeStat(unit.MagicInjury, SourceOfEffect)}).ToList();
+            if (unit.HeavyInjury != null) _statChanges.Add(new Effect_ChangeStat(unit.HeavyInjury, SourceOfEffect));
+            if (unit.LightInjury != null) _statChanges.Add(new Effect_ChangeStat(unit.LightInjury, SourceOfEffect));
+            if (unit.RangedInjury != null) _statChanges.Add(new Effect_ChangeStat(unit.RangedInjury, SourceOfEffect));
+            if (unit.MagicInjury != null) _statChanges.Add(new Effect_ChangeStat(unit.MagicInjury, SourceOfEffect));
         }
         if (composite_stat == CompositeStat.Stagger || composite_stat == CompositeStat.Damage)
         {
-            _statChanges = _statChanges.Concat(new List<Effect_ChangeStat> {new Effect_ChangeStat(unit.HeavyStagger, SourceOfEffect), new Effect_ChangeStat(unit.LightStagger, SourceOfEffect), new Effect_ChangeStat(unit.RangedStagger, SourceOfEffect), new Effect_ChangeStat(unit.MagicStagger, SourceOfEffect)}).ToList();
+            if (unit.HeavyStagger != null) _statChanges.Add(new Effect_ChangeStat(unit.HeavyStagger, SourceOfEffect));
+            if (unit.LightStagger != null) _statChanges.Add(new Effect_ChangeStat(unit.LightStagger, SourceOfEffect));
+            if (unit.RangedStagger != null) _statChanges.Add(new Effect_ChangeStat(unit.RangedStagger, SourceOfEffect));
+            if (unit.MagicStagger != null) _statChanges.Add(new Effect_ChangeStat(unit.MagicStagger, SourceOfEffect));
         }
     }
 

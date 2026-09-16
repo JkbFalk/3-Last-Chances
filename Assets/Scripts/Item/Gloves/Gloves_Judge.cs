@@ -9,7 +9,7 @@ public class Gloves_Judge : Item
     {
         Set = ItemSetEnum.Judge;
         Type = Constants.ItemType.Gloves;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DamagingAnEnemyFreezesThemInPlace")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Stagger")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DamagingAnEnemyFreezesThem")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToFrozen")};
     }
 }

@@ -14,7 +14,7 @@ public class NPCAbility_ExtendHandGrab : Ability {
         WaitTimeBeforeNextAction = 1f;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_Onslaught(100, new(this)), 5);

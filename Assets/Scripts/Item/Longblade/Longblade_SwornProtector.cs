@@ -9,8 +9,8 @@ public class Longblade_SwornProtector : Item
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Longblade;
-        SetBaseWeaponStats(135, 50, 1.1f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealsIncreasedStaggerOnceEveryNSecondsAndRefundCooldownOnHittingStaggered")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("HeavyStagger")};
+        SetBaseWeaponStats(13.5f, 5, 1.1f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DealExtraHeavyStaggerWithCooldown")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RefundCooldownOnHittingStaggered")};
     }
 }

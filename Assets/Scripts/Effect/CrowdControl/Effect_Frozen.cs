@@ -13,7 +13,7 @@ public class Effect_Frozen : Effect_HardCrowdControl
         ShowsInUI = true;
         Listeners.Add(EventManager.HitDealt);
         PriorityLevel = 10;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.ExtendDuration;
     }
 
     public override void OnStart()
@@ -21,8 +21,8 @@ public class Effect_Frozen : Effect_HardCrowdControl
         TargetOfEffect.Actions.EndCurrentAbility();
         base.OnStart();
         TargetOfEffect.Animator.enabled = false;
-        GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlace", TargetOfEffect.transform.position.x, TargetOfEffect.transform.position.y);
-        GameObject _vfx = Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlace_Continuous", TargetOfEffect.transform.position.x, TargetOfEffect.transform.position.y + 0.5f);
+        GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "Frozen", TargetOfEffect.transform.position.x, TargetOfEffect.transform.position.y);
+        GameObject _vfx = Utils.CreateVisualEffect(SourceOfEffect, "Frozen_Continuous", TargetOfEffect.transform.position.x, TargetOfEffect.transform.position.y + 0.5f);
         _vfx.GetComponent<DestroyGameObjectAfterGivenTime>().DestroyAfterSeconds = RemainingDuration;
     }
 
@@ -32,14 +32,14 @@ public class Effect_Frozen : Effect_HardCrowdControl
         TargetOfEffect.Animator.enabled = true;
     }
 
-    public override void OnInvokeHitDealt(Damage damage)
+    public override void OnInvokeHitDealt(DamageInstance damage)
     {
         if(damage.TargetOfDamage == TargetOfEffect && BaseDuration - RemainingDuration > 0.25f) {
             damage.InjuryDealtPercentageModifier += 200;
             damage.StaggerDealtPercentageModifier += 200;
             damage.TargetOfDamage.AddEffect(new Effect_Flinching(new(damage.SourceOfDamage)), Constants.DEFAULT_FLINCHING_DURATION);
-            Utils.PlaySoundEffect(damage.TargetOfDamage.AudioSource, "Effect/Effect_FreezeInPlace", 0.9f);
-            Utils.CreateVisualEffect(SourceOfEffect, "FreezeInPlaceDestroy", damage.TargetOfDamage.transform.position.x, damage.TargetOfDamage.transform.position.y);
+            Utils.PlaySoundEffect(damage.TargetOfDamage.AudioSource, "Effect/Effect_Frozen", 0.9f);
+            Utils.CreateVisualEffect(SourceOfEffect, "FrozenDestroy", damage.TargetOfDamage.transform.position.x, damage.TargetOfDamage.transform.position.y);
             EndThisEffect();
             base.OnInvokeHitDealt(damage);
         }

@@ -10,6 +10,6 @@ public class Outfit_Unbreakable : Item
         Set = ItemSetEnum.Unbreakable;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReflectPortionOfBlockedDamageBackAtAttacker")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatStaggerBar", 0.5f), new ItemEffect("StaggerBar", 0.5f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGainFromBlocking")};
     }
 }

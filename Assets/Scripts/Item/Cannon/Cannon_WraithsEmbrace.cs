@@ -10,8 +10,8 @@ public class Cannon_WraithsEmbrace : Item
         Set = ItemSetEnum.Gunslinger;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Cannon;
-        SetBaseWeaponStats(70, 140, 0.85f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("FinalAmmoDealsMassivelyIncreasedDamageEveryNSeconds")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedTechniqueDamage")};
+        SetBaseWeaponStats(7, 14, 0.85f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("FinalAmmoDealsIncreasedDamageButHasCooldown")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RestoreAmmoWhileBelow1Ammo")};
     }
 }

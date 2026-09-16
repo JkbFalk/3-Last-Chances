@@ -9,6 +9,6 @@ public class Gloves_Sage : Item
         Set = ItemSetEnum.Sage;
         Type = Constants.ItemType.Gloves; 
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncreaseEnergyGainWhileEnergyIsBelowHalf")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("CooldownReduction")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("MaxEnergy")};
     }
 }

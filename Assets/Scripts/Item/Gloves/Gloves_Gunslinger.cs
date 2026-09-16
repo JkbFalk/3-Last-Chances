@@ -10,6 +10,6 @@ public class Gloves_Gunslinger : Item
         Set = ItemSetEnum.Gunslinger;
         Type = Constants.ItemType.Gloves;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("RestoreXAmmoEachTimeYouDealDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttackDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggeringEnemyGivesAmmo")};
     }
 }

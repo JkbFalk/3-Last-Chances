@@ -17,7 +17,7 @@ public class Effect_Empowered : Effect
         DefaultDecaySpeed = 0;
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
     }
@@ -61,7 +61,7 @@ public class Effect_Empowered : Effect
         }*/
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage?.SourceOfDamage?.User == TargetOfEffect) {
             damage.InjuryDealtPercentageModifier += DecayingAmount;
             damage.StaggerDealtPercentageModifier += DecayingAmount;

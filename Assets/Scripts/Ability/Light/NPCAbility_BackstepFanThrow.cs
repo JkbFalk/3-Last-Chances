@@ -22,7 +22,7 @@ public class NPCAbility_BackstepFanThrow : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage) {
+    public override void ExtraBehaviourOnDamage(DamageInstance damage) {
         ResetPotentialTargets();
     }
 }

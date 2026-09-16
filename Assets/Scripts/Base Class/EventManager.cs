@@ -9,19 +9,20 @@ public class EventManager {
     public static UnityEvent OneSecondElapsedRealtime = new UnityEvent();
     public static UnityEvent OneFrameElapsedInGame = new UnityEvent();
     public static UnityEvent OneFrameElapsedRealtime = new UnityEvent();
-    public static UnityEvent<Damage> HitDealt = new UnityEvent<Damage>();
-    public static UnityEvent<Damage> AfterHitDamageCalculation = new UnityEvent<Damage>();
-    public static UnityEvent<Damage> AboutToHandleFatalBlow = new UnityEvent<Damage>();
-    public static UnityEvent<Damage> DamageDealt = new UnityEvent<Damage>();
-    public static UnityEvent<Damage, Ability> DamageWasDodged = new UnityEvent<Damage, Ability>();
+    public static UnityEvent<DamageInstance> HitDealt = new UnityEvent<DamageInstance>();
+    public static UnityEvent<DamageInstance> AfterHitDamageCalculation = new UnityEvent<DamageInstance>();
+    public static UnityEvent<DamageInstance> AboutToHandleFatalBlow = new UnityEvent<DamageInstance>();
+    public static UnityEvent<DamageInstance> DamageDealt = new UnityEvent<DamageInstance>();
+    public static UnityEvent<DamageInstance, Ability> DamageWasDodged = new UnityEvent<DamageInstance, Ability>();
     public static UnityEvent<Ability> AbilityUsed = new UnityEvent<Ability>();
-    public static UnityEvent<Ability, float> AbilityEnergyConsumed = new UnityEvent<Ability, float>();
+    public static UnityEvent<Ability, float, bool> AbilityEnergyConsumed = new UnityEvent<Ability, float, bool>();
     public static UnityEvent<Ability> AbilityEnded = new UnityEvent<Ability>();
-    public static UnityEvent<Damage> UnitKnockedOut = new UnityEvent<Damage>();
+    public static UnityEvent<DamageInstance> Takedown = new UnityEvent<DamageInstance>();
+    public static UnityEvent<DamageInstance> UnitKnockedOut = new UnityEvent<DamageInstance>();
     public static UnityEvent AmmoAmountChanged = new UnityEvent();
-    public static UnityEvent<Damage> UnitWouldBeDefeated = new UnityEvent<Damage>();
-    public static UnityEvent<Damage> HealthBarBroken = new UnityEvent<Damage>();
-    public static UnityEvent<Unit> UnitHealthChanged = new UnityEvent<Unit>();
+    public static UnityEvent<Item> ToolUsed = new UnityEvent<Item>();
+    public static UnityEvent<DamageInstance> UnitWouldBeDefeated = new UnityEvent<DamageInstance>();
+    public static UnityEvent<DamageInstance> HealthBarBroken = new UnityEvent<DamageInstance>();
     public static UnityEvent<Projectile> ProjectileCreated = new UnityEvent<Projectile>();
     public static UnityEvent<Ability, bool> AbilityWasRipostedOrCountered = new UnityEvent<Ability, bool>();
     public static UnityEvent<Quest, QuestObjective> QuestObjectiveUpdated = new UnityEvent<Quest, QuestObjective>();
@@ -41,20 +42,21 @@ public class EventManager {
     /// First param: already existing effect, Second param: newly created effect
     /// </summary>
     public static UnityEvent<Effect, Effect> EffectEmpowered = new UnityEvent<Effect, Effect>();
-    public static UnityEvent<Effect> EffectDecayingAmountChanged = new UnityEvent<Effect>();
+    public static UnityEvent<Effect, float> EffectDecayingAmountChanged = new UnityEvent<Effect, float>();
     public static UnityEvent<Effect> EffectActivated = new UnityEvent<Effect>();
     public static UnityEvent<Effect> EffectEnded = new UnityEvent<Effect>();
     public static UnityEvent<Cooldown> AboutToAddCooldown = new UnityEvent<Cooldown>();
     public static UnityEvent<Cooldown> CooldownAdded = new UnityEvent<Cooldown>();
+    public static UnityEvent<Cooldown> CooldownEnded = new UnityEvent<Cooldown>();
     public static UnityEvent<Unit> UnitChangedDirection = new UnityEvent<Unit>();
     public static UnityEvent<Unit> EnterCombat = new UnityEvent<Unit>();
     public static UnityEvent<Unit> ExitCombat = new UnityEvent<Unit>();
     /// <summary>
-    /// First param: previously equipped item, Second param: newly equipped item
+    /// First param: previously equipped item, Second param: newly equipped item1
     /// </summary>
     public static UnityEvent<Item, Item> ItemEquipped = new UnityEvent<Item, Item>();
     public static UnityEvent FinishedLoadingArea = new UnityEvent();
     public static UnityEvent FinishedTakingScreenshot = new UnityEvent();
-    public static UnityEvent StanceSwitched = new UnityEvent();
+    public static UnityEvent<Type, Type> StanceSwitched = new UnityEvent<Type, Type>();
     public static UnityEvent ExitMenu = new UnityEvent();
 }

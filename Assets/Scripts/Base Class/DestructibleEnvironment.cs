@@ -22,7 +22,7 @@ public class DestructibleEnvironment : MonoBehaviour
 
     public void Start()
     {
-        HitPoints = BaseHitPoints * Utils.GetExpectedPowerForLevel(Area.ComponentInstance.Level);
+        HitPoints = BaseHitPoints * CombatMath.GetExpectedPowerForLevel(Area.ComponentInstance.Level);
         gameObject.tag = "Destructible";
         bool hasLoot = false;
         foreach(Transform child in transform) {

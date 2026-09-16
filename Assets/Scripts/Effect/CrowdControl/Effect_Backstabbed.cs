@@ -1,26 +1,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 public class Effect_Backstabbed : Effect_HardCrowdControl
 {
-    public Effect_Backstabbed(SourceOfEffect source_of_effect) : base(source_of_effect) {
+    private const float END_ANIMATION_LEAD_TIME = 0.5f;
+    private bool _playedEndAnimation = false;
+
+    public Effect_Backstabbed(SourceOfEffect source_of_effect) : base(source_of_effect) 
+    {
         CanBeNegatedByImmunityToCrowdControl = false;
         PriorityLevel = 8;
     }
 
-    public override void OnEnd()
+    public override void OnUpdate()
     {
-        base.OnEnd();
-        List<Effect> HardCrowdControlEffects = TargetOfEffect.CurrentEffects.Where(effect => effect.AutoPlayEffectAnimation && effect != this).ToList();
-        Effect HardCrowdControlEffect = null;
-        if (HardCrowdControlEffects != null && HardCrowdControlEffects.Count > 0)
-        {
-            HardCrowdControlEffect = HardCrowdControlEffects.Aggregate((e1, e2) => e1.PriorityLevel > e2.PriorityLevel ? e1 : e2);
-        }
-        if (TargetOfEffect.Health.Current > 0 && TargetOfEffect.CurrentHealthBars > 0)
-        {
-            TargetOfEffect.PlayAnimation("Backstabbed_EndEffect");
+        base.OnUpdate();
+        if (!_playedEndAnimation && RemainingDuration <= END_ANIMATION_LEAD_TIME && !EffectEnded) {
+            _playedEndAnimation = true;
+            if (TargetOfEffect != null && !TargetOfEffect.KnockedOut && TargetOfEffect.gameObject.activeInHierarchy)
+            {
+                TargetOfEffect.PlayAnimation("Backstabbed_EndEffect", 0.05f);
+            }
         }
     }
 }

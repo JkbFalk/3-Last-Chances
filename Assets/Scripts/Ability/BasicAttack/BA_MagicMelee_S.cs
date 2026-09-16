@@ -8,7 +8,7 @@ public class BA_MagicMelee_S : BasicAttack {
         AddCustomSound("Swing", "Magic/Magic_Blast1", 1f);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

@@ -388,28 +388,28 @@ public class SaveFile
     public void MakeSureAllCorrectTechniquesAndStancesAreUnlocked() {
         UnlockedAbilities.Clear();
         UnlockedStances.Clear();
-        foreach(Type ability in new List<Type> {typeof(Ability_WindRush), typeof(Ability_HeavySlash), typeof(Ability_ChargedShot), typeof(Ability_Fortify), typeof(Ability_SentientShadow), typeof(Ability_ReplicaFlank), typeof(Ability_Barrage)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_WindRush), typeof(Ability_HeavySlash), typeof(Ability_ChargedShot), typeof(Ability_Fortify), typeof(Ability_SentientShadow), typeof(Ability_ReplicaBlow), typeof(Ability_EnergyJavelin)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
-        foreach(Type stance in new List<Type> {typeof(Stance_SingularPursuit), typeof(Stance_OmniMastery), typeof(Stance_HeatOfBattle), typeof(Stance_PlunderingFlame), typeof(Stance_PowerWithoutLimit), typeof(Stance_MindOverMatter)}) {
+        foreach(Type stance in new List<Type> {typeof(Stance_SingularPursuit), typeof(Stance_OmniMastery), typeof(Stance_HeatOfBattle), typeof(Stance_PlunderingFlame), typeof(Stance_IceEmperor), typeof(Stance_Gunslinger), typeof(Stance_Brawler), typeof(Stance_BodyOfSteel), typeof(Stance_AnatomyExpert), typeof(Stance_Assassin), typeof(Stance_CombatBlacksmith), typeof(Stance_ElectroCharged), typeof(Stance_PowerWithoutLimit), typeof(Stance_MindOverMatter)}) {
             SaveFile.Instance.UnlockStance(stance);
         }
         if(Level < 10) {
             return;
         }
-        foreach(Type ability in new List<Type> {typeof(Ability_TempestStrikes), typeof(Ability_Fireball), typeof(Ability_Permafrost), typeof(Ability_TectonicPull), typeof(Ability_ShadowInfusion), typeof(Ability_Thunderstrike), typeof(Ability_EnergyBlades)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_TempestStrikes), typeof(Ability_Fireball), typeof(Ability_Permafrost), typeof(Ability_TectonicPull), typeof(Ability_ShadowInfusion), typeof(Ability_Thunderstrike), typeof(Ability_ArcaneSlash)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
         if(Level < 20) {
             return;
         }
-        foreach(Type ability in new List<Type> {typeof(Ability_Quickdraw), typeof(Ability_Flamethrower), typeof(Ability_SpearsOfIce), typeof(Ability_BlastDash), typeof(Ability_DeathSentence), typeof(Ability_LightningSpeed), typeof(Ability_Avatar)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_Quickdraw), typeof(Ability_Flamethrower), typeof(Ability_SpearsOfIce), typeof(Ability_BlastDash), typeof(Ability_DeathSentence), typeof(Ability_LightningSpeed), typeof(Ability_Barrage)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
         if(Level < 30) {
             return;
         }
-        foreach(Type ability in new List<Type> {typeof(Ability_Deconstruction), typeof(Ability_Eruption), typeof(Ability_TimeFreeze), typeof(Ability_Helmsplitter), typeof(Ability_Shadowgifted), typeof(Ability_FlurryOfBlows), typeof(Ability_FinalBlast)}) {
+        foreach(Type ability in new List<Type> {typeof(Ability_Deconstruction), typeof(Ability_Eruption), typeof(Ability_TimeFreeze), typeof(Ability_Helmsplitter), typeof(Ability_ShadowForm), typeof(Ability_FlurryOfBlows), typeof(Ability_Avatar)}) {
             SaveFile.Instance.UnlockAbility(ability);
         }
     }
@@ -428,59 +428,6 @@ public class SaveFile
             tile.UpdateUnlockedStatus();
         }
     }
-
-    public void UnlockTool(Type tool_type) {
-        if(UnlockedTools.Contains(tool_type)) {
-            return;
-        }
-        UnlockedTools.Add(tool_type);
-        Item item_to_add = (Item)Activator.CreateInstance(tool_type, new object[] { SaveFile.Instance.ToolGrades[tool_type] });
-        item_to_add.Amount = SaveFile.Instance.ToolMaxAmounts[tool_type];
-        AddItem(item_to_add, false);
-    }
-
-    public void UpgradeTool(Type tool_type) {
-        SaveFile.Instance.ToolGrades[tool_type] = 
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Regular ? Item.ItemGrade.Excellent :
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Excellent ? Item.ItemGrade.Masterful :
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Masterful ? Item.ItemGrade.Flawless :
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Flawless ? Item.ItemGrade.Ultimate : Item.ItemGrade.Ultimate;
-
-        Inventory.FirstOrDefault(item => item is Quest_ToolMaterials).Amount -= 
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Excellent ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_TO_EXCELLENT :
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Masterful ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_TO_MASTERFUL :
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Flawless ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_TO_FLAWLESS :
-        SaveFile.Instance.ToolGrades[tool_type] == Item.ItemGrade.Ultimate ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_TO_ULTIMATE :
-        0;
-
-        UpdateToolInventoryTile(tool_type);
-    }
-
-    public void IncreaseMaxToolUses(Type tool_type) {
-        SaveFile.Instance.ToolMaxAmounts[tool_type] = SaveFile.Instance.ToolMaxAmounts[tool_type] == 6 ? 6 : SaveFile.Instance.ToolMaxAmounts[tool_type] + 1;
-
-        Inventory.FirstOrDefault(item => item is Quest_ToolMaterials).Amount -= 
-        SaveFile.Instance.ToolMaxAmounts[tool_type] == 2 ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_2 :
-        SaveFile.Instance.ToolMaxAmounts[tool_type] == 3 ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_3 :
-        SaveFile.Instance.ToolMaxAmounts[tool_type] == 4 ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_4 :
-        SaveFile.Instance.ToolMaxAmounts[tool_type] == 5 ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_5 :
-        SaveFile.Instance.ToolMaxAmounts[tool_type] == 6 ? Constants.TOOL_MATERIALS_COST_FOR_UPGRADE_MAX_AMOUNT_TO_6 :
-        0;
-
-        UpdateToolInventoryTile(tool_type);
-    }
-
-    
-    public void UpdateToolInventoryTile(Type tool_type) {
-        foreach(Transform child in MenuManager.Objects.InventoryItemsTools.transform) {
-            InventoryTile tile = child.GetComponent<InventoryTile>();
-            if(tile.Item.GetType() == tool_type) {
-                tile.InitializeOptions();
-                tile.AmountDisplay.text = tile.Item.Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[tool_type];
-            }
-        }
-    }
-
 
     public void ChangeIgnisEnergy(int amount) {
         SaveFile.Instance.IgnisEnergy += amount;
@@ -504,8 +451,8 @@ public class SaveFile
             UIManager.Objects.CustomGaugeAmountText.text = SaveFile.Instance.IgnisEnergy.ToString();
             UIManager.Objects.CustomGaugeSlider.value = SaveFile.Instance.IgnisEnergy / 2000;
             if(Area_IgnisManorOnFire.PlayerBuffEffect != null) {
-                Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter = SaveFile.Instance.IgnisEnergy / 10;
-                Area_IgnisManorOnFire.PlayerBuffEffect.UIText = Utils.GetFormattedFloat(Area_IgnisManorOnFire.PlayerBuffEffect.FirstParameter, 0);
+                Area_IgnisManorOnFire.PlayerBuffEffect.PercentageAmount = SaveFile.Instance.IgnisEnergy / 10;
+                Area_IgnisManorOnFire.PlayerBuffEffect.UIText = Utils.GetFormattedFloat(Area_IgnisManorOnFire.PlayerBuffEffect.PercentageAmount, 0);
             }
         }
     }
@@ -657,10 +604,7 @@ public class SaveFile
         SaveFileType = save_file_type;
         SaveFileNumber = save_number;
         if(save_number != "Dummy") {
-            foreach (Type type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(assembly => assembly.GetTypes()).Where(type => type.IsSubclassOf(typeof(Quest))))
-            {
-                Quests.Add((Quest)Activator.CreateInstance(type));
-            }
+            QuestManager.Instance.InitializeQuestsForSave(this);
         }
         if(save_file_type == SaveFileTypeEnum.Story) {
             SaveFilePath = "SaveFile_" + save_number.ToString() + ".es3";
@@ -672,6 +616,47 @@ public class SaveFile
             SaveFilePath = "Survival_" + save_number.ToString() + ".es3";
         }
     }
+
+    public bool CheckIfQuestIsInProgress(string quest_name) => QuestManager.Instance.CheckIfQuestIsInProgress(quest_name);
+    public bool CheckIfQuestIsInProgress(Type quest_type) => QuestManager.Instance.CheckIfQuestIsInProgress(quest_type);
+    public Quest GetQuest(string quest_name) => QuestManager.Instance.GetQuest(quest_name);
+    public Quest GetQuest(Type quest_type) => QuestManager.Instance.GetQuest(quest_type);
+
+    public void AddItem(Type item_type, Item.ItemGrade grade = Item.ItemGrade.None, bool show_notification = true) =>
+        InventoryManager.Instance.AddItem(item_type, grade, show_notification);
+
+    public void AddItem(Item item, bool show_notification = true) =>
+        InventoryManager.Instance.AddItem(item, show_notification);
+
+    public void RemoveItem(Item item) =>
+        InventoryManager.Instance.RemoveItem(item);
+
+    public bool HasKey(string key_type_name) =>
+        InventoryManager.Instance.HasKey(key_type_name);
+
+    public int CheckSellPriceIfItemIsDuplicate(Item item) =>
+        InventoryManager.Instance.CheckSellPriceIfItemIsDuplicate(item);
+
+    public void AcquireItem(string item_type, int amount, Item.ItemGrade grade) =>
+        InventoryManager.Instance.AcquireItem(item_type, amount, grade);
+
+    public void UnlockTool(Type tool_type) =>
+        InventoryManager.Instance.UnlockTool(tool_type);
+
+    public void UpgradeTool(Type tool_type) =>
+        InventoryManager.Instance.UpgradeTool(tool_type);
+
+    public void IncreaseMaxToolUses(Type tool_type) =>
+        InventoryManager.Instance.IncreaseMaxToolUses(tool_type);
+
+    public void UpdateToolInventoryTile(Type tool_type) =>
+        InventoryManager.Instance.UpdateToolInventoryTile(tool_type);
+
+    public Item GetItem(Type item_type) =>
+        InventoryManager.Instance.GetItem(item_type);
+
+    public Item GetItem(Type item_type, Item.ItemGrade grade) =>
+        InventoryManager.Instance.GetItem(item_type, grade);
     
  
     public void InitializeSaveFile(bool give_tools = true) {
@@ -713,8 +698,8 @@ public class SaveFile
     public void AddDefaultItems() {
         List<Item> default_items = new List<Item>
         {
-        new Longblade_SharpestEdge(Item.ItemGrade.Regular),
-        new Gauntlets_Shatterers(Item.ItemGrade.Regular),
+        new Polearm_SanguineSpike(Item.ItemGrade.Regular),
+        new Daggers_OnyxShards(Item.ItemGrade.Regular),
         new Bow_EternalSleep(Item.ItemGrade.Regular),
         };
         foreach(Item item in default_items)
@@ -728,101 +713,9 @@ public class SaveFile
         UnlockTool(typeof(Tool_FortificationPotion));
     }
 
-    public void AddItem(Type item_type, Item.ItemGrade grade = Item.ItemGrade.None, bool show_notification = true) {
-        Item item = (Item)Activator.CreateInstance(item_type, new object[] {grade});
-        AddItem(item, show_notification);
-    }
-
-    public void AddItem(Item item, bool show_notification = true) {
-        Utils.CreateAuditLog("Acquired item (" + item.GetType() + "): " + item.Grade + " , amount: " + item.Amount);
-        int sellPrice = CheckSellPriceIfItemIsDuplicate(item);
-        if(show_notification) {
-            NotificationController.ShowItemDropNotification(item, sellPrice);
-        }
-        if(sellPrice > 0) {
-            Money += sellPrice;
-            return;
-        }
-        else if(item is Quest_UpgradeMaterials || item is Quest_ToolMaterials) {
-            Item existing_item = Inventory.FirstOrDefault(i => i.GetType() == item.GetType() && i.Grade == item.Grade);
-            if(existing_item != null) {
-                existing_item.Amount += item.Amount;
-                return;
-            }
-        }
-        if(item.Type != Constants.ItemType.Tool && item.Type != Constants.ItemType.Quest && !FoundItemTypes.Contains(item.GetType())) {
-            FoundItemTypes.Add(item.GetType());
-        }
-        Inventory.Add(item);
-        Inventory.OrderBy(item => item.GetType()).ThenBy(item => item.Grade);
-        MenuManager.Instance.AddItemToGrid(item);
-    }
-
-    public bool HasKey(string key_type_name) {
-        Type type = Type.GetType(key_type_name);
-        return Inventory.FirstOrDefault(item => item.GetType() == type) != null;
-    }
-
-    public int CheckSellPriceIfItemIsDuplicate(Item item) {
-        Item existing_item = Inventory.FirstOrDefault(i => i.GetType() == item.GetType() && i.Grade == item.Grade);
-        if(item.Type == Constants.ItemType.Tool || item.Type == Constants.ItemType.Quest)
-        {
-            return 0;
-        }
-        if(existing_item != null)
-        {
-            return item.SellPrice;
-        }
-        return 0;
-    }
-
-    public void RemoveItem(Item item) {
-        Utils.CreateAuditLog("Removed item (" + item.GetType() + "): " + item.Grade + " , amount: " + item.Amount);
-        Inventory.Remove(item);
-        if(EquippedItem1 == item) {
-            MenuManager.Instance.Item1EquipmentSlot.UnequipItem(1);
-        }
-        if(EquippedItem2 == item) {
-            MenuManager.Instance.Item2EquipmentSlot.UnequipItem(2);
-        }
-        if(item.IsEquipped) {
-            item.TileInInventory.UnequipItem();
-        }
-        MonoBehaviour.Destroy(item.TileInInventory.gameObject);
-    }
-
-    public bool CheckIfQuestIsInProgress(string quest_name)
-    {
-        return Quests.FirstOrDefault(quest => quest.Status == Quest.QuestStatus.InProgress && quest.GetType().Name == quest_name) != null;
-    }
-
-    public bool CheckIfQuestIsInProgress(Type quest_type)
-    {
-        return Quests.FirstOrDefault(quest => quest.Status == Quest.QuestStatus.InProgress && quest.GetType() == quest_type) != null;
-    }
-
-    public Quest GetQuest(string quest_name)
-    {
-        return Quests.FirstOrDefault(quest => quest.GetType().Name == quest_name || quest.GetType().Name.Replace("Quest_", "") == quest_name || ("Quest_" + quest.GetType().Name) == quest_name);
-    }
-
-    public Quest GetQuest(Type quest_type)
-    {
-        return Quests.FirstOrDefault(quest => quest.GetType() == quest_type);
-    }
-
     public Mission GetMission(Type mission_type)
     {
         return Missions.FirstOrDefault(mission => mission.GetType() == mission_type);
-    }
-
-    
-    public Item GetItem(Type item_type) {
-        return Inventory.FirstOrDefault(item => item.GetType() == item_type);
-    }
-
-    public Item GetItem(Type item_type, Item.ItemGrade grade) {
-        return Inventory.FirstOrDefault(item => item.GetType() == item_type && item.Grade == grade);
     }
 
     public Item GetEquipmentForType(Constants.ItemType type)
@@ -837,36 +730,6 @@ public class SaveFile
             case Constants.ItemType.Outfit: return SaveFile.Instance.EquippedOutfit;
             case Constants.ItemType.Boots: return SaveFile.Instance.EquippedBoots;
             default: return null;
-        }
-    }
-
-    public void AcquireItem(string item_type, int amount, Item.ItemGrade grade) {
-        if(String.IsNullOrEmpty(item_type)) {
-            return;
-        }
-        if(item_type == "Money") {
-            Money += amount;
-            Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 1.2f);
-        }
-        else if(item_type.EndsWith("_Unlock") && SaveFile.Instance.UnlockedTools.Contains(Type.GetType(item_type.Replace("_Unlock", "")))) {
-            Item item = (Item)Activator.CreateInstance(typeof(Quest_ToolMaterials), new object[] { Item.ItemGrade.None });
-            item.Amount = 10;
-            SaveFile.Instance.AddItem(item, false);
-            Item item2 = (Item)Activator.CreateInstance(Type.GetType(item_type.Replace("_Unlock", "")), new object[] { Item.ItemGrade.Regular });
-            NotificationController.ShowNotificationWithGraphic(Label.Get("ToolDuplicateMessage"), item2.GetIcon(), new List<string> {Label.Get(item_type.Replace("_Unlock", "")), "10"});
-            Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 1.2f);
-        }
-        else if(item_type.EndsWith("_Unlock")) {
-            Item item = (Item)Activator.CreateInstance(Type.GetType(item_type.Replace("_Unlock", "")), new object[] { Item.ItemGrade.Regular });
-            NotificationController.ShowNotificationWithGraphic(Label.Get("NewToolUnlockMessage"), item.GetIcon(), new List<string> {Label.Get(item_type.Replace("_Unlock", ""))});
-            SaveFile.Instance.UnlockTool(Type.GetType(item_type.Replace("_Unlock", "")));
-            Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 1.2f);
-        }
-        else if(!string.IsNullOrWhiteSpace(item_type)) {
-            Item item = (Item)Activator.CreateInstance(Type.GetType(item_type), new object[] { grade });
-            item.Amount = amount;
-            SaveFile.Instance.AddItem(item);
-            Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 1.2f);
         }
     }
 
@@ -1061,7 +924,7 @@ public class SaveFile
         int hours_played = (int)(TimePlayedInSeconds / 3600);
         int minutes_played = (int)((TimePlayedInSeconds - 3600 * hours_played) / 60);
         int seconds_played = (int)(TimePlayedInSeconds - hours_played * 3600 - minutes_played * 60);
-        game_object.Find("Cycle, Week, Time").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCycleWeekTime"), new string[] {Week.ToString(), hours_played.ToString(), minutes_played.ToString(), seconds_played.ToString()} );
+        game_object.Find("Cycle, Week, Time").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileCycleWeekTime"), new string[] {Week.ToString(), Label.Get(Difficulty.ToString() + "CombatType"), hours_played.ToString(), minutes_played.ToString(), seconds_played.ToString()} );
         game_object.Find("Cycle, Week, Time/Image").GetComponent<Image>().enabled = true;
         game_object.Find("Cycle, Week, Time/Image").GetComponent<Image>().sprite = Resources.Load("Sprites/UI/Cycle" + Cycle, typeof(Sprite)) as Sprite;
         if(PointsPutIntoEachSkillTree != null) {
@@ -1070,7 +933,7 @@ public class SaveFile
         else {
             game_object.Find("Level, Money, Skill Trees").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileLevelMoneySkillTrees"), new string[] {Level.ToString(), Money.ToString(), "0", "0", "0", "0", "0", "0", "0"} );
         }
-        game_object.Find("Difficulty, Mission").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileDifficultyMission"), new string[] {Label.Get(Difficulty.ToString() + "CombatType"), CurrentMission == null ? Label.Get("CurrentMissionIsNull") : Label.Get(CurrentMission.ToString())});
+        game_object.Find("Difficulty, Mission").GetComponent<TextMeshProUGUI>().text = String.Format(Label.Get("SaveFileDifficultyMission"), new string[] {CurrentMission == null ? Label.Get("CurrentMissionIsNull") : Label.Get(CurrentMission.ToString()), SavedTimeStamp.ToString("yyyy-MM-dd HH:mm")});
         game_object.Find("Empty").gameObject.SetActive(false);
         UpdateScreenShot(new string[] {SaveFilePath.Replace(".es3", ""), SaveFileNumber, is_post_mission_autosave ? "IS_POST_MISSION_AUTOSAVE" : "NO"});
     }

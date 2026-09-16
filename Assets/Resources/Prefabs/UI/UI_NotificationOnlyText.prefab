@@ -60,7 +60,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a4872475fc88ca45a0fb44786f38166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ChangeInProgress: 0
+  Visiblity: 0
   DestroyAfterHiding: 1
+  LabelInitializer: {fileID: 0}
+  CheckIfShouldHideOnceFinishedChanging: 0
 --- !u!114 &2363420057258792291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,10 +124,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 777140623624773554}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 20, y: -41.879997}
+  m_SizeDelta: {x: 1315.99, y: 43.759995}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &508892724328527271
 CanvasRenderer:
@@ -155,8 +159,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: cbd8dad11333d0047b4c5415149bcc58, type: 2}
-  m_sharedMaterial: {fileID: 2263827286215516253, guid: cbd8dad11333d0047b4c5415149bcc58,
+  m_fontAsset: {fileID: 11400000, guid: cb68be14997498143a14e639cd7098a1, type: 2}
+  m_sharedMaterial: {fileID: 2263827286215516253, guid: cb68be14997498143a14e639cd7098a1,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -197,15 +201,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -237,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OriginalValue: 
   string_params: []
+  DisableDetailedDescription: 0
 --- !u!114 &1314052159770293407
 MonoBehaviour:
   m_ObjectHideFlags: 0

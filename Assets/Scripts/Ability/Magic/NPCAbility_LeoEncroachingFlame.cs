@@ -48,7 +48,7 @@ public class NPCAbility_LeoEncroachingFlame : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

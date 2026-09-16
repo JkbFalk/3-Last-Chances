@@ -10,7 +10,7 @@ public class Greatsword_Retribution : Item
         Set = ItemSetEnum.IronBlooded;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
-        SetBaseWeaponStats(150, 60, 0.85f);
+        SetBaseWeaponStats(15, 6, 0.85f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("AfterGettingHitIncreaseDamageOfNextAttack")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttackDamage")};
     }

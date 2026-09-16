@@ -116,34 +116,6 @@ public class Unit : PermanentObject {
     public Constants.Faction Faction = Constants.Faction.Neutral;
     public float RiposteDamage { get; set; } = 100;
     public List<Unit> PotentialTargets { get; set; } = new List<Unit>();
-
-    private float _ammo;
-
-    public float Ammo {
-        get {
-            return _ammo;
-        }
-        set {
-            float prevValue = _ammo;
-            if (value < 0) {
-                _ammo = 0;
-            }
-            else if (value > 20) {
-                _ammo = 20;
-            }
-            else {
-                _ammo = value;
-            }
-            if (this is Player) {
-                for(int i = 1; i < 21; i++) {
-                    UIManager.Objects.AmmoDisplayImage.transform.Find(i.ToString()).gameObject.SetActive(_ammo >= i);
-                }
-            }
-            if(prevValue != _ammo) {
-                EventManager.AmmoAmountChanged.Invoke();
-            }
-        }
-    }
     private List<Cooldown> _techniqueCooldowns = new();
     
     public List<Cooldown> TechniqueCooldowns
@@ -362,8 +334,15 @@ public class Unit : PermanentObject {
     public bool RightArmInFrontOfWeapon { get; set; } = true;
     public bool LeftArmInFrontOfWeapon { get; set; } = true;
 
-    public void OnEnable() {
-        if(DefaultAnimation != null && !InCombat) {
+    public override string ToString()
+    {
+        return gameObject.name.Replace("Unit_", "").Replace("(Clone)", "").Replace("(Unit)", "").Replace("(Player)","");
+    }
+
+    public void OnEnable()
+    {
+        if (DefaultAnimation != null && !InCombat)
+        {
             PlayAnimation(DefaultAnimation.name.Replace("Dialogue_", ""), 0, 0);
             GameController.Instance.WaitAndRunMethod(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.averageDuration + 1.5f, RepeatDefaultAnimation);
         }
@@ -728,7 +707,7 @@ public class Unit : PermanentObject {
             }
             if(CurrentHealthBars > 0)
             {
-                Health.Maximum = HealthBars[HealthBars.Count - CurrentHealthBars] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
+                Health.Maximum = HealthBars[HealthBars.Count - CurrentHealthBars] * (IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1);
                 Health.Current = HealthBars[HealthBars.Count - CurrentHealthBars];
             }
         }
@@ -794,6 +773,7 @@ public class Unit : PermanentObject {
             Rigidbody2D.bodyType = Faction == Constants.Faction.Neutral ? RigidbodyType2D.Static : RigidbodyType2D.Dynamic;
         }
         PutAllWeaponsBehind();
+        Animator.SetFloat("Special Animation Speed", 1);
     }
 
     public void RepeatDefaultAnimation() {
@@ -834,7 +814,7 @@ public class Unit : PermanentObject {
             Actions.Start();
             UnitAI.NavMeshAgent = GetComponent<NavMeshAgent>();
         }
-        Effect regen = GetEffect(new Func<Effect, bool>(effect => effect.Identifier == "DuelRegeneration"));
+        Effect regen = GetEffect(new Func<Effect, bool>(effect => effect.Id == "DuelRegeneration"));
         if(regen != null) {
             regen.EndThisEffect();
         }
@@ -881,10 +861,10 @@ public class Unit : PermanentObject {
         }
         else {
             CurrentHealthBars = HealthBars.Count;
-            Health.Maximum = HealthBars[0] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
+            Health.Maximum = HealthBars[0] * (IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1);
             Health.Current = HealthBars[0];
             CurrentStaggerBars = StaggerBars.Count;
-            StaggerBar.Maximum = StaggerBars[0]* (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1);
+            StaggerBar.Maximum = StaggerBars[0]* (IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1);
             StaggerBar.Current = 0;
             UnitAI.CurrentAIBehavior = Constants.AIBehavior.None;
         }
@@ -903,7 +883,7 @@ public class Unit : PermanentObject {
         Unit currentCandidate = null;
         foreach(Unit u in Utils.GetSpecifiedUnits(new Func<Unit, bool> (u => CheckIfValidTarget(u)))) {
             float distance = Vector2.Distance(u.transform.position, transform.position);
-            if((only_in_front == false || Utils.CheckIfGivenUnitIsInFrontOfUnit(this, u)) && distance < smallestDistance && distance < 15) {
+            if((only_in_front == false || CombatMath.CheckIfGivenUnitIsInFrontOfUnit(this, u)) && distance < smallestDistance && distance < 15) {
                 smallestDistance = distance;
                 currentCandidate = u;
             }
@@ -943,25 +923,26 @@ public class Unit : PermanentObject {
         return CurrentEffects.FirstOrDefault(effect => condition_check.Invoke(effect));
     }
 
+    public List<Effect> GetEffects(Func<Effect, bool> condition_check)
+    {
+        return CurrentEffects.Where(effect => condition_check.Invoke(effect)).ToList();
+    }
+
     public Effect GetEffect(Type effect_type)
     {
         return CurrentEffects.FirstOrDefault(effect => effect.GetType() == effect_type || effect.GetType().IsSubclassOf(effect_type));
     }
 
-    public Effect GetEffectWithGivenId(string identifier) {
-        return CurrentEffects.FirstOrDefault(effect => effect.Identifier == identifier);
+    public Effect GetEffectWithGivenId(string id) {
+        return CurrentEffects.FirstOrDefault(effect => effect.Id.StartsWith(id));
     }
-
+    
     public bool CheckIfUnderEffect(Type effect_type) {
         return CurrentEffects.FirstOrDefault(effect => effect.GetType() == effect_type || effect.GetType().IsSubclassOf(effect_type)) != null;
     }
 
-    public bool CheckIfUnderEffectWithGivenId(string identifier) {
-        return CurrentEffects.FirstOrDefault(effect => effect.Identifier == identifier) != null;
-    }
-
-    public bool CheckIfUnderEffectFromGivenAbility(Type under_effect, Type ability_type) {
-        return CurrentEffects.FirstOrDefault(effect => effect.GetType() == under_effect && effect.SourceOfEffect.GetType() == ability_type) != null;
+    public bool CheckIfUnderEffectWithGivenId(string id) {
+        return CurrentEffects.FirstOrDefault(effect => effect.Id.StartsWith(id)) != null;
     }
 
     public void SetLeftArmInFrontOfWeapon() {
@@ -1033,15 +1014,15 @@ public class Unit : PermanentObject {
             return;
         }
         if(this is Player) {
-            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 1000, 10000, Screen.width / 12, Screen.width / 2), 30);
-            Health.FollowUpHealthBarSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 1000, 10000, Screen.width / 12, Screen.width / 2), 30);
-            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 1000, 10000, Screen.width / 14, Screen.width / 2.5f), 30);
+            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 100, 1000, Screen.width / 12, Screen.width / 2), 30);
+            Health.FollowUpHealthBarSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 100, 1000, Screen.width / 12, Screen.width / 2), 30);
+            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 100, 1000, Screen.width / 14, Screen.width / 2.5f), 30);
         }
         else if (!IsBoss)
         {
-            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 2000 * Utils.GetExpectedPowerForLevel(Level), 50, 300), 20);
-            Health.FollowUpHealthBarSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 2000 * Utils.GetExpectedPowerForLevel(Level), 50, 300), 20);
-            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 200 * Utils.GetExpectedPowerForLevel(Level), 1500 * Utils.GetExpectedPowerForLevel(Level), 30, 180), 10);
+            Health.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 20 * CombatMath.GetExpectedPowerForLevel(Level), 200 * CombatMath.GetExpectedPowerForLevel(Level), 50, 300), 20);
+            Health.FollowUpHealthBarSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(Health.Maximum, 20 * CombatMath.GetExpectedPowerForLevel(Level), 200 * CombatMath.GetExpectedPowerForLevel(Level), 50, 300), 20);
+            StaggerBar.HUDSlider.GetComponent<RectTransform>().sizeDelta = new Vector2(Utils.GetValueBasedOnMinAndMax(StaggerBar.Maximum, 20 * CombatMath.GetExpectedPowerForLevel(Level), 150 * CombatMath.GetExpectedPowerForLevel(Level), 30, 180), 10);
         }
     }
 
@@ -1213,9 +1194,9 @@ public class Unit : PermanentObject {
         if(this is Player) {
             DefaultStaggerBarRegenPercentage = 4;
         }
-        Health = new Health(this, this is Player ? 1000 + SaveFile.Instance.HealthGainedFromTraining : HealthBars[0] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1));
-        StaggerBar = new StaggerBar(this, this is Player ? 1000 + SaveFile.Instance.StaggerBarGainedFromTraining : StaggerBars[0] * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1));
-        Energy = new Energy(this, 100);
+        Health = new Health(this, this is Player ? 100 + SaveFile.Instance.HealthGainedFromTraining : HealthBars[0] * (IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1));
+        StaggerBar = new StaggerBar(this, this is Player ? 100 + SaveFile.Instance.StaggerBarGainedFromTraining : StaggerBars[0] * (IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1));
+        Energy = new Energy(this, 10);
         AdjustUIResourceBarsSize();
 
         bool use_default = !(this is Player) || SaveFile.Instance.EquippedHeavyWeapon == null;
@@ -1250,7 +1231,7 @@ public class Unit : PermanentObject {
             AddEffect(hp_regen_outside_combat);
         }
         MovementSpeed = new MovementSpeed(this, BaseMovementSpeed);
-        Tenacity = new Tenacity(this, BaseTenacity * (IsHostile ? Damage.GlobalEnemySurvivabilityModifier : 1));
+        Tenacity = new Tenacity(this, BaseTenacity * (IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1));
         Control = new Control(this, BaseControl);
         CooldownReduction = new CooldownReduction(this, BaseCooldownReduction);
         Armor = new Armor(this, BaseArmor);
@@ -1304,7 +1285,7 @@ public class Unit : PermanentObject {
             Health.Current += Health.Regeneration * Time.deltaTime;
         }
         if (StaggerBar != null && StaggerBar.Current > 0 && StaggerBar.Regeneration != 0 && !CheckIfUnderEffect(typeof(Effect_Staggered)) && !CheckIfUnderEffect(typeof(Effect_Staggered))) {
-            StaggerBar.Current -= StaggerBar.Regeneration * Time.deltaTime;
+            StaggerBar.Current -= StaggerBar.Regeneration * (IsHostile ? (1 + Player.Instance.GlobalEnemyStaggerBarRegenerationModifier / 100) : 1) * Time.deltaTime;
             if(InCombat == false && StaggerBar.Current > 0)
             {
                 StaggerBar.Current -= (StaggerBar.Maximum / 5) * Time.deltaTime;
@@ -1319,9 +1300,9 @@ public class Unit : PermanentObject {
         }
     }
 
-    public bool CheckIfEffectIsOnCooldown(string indentifier)
+    public bool CheckIfEffectWithGivenIdIsOnCooldown(string indentifier)
     {
-        return EffectCooldowns.FirstOrDefault(eff => eff.Identifier == indentifier) != null;
+        return EffectCooldowns.FirstOrDefault(eff => eff.Id == indentifier) != null;
     }
 
     public bool CheckIfEffectIsOnCooldown(Effect effect)
@@ -1340,6 +1321,7 @@ public class Unit : PermanentObject {
         }
         foreach (Effect effect in CurrentEffects.ToList()) {
             effect.OnUpdate();
+            effect.ElapsedDuration += Time.deltaTime;
             effect.NewEffectIndicatorExtraScaleTimer -= Time.deltaTime;
             Utils.UpdateIndicatorScaleBasedOnTime(effect.TileInUI, effect.NewEffectIndicatorExtraScaleTimer);
             if (effect.BaseDuration > 0) {
@@ -1353,8 +1335,9 @@ public class Unit : PermanentObject {
                         }
                     }
                 }
-                else if (effect.UICooldownDisplay != null) {
-                    effect.UICooldownDisplay.fillAmount = 1f - (effect.RemainingDuration / effect.BaseDuration);
+                else if (effect.UICooldownDisplay != null && effect.BaseDuration > 0) 
+                {
+                    effect.UICooldownDisplay.fillAmount = Mathf.Clamp01(1f - (effect.RemainingDuration / effect.BaseDuration));
                 }
             }
         }
@@ -1372,15 +1355,15 @@ public class Unit : PermanentObject {
             {
                 bool isStacksBased = cooldown.Type?.GetField("IsStacksBasedTechnique") != null;
                 int maxStacks = 0;
-                bool isUltimate = cooldown.Identifier == "IsUltimate";
+                bool isUltimate = cooldown.Id == "IsUltimate";
                 if (cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "") + "MaxStacks") != null)
                 {
                     maxStacks = (int)cooldown.Type?.GetProperty((isUltimate ? "Ultimate" : "") + "MaxStacks").GetValue(null);
                 }
-                if (isStacksBased && ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks)))
+                if (isStacksBased && ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Id == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks)))
                 {
                     Player.Instance.UpdateTechniqueStacksAmount(cooldown.Type, isUltimate ? Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] + 1 : Player.Instance.CurrentTechniqueStacks[cooldown.Type] + 1, isUltimate);
-                    if ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Identifier == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks))
+                    if ((isUltimate && Player.Instance.CurrentUltimateTechniqueStacks[cooldown.Type] < maxStacks) || (cooldown.Id == "" && Player.Instance.CurrentTechniqueStacks[cooldown.Type] < maxStacks))
                     {
                         cooldown.RemainingDuration = cooldown.TotalDuration;
                     }
@@ -1401,24 +1384,18 @@ public class Unit : PermanentObject {
                 EffectCooldowns.Remove(cooldown);
                 cooldown.OnEnd();
             }
-            else if(cooldown.ShowsInUI && cooldown.CooldownDisplay == null) {
+            else if(cooldown.ShowsInUI && cooldown.CooldownIndicator == null) {
                 Transform effectsDisplay = UIManager.Objects.Effects.transform;
                 cooldown.TileInUI = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_CooldownUIIndicator")) as GameObject;
                 cooldown.TileInUI.transform.SetParent(effectsDisplay, false);
-                Debug.Log($"XXX1 {cooldown.TileInUI}");
-                Debug.Log($"XXX1.5 {cooldown.TileInUI.transform.Find("CooldownImage")}");
-                Debug.Log($"XXX1.7 {cooldown.TileInUI.transform.Find("CooldownImage").GetComponent<Image>()}");
-                Debug.Log($"XXX1.9 {cooldown.PathToCooldownGraphic}");
                 cooldown.TileInUI.transform.Find("CooldownImage").GetComponent<Image>().sprite = cooldown.CooldownGraphic != null ? cooldown.CooldownGraphic : Resources.Load("Sprites/" + cooldown.PathToCooldownGraphic, typeof(Sprite)) as Sprite;
-                Debug.Log($"XXX2 {cooldown.TileInUI.transform.Find("CooldownDisplay")}");
-                Debug.Log($"XXX3 {cooldown.TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>()}");
-                cooldown.CooldownDisplay = cooldown.TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>();
-                cooldown.CooldownDisplay.fillAmount = 0;
+                cooldown.CooldownIndicator = cooldown.TileInUI.transform.Find("CooldownDisplay").GetComponent<Image>();
+                cooldown.CooldownIndicator.fillAmount = 0;
                 cooldown.TileInUI.transform.localScale = new Vector3(Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_SIZE, 1);
                 cooldown.NewCooldownIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
             }
             else if(cooldown.ShowsInUI){
-                cooldown.CooldownDisplay.fillAmount = 1f - (cooldown.RemainingDuration / cooldown.TotalDuration);
+                cooldown.CooldownIndicator.fillAmount = 1f - (cooldown.RemainingDuration / cooldown.TotalDuration);
             }
         }
         if(ToolCooldown != null) {
@@ -1448,21 +1425,21 @@ public class Unit : PermanentObject {
         }
     }
 
-    public void AddCooldown(Effect effect, float cooldown_duration)
+    public void AddCooldown(Effect effect, float cooldown_duration, string id = "")
     {
-        Cooldown cd = new Cooldown(effect.GetType(), cooldown_duration, this);
+        Cooldown cd = new Cooldown(effect.GetType(), cooldown_duration, this, id);
         AddCooldown(cd);
     }
 
-    public void AddCooldown(Type type, float cooldown_duration)
+    public void AddCooldown(Type type, float cooldown_duration, string id = "")
     {
-        Cooldown cd = new Cooldown(type, cooldown_duration, this);
+        Cooldown cd = new Cooldown(type, cooldown_duration, this, id);
         AddCooldown(cd);
     }
 
-    public void AddCooldown(Ability ability, float cooldown_duration)
+    public void AddCooldown(Ability ability, float cooldown_duration, string id = "")
     {
-        Cooldown cd = new Cooldown(ability.GetType(), cooldown_duration, this);
+        Cooldown cd = new Cooldown(ability.GetType(), cooldown_duration, this, id);
         AddCooldown(cd);
     }
 
@@ -1483,7 +1460,7 @@ public class Unit : PermanentObject {
         }
         else if (cooldown.Type.IsSubclassOf(typeof(Ability)))
         {
-            Cooldown existing_cd = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type && cd.Identifier == cooldown.Identifier);
+            Cooldown existing_cd = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown.Type && cd.Id == cooldown.Id);
             if (existing_cd != null)
             {
                 TechniqueCooldowns.Remove(existing_cd);
@@ -1504,11 +1481,13 @@ public class Unit : PermanentObject {
                 cooldown.TotalDuration += e.CooldownIncrease;
             }
         }
-        cooldown.RemainingDuration = cooldown.TotalDuration;
+        EventManager.AboutToAddCooldown.Invoke(cooldown);
+        cooldown.OnStart();
         EventManager.CooldownAdded.Invoke(cooldown);
     }
 
-    public void RemoveCooldown(Cooldown cd) {
+    public void RemoveCooldown(Cooldown cd)
+    {
         if (cd == ToolCooldown)
         {
             ToolCooldown = null;
@@ -1526,36 +1505,47 @@ public class Unit : PermanentObject {
             Debug.LogError("Tried to remove cooldown that was not found on any cooldown list for unit " + gameObject.name + ": " + cd.Type);
             return;
         }
-        if(cd.ShowsInUI && cd.CooldownDisplay != null) {
-            MonoBehaviour.Destroy(cd.CooldownDisplay.transform.parent.gameObject);
+        if (cd.ShowsInUI && cd.CooldownIndicator != null)
+        {
+            MonoBehaviour.Destroy(cd.CooldownIndicator.transform.parent.gameObject);
         }
     }
 
-    public void RemoveCooldown(Type cooldown_target_effect_ability_or_item) {
-        if(cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Effect))) {
+    public void RemoveCooldown(Type cooldown_target_effect_ability_or_item)
+    {
+        if (cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Effect)))
+        {
             Cooldown cd = EffectCooldowns.FirstOrDefault(cd => cd.Type == cooldown_target_effect_ability_or_item.GetType());
-            if(cd != null) {
+            if (cd != null)
+            {
                 EffectCooldowns.Remove(cd);
             }
-            else {
+            else
+            {
                 Debug.LogError("Tried to remove Effect cooldown that does not exist: " + cooldown_target_effect_ability_or_item);
             }
         }
-        else if(cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Ability))) {
+        else if (cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Ability)))
+        {
             Cooldown cd = TechniqueCooldowns.FirstOrDefault(cd => cd.Type == cooldown_target_effect_ability_or_item);
-            if(cd != null) {
+            if (cd != null)
+            {
                 TechniqueCooldowns.Remove(cd);
             }
-            else {
+            else
+            {
                 Debug.LogError("Tried to remove Ability cooldown that does not exist: " + cooldown_target_effect_ability_or_item);
             }
         }
-        else if(cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Item))) {
+        else if (cooldown_target_effect_ability_or_item.IsSubclassOf(typeof(Item)))
+        {
             ToolCooldown = null;
         }
-        else {
+        else
+        {
             Debug.LogError("Tried to remove cooldown for object that is not Effect, Ability or Item: " + cooldown_target_effect_ability_or_item);
         }
+        
     }
 
     public void RemoveAllCooldowns() {
@@ -1565,7 +1555,7 @@ public class Unit : PermanentObject {
     }
 
     public void AddEffect(Effect effect_to_add, float seconds = 0) {
-        if ((effect_to_add.Type == EffectType.Debuff && CheckIfUnderEffect(typeof(Effect_Invincible))) || (effect_to_add.CanBeNegatedByImmunityToCrowdControl && (effect_to_add.IsHardCrowdControl() || effect_to_add.IsSoftCrowdControl()) && CheckIfUnderEffect(typeof(Effect_Unstunnable)))) {
+        if ((effect_to_add.Type == EffectType.Debuff && CheckIfUnderEffect(typeof(Effect_Invincible))) || (effect_to_add.CanBeNegatedByImmunityToCrowdControl && (effect_to_add.IsHardCrowdControl || effect_to_add.IsSoftCrowdControl) && CheckIfUnderEffect(typeof(Effect_Unstunnable)))) {
             return;
         }
         if (effect_to_add.SourceOfEffect == null) {
@@ -1631,9 +1621,14 @@ public class Unit : PermanentObject {
         CollisionTurnedOn = should_collide;
         Utils.CreateAuditLog("Collision turned " + (should_collide ? "ON" : "OFF"));
     }
+    
+    public void ApplyKnockback(float knockback_range_in_meters, Vector3 knockback_source, Ability source, float intensity = 1f) {
+        PushInTargetDirection((knockback_source - transform.position) * intensity * knockback_range_in_meters * 1.05f, source);
+    }
 
-    public void PushInTargetDirection(Vector2 direction_vector, Ability source) {
-        if(!CheckIfUnderEffect(typeof(Effect_Immovable)) || (source != null && source.User == this))
+    public void PushInTargetDirection(Vector2 direction_vector, Ability source)
+    {
+        if (!CheckIfUnderEffect(typeof(Effect_Immovable)) || (source != null && source.User == this))
         {
             Rigidbody2D.AddForce(direction_vector * Constants.FORCE_REQUIRED_TO_PUSH_1M, ForceMode2D.Force);
         }

@@ -64,7 +64,7 @@ public class Effect_ShadowInfusion : Effect {
         }
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage)
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
     {
         if (damage.SourceOfDamage.User == TargetOfEffect && CheckIfAbilityIsValidForSuperCharge(damage.SourceOfDamage)) {
             damage.Stagger += ExtraStagger;
@@ -72,7 +72,7 @@ public class Effect_ShadowInfusion : Effect {
         }
     }
 
-    public override void OnInvokeDamageDealt(Damage damage) {
+    public override void OnInvokeDamageDealt(DamageInstance damage) {
 
         if (damage.SourceOfDamage.User == TargetOfEffect && CheckIfAbilityIsValidForSuperCharge(damage.SourceOfDamage)) {
             if(MasteryA)

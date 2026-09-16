@@ -10,6 +10,6 @@ public class Outfit_Sage : Item
         Set = ItemSetEnum.Sage;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncreaseMagicDamageButDecreaseWeaponDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGain", 0.66f), new ItemEffect("CooldownReduction", 0.34f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("PropriusTechniqueDamage")};
     }
 }

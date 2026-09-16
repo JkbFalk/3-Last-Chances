@@ -14,7 +14,7 @@ public class BA_Gun_F : BasicAttack {
     {
         if (PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS && PlayerControls.BasicAttackButtonPressCounter == 1)
         {
-            if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_S)))
+            if (Player.Instance.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_S)))
             {
                 UIManager.Instance.DisplayNotEnoughAmmoWarning();
                 return;
@@ -23,7 +23,7 @@ public class BA_Gun_F : BasicAttack {
         }
         else if(PlayerControls.BasicAttackButtonHoldDuration > Constants.MINIMUM_HOLD_DURATION_FOR_STRONG_BASIC_ATTACKS  && PlayerControls.BasicAttackButtonPressCounter > 1)
         {
-            if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FS)))
+            if (Player.Instance.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FS)))
             {
                 UIManager.Instance.DisplayNotEnoughAmmoWarning();
                 return;
@@ -32,7 +32,7 @@ public class BA_Gun_F : BasicAttack {
         }
         else if (PlayerControls.BasicAttackButtonPressCounter > 1)
         {
-            if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
+            if (Player.Instance.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
             {
                 UIManager.Instance.DisplayNotEnoughAmmoWarning();
                 return;
@@ -57,7 +57,7 @@ public class BA_Gun_F : BasicAttack {
         base.OnBasicAttackButtonPress();
         if (CanFollowUpAttack)
         {
-            if (User.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
+            if (Player.Instance.Ammo < GetAmmoRequiredToUseAbility(typeof(BA_Gun_FF)))
             {
                 UIManager.Instance.DisplayNotEnoughAmmoWarning();
                 return;

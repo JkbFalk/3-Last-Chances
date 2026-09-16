@@ -10,8 +10,8 @@ public class Daggers_FracturedCleavers : Item
         Set = ItemSetEnum.Judge;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Daggers;
-        SetBaseWeaponStats(95, 80, 1.1f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksPushBackAndDecreaseEnemyTenacity")};
+        SetBaseWeaponStats(9.5f, 8, 1.1f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksDecreaseEnemyTenacity")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightAttackSpeed")};
     }
 }

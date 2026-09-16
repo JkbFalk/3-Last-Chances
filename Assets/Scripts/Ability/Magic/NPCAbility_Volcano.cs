@@ -37,7 +37,7 @@ public class NPCAbility_Volcano : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(25 * User.MagicStagger.Current / 100, new(this)));
     }

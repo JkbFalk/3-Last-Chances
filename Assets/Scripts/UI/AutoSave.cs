@@ -21,7 +21,7 @@ public class AutoSave
             AssetDatabase.SaveAssets();
         };
 
-        _nextSaveTime = DateTime.Now.AddMinutes(30);
+        _nextSaveTime = DateTime.Now.AddMinutes(3);
         EditorApplication.update += Update;
     }
 
@@ -32,7 +32,7 @@ public class AutoSave
             return;
         }
 
-        _nextSaveTime = _nextSaveTime.AddMinutes(30);
+        _nextSaveTime = _nextSaveTime.AddMinutes(3);
         EditorSceneManager.SaveOpenScenes();
         AssetDatabase.SaveAssets();
     }

@@ -9,7 +9,7 @@ public class Cannon_Convergence : Item
     {
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Cannon;
-        SetBaseWeaponStats(70, 140, 0.85f);
+        SetBaseWeaponStats(7, 14, 0.85f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksDealIncreasedDamageButAlsoInflictSelfStagger")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggerBar")};
     }

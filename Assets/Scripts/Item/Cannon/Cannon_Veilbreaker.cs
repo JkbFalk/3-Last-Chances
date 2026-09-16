@@ -10,8 +10,8 @@ public class Cannon_Veilbreaker : Item
         Set = ItemSetEnum.Assassin;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Cannon;
-        SetBaseWeaponStats(70, 140, 0.85f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksPerformedWhileInStealthCountAsBackstab")};
+        SetBaseWeaponStats(7, 14, 0.85f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksAndTechniquesPerformedWhileInStealthCountAsBackstab")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttackDamage", 0.5f), new ItemEffect("BackstabDamage", 0.5f)};
     }
 }

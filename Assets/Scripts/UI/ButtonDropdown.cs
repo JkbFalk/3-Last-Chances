@@ -51,7 +51,8 @@ public class ButtonDropdown : MonoBehaviour, IPointerExitHandler, IPointerEnterH
 
     public void Show(Item item = null)
     {
-        SetOptions(item);
+        SetOptions(item != null ? item : Item);
+
         if (MenuManager.Instance.CurrentOpenDropdown != null && MenuManager.Instance.CurrentOpenDropdown != this)
         {
             MenuManager.Instance.CurrentOpenDropdown.Hide();
@@ -164,7 +165,7 @@ public class ButtonDropdown : MonoBehaviour, IPointerExitHandler, IPointerEnterH
         if (IsExpanded && CanvasGroup.alpha == 0)
         {
             Hide();
-            GetComponentInParent<InventoryTile>().DeselectTile();
+            GetComponentInParent<InventoryTile>()?.DeselectTile();
         }
     }
 

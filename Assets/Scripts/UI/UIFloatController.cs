@@ -16,10 +16,23 @@ public class UIFloatController : MonoBehaviour {
     private Vector2 originalPosition;
     public float StartGoingInOppositeDirectionAfterDistance = 0;
     private TextMeshProUGUI _text;
+    private Color _defaultColor;
+    private bool _initialized;
 
-    private void Start() {
-        _text = GetComponent<TextMeshProUGUI>();
+    private void OnEnable() {
+        if (_text == null) {
+            _text = GetComponent<TextMeshProUGUI>();
+        }
+        if (!_initialized && _text != null) {
+            _defaultColor = _text.color;
+            _initialized = true;
+        }
+        else if (_text != null) {
+            _text.color = _defaultColor;
+        }
         originalPosition = transform.localPosition;
+        IsDisappearing = false;
+        bouncingBack = false;
     }
 
     private void Update() {
@@ -39,7 +52,12 @@ public class UIFloatController : MonoBehaviour {
                 DisappearTime -= Time.deltaTime;
                 if (DisappearTime <= 0)
                 {
-                    MonoBehaviour.Destroy(gameObject);
+                    if (GetComponent<PooledObject>() != null) {
+                        ObjectPool.Release(gameObject);
+                    }
+                    else {
+                        MonoBehaviour.Destroy(gameObject);
+                    }
                 }
             }
             if (FloatBehavior == Behavior.FloatUpToDown) {

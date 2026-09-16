@@ -9,14 +9,14 @@ public class BA_Bow_F : BasicAttack {
     private readonly float _jumpDistance = 0.9f;
     private int _flipped;
     private float _movementSpeed;
-    private bool _barrageEquipped = false;
+    private bool _nonStopBAs = false;
     private bool _canRecast = false;
     public int BarrageComboNumber = 1;
 
     public BA_Bow_F(Unit ability_user) : base(ability_user) {
         DamageSources.Add(new DamageSource(0, 0, Constants.DamageType.Ranged));
-        _barrageEquipped = SaveFile.Instance.EquippedRangedWeapon is Bow_Barrage;
-        if(_barrageEquipped) {
+        _nonStopBAs = Player.Instance.CheckIfUnderEffectWithGivenId("CanBasicAttackNonStopAndDealMoreDamage");
+        if(_nonStopBAs) {
             NameOfAnimationToAutoPlay = "BA_Bow_Barrage";
         }
     }
@@ -29,15 +29,15 @@ public class BA_Bow_F : BasicAttack {
 
     public override void CallAbilityEvent1()
     {
-        if(!_barrageEquipped) {
+        if(!_nonStopBAs) {
             Utils.PlaySoundEffect(User.AudioSource, "Bow/Bow_Draw" + Utils.GetRandomSoundNumber("Bow_Draw"), 0.6f);
         }
     }
 
     public override void CallAbilityEvent2()
     {
-        if(FastShot || _barrageEquipped) {
-            if(!_barrageEquipped) {
+        if(FastShot || _nonStopBAs) {
+            if(!_nonStopBAs) {
                 User.PlayAnimation("Bow_FF", 0, 0);
                 Player.Instance.AddEffect(new Effect_Backstep(new(this)), 0.5f);
                 Player.Instance.PushInTargetDirection(new Vector2(-0.8f * _flipped, 0.8f) * 3 * _jumpDistance * _movementSpeed, this);
@@ -94,7 +94,7 @@ public class BA_Bow_F : BasicAttack {
 
     public override void OnBasicAttackButtonPress()
     {
-        if(_barrageEquipped && Player.Instance.Ammo > 0 && _canRecast) {
+        if(_nonStopBAs && Player.Instance.Ammo > 0 && _canRecast) {
             User.Actions.CurrentAbilityBeingPerformed = new BA_Bow_F(User);
             ((BA_Bow_F)User.Actions.CurrentAbilityBeingPerformed).BarrageComboNumber = BarrageComboNumber + 1;
         }
@@ -102,7 +102,7 @@ public class BA_Bow_F : BasicAttack {
 
     public override void OnBasicAttackButtonRelease()
     {
-        if(StartedCharging && !ShotArrow && !_barrageEquipped) {
+        if(StartedCharging && !ShotArrow && !_nonStopBAs) {
             User.PlayAnimation("Bow_F", 0.05f, 0.7f);
         }
         else if(FastShot == false){
@@ -113,6 +113,6 @@ public class BA_Bow_F : BasicAttack {
     public override void AdditionalAbilitySpecificActionsOnShootingProjectile(Projectile projectile)
     {
         base.AdditionalAbilitySpecificActionsOnShootingProjectile(projectile);
-        Utils.PlaySoundEffect(User.AudioSource, _barrageEquipped ? "Bow/Bow_Release11" : "Bow/Bow_Release" + Utils.GetRandomSoundNumber("Bow_Release"), 0.6f);
+        Utils.PlaySoundEffect(User.AudioSource, _nonStopBAs ? "Bow/Bow_Release11" : "Bow/Bow_Release" + Utils.GetRandomSoundNumber("Bow_Release"), 0.6f);
     }
 }

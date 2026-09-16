@@ -36,7 +36,8 @@ public class NPCAbility_WingsOfFlame : Ability {
         Wing1.transform.localPosition = new Vector2(4, -0.2f);
         Wing1.transform.localEulerAngles = new Vector3(0, 0, 90);
         Wing2.transform.localPosition = new Vector2(4, 0.2f);
-        Wing2.transform.localEulerAngles = new Vector3(0, 180, -90);
+        Wing2.transform.localEulerAngles = new Vector3(0, 0, -90);
+        Utils.Apply2DFlip(Wing2.gameObject, true);
     }
 
     public override void CallAbilityEvent2()
@@ -57,7 +58,7 @@ public class NPCAbility_WingsOfFlame : Ability {
         
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(30 * User.MagicStagger.Current / 100, new(this)));
     }

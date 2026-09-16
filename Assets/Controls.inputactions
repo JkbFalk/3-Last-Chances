@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "Controls",
     "maps": [
         {
@@ -317,7 +318,7 @@
                     "id": "4a1c81dd-e0c3-446c-8fcc-6e5104901445",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=2)",
+                    "interactions": "Hold(duration=1)",
                     "initialStateCheck": false
                 },
                 {
@@ -453,15 +454,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "CheatModeButtonRelease",
-                    "type": "Button",
-                    "id": "d0b5c924-52ae-405a-a508-f79ada4416c1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Press(behavior=1)",
                     "initialStateCheck": false
                 },
                 {
@@ -1247,6 +1239,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ad435f2d-986d-4668-8efd-6ced03c0fece",
+                    "path": "<Mouse>/backButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "RotateStanceLeftButtonPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c147a928-3c06-45ee-96b9-8681a1829652",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
@@ -1260,6 +1263,17 @@
                     "name": "",
                     "id": "ef138c9d-e0d9-4606-afbd-67226c2f0787",
                     "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "RotateStanceRightButtonPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c51e0a87-3616-483c-b5b3-c3bdfb0308fc",
+                    "path": "<Mouse>/forwardButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
@@ -1858,17 +1872,6 @@
                     "processors": "",
                     "groups": "Mouse and Keyboard",
                     "action": "CheatModeButtonPress",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "850faef4-8c43-4c24-beb4-97f68abf2f80",
-                    "path": "<Keyboard>/f12",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mouse and Keyboard",
-                    "action": "CheatModeButtonRelease",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -2931,7 +2934,7 @@
                 {
                     "name": "",
                     "id": "f0ea3ebd-28c0-4ed2-86c9-c90955d764b7",
-                    "path": "<Keyboard>/leftAlt",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",
@@ -3078,7 +3081,7 @@
                 {
                     "name": "",
                     "id": "4d3b0a65-af35-467e-ac94-e1db4f994e73",
-                    "path": "<Keyboard>/backquote",
+                    "path": "<Keyboard>/f9",
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse and Keyboard",

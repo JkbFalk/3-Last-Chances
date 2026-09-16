@@ -28,7 +28,7 @@ public class NPCAbility_SnowAvalanche : Ability {
         _projectile.transform.position = User.transform.position + new Vector3(horizontalAdjustment, 0);
         _projectile.SourceAbility = this;
         _projectile.Target = User.CurrentTarget;
-        _projectile.transform.up = Utils.GetDirectionVector(User.transform.position, _projectile.Target.transform.position, User.Actions.IsFlipped, 30);
+        _projectile.transform.up = CombatMath.GetDirectionVector(User.transform.position, _projectile.Target.transform.position, User.Actions.IsFlipped, 30);
         _projectile.enabled = false;
         EventManager.OneTenthSecondElapsedInGame.AddListener(ResetTargets);
         GameController.Instance.WaitAndRunMethod(2, new System.Action(() => { EventManager.OneTenthSecondElapsedInGame.RemoveListener(ResetTargets); }));
@@ -55,7 +55,7 @@ public class NPCAbility_SnowAvalanche : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage) {
+    public override void ExtraBehaviourOnDamage(DamageInstance damage) {
         damage.TargetOfDamage.AddEffect(new Effect_Slow(10, new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_Freeze(10, new(this)));
     }

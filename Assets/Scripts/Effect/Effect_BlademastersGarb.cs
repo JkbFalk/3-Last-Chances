@@ -4,10 +4,10 @@ using System.Linq;
 using UnityEngine;
 
 public class Effect_BlademastersGarb : Effect {
-    public float BladedBasicAttackBuff = 0.75f;
-    public float BladedArmorDebuff = -0.25f;
-    public float NonBladedBasicAttackDebuff = -0.25f;
-    public float NonBladedArmorBuff = 0.75f;
+    public float BladedBasicAttackBuff;
+    public float BladedArmorDebuff;
+    public float NonBladedBasicAttackDebuff;
+    public float NonBladedArmorBuff;
     public Effect_ChangeStat ArmorBuff;
     public Effect_ChangeStat ArmorDebuff;
 
@@ -16,7 +16,6 @@ public class Effect_BlademastersGarb : Effect {
         Listeners.Add(EventManager.StanceSwitched);
         Listeners.Add(EventManager.HitDealt);
         Listeners.Add(EventManager.ItemEquipped);
-        TriggersOncePerAbility = true;
     }
 
     public override void OnStart()
@@ -56,13 +55,13 @@ public class Effect_BlademastersGarb : Effect {
         Activate();
     }
 
-    public override void OnInvokeStanceSwitched()
+    public override void OnInvokeStanceSwitched(Type stance_switched_from, Type stance_switched_to)
     {
-        base.OnInvokeStanceSwitched();
+        base.OnInvokeStanceSwitched(stance_switched_from, stance_switched_to);
         Activate();
     }
 
-    public override void OnInvokeHitDealt(Damage damage)
+    public override void OnInvokeHitDealt(DamageInstance damage)
     {
         if(damage.SourceOfDamage.User != Player.Instance || damage.SourceOfDamage.IsNot(Ability.Property.BasicAttack)) {
             return;

@@ -19,14 +19,14 @@ public class NPCAbility_FlameCage : Ability {
     public override void CallAbilityEvent1()
     {
         _aoe = Utils.CreateAreaOfEffect(new(this), "FlameCage");
-        _aoe.GetComponentInParent<DestructibleEnvironment>().BaseHitPoints = 100 * Utils.GetExpectedPowerForLevel(User.Level);
-        _aoe.GetComponentInParent<DestructibleEnvironment>().HitPoints = 100 * Utils.GetExpectedPowerForLevel(User.Level);
+        _aoe.GetComponentInParent<DestructibleEnvironment>().BaseHitPoints = 100 * CombatMath.GetExpectedPowerForLevel(User.Level);
+        _aoe.GetComponentInParent<DestructibleEnvironment>().HitPoints = 100 * CombatMath.GetExpectedPowerForLevel(User.Level);
         _aoe.transform.parent.position = Target.transform.position;
         EventManager.OneSecondElapsedInGame.AddListener(ResetPotentialTargets);
         GameController.Instance.WaitAndRunMethod(20, new System.Action(() => { EventManager.OneSecondElapsedInGame.RemoveListener(ResetPotentialTargets); }));
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(12 * User.MagicStagger.Current / 100, new(this)));
     }

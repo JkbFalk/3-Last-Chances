@@ -10,8 +10,8 @@ public class Greatsword_Conviction : Item
         Set = ItemSetEnum.Mercenary;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
-        SetBaseWeaponStats(90, 150, 0.75f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("OnceEveryNSecondsPressingBlockGivesInvincible")};
+        SetBaseWeaponStats(9, 15, 0.75f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("BlockingGivesInvinciblePerCooldown")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("HeavyTechniqueDamage")};
     }
 }

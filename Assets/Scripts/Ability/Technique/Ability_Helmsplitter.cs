@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Ability_Helmsplitter : Technique
 {
+    public static float EnergyCost = 100;
+    public static float Cooldown = 180;
+    public static AbilityFamily Family = AbilityFamily.Molis;
     private static float _maxChargeTime = 6;
     private static float _healthBarrierScaling = 20;
     private static float _staggerBarBarrierScaling = 20;
@@ -23,10 +26,6 @@ public class Ability_Helmsplitter : Technique
     private bool _releasedAbilityButton = false;
     private Effect_ChangeStat _upgradeBBarrierBuff;
     private Effect_Unstunnable _upgradeBUnstunnable;
-    public static float EnergyCost = 100;
-    public static float Cooldown = 180;
-    public static AbilityFamily Family = AbilityFamily.Molis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.None;
 
     public Ability_Helmsplitter(Unit ability_user) : base(ability_user)
     {
@@ -92,7 +91,7 @@ public class Ability_Helmsplitter : Technique
         }
         if (Player.Instance.StaggerBar.Current + Player.Instance.StaggerBar.Maximum * _upgradeAStaggerBarPercentageConsumed / 100 > Player.Instance.StaggerBar.Maximum)
         {
-            staggerBarConsumed = Player.Instance.StaggerBar.Maximum - Player.Instance.StaggerBar.Current - 1;
+            staggerBarConsumed = Player.Instance.StaggerBar.Remaining - 1;
             Player.Instance.StaggerBar.Current = Player.Instance.StaggerBar.Maximum - 1;
         }
         else
@@ -103,7 +102,7 @@ public class Ability_Helmsplitter : Technique
         Player.Instance.AddEffect(new Effect_Barrier((healthConsumed + staggerBarConsumed) * _upgradeABarrierGainedPer1HealthOrStaggerBarConsumed / 10, new(this)));
     }
 
-    private void PreventDamageAndAddBarrier(Damage damage)
+    private void PreventDamageAndAddBarrier(DamageInstance damage)
     {
         Effect_Barrier barrier = (Effect_Barrier)Player.Instance.GetEffect(typeof(Effect_Barrier));
         if (barrier != null)
@@ -114,7 +113,7 @@ public class Ability_Helmsplitter : Technique
         damage.Stagger = 0;
     }
 
-    private void AddProne(Damage damage)
+    private void AddProne(DamageInstance damage)
     {
         if (damage.TargetOfDamage == Player.Instance && !_proneAppliedToUnits.Contains(damage.SourceOfDamage.User))
         {
@@ -190,7 +189,7 @@ public class Ability_Helmsplitter : Technique
         Player.Instance.PlayAnimation("Helmsplitter", 0.02f, 0.79f);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

@@ -9,6 +9,6 @@ public class Boots_Arbiter : Item
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Boots;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("EnemiesRegainStaggerBarXPercentSlower")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggerBar")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToAboveHalfStaggerBar")};
     }
 }

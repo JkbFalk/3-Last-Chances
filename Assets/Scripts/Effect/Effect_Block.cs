@@ -8,7 +8,7 @@ public class Effect_Block : Effect {
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage) {
         if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfInteractsWithCounters() == false) {
             return;
         }
@@ -29,13 +29,13 @@ public class Effect_Block : Effect {
         }
     }
 
-    private void HandleStoryModeBlock(Damage damage)
+    private void HandleStoryModeBlock(DamageInstance damage)
     {
-        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && (damage.SourceOfDamage.Is(Ability.Property.Counter)))
+        if (CombatMath.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && (damage.SourceOfDamage.Is(Ability.Property.Counter)))
         {
             PerformRiposteCounter(damage);
         }
-        else if(Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && Player.Instance.IsPerfectlyBlocking && (damage.DamagingObject == null || damage.DamagingObject.CanBeRiposted))
+        else if(CombatMath.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && Player.Instance.IsPerfectlyBlocking && (damage.DamagingObject == null || damage.DamagingObject.CanBeRiposted))
         {
             PerformRiposte(damage);
         }
@@ -45,13 +45,13 @@ public class Effect_Block : Effect {
         }
     }
 
-    private void HandleBlock(Damage damage)
+    private void HandleBlock(DamageInstance damage)
     {
-        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && ((damage.SourceOfDamage.Is(Ability.Property.CounteredByBlock) || (Player.Instance.IsPerfectlyBlocking && damage.SourceOfDamage.Is(Ability.Property.CounteredByRiposte)))))
+        if (CombatMath.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && ((damage.SourceOfDamage.Is(Ability.Property.CounteredByBlock) || (Player.Instance.IsPerfectlyBlocking && damage.SourceOfDamage.Is(Ability.Property.CounteredByRiposte)))))
         {
             PerformRiposteCounter(damage);
         }
-        else if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && Player.Instance.IsPerfectlyBlocking && !damage.SourceOfDamage.Is(Ability.Property.Counter) && (damage.DamagingObject == null || damage.DamagingObject.CanBeRiposted))
+        else if (CombatMath.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && Player.Instance.IsPerfectlyBlocking && !damage.SourceOfDamage.Is(Ability.Property.Counter) && (damage.DamagingObject == null || damage.DamagingObject.CanBeRiposted))
         {
             PerformRiposte(damage);
         }
@@ -69,7 +69,7 @@ public class Effect_Block : Effect {
         }
     }
 
-    private void PerformRiposteCounter(Damage damage) {
+    private void PerformRiposteCounter(DamageInstance damage) {
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Steel/SteelSuperCollision" + UnityEngine.Random.Range(1, 3), 0.65f);
         Vector2 inFrontOfPlayer = Player.Instance.Actions.IsFlipped ? Player.Instance.transform.position + Vector3.left : Player.Instance.transform.position + Vector3.right;
         Utils.CreateVisualEffect(SourceOfEffect, "Counter", inFrontOfPlayer.x, inFrontOfPlayer.y);
@@ -78,7 +78,11 @@ public class Effect_Block : Effect {
         damage.DamageWasBlocked = true;
         damage.Injury = 0;
         damage.Stagger = 0;
-        Type riposteType = System.Type.GetType(UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_RiposteCounter");
+        Type riposteType = AbilityTypeRegistry.GetRiposteCounter(UnitCreatingTheEffect.CurrentWeaponClass);
+        if (riposteType == null)
+        {
+            return;
+        }
         int variant = UnityEngine.Random.Range(1, 4);
         Counter counter = (Counter)Activator.CreateInstance(riposteType, new object[] { UnitCreatingTheEffect });
         counter.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_RiposteCounter" + variant;
@@ -94,7 +98,7 @@ public class Effect_Block : Effect {
         damage.SourceOfDamage.User.AddEffect(new Effect_RiposteCountered(SourceOfEffect) {NameOfAnimationToAutoPlay = "RiposteCountered" + variant}, 4f);
         damage.SourceOfDamage.User.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
         GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, damage.SourceOfDamage.User);
-        new Damage(damage.SourceOfDamage.User, counter, null)
+        new DamageInstance(damage.SourceOfDamage.User, counter, null)
             .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageType)
             .CalculateAndApplyDamage();
         if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player) {
@@ -106,7 +110,7 @@ public class Effect_Block : Effect {
         EndThisEffect();
     }
 
-    private void PerformRiposte(Damage damage) {
+    private void PerformRiposte(DamageInstance damage) {
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Steel/SteelCollision" + UnityEngine.Random.Range(1, 4), 0.4f);
         Vector2 inFrontOfPlayer = Player.Instance.Actions.IsFlipped ? Player.Instance.transform.position + Vector3.left : Player.Instance.transform.position + Vector3.right;
         Utils.CreateVisualEffect(SourceOfEffect, "Riposte", inFrontOfPlayer.x, inFrontOfPlayer.y);
@@ -115,7 +119,11 @@ public class Effect_Block : Effect {
         damage.DamageWasBlocked = true;
         damage.Injury = 0;
         damage.Stagger = 0;
-        Type riposteType = System.Type.GetType(UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_Riposte");
+        Type riposteType = AbilityTypeRegistry.GetRiposte(UnitCreatingTheEffect.CurrentWeaponClass);
+        if (riposteType == null)
+        {
+            return;
+        }
         int variant = UnityEngine.Random.Range(1, 6);
         Riposte riposte = (Riposte)Activator.CreateInstance(riposteType, new object[] { UnitCreatingTheEffect });
         riposte.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_Riposte" + variant;
@@ -136,7 +144,7 @@ public class Effect_Block : Effect {
             damage.SourceOfDamage.User.AddEffect(new Effect_Riposted(SourceOfEffect) {NameOfAnimationToAutoPlay = "Riposted" + variant}, 3f);
             damage.SourceOfDamage.User.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
             GameController.Instance.WaitAndRunMethod(0.5f, AdjustRemainingRipostedAnimation, damage.SourceOfDamage.User);
-            new Damage(damage.SourceOfDamage.User, riposte, null)
+            new DamageInstance(damage.SourceOfDamage.User, riposte, null)
                 .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_RIPOSTE, UnitCreatingTheEffect.CurrentWeaponDamageType)
                 .CalculateAndApplyDamage();
         }
@@ -157,14 +165,12 @@ public class Effect_Block : Effect {
         unit.Animator.SetFloat("Special Animation Speed", (3f - (3f * unit.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime)) / riposted.RemainingDuration);
     }
 
-    private void PerformBlock(Damage damage) {
+    private void PerformBlock(DamageInstance damage) {
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Steel/SteelBlock" + UnityEngine.Random.Range(1, 11), 0.4f);
         Vector2 inFrontOfPlayer = Player.Instance.Actions.IsFlipped ? Player.Instance.transform.position + (Vector3.left / 2) : Player.Instance.transform.position + (Vector3.right / 2);
         Utils.CreateVisualEffect(SourceOfEffect, "Block", inFrontOfPlayer.x, inFrontOfPlayer.y);
-        damage.DamageWasBlocked = true;
         damage.SourceOfDamage.UpdateAffectedEnemyList(UnitCreatingTheEffect, damage.DamagingObject);
         if(!damage.TargetOfDamage.IsStaggered) {
-
             damage.Stagger = SaveFile.Instance.DifficultyLevel > 1 ? (damage.Injury * 0.15f + damage.Stagger * 0.6f) : (damage.Injury * 0.1f + damage.Stagger * 0.2f) ;
             damage.Injury = 0;
         }

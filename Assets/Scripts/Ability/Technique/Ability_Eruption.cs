@@ -7,7 +7,7 @@ public class Ability_Eruption : Technique
 {
     public static float EnergyCost = 80;
     public static float Cooldown = 120;
-
+    public static AbilityFamily Family = AbilityFamily.Ignis;
     private GameObject _aoe;
     private int _ultimateExplosionCounter = 0;
     private int _circleCounter = 1;
@@ -20,8 +20,6 @@ public class Ability_Eruption : Technique
     public static float MasteryBBarrierScaling = 100;
     public static float MasteryAProneApplied = 20;
 
-    public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
 
     public Ability_Eruption(Unit ability_user) : base(ability_user)
     {
@@ -100,7 +98,7 @@ public class Ability_Eruption : Technique
         return new List<string> {((Player.Instance.MagicStagger.Current + Player.Instance.HeavyStagger.Current) * MasteryBBarrierScaling / 100).ToString(), MasteryBBarrierScaling.ToString() };
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if (Is(Property.Ultimate)) {
             damage.TargetOfDamage.AddEffect(new Effect_Burn(Player.Instance.MagicStagger.Current * MagicStaggerBurnScalingUltimate / 100, new(this)));

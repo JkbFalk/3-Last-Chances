@@ -9,7 +9,7 @@ public class Gloves_Ancient : Item
     {
         Set = ItemSetEnum.Ancient;
         Type = Constants.ItemType.Gloves;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientGloves")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGain")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientGloves", 0.2f), new ItemEffect("EnergyGain", 0.8f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StaggerBar")};
     }
 }

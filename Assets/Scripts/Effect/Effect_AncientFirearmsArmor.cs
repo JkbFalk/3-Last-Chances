@@ -49,7 +49,7 @@ public class Effect_AncientFirearmsArmor : Effect {
         if(SaveFile.Instance.EquippedBoots is Boots_Ancient) {
             ancientCount++;
         }
-        ArmorBuff = new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {PercentageAmount = FirstParameter * ancientCount};
+        ArmorBuff = new Effect_ChangeStat(Player.Instance.Armor, SourceOfEffect) {FlatAmount = FlatAmount * ancientCount};
         Player.Instance.AddEffect(ArmorBuff);
     }
 }

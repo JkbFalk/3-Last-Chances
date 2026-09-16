@@ -9,9 +9,7 @@ public class Ability_HeavySlash : Technique
 {
     public static float EnergyCost = 30;
     public static float Cooldown = 40;
-
     public static AbilityFamily Family = AbilityFamily.Ignis;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Heavy;
 
     private bool _canFinishAbility = false;
     private bool _buttonWasReleased = false;
@@ -227,7 +225,7 @@ public class Ability_HeavySlash : Technique
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Flinching(new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

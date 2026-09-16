@@ -19,16 +19,20 @@ public class Effect_Backstep : Effect {
         TargetOfEffect.SpriteRenderers["Lower Body"].Bone.Find("Backstep Hitbox").gameObject.SetActive(false);
     }
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage) {
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage) {
         if(damage.TargetOfDamage != TargetOfEffect || damage.CheckIfInteractsWithCounters() == false) {
             return;
         }
-        if (Utils.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && (damage.SourceOfDamage.Is(Ability.Property.CounteredByBackstep) || (SaveFile.Instance.DifficultyLevel == 0 && damage.SourceOfDamage.Is(Ability.Property.Counter)))) {
+        if (CombatMath.CheckIfPlayerIsFacingUnit(damage.SourceOfDamage.User) && (damage.SourceOfDamage.Is(Ability.Property.CounteredByBackstep) || (SaveFile.Instance.DifficultyLevel == 0 && damage.SourceOfDamage.Is(Ability.Property.Counter)))) {
             damage.DamageWasRiposted = true;
             damage.DamageWasBlocked = true;
             damage.Injury = 0;
             damage.Stagger = 0;
-            Type roll_counter_type = System.Type.GetType(UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_BackstepCounter");
+            Type roll_counter_type = AbilityTypeRegistry.GetBackstepCounter(UnitCreatingTheEffect.CurrentWeaponClass);
+            if (roll_counter_type == null)
+            {
+                return;
+            }
             int variant = UnityEngine.Random.Range(1, 4);
             Counter roll_counter = (Counter)Activator.CreateInstance(roll_counter_type, new object[] { UnitCreatingTheEffect });
             roll_counter.NameOfAnimationToAutoPlay = UnitCreatingTheEffect.CurrentWeaponClass.ToString() + "_BackstepCounter" + variant;
@@ -43,7 +47,7 @@ public class Effect_Backstep : Effect {
             damage.SourceOfDamage.User.AddEffect(new Effect_BackstepCountered(SourceOfEffect) {NameOfAnimationToAutoPlay = "BackstepCountered" + variant}, 4f);
             damage.SourceOfDamage.User.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
             GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, damage.SourceOfDamage.User);
-            new Damage(damage.SourceOfDamage.User, roll_counter, null)
+            new DamageInstance(damage.SourceOfDamage.User, roll_counter, null)
                 .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_COUNTER, UnitCreatingTheEffect.CurrentWeaponDamageType)
                 .CalculateAndApplyDamage();
             if (damage.SourceOfDamage.User is Player || damage.TargetOfDamage is Player) {

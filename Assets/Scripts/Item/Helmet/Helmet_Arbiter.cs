@@ -9,8 +9,8 @@ public class Helmet_Arbiter : Item
     {
         Set = ItemSetEnum.Arbiter;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertAllInjuryToStaggerAgainstNonStaggered")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DamageToStaggered")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertInjuryToStaggerAgainstNonStaggered")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("InjuryToNonStaggered")};
     }
 }
 

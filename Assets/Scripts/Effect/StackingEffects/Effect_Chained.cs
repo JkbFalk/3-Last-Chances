@@ -15,11 +15,11 @@ public class Effect_Chained : Effect
         Type = EffectType.Buff;
         _initialDecayingAmount = chained;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
         foreach(Effect e in new List<Effect>{DamageBuff, EnergyGainDebuff, ArmorDebuff, AttackSpeedDebuff}) {

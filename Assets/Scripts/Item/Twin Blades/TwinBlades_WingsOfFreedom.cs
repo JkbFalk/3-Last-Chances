@@ -10,7 +10,7 @@ public class TwinBlades_WingsOfFreedom : Item
         Set = ItemSetEnum.Jailer;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
-        SetBaseWeaponStats(110, 40, 1.2f);
+        SetBaseWeaponStats(11, 4, 1.2f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertChainedIntoHealth")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("ConvertedChainedGeneratesBarrier")};
     }

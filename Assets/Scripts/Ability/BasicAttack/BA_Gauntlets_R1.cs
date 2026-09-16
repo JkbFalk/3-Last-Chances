@@ -35,7 +35,7 @@ public class BA_Gauntlets_R1 : BasicAttack {
         }
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         base.ExtraBehaviourOnHit(damage);
         if (damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_ProneToKnockout)))

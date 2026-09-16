@@ -10,7 +10,7 @@ public class Boots_Alacrity : Item
     {
         Set = ItemSetEnum.Alacrity;
         Type = Constants.ItemType.Boots;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DodgingDamageAppliesProne")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DodgingDamageGivesAlacrity")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncreaseInvincibilityTimeOfDodge")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("DodgingDamageAppliesProne")};
     }
 }

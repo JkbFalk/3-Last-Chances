@@ -6,13 +6,19 @@ using static Unit;
 public class UnitColorChange : MonoBehaviour {
     public Color SpecialSkinColor;
     public Color Skin;
+    [Range(0f, 1.0f)]
     public float SkinBorder1 = 0.4f;
+    [Range(0f, 1.0f)]
     public float SkinBorder2 = 0.8f;
     public Color Hair;
+    [Range(0f, 1.0f)]
     public float HairBorder1 = 0.4f;
+    [Range(0f, 1.0f)]
     public float HairBorder2 = 0.8f;
     public Color Eye;
+    [Range(0f, 1.0f)]
     public float EyeBorder1 = 0.4f;
+    [Range(0f, 1.0f)]
     public float EyeBorder2 = 0.8f;
 
     private Unit _unit;

@@ -44,6 +44,6 @@ public class AttackSpeed : Stat {
 
     public override void UpdateMenuStatDisplayValue()
     {
-        MenuStatDisplay.text = Utils.GetFormattedFloat(Current, 2) + " (" + Utils.GetFormattedFloat(Base, 2) + ")";
+        MenuStatDisplay.text = Utils.GetFormattedFloat(Current, 1) + " (" + Utils.GetFormattedFloat(Base, 1) + ")";
     }
 }

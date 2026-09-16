@@ -9,7 +9,12 @@ public class AddEffect : MonoBehaviour
     void Start()
     {
         Unit unit = GetComponent<Unit>();
-        Effect effect = (Effect)Activator.CreateInstance(Type.GetType("Effect_" + EffectTypeName.Replace("Effect_", "")), new object[] {new SourceOfEffect(GetComponent<Unit>())});
+        Type effectType = AbilityTypeRegistry.GetRequiredByName("Effect_" + EffectTypeName.Replace("Effect_", ""));
+        if (effectType == null)
+        {
+            return;
+        }
+        Effect effect = (Effect)Activator.CreateInstance(effectType, new object[] {new SourceOfEffect(GetComponent<Unit>())});
         unit.AddEffect(effect);
         if(effect.AutoPlayEffectAnimation) {
             unit.EffectAnimationBeingPlayed = effect;

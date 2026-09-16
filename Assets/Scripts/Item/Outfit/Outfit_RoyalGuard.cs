@@ -9,7 +9,7 @@ public class Outfit_RoyalGuard : Item
     {
         Set = ItemSetEnum.RoyalGuard;
         Type = Constants.ItemType.Outfit;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("GainArmorBasedOnAnalysisAmount")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("AnalysisAmount", 0.5f), new ItemEffect("AnalysisDecay", 0.5f)};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("MagicTechniquesEmpowerWeaponTechniquesAndViceVersa")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("TechniqueDamage")};
     }
 }

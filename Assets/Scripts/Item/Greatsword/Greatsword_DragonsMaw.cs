@@ -11,7 +11,7 @@ public class Greatsword_DragonsMaw : Item
         Set = ItemSetEnum.BattleBorn;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
-        SetBaseWeaponStats(100, 160, 0.7f);
+        SetBaseWeaponStats(10, 16, 0.7f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("HeavyDamageAppliesBurn", 0.8f), new ItemEffect("BlazingShadowWatchesYourBack", 0.2f)};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("BurnAmountWhileBelowNHealth")};
     }

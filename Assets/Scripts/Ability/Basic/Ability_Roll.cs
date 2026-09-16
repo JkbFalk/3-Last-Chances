@@ -26,15 +26,15 @@ public class Ability_Roll : Ability_Dodge {
         if(freeze != null) {
             freeze.ChangeDecayingAmount(-freeze.DecayingAmount / 5);
         }
-        Effect incision = User.GetEffect(typeof(Effect_Incision));
-        if(incision != null) {
-            incision.ChangeDecayingAmount(incision.DecayingAmount / 10);
+        Effect Bleed = User.GetEffect(typeof(Effect_Bleed));
+        if(Bleed != null) {
+            Bleed.ChangeDecayingAmount(Bleed.DecayingAmount / 10);
         }
         if (Direction == Vector2.right || Direction == Vector2.left) {
-            Player.Instance.AddEffect(new Effect_RollForward(new(this)), UntargetabilityDurationInSeconds);
+            Player.Instance.AddEffect(new Effect_RollForward(new(this)), UntargetabilityDurationInSeconds * (Player.Instance.CheckIfUnderEffectWithGivenId("IncreaseInvincibilityTimeOfDodge") ? Player.Instance.GetEffectWithGivenId("IncreaseInvincibilityTimeOfDodge").PercentageAmount : 1));
         }
         else {
-            Player.Instance.AddEffect(new Effect_RollSideways(new(this)), UntargetabilityDurationInSeconds);
+            Player.Instance.AddEffect(new Effect_RollSideways(new(this)), UntargetabilityDurationInSeconds * (Player.Instance.CheckIfUnderEffectWithGivenId("IncreaseInvincibilityTimeOfDodge") ? Player.Instance.GetEffectWithGivenId("IncreaseInvincibilityTimeOfDodge").PercentageAmount : 1));
         }
     }
 

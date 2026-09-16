@@ -64,7 +64,7 @@ public class NPCAbility_FlameWhip : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         EnemyHit = damage.TargetOfDamage;
         Utils.PlaySoundEffect(damage.TargetOfDamage.AudioSource, "Impact/Whip1", 0.9f);

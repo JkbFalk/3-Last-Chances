@@ -10,6 +10,6 @@ public class Boots_RoyalGuard : Item
         Set = ItemSetEnum.RoyalGuard;
         Type = Constants.ItemType.Boots;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncreaseWeaponDamageByPortionOfMagicDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttackDamage")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("WeaponDamage")};
     }
 }

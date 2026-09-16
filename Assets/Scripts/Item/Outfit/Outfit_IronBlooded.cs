@@ -10,6 +10,6 @@ public class Outfit_IronBlooded : Item
         Set = ItemSetEnum.IronBlooded;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReflectInjuryTakenBackAtAttacker")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatHealth", 0.5f), new ItemEffect("Health", 0.5f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ConvertHealthToInjury")};
     }
 }

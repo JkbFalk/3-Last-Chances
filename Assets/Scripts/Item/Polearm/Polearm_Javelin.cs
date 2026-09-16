@@ -8,8 +8,8 @@ public class Polearm_Javelin : Item
     {
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
-        SetBaseWeaponStats(110, 80, 0.95f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReplaceAllBasicAttacksWithThrowAndIncreaseDamage")};
+        SetBaseWeaponStats(11, 8, 0.95f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ReplaceAllBasicAttacksWithThrowAndIncreaseInjury")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("StrongBasicAttackDamage")};
     }
 }

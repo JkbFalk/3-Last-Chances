@@ -25,12 +25,12 @@ public class NPCAbility_ThunderStep : Ability {
         Utils.CreateVisualEffect(new(this), "Ryker_ThunderStep_Blast");
         Utils.CreateAreaOfEffect(new(this), "Ryker_ThunderStep", User.transform.position.x, User.transform.position.y);
         ObjectsToDestroyOnceAbilityEnds.Add(Utils.CreateVisualEffect(new(this), "Ryker_ThunderStep_Trail").GetComponent<TemporaryObject>());
-        Damage self_damage = new Damage(User, this, null).SetDamageSource(User.Health.Current * 0.25f, (User.StaggerBar.Maximum - User.StaggerBar.Current) * 0.25f, Constants.DamageType.Magic);
+        DamageInstance self_damage = new DamageInstance(User, this, null).SetDamageSource(User.Health.Current * 0.25f, User.StaggerBar.Remaining * 0.25f, Constants.DamageType.Magic);
         self_damage.PlaySoundOnEnemyHit = false;
         self_damage.CalculateAndApplyDamage();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         GameObject vfx = Utils.CreateVisualEffect(new(this), "Ryker_ThunderStep_Impact");
         vfx.transform.position = damage.TargetOfDamage.transform.position;

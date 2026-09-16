@@ -13,7 +13,7 @@ public class Effect_BlazingShadowWatchesYourBack : Effect
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void OnInvokeHitDealt(Damage damage)
+    public override void OnInvokeHitDealt(DamageInstance damage)
     {
         if(damage.TargetOfDamage != TargetOfEffect || TargetOfEffect.CheckIfEffectIsOnCooldown(typeof(Effect_BlazingShadowWatchesYourBack))) {
             return;
@@ -28,7 +28,7 @@ public class Effect_BlazingShadowWatchesYourBack : Effect
             Utils.PlaySoundEffect(Player.Instance.AudioSource, "Fire/Fire11", 0.5f);
             GameObject vfx = Utils.CreateVisualEffect(SourceOfEffect, "BlazingShadowRetaliation", Player.Instance.transform.position.x, Player.Instance.transform.position.y);
             damage.SourceOfDamage.User.AddEffect(new Effect_Burn(BurnScalingInflictedToBackstabbers, SourceOfEffect));
-            vfx.transform.eulerAngles = new Vector3(0, Player.Instance.Actions.IsFlipped ? 0 : 180, 0);
+            Utils.Apply2DFlip(vfx, Player.Instance.Actions.IsFlipped);
             TargetOfEffect.AddCooldown(this, 10);
             base.OnInvokeHitDealt(damage);
         }

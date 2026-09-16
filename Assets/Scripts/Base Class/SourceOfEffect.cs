@@ -9,6 +9,7 @@ public class SourceOfEffect
     public Item SourceItem;
     public Ability SourceAbility;
     public string SourcePassivePowerUp;
+    public Effect SourceEffect;
     public SourceOfEffect(string passive_power_up)
     {
         SourcePassivePowerUp = passive_power_up;
@@ -24,6 +25,10 @@ public class SourceOfEffect
     public SourceOfEffect(Ability ability)
     {
         SourceAbility = ability;
+    }
+    public SourceOfEffect(Effect effect)
+    {
+        SourceEffect = effect;
     }
 
     public Unit Target
@@ -45,6 +50,10 @@ public class SourceOfEffect
             else if (SourceAbility != null)
             {
                 return SourceAbility.Target != null ? SourceAbility.Target : SourceAbility.User.CurrentTarget != null ? SourceAbility.User.CurrentTarget : SourceAbility.User.GetClosestValidTarget();
+            }
+            else if (SourceEffect != null)
+            {
+                return SourceEffect.TargetOfEffect;
             }
             else
             {
@@ -72,6 +81,10 @@ public class SourceOfEffect
             else if (SourceAbility != null)
             {
                 return SourceAbility.User;
+            }
+            else if (SourceEffect != null)
+            {
+                return SourceEffect.SourceOfEffect.User;
             }
             else
             {

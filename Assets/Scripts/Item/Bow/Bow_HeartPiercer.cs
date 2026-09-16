@@ -10,8 +10,8 @@ public class Bow_HeartPiercer : Item
         Set = ItemSetEnum.Executioner;
         Type = Constants.ItemType.Ranged;
         WeaponClass = Constants.WeaponClass.Bow;
-        SetBaseWeaponStats(80, 160, 0.6f);
+        SetBaseWeaponStats(8, 16, 0.6f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("OnSwitchingToThisWeaponSpawnMarkerThatDealsInjuryOnHit")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Injury")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("RangedInjury")};
     }
 }

@@ -14,7 +14,7 @@ public class NPCAbility_ChargedPunch : Ability {
         WaitTimeBeforeNextAction = 0.4f;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));
     }

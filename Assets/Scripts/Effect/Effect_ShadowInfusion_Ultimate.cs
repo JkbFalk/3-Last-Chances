@@ -58,7 +58,7 @@ public class Effect_ShadowInfusion_Ultimate : Effect {
     }
 
 
-    public override void OnInvokeAfterHitDamageCalculation(Damage damage)
+    public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
     {
         if (damage.SourceOfDamage.User == TargetOfEffect && CheckIfAbilityIsValidForSuperCharge(damage.SourceOfDamage)) {
             damage.Stagger += ExtraStagger;

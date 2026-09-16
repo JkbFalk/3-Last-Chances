@@ -15,7 +15,7 @@ public class NPCAbility_FireShot : Ability {
         GameObject vfx = Utils.CreateVisualEffect(new(this), "CannonBallExplosion", User.ProjectileSpawnLocation.transform.position.x, User.ProjectileSpawnLocation.transform.position.y);
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(50 * User.MagicStagger.Current / 100, new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

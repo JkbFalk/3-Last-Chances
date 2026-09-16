@@ -38,7 +38,7 @@ public class NPCAbility_QuickLeftAndRightDown : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         User.AddEffect(new Effect_Acceleration(20, new(this)));

@@ -14,7 +14,7 @@ public class AI_Escape : AI {
             User.UnitAI.CurrentDirectionType = UnitAI.DirectionType.FaceDirectionOfCurrentMovement;
             if (target != null)
             {
-                Vector2 escapePosition = Utils.GetPositionGivenDistanceAwayBasedOnTwoPoints(target.transform.position, User.transform.position, UnityEngine.Random.Range(10, 13));
+                Vector2 escapePosition = CombatMath.GetPositionGivenDistanceAwayBasedOnTwoPoints(target.transform.position, User.transform.position, UnityEngine.Random.Range(10, 13));
                 if (NavMesh.SamplePosition(escapePosition, out NavMeshHit escapePositionHit, 10f, NavMesh.AllAreas))
                 {
                     if(User.UnitAI.MaxMoveRange != null && !User.UnitAI.MaxMoveRange.bounds.Contains(escapePosition) && User.UnitAI.NavMeshAgent.isOnNavMesh) {

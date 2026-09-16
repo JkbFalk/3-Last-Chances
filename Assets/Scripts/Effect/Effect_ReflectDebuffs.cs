@@ -11,7 +11,6 @@ public class Effect_ReflectDebuffs : Effect
         ReflectionEffectivness = reflect_effectivness;
         Type = EffectType.Buff;
         Listeners.Add(EventManager.EffectStarted);
-        TriggersOncePerAbility = true;
     }
 
     /*public override void OnEffectValueChanged()

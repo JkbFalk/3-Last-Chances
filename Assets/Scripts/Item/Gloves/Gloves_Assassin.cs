@@ -9,7 +9,7 @@ public class Gloves_Assassin : Item
     {
         Set = ItemSetEnum.Assassin;
         Type = Constants.ItemType.Gloves;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("EnterStealthUponFallingBelow25PHealth")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Health")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("DamageWhileStealthed")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("StealthDuration")};
     }
 }

@@ -9,7 +9,7 @@ public class Ability_SentientShadow : Technique
 {
     public static float EnergyCost = 15;
     public static float Cooldown = 10;
-
+    public static AbilityFamily Family = AbilityFamily.Salutis;
     private Projectile _hook;
     private GameObject _tether;
     private static float _rangeInMeters = 10;
@@ -20,15 +20,6 @@ public class Ability_SentientShadow : Technique
     private static float _upgradeBSpeedPercentage = 150;
     private static float _ultimateInjuryScaling = 200;
     private static float _ultimateStunDuration = 6;
-
-    public static AbilityFamily Family = AbilityFamily.Salutis;
-    public static Constants.DamageType TechniqueDamageType
-    {
-        get
-        {
-            return Constants.DamageType.None;
-        }
-    }
 
     public static bool CanBeUsedDuringOtherAbilities
     {
@@ -172,16 +163,16 @@ public class Ability_SentientShadow : Technique
         GameObject vfx = Utils.CreateVisualEffect(new(_hook.SourceAbility), "WallHit", _hook.transform.position.x, _hook.transform.position.y);
         vfx.transform.up = _hook.transform.up * -1;
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Steel/WallHit" + UnityEngine.Random.Range(1, 4), 0.25f);
-        if (Is(Property.UpgradeB) && Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Identifier == "SentientShadow_UpgradeB") == null)
+        if (Is(Property.UpgradeB) && Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Id == "SentientShadow_UpgradeB") == null)
         {
-            Player.Instance.AddCooldown(new Cooldown(typeof(Effect_Description), _upgradeBCooldown, Player.Instance, "SentientShadow_UpgradeB") { PathToCooldownGraphic = "Ability/SentientShadow", ShowsInUI = true });
-            Player.Instance.AddEffect(new Effect_Description(new(this)) { Identifier = "SentientShadow_UpgradeB", ShowsInUI = true, PathToUIGraphic = "Ability/SentientShadow" }, 5);
+            Player.Instance.AddCooldown(new Cooldown(typeof(Effect_Id), _upgradeBCooldown, Player.Instance, "SentientShadow_UpgradeB") { PathToCooldownGraphic = "Ability/SentientShadow", ShowsInUI = true });
+            Player.Instance.AddEffect(new Effect_Id("SentientShadow_UpgradeB", new(this)) { ShowsInUI = true, PathToUIGraphic = "Ability/SentientShadow" }, 5);
             Cooldown cd = Player.Instance.TechniqueCooldowns.FirstOrDefault(cd => cd.Type == GetType());
             cd.EndThisCooldown();
         }
-        else if (Is(Property.UpgradeB) && Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Identifier == "SentientShadow_UpgradeB")) != null)
+        else if (Is(Property.UpgradeB) && Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Id == "SentientShadow_UpgradeB")) != null)
         {
-            Effect e = Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Identifier == "SentientShadow_UpgradeB"));
+            Effect e = Player.Instance.GetEffect(new System.Func<Effect, bool>(effect => effect.Id == "SentientShadow_UpgradeB"));
             e.EndThisEffect();
             Cooldown cd = Player.Instance.TechniqueCooldowns.FirstOrDefault(cd => cd.Type == GetType());
             cd.EndThisCooldown();
@@ -189,7 +180,7 @@ public class Ability_SentientShadow : Technique
         HandleHookHit();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), _stunDuration);
         HandleHookHit();
@@ -201,7 +192,7 @@ public class Ability_SentientShadow : Technique
 
     public void HandleHookHit()
     {
-        _hook.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        _hook.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
         Utils.PlaySoundEffect(_hook.GetComponent<AudioSource>(), "Hit/Rock_Hit3");
         Utils.PlaySoundEffect(Player.Instance.AudioSource, "Ability/RopePull");
         Player.Instance.PushIntoPositionOverTime(_hook.transform.position, _hook.SourceAbility, Is(Property.UpgradeB) ? 0.4f / (_upgradeBSpeedPercentage / 100) : 0.4f, Is(Property.UpgradeB) ? 1.75f : 1.25f);
@@ -255,7 +246,7 @@ public class Ability_SentientShadow : Technique
     private void UltimateHit()
     {
         PlayCustomSound("UltimateHit");
-        new Damage(Target, this, null) { AbilityDamageSource = new DamageSource(_ultimateInjuryScaling / 5, 0, Constants.DamageType.CurrentWeapon) }.CalculateAndApplyDamage();
+        new DamageInstance(Target, this, null) { AbilityDamageSource = new DamageSource(_ultimateInjuryScaling / 5, 0, Constants.DamageType.CurrentWeapon) }.CalculateAndApplyDamage();
         Target.AddEffect(new Effect_Stun(new(this)), _stunDuration / 5);
     }
 }

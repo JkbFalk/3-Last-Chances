@@ -10,8 +10,8 @@ public class Gauntlets_AshenDiscord : Item
         Set = ItemSetEnum.ShadowGifted;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.Gauntlets;
-        SetBaseWeaponStats(80, 80, 1.3f);
+        SetBaseWeaponStats(8, 8, 1.3f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("LightDamageConvertsAllFreezeIntoBurnOrBurnIntoFreeze")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Stagger")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightStagger")};
     }
 }

@@ -7,7 +7,7 @@ public class Effect_RedirectingProjectiles : Effect {
         Type = EffectType.Buff;
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         if (damage.TargetOfDamage == TargetOfEffect && damage.DamagingObject != null && (damage.DamagingObject is Projectile || damage.DamagingObject.GetType().IsSubclassOf(typeof(Projectile))) && damage.DamagingObject.CanBeRiposted) {
             damage.DestroyProjectileAfterDamageCalcuation = true;
             Utils.SendProjectileBackTowardsSource(damage, TargetOfEffect, SourceOfEffect.SourceAbility, true);

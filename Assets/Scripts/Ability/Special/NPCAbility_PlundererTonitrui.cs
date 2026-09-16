@@ -20,7 +20,7 @@ public class NPCAbility_PlundererTonitrui : Ability {
         User.Actions.FaceCurrentTarget();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 5);
     }

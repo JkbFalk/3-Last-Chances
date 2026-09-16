@@ -44,7 +44,7 @@ public class NPCAbility_FlameShove : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(2 * User.MagicStagger.Current / 100, new(this)));
     }

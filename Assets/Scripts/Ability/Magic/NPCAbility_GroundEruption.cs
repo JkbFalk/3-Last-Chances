@@ -33,7 +33,7 @@ public class NPCAbility_GroundEruption : Ability {
         _stunDuration = 4;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         if(damage.InjuryDealt > 0 && _stunDuration > 0)
         {

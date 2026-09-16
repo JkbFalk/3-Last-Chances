@@ -8,7 +8,6 @@ public class Ability_FlurryOfBlows : Technique
     public static float EnergyCost = 20;
     public static float Cooldown = 30;
     public static AbilityFamily Family = AbilityFamily.Tonitrui;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.Light;
 
     public Ability_FlurryOfBlows(Unit ability_user) : base(ability_user)
     {

@@ -6,7 +6,7 @@ public class Effect_Flinching : Effect_HardCrowdControl
     public Effect_Flinching(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         PriorityLevel = 6;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDuration;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.ExtendDuration;
         PathToUIGraphic = "Effect/Stun";
     }
 

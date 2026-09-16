@@ -9,8 +9,8 @@ public class Longblade_ArcaneSword : Item
         Set = ItemSetEnum.RoyalGuard;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Longblade;
-        SetBaseWeaponStats(135, 50, 1.1f);
+        SetBaseWeaponStats(13.5f, 5, 1.1f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("BasicAttacksDealIncreasedDamageBasedOnMagicDamage")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("HeavyAttackSpeed")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("MagicDamage")};
     }
 }

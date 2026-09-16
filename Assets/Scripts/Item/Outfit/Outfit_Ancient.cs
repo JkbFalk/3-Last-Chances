@@ -9,7 +9,7 @@ public class Outfit_Ancient : Item
     {
         Set = ItemSetEnum.Ancient;
         Type = Constants.ItemType.Outfit;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientArmor")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Armor")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("AncientArmor", 0.2f), new ItemEffect("Armor", 0.8f)};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Stagger")};
     }
 }

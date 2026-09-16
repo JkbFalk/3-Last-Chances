@@ -9,8 +9,8 @@ public class TwinBlades_Lifebringers : Item
         Set = ItemSetEnum.Survivor;
         Type = Constants.ItemType.Light;
         WeaponClass = Constants.WeaponClass.TwinBlades;
-        SetBaseWeaponStats(110, 40, 1.2f);
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("HealOnBasicAttacks")};
+        SetBaseWeaponStats(11, 4, 1.2f);
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("RestoreHealthWhenBasicAttacking")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("LightAttackSpeed")};
     }
 }

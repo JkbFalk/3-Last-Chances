@@ -34,7 +34,7 @@ public class Effect_AncientGreaves : Effect {
     }
 
     public void AddBuffs() {
-        AttackSpeedBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = FirstParameter};
+        AttackSpeedBuff = new Effect_ChangeCompositeStat(Player.Instance, Effect_ChangeCompositeStat.CompositeStat.AttackSpeed, SourceOfEffect) {PercentageModifier = PercentageAmount};
         Player.Instance.AddEffect(AttackSpeedBuff);
     }
 }

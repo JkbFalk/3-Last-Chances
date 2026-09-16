@@ -6,25 +6,19 @@ using UnityEngine;
 public class Effect_Burn : Effect
 {
     public GameObject Vfx;
-    public override int StackingEffectIntensityLevel {
-        get { 
-            return 
-            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 2.5f ? 1 :
-            DecayingAmount  < Utils.GetExpectedPowerForLevel(Player.Instance.Level) * 5 ? 2 : 3;
-        }
-    }
     public Effect_Burn(float decaying_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
         _initialDecayingAmount = decaying_amount;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
         Listeners.Add(EventManager.EffectStarted);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange()
+    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        StackingEffectIntensityLevel = DecayingAmount < TargetOfEffect.StaggerBar.Maximum * 0.1f ? 1 : DecayingAmount < TargetOfEffect.StaggerBar.Maximum * 0.25f ? 2 : 3;
         AddVisualEffect();
     }
 
@@ -66,9 +60,9 @@ public class Effect_Burn : Effect
 
     public override void OnInvokeEffectStarted(Effect effect) {
         if(effect.TargetOfEffect == TargetOfEffect && effect.GetType().IsSubclassOf(typeof(Effect_Staggered))) {
-            new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null) { 
+            new DamageInstance(TargetOfEffect, SourceOfEffect.SourceAbility, null) { 
                 AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None), 
-                Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.BurnExplosion }, 
+                Properties = new List<DamageInstance.DamageProperty> { DamageInstance.DamageProperty.Burn, DamageInstance.DamageProperty.BurnExplosion }, 
                 Injury = DecayingAmount * 15,
                 PlaySoundOnEnemyHit = false
             }.CalculateAndApplyDamage();
@@ -78,7 +72,14 @@ public class Effect_Burn : Effect
             float size = 0.7f + StackingEffectIntensityLevel * 0.25f;
             vfx.transform.localScale = new Vector2(size, size);
             base.OnInvokeEffectStarted(effect);
-            EndThisEffect();
+            if (Player.Instance?.CurrentStance?.StanceEffect is Stance_HeatOfBattle && SaveFile.Instance.ActiveUpgrades.Contains("Stance_HeatOfBattle3"))
+            {
+                DecayingAmount = DecayingAmount * Stance_HeatOfBattle.Upgrade3LeaveBehindBurnStacksPercentage / 100;
+            }
+            else
+            {
+                EndThisEffect();
+            }
         }
     }
 
@@ -88,10 +89,10 @@ public class Effect_Burn : Effect
         {
             return;
         }
-        new Damage(TargetOfEffect, SourceOfEffect.SourceAbility, null)
+        new DamageInstance(TargetOfEffect, SourceOfEffect.SourceAbility, null)
         {
             AbilityDamageSource = new Ability.DamageSource(0, 0, Constants.DamageType.None),
-            Properties = new List<Damage.DamageProperty> { Damage.DamageProperty.Burn, Damage.DamageProperty.DamageOverTime },
+            Properties = new List<DamageInstance.DamageProperty> { DamageInstance.DamageProperty.Burn, DamageInstance.DamageProperty.DamageOverTime },
             Stagger = DecayingAmount / 10,
             PlaySoundOnEnemyHit = false
         }.CalculateAndApplyDamage();

@@ -23,7 +23,7 @@ public class Effect_RykerPayback : Effect {
         EventManager.EffectStarted.RemoveListener(Activate);
     }
 
-    public override void OnInvokeDamageDealt(Damage damage)
+    public override void OnInvokeDamageDealt(DamageInstance damage)
     {
         if(damage.TargetOfDamage != TargetOfEffect) {
             return;

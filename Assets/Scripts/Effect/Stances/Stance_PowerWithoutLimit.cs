@@ -1,101 +1,125 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine;
-using UnityEngine.Events;
-using System;
 using System.Linq;
-using System.Reflection;
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Stance_PowerWithoutLimit : Effect_Stance
 {
-    private TextMeshProUGUI _amountDisplay;
-    public Effect_ChangeStat IncreasedMaxEnergy;
-    public Stance_PowerWithoutLimit(SourceOfEffect source_of_effect) : base(source_of_effect) {
-        IncreasedMaxEnergy = new Effect_ChangeStat(Player.Instance.Energy, SourceOfEffect);
-    }
-
     public static Ability.AbilityFamily Family = Ability.AbilityFamily.Proprius;
-
-    public override void OnStanceActivated()
+    public Dictionary<Ability, float> TechniquesAndTheirExtraMultiplier = new();
+    public static float DamageMultiplierPer100EnergySpent
     {
-        base.OnStanceActivated();
-        EventManager.AbilityEnergyConsumed.AddListener(OnInvokeAbilityEnergyConsumed);
-        EventManager.ExitCombat.AddListener(OnInvokeExitCombat);
-        EventManager.UnitStatCurrentAmountChanged.AddListener(OnInvokeUnitStatCurrentAmountChanged);
-        if(_amountDisplay != null) {
-            _amountDisplay.text = "";
-        }
-        if(UnlockedUpgrade3) {
-            if(_amountDisplay != null) {
-                _amountDisplay.text = Utils.GetFormattedFloat(Player.Instance.Energy.Maximum);
-            }
-        }
-        foreach(Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
-            ability.RefreshDisplayForEquippedAbility();
+        get
+        {
+            return EffectList.CalculatePB(StancePB, PB.DAMAGE_MULTIPLIER_PER_PB, new List<float> { PB.SPECIAL__CONSUMES_LEFTOVER_ENERGY_AND_TRANSFORM_INTO_MULTIPLIER });
         }
     }
-
-    public override void OnStanceDeactivated()
+    public static float Upgrade1PercentageOfMaxEnergyGainedPerCooldown
     {
-        base.OnStanceDeactivated();
-        Player.Instance.EndEffect(IncreasedMaxEnergy);
-        EventManager.AbilityEnergyConsumed.RemoveListener(OnInvokeAbilityEnergyConsumed);
-        EventManager.ExitCombat.RemoveListener(OnInvokeExitCombat);
-        EventManager.UnitStatCurrentAmountChanged.RemoveListener(OnInvokeUnitStatCurrentAmountChanged);
-    }
-
-    public override void CreateStanceDisplay() {
-        if(UnlockedUpgrade1 || UnlockedUpgrade3) {
-            base.CreateStanceDisplay();
-            _amountDisplay = Player.Instance.CurrentStanceGauge.transform.Find("Gauge/Amount").GetComponent<TextMeshProUGUI>();
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade1PB, PB.GAIN_FLAT_ENERGY_AFFECTED_BY_ENERGY_GAIN_PER_PB, new List<float> { PB.REQUIRES__5_SECOND_COOLDOWN, PB.HAPPENS_UPON__GAINING_ENEGY });
         }
     }
-
-
-    public override void OnInvokeAbilityEnergyConsumed(Ability ability, float energy) {
-        if(IsActive && UnlockedUpgrade2 && Player.Instance.Energy.Current > 0) {
-            if(ability.GetType().GetField("IsVariableEnergyTechnique", BindingFlags.Public | BindingFlags.Static) != null) {
-                Player.Instance.AddEffect(new Effect_CustomizableDamageChange(SourceOfEffect) { ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        (damage.SourceOfDamage == ability)),
-                    Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.InjuryDealtPercentageModifier += 200;
-                        damage.StaggerDealtPercentageModifier += 200;
-                    })});
-            }
-            else {
-                float energyConsumed = Player.Instance.Energy.Current;
-                Player.Instance.Energy.Current = 0;
-                Player.Instance.AddEffect(new Effect_CustomizableDamageChange(SourceOfEffect) { ConditionCheckOnHitDealt = new Func<Damage, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        (damage.SourceOfDamage == ability)),
-                    Action = new Action<Damage, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.InjuryDealtPercentageModifier = energyConsumed * 4;
-                        damage.StaggerDealtPercentageModifier = energyConsumed * 4;
-                    })});
-            }
-        }
-        if(IsActive && UnlockedUpgrade3) {
-                IncreasedMaxEnergy.FlatAmount += energy / 5f;
-                if(!IncreasedMaxEnergy.IsTurnedOn) {
-                    Player.Instance.AddEffect(IncreasedMaxEnergy);
-                }
-                _amountDisplay.text = Utils.GetFormattedFloat(Player.Instance.Energy.Maximum);
-        }
-    }
-
-    public override void OnInvokeUnitStatCurrentAmountChanged(Stat stat, float amount_changed)
+    public static float Upgrade2EnergyGainForEach100BelowMax
     {
-        if(UnlockedUpgrade1 && stat.Owner is Player && stat is Energy && amount_changed > 0 && Player.Instance.EffectCooldowns.FirstOrDefault(cd => cd.Type == GetType()) == null) {
-            Player.Instance.Energy.ChangeCurrentValueWithoutInvoking(Player.Instance.Energy.Maximum + Player.Instance.Energy.Maximum / 10);
-            Player.Instance.AddCooldown(new Cooldown(GetType(), 3, Player.Instance) {CooldownDisplay = _amountDisplay.transform.parent.Find("Cooldown").GetComponent<Image>()});
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade2PB, PB.ENERGY_GAIN_INCREASE_PER_PB, new List<float> { PB.SPECIAL__SCALES_WITH_MISSING_ENERGY });
+        }
+    }
+    public static float Upgrade3PercentageOfEnergySpentTransformedIntoMaxEnergy
+    {
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade3PB * 0.5f, PB.MAXIMUM_ENERGY_INCREASE_PER_PB, new List<float> { PB.REQUIRES__SPENDING_ENERGY, PB.SPECIAL__SCALES_WITH_ENERGY_SPENT });
+        }
+    }
+    public static float Upgrade3ExtraDamageMultiplierWhileAtMaxEnergy
+    {
+        get
+        {
+            return EffectList.CalculatePB(StanceUpgrade3PB * 0.5f, PB.DAMAGE_MULTIPLIER_PER_PB, new List<float> { PB.SPECIAL__CONSUMES_LEFTOVER_ENERGY_AND_TRANSFORM_INTO_MULTIPLIER, PB.REQUIRES__BEING_AT_FULL_ENERGY });
+        }
+    }
+    public static List<string> GetDescriptionValues()
+    {
+        return new List<string> { Utils.GetFormattedFloat(1 + DamageMultiplierPer100EnergySpent, 1) };
+    }
+
+    public static List<string> GetDescriptionUpgrade1Values()
+    {
+        return new List<string> { Utils.GetFormattedFloat(Upgrade1PercentageOfMaxEnergyGainedPerCooldown), "5" };
+    }
+
+    public static List<string> GetDescriptionUpgrade2Values()
+    {
+        return new List<string> { Utils.GetFormattedFloat(Upgrade2EnergyGainForEach100BelowMax) };
+    }
+
+    public static List<string> GetDescriptionUpgrade3Values()
+    {
+        return new List<string> { Utils.GetFormattedFloat(Upgrade3PercentageOfEnergySpentTransformedIntoMaxEnergy), Utils.GetFormattedFloat(1 + DamageMultiplierPer100EnergySpent + Upgrade3ExtraDamageMultiplierWhileAtMaxEnergy, 1) };
+    }
+
+    public Stance_PowerWithoutLimit(SourceOfEffect source_of_effect) : base(source_of_effect)
+    {
+        Listeners = new List<UnityEventBase> { EventManager.AbilityEnergyConsumed, EventManager.HitDealt, EventManager.UnitStatCurrentAmountChanged, EventManager.ExitCombat };
+    }
+
+    public override void OnInvokeAbilityEnergyConsumed(Ability ability, float amount, bool was_full_energy)
+    {
+        base.OnInvokeAbilityEnergyConsumed(ability, amount, was_full_energy);
+        if (IsActive && amount > 0)
+        {
+            if (UnlockedUpgrade3 && was_full_energy)
+            {
+                TechniquesAndTheirExtraMultiplier.Add(ability, Player.Instance.Energy.Current * Upgrade3ExtraDamageMultiplierWhileAtMaxEnergy / 100);
+            }
+            else
+            {
+                TechniquesAndTheirExtraMultiplier.Add(ability, Player.Instance.Energy.Current * DamageMultiplierPer100EnergySpent / 100);
+            }
+            if (UnlockedUpgrade3)
+            {
+                Player.Instance.Energy.RemoveFlatModifier(this);
+                Player.Instance.Energy.AddFlatModifier(this, amount * Upgrade3PercentageOfEnergySpentTransformedIntoMaxEnergy / 100);
+            }
+            Player.Instance.Energy.Current = 0;
         }
     }
 
-    public void OnInvokeExitCombat(Unit unit) {
-        if(UnlockedUpgrade3 && unit is Player) {
-            Player.Instance.EndEffect(IncreasedMaxEnergy);
-            IncreasedMaxEnergy.FlatAmount = 0;
+    public override void OnInvokeHitDealt(DamageInstance damage)
+    {
+        base.OnInvokeHitDealt(damage);
+        if (IsActive && damage.SourceOfDamage.Is(Ability.Property.Technique) && TechniquesAndTheirExtraMultiplier.ContainsKey(damage.SourceOfDamage))
+        {
+            damage.DamageDealtMultiplier += TechniquesAndTheirExtraMultiplier[damage.SourceOfDamage];
         }
+    }
+
+    public override void OnInvokeUnitStatCurrentAmountChanged(Stat stat, float amount)
+    {
+        if (IsActive && UnlockedUpgrade1 && stat is Energy && stat.Owner == Player.Instance && amount > 0 && !Player.Instance.CheckIfEffectWithGivenIdIsOnCooldown("Stance_PowerWithoutLimit_ExtraEnergyGeneration"))
+        {
+            Player.Instance.Energy.GenerateEnergy(Player.Instance.Energy.Maximum * Upgrade1PercentageOfMaxEnergyGainedPerCooldown / 100);
+            Player.Instance.AddCooldown(this, 5, "Stance_PowerWithoutLimit_ExtraEnergyGeneration");
+        }
+        if (IsActive && UnlockedUpgrade2 && stat is Energy && stat.Owner == Player.Instance)
+        {
+            Player.Instance.EnergyGain.RemoveFlatModifier(this);
+            Player.Instance.EnergyGain.AddFlatRegeneration(this, Player.Instance.Energy.Missing * Upgrade2EnergyGainForEach100BelowMax / 100);
+        }
+        base.OnInvokeUnitStatCurrentAmountChanged(stat, amount);
+    }
+
+    public override void OnInvokeExitCombat(Unit unit)
+    {
+        Player.Instance.Energy.RemoveFlatModifier(this);
+        Player.Instance.EnergyGain.RemoveFlatModifier(this);
+        base.OnInvokeExitCombat(unit);
     }
 }

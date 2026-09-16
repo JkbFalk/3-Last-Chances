@@ -45,7 +45,7 @@ public class NPCAbility_FireMissiles : Ability {
     }
 
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(10 * User.MagicStagger.Current / 100, new(this)));
     }

@@ -234,7 +234,7 @@ public class UIManager : MonoBehaviour {
         }
         foreach (Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
             bool isStacksBased = ability.Type?.GetField("IsStacksBasedTechnique") != null;
-            Cooldown abilityCooldown = Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability.Type && cooldown.Identifier == (Player.Instance.PreparingForUltimate ? "IsUltimate" : ""));
+            Cooldown abilityCooldown = Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability.Type && cooldown.Id == (Player.Instance.PreparingForUltimate ? "IsUltimate" : ""));
             if (abilityCooldown != null && abilityCooldown.RemainingDuration > 0) {
                 float fillAmount = abilityCooldown.RemainingDuration / abilityCooldown.TotalDuration;
                 ability.CooldownDisplay.fillAmount = fillAmount;
@@ -457,7 +457,7 @@ public class UIManager : MonoBehaviour {
         Player.Instance.InCombat = false;
         SkippingDialogue = false;
         GameController.Instance.GameplayMode = Constants.GameplayMode.InCutscene;
-        Player.Instance.Rigidbody2D.velocity = Vector2.zero;
+        Player.Instance.Rigidbody2D.linearVelocity = Vector2.zero;
         GameController.Instance.transform.Find("Dialogue Window").gameObject.SetActive(true);
         if(Type.GetType(dialogue.NameOfParentClass).GetMethod("OnStart_" + dialogue.NameOfDialogue) != null) {
             Type.GetType(dialogue.NameOfParentClass).GetMethod("OnStart_" + dialogue.NameOfDialogue).Invoke(null, null);
@@ -675,8 +675,8 @@ public class UIManager : MonoBehaviour {
         public static Image InGameDialoguePortraitImage => (Image)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Image", typeof(Image));
         public static TextMeshProUGUI InGameDialoguePortraitTitle => (TextMeshProUGUI)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Title/Text", typeof(TextMeshProUGUI));
         public static GameObject PauseScreen => Utils.GetGameObject("UI/Pause Screen");
-        public static GameObject EscapeMissionButton => Utils.GetGameObject("UI/Pause Screen/Buttons/Escape Button");
-        public static LabelInitializer EscapeMissionButtonLabel => (LabelInitializer)Utils.GetComponent("UI/Pause Screen/Buttons/Escape Button/Text", typeof(LabelInitializer));
+        public static GameObject EscapeMissionButton => MenuManager.Objects.EscapeMissionButton;
+        public static LabelInitializer EscapeMissionButtonLabel => MenuManager.Objects.EscapeMissionButtonLabel;
         public static GameObject Effects => Utils.GetGameObject("UI/Effects");
         public static GameObject ResourceBars => Utils.GetGameObject("UI/Resource Bars");
         public static GameObject UltimateUses => Utils.GetGameObject("UI/Resource Bars/Ultimate Uses");

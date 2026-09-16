@@ -25,11 +25,11 @@ public class NPCAbility_PlundererGlacies : Ability {
     {
         Projectile proj = Utils.CreateProjectile(new(this), "PlundererGlacies");
         proj.CleanUpAfter(5);
-        proj.transform.up = Utils.GetDirectionVector(proj.transform.position, Target.transform.position, User.Actions.IsFlipped, 30);
+        proj.transform.up = CombatMath.GetDirectionVector(proj.transform.position, Target.transform.position, User.Actions.IsFlipped, 30);
         PlayCustomSound("Shoot");
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         damage.TargetOfDamage.AddEffect(new Effect_Slow(User.MagicStagger.Current, new(this)));

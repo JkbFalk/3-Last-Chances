@@ -10,7 +10,7 @@ public class Greatsword_SteelWarden : Item
         Set = ItemSetEnum.Knight;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Greatsword;
-        SetBaseWeaponStats(40, 160, 0.6f);
+        SetBaseWeaponStats(4, 16, 0.6f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConvertArmorToHeavyStagger")};
         SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorDuringBasicAttacks")};
     }

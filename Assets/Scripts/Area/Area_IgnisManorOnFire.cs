@@ -141,7 +141,7 @@ public class Area_IgnisManorOnFire
         Utils.GetUnit("LivingFlame").AttackPlayer();
     }
 
-    public static void CheckDefeatedEnemy(Damage damage) {
+    public static void CheckDefeatedEnemy(DamageInstance damage) {
         if(damage.TargetOfDamage.gameObject.name.Contains("ArmorBoss")) {
             SaveFile.Instance.ChangeIgnisEnergy(20);
             if(Utils.GetUnit("IgnisLancer").KnockedOut == false) {
@@ -390,11 +390,11 @@ public class Area_IgnisManorOnFire
         UIManager.Objects.CustomGaugeSlider.gameObject.SetActive(true);
         UIManager.Objects.CustomGaugeAmountText.text = SaveFile.Instance.IgnisEnergy.ToString();
         UIManager.Objects.CustomGaugeSlider.value = SaveFile.Instance.IgnisEnergy / 2000;
-        PlayerBuffEffect = new Effect_PlundererAbilityAmplify(SaveFile.Instance.IgnisEnergy / 10, new(Utils.GetUnit("Colten"))) {AmplifiedFamily = Ability.AbilityFamily.Ignis};
+        PlayerBuffEffect = new Effect_PlundererAbilityAmplify(new(Utils.GetUnit("Colten"))) {AmplifiedFamily = Ability.AbilityFamily.Ignis, PercentageAmount = SaveFile.Instance.IgnisEnergy / 10};
         Player.Instance.AddEffect(PlayerBuffEffect);
     }
 
-    public static void CheckIfColtenDefeated(Damage dmg) {
+    public static void CheckIfColtenDefeated(DamageInstance dmg) {
         if(dmg.TargetOfDamage.gameObject.name.Contains("Colten")) {
             Utils.GetUnit("Colten").SetToNeutralNPC();
             GameController.Instance.InterruptMusicOnDeath = true;
@@ -403,7 +403,7 @@ public class Area_IgnisManorOnFire
         } 
     }
 
-    public static void CheckHealthBarBroken(Damage damage) {
+    public static void CheckHealthBarBroken(DamageInstance damage) {
         if(damage.TargetOfDamage.gameObject.name.Contains("Colten")) {
             NotificationController.ShowCustomizedDialogueNotification(new() {Id="IgnisVolcano_Interactions_120", SpeakerUnit=Utils.GetUnit("Colten")});
         }

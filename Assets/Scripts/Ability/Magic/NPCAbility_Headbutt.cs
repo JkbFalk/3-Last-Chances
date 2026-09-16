@@ -12,7 +12,7 @@ public class NPCAbility_Headbutt : Ability {
         WaitTimeBeforeNextAction = 1f;
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Stun(new(this)), 1);
         User.UnitAI.PerformAnAttack();

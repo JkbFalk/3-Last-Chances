@@ -9,7 +9,7 @@ public class Helmet_Sage : Item
         Set = ItemSetEnum.Sage;
         Type = Constants.ItemType.Helmet;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("UsingTechniquesDecreasesRemainingCooldownOfAllOtherTechniques")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("EnergyGain")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("CooldownReduction")};
     }
 }
 

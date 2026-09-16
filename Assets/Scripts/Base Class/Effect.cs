@@ -27,16 +27,11 @@ public class Effect
         get => _percentageAmount;
         set { _percentageAmount = value; }
     }
-    public float FirstParameter = 0;
-    public float SecondParameter = 0;
-    public float ThirdParameter = 0;
+    public List<float> CustomParameters = new List<float>();
     private List<Effect> _effectModifiers;
     public bool ShowsInMenu = true;
     public float NewEffectIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
-    public virtual int StackingEffectIntensityLevel
-    {
-        get { return 0; }
-    }
+    public int StackingEffectIntensityLevel;
     public bool CountsAsSeparateEffect = true;
     public bool HasLinearScaling = true;
     public List<Stat> ShowCalculatedStatIncreasesBasedOnFirstStringParam = new List<Stat>();
@@ -48,12 +43,11 @@ public class Effect
 
     public float PowerBudget = 0;
 
-    public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, AddDuration, AddDecayingAmount, EndShorterDuplicateWithSameIdentifier, EndExistingEffect };
+    public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, ExtendDuration, StackDecayingAmount, EndShorterDuplicateWithSameId, EndExistingEffect };
     public BehaviourWhenDuplicateEffectEnum BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AllowDuplicate;
 
     public List<string> DescriptionParameters = new List<string>();
     public bool TriggerOnEffectEndedEvent = true;
-    public bool TriggersOncePerAbility = false;
     public float SoundEffectVolume = 1;
     public bool PlaySoundEffect = false;
     public string NameOfAnimationToAutoPlay = null;
@@ -92,7 +86,7 @@ public class Effect
     public SourceOfEffect SourceOfEffect;
     private float _baseDuration = 0;
     public string SoundEffectName;
-    public string Identifier = "";
+    public string Id = "";
     private bool _showsInUI = false;
     public bool ShowsInUI
     {
@@ -136,9 +130,9 @@ public class Effect
         get => _baseDuration;
         set
         {
-            if (SourceOfEffect != null && (IsHardCrowdControl() || IsSoftCrowdControl() || Type == EffectType.Debuff))
+            if (SourceOfEffect != null && (IsHardCrowdControl || IsSoftCrowdControl || Type == EffectType.Debuff))
             {
-                _baseDuration = ScaleWithControlAndTenacity ? value * Utils.GetEffectiveCrowdControlDuration(SourceOfEffect.User, TargetOfEffect) : value;
+                _baseDuration = ScaleWithControlAndTenacity ? value * CombatMath.GetEffectiveCrowdControlDuration(SourceOfEffect.User, TargetOfEffect) : value;
             }
             else
             {
@@ -153,16 +147,16 @@ public class Effect
         return DescriptionParameters;
     }
 
-    public bool IsHardCrowdControl()
+    public bool IsHardCrowdControl
     {
-        return GetType().IsSubclassOf(typeof(Effect_HardCrowdControl));
+        get { return GetType().IsSubclassOf(typeof(Effect_HardCrowdControl)); }
     }
 
-    public bool IsSoftCrowdControl()
+    public bool IsSoftCrowdControl
     {
-        return GetType().IsSubclassOf(typeof(Effect_SoftCrowdControl));
+        get { return GetType().IsSubclassOf(typeof(Effect_SoftCrowdControl)); }
     }
-
+    public float ElapsedDuration { get; set; } = 0;
     public float RemainingDuration { get; set; } = 0;
     protected float _initialDecayingAmount = 0;
     private float _decayingAmount = 0;
@@ -175,7 +169,7 @@ public class Effect
             _decayingAmount = value;
             if (oldValue != value)
             {
-                EventManager.EffectDecayingAmountChanged.Invoke(this);
+                EventManager.EffectDecayingAmountChanged.Invoke(this, _decayingAmount - oldValue);
             }
         }
     }
@@ -184,14 +178,19 @@ public class Effect
     public virtual void ChangeDecayingAmount(float amount_changed, bool include_effect_power = true)
     {
         float calculatedAmountAdded = amount_changed * (include_effect_power ? EffectPowerModifier : 1);
+        float prevAmount = DecayingAmount;
         DecayingAmount = MaxDecayingAmount == 0 ? (DecayingAmount + calculatedAmountAdded) : (DecayingAmount + calculatedAmountAdded) > MaxDecayingAmount ? MaxDecayingAmount : (DecayingAmount + calculatedAmountAdded);
-        ExtraBehaviourOnDecayingAmountChange();
+        ExtraBehaviourOnDecayingAmountChange(0, DecayingAmount - prevAmount);
     }
-    public virtual void ExtraBehaviourOnDecayingAmountChange() { }
+    public virtual void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0) { }
 
     public virtual void ActivateEffectAmountDecay()
     {
         if (EffectEnded)
+        {
+            return;
+        }
+        if (this is Effect_Barrier && TargetOfEffect is Player && Player.Instance.CurrentStance.StanceEffect is Stance_BodyOfSteel && SaveFile.Instance.ActiveUpgrades.Contains("Stance_BodyOfSteel2") && DecayingAmount < (Stance_BodyOfSteel.Upgrade2PercentageOfCombinedMaximumHealthAndStaggerBarConvertedToNonDecayingBarrierMinimum * (Player.Instance.Health.Maximum + Player.Instance.StaggerBar.Maximum) / 100))
         {
             return;
         }
@@ -201,8 +200,9 @@ public class Effect
         }
         else
         {
-            DecayingAmount = EffectDecaySpeedModifier >= 0 ? (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5)) : (DecayingAmount - (DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5));
-            ExtraBehaviourOnDecayingAmountChange();
+            float decayedAmount = EffectDecaySpeedModifier >= 0 ? (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5) : (DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5);
+            DecayingAmount -= decayedAmount;
+            ExtraBehaviourOnDecayingAmountChange(decayedAmount);
         }
     }
 
@@ -259,9 +259,11 @@ public class Effect
         return TargetOfEffect.CurrentEffects.Concat(TargetOfEffect == SourceOfEffect.User ? new() { } : SourceOfEffect.User.CurrentEffects).Where(effect =>
             effect.GetType() == typeof(Effect_ChangeEffectPower)
             &&
-            ((Effect_ChangeEffectPower)effect).AffectedEffectType == GetType()
+            (((Effect_ChangeEffectPower)effect).AffectedEffectType == GetType() || effect.Id.Contains("AllStackingEffects"))
             &&
-            ((((Effect_ChangeEffectPower)effect).AffectedUnitsType == Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies && TargetOfEffect != Player.Instance)
+            (((Effect_ChangeEffectPower)effect).AffectedUnitsType == Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Both
+                ||
+            (((Effect_ChangeEffectPower)effect).AffectedUnitsType == Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Enemies && TargetOfEffect != Player.Instance)
                 ||
             (((Effect_ChangeEffectPower)effect).AffectedUnitsType == Effect_ChangeEffectPower.AffectedUnitsTypeEnum.Player && TargetOfEffect == Player.Instance))
             &&
@@ -274,6 +276,22 @@ public class Effect
         if (effect is Effect_ChangeEffectPower)
         {
             _effectModifiers = GetEffectModifiers();
+        }
+    }
+
+    public void ProlongDuration(float additionalDuration)
+    {
+        _baseDuration += additionalDuration;
+        RemainingDuration += additionalDuration;
+        NewEffectIndicatorExtraScaleTimer = Constants.NEW_COOLDOWN_OR_EFFECT_HIGHER_SCALE_TIMER;
+        UpdateCooldownDisplay();
+    }
+
+    public void UpdateCooldownDisplay()
+    {
+        if (UICooldownDisplay != null && _baseDuration > 0)
+        {
+            UICooldownDisplay.fillAmount = Mathf.Clamp01(1f - (RemainingDuration / _baseDuration));
         }
     }
 
@@ -291,24 +309,25 @@ public class Effect
                 existingEffect.EndThisEffect();
                 return false;
             }
-            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDecayingAmount)
+            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.StackDecayingAmount)
             {
                 existingEffect.ChangeDecayingAmount(DecayingAmount, false);
                 existingEffect.RemainingDuration = existingEffect.BaseDuration;
             }
-            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDuration)
+            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.ExtendDuration)
             {
-                existingEffect.RemainingDuration += BaseDuration;
+                // REPLACED: Prolong both total and remaining duration
+                existingEffect.ProlongDuration(BaseDuration);
             }
-            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier)
+            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameId)
             {
-                if (existingEffect.Identifier == Identifier && existingEffect.RemainingDuration > RemainingDuration)
+                if (existingEffect.Id.StartsWith(Id) && existingEffect.RemainingDuration > RemainingDuration)
                 {
                     TriggerOnEffectEndedEvent = false;
                     EndThisEffect();
                     return true;
                 }
-                else if (existingEffect.Identifier == Identifier && existingEffect.RemainingDuration <= RemainingDuration)
+                else if (existingEffect.Id.StartsWith(Id) && existingEffect.RemainingDuration <= RemainingDuration)
                 {
                     existingEffect.TriggerOnEffectEndedEvent = false;
                     existingEffect.EndThisEffect();
@@ -322,7 +341,7 @@ public class Effect
         }
         return false;
     }
-
+    
     public void ShowInUI()
     {
         if (TargetOfEffect == null || (TileInUI != null && !TileInUI.IsDestroyed()))
@@ -358,8 +377,8 @@ public class Effect
 
     public virtual void OnStart()
     {
-        Utils.CreateAuditLog($"{TargetOfEffect.gameObject.name.Replace("(Clone)", "")} starting effect: {GetType()} from {SourceOfEffect?.User.gameObject.name.Replace("(Clone)", "")} (Source: {SourceOfEffect?.Source}), Duration: {(BaseDuration == 0 ? "-" : BaseDuration.ToString())}");
-        if (IsHardCrowdControl())
+        Utils.CreateAuditLog($"{TargetOfEffect?.gameObject?.name?.Replace("(Clone)", "")} starting effect: {GetType()} from {SourceOfEffect?.User?.gameObject?.name?.Replace("(Clone)", "")} (Source: {SourceOfEffect?.Source}), Duration: {(BaseDuration == 0 ? "-" : BaseDuration.ToString())}");
+        if (IsHardCrowdControl)
         {
             TargetOfEffect.Actions.CurrentActionBeingPerformed = Constants.ActionType.UnderHardCrowdControl;
             if (AutoPlayEffectAnimation && (TargetOfEffect.EffectAnimationBeingPlayed == null || PriorityLevel > TargetOfEffect.EffectAnimationBeingPlayed.PriorityLevel) && GameController.Instance.GameplayMode == Constants.GameplayMode.Regular)
@@ -381,20 +400,20 @@ public class Effect
         {
             Utils.PlaySoundEffect(TargetOfEffect.AudioSource, "Effect/" + (SoundEffectName != null ? SoundEffectName : GetType()), SoundEffectVolume);
         }
-        if (ShowsInUI && (HideInUIWhileCooldownWithIdExists == "" || !TargetOfEffect.CheckIfEffectIsOnCooldown(HideInUIWhileCooldownWithIdExists)))
+        if (ShowsInUI && (HideInUIWhileCooldownWithIdExists == "" || !TargetOfEffect.CheckIfEffectWithGivenIdIsOnCooldown(HideInUIWhileCooldownWithIdExists)))
         {
             ShowInUI();
         }
         AddListeners();
-        if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.AddDecayingAmount)
+        if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.StackDecayingAmount)
         {
             _effectModifiers = GetEffectModifiers();
             EventManager.OneTenthSecondElapsedInGame.AddListener(ActivateEffectAmountDecay);
             EventManager.EffectStarted.AddListener(UpdateEffectModifiers);
         }
-        else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameIdentifier)
+        else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.EndShorterDuplicateWithSameId)
         {
-            Effect e = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect != this && effect.Identifier == Identifier);
+            Effect e = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect != this && effect.Id.StartsWith(Id));
             if (e != null)
             {
                 e.EndThisEffect();
@@ -423,7 +442,7 @@ public class Effect
         {
             MonoBehaviour.Destroy(UICooldownDisplay.transform.parent.gameObject);
         }
-        if (AutoPlayEffectAnimation || IsHardCrowdControl())
+        if (AutoPlayEffectAnimation || IsHardCrowdControl)
         {
             Player.Instance.Actions.SetFaceVariant("Regular");
             List<Effect> HardCrowdControlEffects = TargetOfEffect.CurrentEffects.Where(effect => effect.AutoPlayEffectAnimation && effect != this).ToList();
@@ -437,7 +456,7 @@ public class Effect
                 TargetOfEffect.EffectAnimationBeingPlayed = HardCrowdControlEffect;
                 TargetOfEffect.PlayAnimation(String.IsNullOrWhiteSpace(HardCrowdControlEffect.NameOfAnimationToAutoPlay) == false ? HardCrowdControlEffect.NameOfAnimationToAutoPlay : HardCrowdControlEffect.GetType().ToString(), HardCrowdControlEffect.InstantlyTransitionIntoAnimation ? 0 : 0.1f);
             }
-            else if (TargetOfEffect.Actions.CurrentAbilityBeingPerformed == null || IsHardCrowdControl())
+            else if (TargetOfEffect.Actions.CurrentAbilityBeingPerformed == null || IsHardCrowdControl)
             {
                 TargetOfEffect.Actions.CurrentActionBeingPerformed = Constants.ActionType.Idle;
                 TargetOfEffect.UnitColorChange.SpecialSkinColor = Color.white;
@@ -472,7 +491,7 @@ public class Effect
         {
             EventManager.EffectEnded.Invoke(this);
         }
-        if (SaveFile.Instance.DifficultyLevel > 1 && IsHardCrowdControl() && TargetOfEffect.UnitAI != null && TargetOfEffect.InCombat)
+        if (SaveFile.Instance.DifficultyLevel > 1 && IsHardCrowdControl && TargetOfEffect.UnitAI != null && TargetOfEffect.InCombat)
         {
             TargetOfEffect.UnitAI.DecideOnNextAction(true);
         }
@@ -528,6 +547,10 @@ public class Effect
         {
             EventManager.AbilityEnergyConsumed.AddListener(OnInvokeAbilityEnergyConsumed);
         }
+        if (Listeners.Contains(EventManager.Takedown))
+        {
+            EventManager.Takedown.AddListener(OnInvokeTakedown);
+        }
         if (Listeners.Contains(EventManager.UnitKnockedOut))
         {
             EventManager.UnitKnockedOut.AddListener(OnInvokeUnitKnockedOut);
@@ -539,6 +562,10 @@ public class Effect
         if (Listeners.Contains(EventManager.AmmoAmountChanged))
         {
             EventManager.AmmoAmountChanged.AddListener(OnInvokeAmmoAmountChanged);
+        }
+        if (Listeners.Contains(EventManager.ToolUsed))
+        {
+            EventManager.ToolUsed.AddListener(OnInvokeToolUsed);
         }
         if (Listeners.Contains(EventManager.HealthBarBroken))
         {
@@ -575,6 +602,10 @@ public class Effect
         if (Listeners.Contains(EventManager.CooldownAdded))
         {
             EventManager.CooldownAdded.AddListener(OnInvokeCooldownAdded);
+        }
+        if (Listeners.Contains(EventManager.CooldownEnded))
+        {
+            EventManager.CooldownEnded.AddListener(OnInvokeCooldownEnded);
         }
         if (Listeners.Contains(EventManager.ItemEquipped))
         {
@@ -636,6 +667,10 @@ public class Effect
         {
             EventManager.AbilityEnergyConsumed.RemoveListener(OnInvokeAbilityEnergyConsumed);
         }
+        if (Listeners.Contains(EventManager.Takedown))
+        {
+            EventManager.Takedown.RemoveListener(OnInvokeTakedown);
+        }
         if (Listeners.Contains(EventManager.UnitKnockedOut))
         {
             EventManager.UnitKnockedOut.RemoveListener(OnInvokeUnitKnockedOut);
@@ -647,6 +682,10 @@ public class Effect
         if (Listeners.Contains(EventManager.AmmoAmountChanged))
         {
             EventManager.AmmoAmountChanged.RemoveListener(OnInvokeAmmoAmountChanged);
+        }
+        if (Listeners.Contains(EventManager.ToolUsed))
+        {
+            EventManager.ToolUsed.RemoveListener(OnInvokeToolUsed);
         }
         if (Listeners.Contains(EventManager.HealthBarBroken))
         {
@@ -684,6 +723,10 @@ public class Effect
         {
             EventManager.CooldownAdded.RemoveListener(OnInvokeCooldownAdded);
         }
+        if (Listeners.Contains(EventManager.CooldownEnded))
+        {
+            EventManager.CooldownEnded.RemoveListener(OnInvokeCooldownEnded);
+        }
         if (Listeners.Contains(EventManager.ItemEquipped))
         {
             EventManager.ItemEquipped.RemoveListener(OnInvokeItemEquipped);
@@ -712,86 +755,66 @@ public class Effect
         EventManager.EffectActivated.Invoke(this);
     }
 
-    public virtual void OnInvokeHitDealt(Damage damage)
+    public virtual void OnInvokeHitDealt(DamageInstance damage)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
     }
 
-    public virtual void OnInvokeAfterHitDamageCalculation(Damage damage)
+    public virtual void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
     }
 
-    public virtual void OnInvokeAboutToHandleFatalBlow(Damage damage)
+    public virtual void OnInvokeAboutToHandleFatalBlow(DamageInstance damage)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
     }
 
 
-    public virtual void OnInvokeDamageDealt(Damage damage)
+    public virtual void OnInvokeDamageDealt(DamageInstance damage)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
     }
 
-    public virtual void OnInvokeDamageWasDodged(Damage damage, Ability dodge)
+    public virtual void OnInvokeDamageWasDodged(DamageInstance damage, Ability dodge)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
+        dodge.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeAbilityUsed(Ability ability)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && ability.TriggeredEffects.Contains(this) == false)
-        {
-            ability.TriggeredEffects.Add(this);
-        }
+        ability.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeAbilityEnded(Ability ability)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && ability.TriggeredEffects.Contains(this) == false)
-        {
-            ability.TriggeredEffects.Add(this);
-        }
+        ability.TriggeredEffects.Add(this);
     }
 
-    public virtual void OnInvokeAbilityEnergyConsumed(Ability ability, float amount)
+    public virtual void OnInvokeAbilityEnergyConsumed(Ability ability, float amount, bool was_full_energy)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && ability.TriggeredEffects.Contains(this) == false)
-        {
-            ability.TriggeredEffects.Add(this);
-        }
+        ability.TriggeredEffects.Add(this);
     }
 
-    public virtual void OnInvokeUnitKnockedOut(Damage damage)
+    public virtual void OnInvokeTakedown(DamageInstance damage)
+    {
+        EventManager.Takedown.Invoke(damage);
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
+    }
+
+    public virtual void OnInvokeUnitKnockedOut(DamageInstance damage)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeAmmoAmountChanged()
@@ -799,22 +822,21 @@ public class Effect
         EventManager.EffectActivated.Invoke(this);
     }
 
-    public virtual void OnInvokeHealthBarBroken(Damage damage)
+    public virtual void OnInvokeToolUsed(Item tool)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && damage.SourceOfDamage.TriggeredEffects.Contains(this) == false)
-        {
-            damage.SourceOfDamage.TriggeredEffects.Add(this);
-        }
+    }
+
+    public virtual void OnInvokeHealthBarBroken(DamageInstance damage)
+    {
+        EventManager.EffectActivated.Invoke(this);
+        damage.SourceOfDamage.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeProjectileCreated(Projectile projectile)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && projectile.SourceAbility.TriggeredEffects.Contains(this) == false)
-        {
-            projectile.SourceAbility.TriggeredEffects.Add(this);
-        }
+        projectile.SourceAbility.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeUnitStatCurrentAmountChanged(Stat stat, float amount)
@@ -825,7 +847,7 @@ public class Effect
     public virtual void OnInvokeEffectStarted(Effect effect)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && effect.SourceOfEffect.SourceAbility != null && effect.SourceOfEffect.SourceAbility.TriggeredEffects.Contains(this) == false)
+        if(effect.SourceOfEffect.SourceAbility != null)
         {
             effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
         }
@@ -834,28 +856,19 @@ public class Effect
     public virtual void OnInvokeEffectEmpowered(Effect existing_effect, Effect new_effect)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && existing_effect.SourceOfEffect.SourceAbility != null && existing_effect.SourceOfEffect.SourceAbility.TriggeredEffects.Contains(this) == false)
-        {
-            existing_effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
-        }
+        existing_effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
     }
 
-    public virtual void OnInvokeEffectDecayingAmountChanged(Effect effect)
+    public virtual void OnInvokeEffectDecayingAmountChanged(Effect effect, float amount_changed)
     {
-        EventManager.EffectDecayingAmountChanged.Invoke(this);
-        if (TriggersOncePerAbility && effect.SourceOfEffect.SourceAbility != null && effect.SourceOfEffect.SourceAbility.TriggeredEffects.Contains(this) == false)
-        {
-            effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
-        }
+        EventManager.EffectDecayingAmountChanged.Invoke(this, amount_changed);
+        effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeEffectEnded(Effect effect)
     {
         EventManager.EffectActivated.Invoke(this);
-        if (TriggersOncePerAbility && effect.SourceOfEffect.SourceAbility != null && effect.SourceOfEffect.SourceAbility.TriggeredEffects.Contains(this) == false)
-        {
-            effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
-        }
+        effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
     }
 
     public virtual void OnInvokeAboutToAddCooldown(Cooldown cooldown)
@@ -868,12 +881,17 @@ public class Effect
         EventManager.EffectActivated.Invoke(this);
     }
 
+    public virtual void OnInvokeCooldownEnded(Cooldown cooldown)
+    {
+        EventManager.EffectActivated.Invoke(this);
+    }
+
     public virtual void OnInvokeItemEquipped(Item item1, Item item2)
     {
         EventManager.EffectActivated.Invoke(this);
     }
 
-    public virtual void OnInvokeStanceSwitched()
+    public virtual void OnInvokeStanceSwitched(Type stance_switched_from, Type stance_switched_to)
     {
         EventManager.EffectActivated.Invoke(this);
     }

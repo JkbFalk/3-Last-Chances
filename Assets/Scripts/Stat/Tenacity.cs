@@ -9,7 +9,7 @@ public class Tenacity : Stat {
             MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find("Tenacity/Value").GetComponent<TextMeshProUGUI>();
         }
         Owner = stat_owner;
-        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * Utils.GetExpectedControlLevel(stat_owner.Level) : base_amount;
+        Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * CombatMath.GetExpectedControlLevel(stat_owner.Level) : base_amount;
         Maximum = base_amount;
         Current = base_amount;
     }

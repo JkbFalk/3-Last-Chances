@@ -9,8 +9,8 @@ public class Polearm_Hurricane : Item
         Set = ItemSetEnum.Enforcer;
         Type = Constants.ItemType.Heavy;
         WeaponClass = Constants.WeaponClass.Polearm;
-        SetBaseWeaponStats(105, 105, 0.9f);
+        SetBaseWeaponStats(11, 10, 0.9f);
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("NonStopBasicAttackingIncreasesDamageDealtAndSpeed")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ReduceDamageByAFlatAmountWhileBasicAttacking")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ArmorDuringBasicAttacks")};
     }
 }

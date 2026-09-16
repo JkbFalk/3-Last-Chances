@@ -32,7 +32,8 @@ public class StanceSelect : MonoBehaviour, IPointerDownHandler, ISelectHandler
         }
         GetComponent<Button>().interactable = SaveFile.Instance.UnlockedStances.Contains(StanceType) || StanceType == typeof(Stance_None);
         MenuManager.Instance.StanceOverview.FirstOrDefault(sel => sel.StanceType == StanceType).transform.Find("Disabled").gameObject.SetActive(!SaveFile.Instance.UnlockedStances.Contains(StanceType));
-        if(!IsEquippedStance && StanceType != typeof(Stance_None)) {
+        if (!IsEquippedStance && StanceType != typeof(Stance_None))
+        {
             transform.Find("Graphic1").GetComponent<Image>().color = SaveFile.Instance.StanceUpgrades.Contains(Stance + "1") ? Color.white : Color.black;
             transform.Find("Graphic2").GetComponent<Image>().color = SaveFile.Instance.StanceUpgrades.Contains(Stance + "2") ? Color.white : Color.black;
             transform.Find("Graphic3").GetComponent<Image>().color = SaveFile.Instance.StanceUpgrades.Contains(Stance + "3") ? Color.white : Color.black;

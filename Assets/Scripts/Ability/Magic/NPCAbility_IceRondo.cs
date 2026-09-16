@@ -28,7 +28,7 @@ public class NPCAbility_IceRondo : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage) {
+    public override void ExtraBehaviourOnDamage(DamageInstance damage) {
         damage.TargetOfDamage.AddEffect(new Effect_Freeze(150, new(this)));
     }
 }

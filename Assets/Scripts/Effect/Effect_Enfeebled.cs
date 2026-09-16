@@ -12,10 +12,10 @@ public class Effect_Enfeebled : Effect {
         Listeners.Add(EventManager.HitDealt);
         UIText = "-" + increase_amount.ToString() + "%";
         BaseDuration = 30;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AddDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
     }
 
-    public override void OnInvokeHitDealt(Damage damage) {
+    public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage.SourceOfDamage.User == TargetOfEffect) {
             damage.DamageDealtMultiplier -= DecreasedDamageDonePercentage / 100;
             base.OnInvokeHitDealt(damage);

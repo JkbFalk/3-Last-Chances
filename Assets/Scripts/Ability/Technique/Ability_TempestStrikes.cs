@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class Ability_TempestStrikes : Technique
 {
-    private GameObject _vfx;
     public static float EnergyCost = 10;
     public static float Cooldown = 1;
+    public static AbilityFamily Family = AbilityFamily.Anima;
+    private GameObject _vfx;
     private int _slashCounter = 0;
     public static float InjuryScaling = 200;
     public static float StaggerScaling = 200;
@@ -26,9 +27,6 @@ public class Ability_TempestStrikes : Technique
         }
     }
     private int _mostRecentAttack = 1;
-
-    public static AbilityFamily Family = AbilityFamily.Anima;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.CurrentWeapon;
     public Ability_TempestStrikes(Unit ability_user) : base(ability_user)
     {
         DamageSources.Add(new DamageSource(InjuryScaling, StaggerScaling, User.CurrentWeaponDamageType));
@@ -140,7 +138,7 @@ public class Ability_TempestStrikes : Technique
         Player.Instance.UpdateTechniqueStacksAmount(typeof(Ability_TempestStrikes), Player.Instance.CurrentTechniqueStacks[typeof(Ability_TempestStrikes)] + (was_countered ? 2 : 1), true);
     }
 
-    public override void ExtraBehaviourOnHit(Damage damage)
+    public override void ExtraBehaviourOnHit(DamageInstance damage)
     {
         if(Is(Property.Ultimate)) {
             User.AddEffect(new Effect_Analysis(UltimateAnalysisApplied, new(this)));

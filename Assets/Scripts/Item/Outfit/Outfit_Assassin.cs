@@ -10,6 +10,6 @@ public class Outfit_Assassin : Item
         Set = ItemSetEnum.Assassin;
         Type = Constants.ItemType.Outfit;
         FirstItemEffects = new List<ItemEffect> {new ItemEffect("IncreasedBackstabDamageWhileStealthed")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("Injury")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("GainStealthUponFallingBelow50PHealth")};
     }
 }

@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class Ability_Avatar : Technique
 {
-    public static float EnergyCost = 20;
-    public static float Cooldown = 30;
+    public static float EnergyCost = 0;
+    public static float Cooldown = 0;
     public static AbilityFamily Family = AbilityFamily.Proprius;
-    public static Constants.DamageType TechniqueDamageType = Constants.DamageType.None;
 
     public Ability_Avatar(Unit ability_user) : base(ability_user)
     {

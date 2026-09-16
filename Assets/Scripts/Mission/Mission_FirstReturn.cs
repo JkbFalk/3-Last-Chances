@@ -277,7 +277,7 @@ public class Mission_FirstReturn : Mission {
     }
 
 
-    public void RykerDefeated(Damage damage) {
+    public void RykerDefeated(DamageInstance damage) {
         Player.Instance.InCombat = false;
         Utils.SetDefaultMusic("Foreboding_35");
         Utils.GetUnit("TutorialRyker").transform.Find("3").gameObject.SetActive(true);

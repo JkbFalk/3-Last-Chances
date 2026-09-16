@@ -17,6 +17,7 @@ public class LabelInitializer : MonoBehaviour, IPointerMoveHandler {
     public string OriginalValue;
     [HideInInspector]
     public List<string> string_params;
+    [HideInInspector]
     public bool DisableDetailedDescription = false;
     private TextMeshProUGUI _tmp;
     public TextMeshProUGUI TextMeshPro {

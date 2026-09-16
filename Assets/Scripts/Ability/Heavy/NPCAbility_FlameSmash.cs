@@ -43,7 +43,7 @@ public class NPCAbility_FlameSmash : Ability {
         }
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         damage.TargetOfDamage.AddEffect(new Effect_Burn(40 * User.MagicStagger.Current / 100, new(this)));
         damage.TargetOfDamage.AddEffect(new Effect_KnockedBack(damage, new(this)));

@@ -55,6 +55,9 @@ public class DebugTools : EditorWindow {
         if (GUILayout.Button("Get Path to GameObject as String")) {
             _pathValue = Utils.GetGameObjectPath(gameObjectToGetPath);
         }
+        if (GUILayout.Button("Export labels to text file")) {
+            Label.ConvertJSON();
+        }
         gameObjectToGetPath = (GameObject) EditorGUILayout.ObjectField("Target GameObject", gameObjectToGetPath, typeof(GameObject), true);
         if(_pathValue != null) {
             pathToGameObject = (string) EditorGUILayout.TextField(_pathValue.Replace("/GameController/", ""));

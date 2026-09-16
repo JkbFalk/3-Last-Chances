@@ -9,7 +9,7 @@ public class Helmet_Unbreakable : Item
     {
         Set = ItemSetEnum.Unbreakable;
         Type = Constants.ItemType.Helmet;
-        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ConverStaggerBarToStagger")};
-        SecondItemEffects = new List<ItemEffect> {new ItemEffect("FlatStaggerBar")};
+        FirstItemEffects = new List<ItemEffect> {new ItemEffect("ArmorWhileBlocking")};
+        SecondItemEffects = new List<ItemEffect> {new ItemEffect("ProtectFromFlinchingOnce")};
     }
 }

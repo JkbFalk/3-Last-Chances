@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Effect_IgnisCaptainBuff : Effect {
-    private Effect_Prone _proneEffect;
-
     public Effect_IgnisCaptainBuff(SourceOfEffect source_of_effect) : base(source_of_effect) {
         Type = EffectType.Buff;
         AdditionalEffectsAffectingTargetDuringEffect = new List<Effect> { new Effect_Prone(BaseDuration, SourceOfEffect) };
@@ -16,7 +14,8 @@ public class Effect_IgnisCaptainBuff : Effect {
         TargetOfEffect.MagicInjury.AddPercentageModifier(this, 30);
         TargetOfEffect.HeavyStagger.AddPercentageModifier(this, 30);
         TargetOfEffect.MagicStagger.AddPercentageModifier(this, 30);
-        TargetOfEffect.MovementSpeed.AddPercentageModifier(this, 20);
+        TargetOfEffect.MovementSpeed.AddFlatModifier(this, 20);
+        TargetOfEffect.Armor.AddFlatModifier(this, -50);
         TargetOfEffect.HeavyAttackSpeed.AddPercentageModifier(this, 20);
         TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone/VisualEffect_Weapon_FlameEdge_World").gameObject.SetActive(true);
         ParticleSystem local = TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone/VisualEffect_Weapon_FlameEdge_Local").GetComponent<ParticleSystem>();
@@ -34,6 +33,7 @@ public class Effect_IgnisCaptainBuff : Effect {
         TargetOfEffect.HeavyStagger.RemovePercentageModifier(this);
         TargetOfEffect.MagicStagger.RemovePercentageModifier(this);
         TargetOfEffect.MovementSpeed.RemovePercentageModifier(this);
+        TargetOfEffect.Armor.RemoveFlatModifier(this, -50);
         TargetOfEffect.HeavyAttackSpeed.RemovePercentageModifier(this);
         TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone/VisualEffect_Weapon_FlameEdge_World").gameObject.SetActive(false);
         ParticleSystem local = TargetOfEffect.SpriteRenderers["Heavy"].SpriteRenderer.transform.Find("Heavy Bone/VisualEffect_Weapon_FlameEdge_Local").GetComponent<ParticleSystem>();

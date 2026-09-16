@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-/*[CustomEditor(typeof(UnitAI))]
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEngine;
+
+[CustomEditor(typeof(UnitAI), true)]
+[CanEditMultipleObjects]
 public class UnitAIEditor : Editor {
-  public override void OnInspectorGUI() {
-    if(GUILayout.Button("Test")) {
-      var unitAI = (target as UnitAI);
-      unitAI.InitializeAvailableActions();
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
     }
-  }
-}*/
+}
+#endif

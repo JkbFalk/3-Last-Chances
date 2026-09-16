@@ -31,7 +31,7 @@ public class NPCAbility_JumpAndExplosionImpale : Ability {
         Properties.Clear();
     }
 
-    public override void ExtraBehaviourOnDamage(Damage damage)
+    public override void ExtraBehaviourOnDamage(DamageInstance damage)
     {
         base.ExtraBehaviourOnDamage(damage);
         if(damage.DamagingObject.gameObject.name.Contains("Weaker AoE") == false) {

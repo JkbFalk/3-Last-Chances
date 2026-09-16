@@ -5,8 +5,38 @@ using UnityEngine;
 
 public class Effect_Stance : Effect
 {
-    public bool IsActive {
-        get {
+    public static float StancePB
+    {
+        get
+        {
+            return PB.STANCE_DEFAULT_PB * (1 + Player.Instance.StancePower.Current / 100);
+        }
+    }
+    public static float StanceUpgrade1PB
+    {
+        get
+        {
+            return PB.STANCE_UPGRADE_1_DEFAULT_PB * (1 + Player.Instance.StancePower.Current / 100);
+        }
+    }
+    public static float StanceUpgrade2PB
+    {
+        get
+        {
+            return PB.STANCE_UPGRADE_2_DEFAULT_PB * (1 + Player.Instance.StancePower.Current / 100);
+        }
+    }
+    public static float StanceUpgrade3PB
+    {
+        get
+        {
+            return PB.STANCE_UPGRADE_3_DEFAULT_PB * (1 + Player.Instance.StancePower.Current / 100);
+        }
+    }
+    public bool IsActive
+    {
+        get
+        {
             return Player.Instance.CurrentStance != null && Player.Instance.CurrentStance.StanceEffect == this;
         }
     }
@@ -28,8 +58,32 @@ public class Effect_Stance : Effect
             return SaveFile.Instance.ActiveUpgrades.Contains(GetType().ToString() + "3");
         }
     }
+
+    public Item WeaponTheStanceIsAttachedTo
+    {
+        get
+        {
+            if (SaveFile.Instance.Stances[0].StanceEffect == this)
+            {
+                return SaveFile.Instance.EquippedHeavyWeapon;
+            }
+            else if (SaveFile.Instance.Stances[1].StanceEffect == this)
+            {
+                return SaveFile.Instance.EquippedLightWeapon;
+            }
+            else if (SaveFile.Instance.Stances[2].StanceEffect == this)
+            {
+                return SaveFile.Instance.EquippedRangedWeapon;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
     public Stance AssignedStance;
-    public Effect_Stance(SourceOfEffect source_of_effect) : base(source_of_effect) {
+    public Effect_Stance(SourceOfEffect source_of_effect) : base(source_of_effect)
+    {
         IsRemovable = false;
     }
 
