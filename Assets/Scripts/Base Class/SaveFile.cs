@@ -331,26 +331,14 @@ public class SaveFile
         }
     }
     public int UsedPassivePowerUps = 0;
-    [SerializeField]
-    private int _maxUltimateUsesPerCombat = 0;
-    public int MaxUltimateUsesPerCombat {
-        get => _maxUltimateUsesPerCombat;
-        set {
-            _maxUltimateUsesPerCombat = value;
-            MenuManager.Instance.transform.Find("Skill Tree Window/Counters/Displays/Ultimate Uses/Amount").GetComponent<TextMeshProUGUI>().text = _maxUltimateUsesPerCombat.ToString();
-        }
-    }
-    [SerializeField]
-    private int _ultimatesUsedInCurrentCombat;
-    public int UltimatesUsedInCurrentCombat {
-        get => _ultimatesUsedInCurrentCombat;
-        set {
-            _ultimatesUsedInCurrentCombat = value;
-            int regularTiles = MaxUltimateUsesPerCombat - UltimatesUsedInCurrentCombat;
-            for(int i = 0; i < Constants.MAX_ULTIMATE_USES_POSSIBLE; i++) {
-                UIManager.Objects.UltimateUses.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (i < regularTiles ? "UltimateCanBeUsed" : "UltimateCannotBeUsed"), typeof(Sprite)) as Sprite; 
-            }
-        }
+
+    public List<Ability.AbilityFamily> UnlockedUltimateFamilies = new List<Ability.AbilityFamily>();
+
+    public bool IsUltimateFamilyUnlocked(Ability.AbilityFamily family)
+    {
+        return family != Ability.AbilityFamily.None 
+            && UnlockedUltimateFamilies != null 
+            && UnlockedUltimateFamilies.Contains(family);
     }
 
     [SerializeField]
@@ -365,12 +353,6 @@ public class SaveFile
             MenuManager.Instance.transform.Find("Character Window/Stats/Stats/Level/Label").GetComponent<TextMeshProUGUI>().text = Label.Get("UIPlayerLevel") + " " + _level.ToString();
             MaxPassivePowerUps = Level;
             MaxUpgradePoints = Level >= 63 ? 21 : Level / 3;
-            MaxUltimateUsesPerCombat = Level >= 50 ? 7 : Level >= 45 ? 6 : Level >= 40 ? 5 : Level >= 35 ? 4 : Level >= 30 ? 3 : Level >= 25 ? 2 : Level >= 20 ? 1 : 0;
-            int regularTiles = MaxUltimateUsesPerCombat - UltimatesUsedInCurrentCombat;
-            for(int i = 0; i < Constants.MAX_ULTIMATE_USES_POSSIBLE; i++) {
-                UIManager.Objects.UltimateUses.transform.GetChild(i).gameObject.SetActive(MaxUltimateUsesPerCombat > i);
-                UIManager.Objects.UltimateUses.transform.GetChild(i).GetComponent<Image>().sprite = Resources.Load("Sprites/UI/" + (i < regularTiles ? "UltimateCanBeUsed" : "UltimateCannotBeUsed"), typeof(Sprite)) as Sprite; 
-            }
             MakeSureAllCorrectTechniquesAndStancesAreUnlocked();
             UpdateSkillTrees();
             MenuManager.Instance.UpdateLoadoutUpgradePoints();
@@ -581,6 +563,7 @@ public class SaveFile
             if(GameController.Instance.GameplayMode == Constants.GameplayMode.MissionSelect) {
                 Utils.GetSceneRootObject("Mission Select").Find("Money").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedInteger(_money);
             }
+
             if(prevValue != _money) {
                 Utils.PlaySoundEffect(null, "UI/ItemPickedUp", 0.3f);
                 GameObject notification = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_MoneyNotification")) as GameObject;
@@ -595,8 +578,8 @@ public class SaveFile
                     notification2.transform.localPosition = new Vector2(2f, 0.5f);
                     notification2.GetComponent<TextMeshProUGUI>().text = (prevValue - _money > 0 ? "-" : "+") + "<sprite name=\"Money\"/>" + Utils.GetFormattedInteger(Math.Abs(prevValue - _money)).ToString();
                 }
+                MenuManager.Instance.AddHistoryEntry(string.Format(Label.Get(prevValue - _money > 0 ? "SpentMoneyHistoryEntry" : "GetMoneyHistoryEntry"), new string[] {Utils.GetFormattedInteger(Math.Abs(prevValue - _money)).ToString()}), Resources.Load("Sprites/UI/Money", typeof(Sprite)) as Sprite);
             }
-            MenuManager.Instance.AddHistoryEntry(string.Format(Label.Get(prevValue - _money > 0 ? "SpentMoneyHistoryEntry" : "GetMoneyHistoryEntry"), new string[] {Utils.GetFormattedInteger(Math.Abs(prevValue - _money)).ToString()}), Resources.Load("Sprites/UI/Money", typeof(Sprite)) as Sprite);
         }
     }
 

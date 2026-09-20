@@ -223,7 +223,7 @@ public class Actions : MonoBehaviour {
     {
         if (Unit is Player && Player.Instance.PreparingForUltimate)
         {
-            SaveFile.Instance.UltimatesUsedInCurrentCombat++;
+            Player.Instance.UltimateEnergy.ConsumeCharge();
             GameController.Instance.PlayerControls.StopPreparingUltimate();
         }
         else if (Unit is Player)

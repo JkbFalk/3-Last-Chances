@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Eruption : Technique
 {
     public static float EnergyCost = 80;
-    public static float Cooldown = 120;
     public static AbilityFamily Family = AbilityFamily.Ignis;
     private GameObject _aoe;
     private int _ultimateExplosionCounter = 0;

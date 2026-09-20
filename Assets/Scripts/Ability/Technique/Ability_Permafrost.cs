@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Permafrost : Technique
 {
     public static float EnergyCost = 40;
-    public static float Cooldown = 60;
     public static AbilityFamily Family = AbilityFamily.Glacies;
     private List<AreaOfEffect> _aoes = new List<AreaOfEffect>();
     private GameObject _vfx;

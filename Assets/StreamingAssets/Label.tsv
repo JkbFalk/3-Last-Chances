@@ -1,15 +1,15 @@
 ﻿Label	Category	ENG	PL
 Ability_WindRush	Technique	Wind Rush	Uderzenie Wichru
 Ability_WindRush_FlavorText	Technique	A signature technique of Anima warriors, allowing to isolate and duel any perceived threats. It shows the confidence that Anima warriors hold, thinking themselves nigh unbeatable in a 1-on-1 clash.	
-Ability_WindRush_Description	Technique	Dash in given direction and hit the target, dealing {0}[I] and {1}[S] with current weapon and pushing away all other enemies.	Skocz w danym kierunku i uderz cel, zadając {0}[D] obecną bronią i odpychając innych wrogów.
-Ability_WindRush_DescriptionDetailed	Technique	Dash towards current target (if no target is selected, direction can be manually controlled). Hit with your current weapon, dealing {0}[I] ({1}%[I]) and {2}[S] ({3}%[I]). All other enemies except target are knocked 15 meters away.	Skocz w kierunku obecnego celu (jeśli cel nie jest zaznaczony, kierunek może być manualnie wybrany). Uderz obecną bronią, zadając {0}[I]Injury ({1}%[I]) i {2}[S]Stagger ({3}%[I]). Wszyscy wrogowie poza celem są odepchnięci o 5 metrów.
-Ability_WindRush_MasteryA_Description	Technique	Gain {0}[Barrier] on use.	
-Ability_WindRush_MasteryA_DescriptionDetailed	Technique	When the technique is activated, gain {0}[Barrier]Barrier ({1}%[I] + {2}%[S]).	
-Ability_WindRush_MasteryB_Description	Technique	Inflict [Stun]Stun ({0} sec) on main target and [Sleep]Sleep ({1} sec) on enemies pushed away.	
-Ability_WindRush_MasteryB_DescriptionDetailed	Technique	First enemy hit by the technique is [Stun]Stunned for {0} seconds. All other nearby enemies who are pushed away are inflicted with [Sleep]Sleep for {1} seconds.	
+Ability_WindRush_Description	Technique	Dash forward to strike your target, dealing {0}[I] and {2}[S] while blowing nearby enemies away. Gain {4}[Sharp] (tripled if interrupting an attack).	Skocz w danym kierunku i uderz cel, zadając {0}[D] obecną bronią i odpychając innych wrogów.
+Ability_WindRush_DescriptionDetailed	Technique	Dash toward your target (or aim manually). Interrupt the target to deal {0}[I] ({1}%[I]) and {2}[S] ({3}%[S]) with your current weapon, and gain {4}[Sharp] ({5}[Sharp] if the target was attacking). All other nearby enemies are knocked 15m away.	Skocz w kierunku obecnego celu (jeśli cel nie jest zaznaczony, kierunek może być manualnie wybrany). Uderz obecną bronią, zadając {0}[I]Injury ({1}%[I]) i {2}[S]Stagger ({3}%[I]). Wszyscy wrogowie poza celem są odepchnięci o 5 metrów.
+Ability_WindRush_MasteryA_Description	Technique	Costs 0 [E]Energy and inflicts an extra {0}[S] if used within 2 seconds of a Dodge, Parry, or Counter.	
+Ability_WindRush_MasteryA_DescriptionDetailed	Technique	If cast within 2 seconds of a successful Dodge, Parry, or Counter, this technique costs 0 [E]Energy and inflicts an additional {0}[S] ({1}%[S]).	
+Ability_WindRush_MasteryB_Description	Technique	Grants invulnerability, inflicts an extra {0}[I], and repositions you directly behind the struck target.	
+Ability_WindRush_MasteryB_DescriptionDetailed	Technique	Grants invulnerability throughout the dash and deals an additional {0}[I] ({1}%[I]). You immediately phase behind the struck enemy, automatically pivoting to face their back.	
 Ability_WindRush_Ultimate	Technique	Invitation To Duel	
-Ability_WindRush_Ultimate_Description	Technique	Dash and strike for {0}[I] and {2}[S]. Then create a wind arena, isolating the target struck, pulling them into center and dealing {4}[S]/sec.	
-Ability_WindRush_Ultimate_DescriptionDetailed	Technique	Dash in given direction and hit the target, dealing {0}[I]Injury ({1}%[I]) and {2}[S]Stagger ({3}%[S]) with current weapon. Create a wind barrier and push away all enemies except primary target. Primary target is sucked into the center, taking {4}[S]Stagger ({5}%[S]) per second. Wind barrier disappears after {6} seconds or once primary target is defeated.	
+Ability_WindRush_Ultimate_Description	Technique	Dash and strike for {0}[I] and {2}[S]. Traps the target in a wind arena that pulls them to the center and deals {4}[S]/sec.	
+Ability_WindRush_Ultimate_DescriptionDetailed	Technique	Dash and strike the target to deal {0}[I] ({1}%[I]) and {2}[S] ({3}%[S]) with your current weapon, blowing away all other enemies. Creates a wind arena for {6} seconds (or until the target is defeated) that pulls the target into the center, dealing {4}[S] ({5}%[S]) per second.	
 Ability_TempestStrikes	Technique	Tempest Strikes	Uderzenia Nawałnicy
 Ability_TempestStrikes_FlavorText	Technique	A simple technique that best shows one's mastery over their weapon. A true master can make separate attacks flow into one, uninterrupted dance.	Prosta technika która najlepiej pokazuje jak dobrze ktoś opanował władanie swoją bronią. Prawdziwy mistrz może sprawić, że oddzielne ataki układają się w jeden nieprzerwany taniec.
 Ability_TempestStrikes_Description	Technique	Deal medium [WD]Damage to enemies ahead, and repeat up to 5 times based on accumulated stacks.	Zadaj  {0}[I] i {2}[S] wrogom przed sobą. Może być powtórzone aż do w sumie 5 razy w zależności od zakumulowanych ładunków.
@@ -3704,6 +3704,7 @@ CannotRefundPowerUpWhenHigherTierUnlocked	UI	To refund this power-up, you first 
 PreviousPowerUpTierRequired	UI	To unlock this power-up, you first need to unlock all previous rows.	Aby odblokować to wzmocnienie, najpierw musisz odblokować wszystkie rzędy przed tym.
 HigherLevelRequired	UI	Level {0} Required	Wymagany {0} Poziom
 UIPlayerLevel	UI	Level	Poziom
+FreeCostIndicator	UI	-	-
 SkillTree_Tier1	UI	Tier I	Szczebel I
 SkillTree_Tier2	UI	Tier II (Requires Level 10)	Szczebel II (Wymaga 10 Poziomu)
 SkillTree_Tier3	UI	Tier III (Requires Level 20)	Szczebel III (Wymaga 20 Poziomu)

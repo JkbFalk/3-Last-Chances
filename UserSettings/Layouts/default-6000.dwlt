@@ -11,6 +11,30 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: 
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.ContainerWindow
+  m_PixelRect:
+    serializedVersion: 2
+    x: 2568
+    y: 219
+    width: 1904
+    height: 980
+  m_ShowMode: 0
+  m_Title: Console
+  m_RootView: {fileID: 6}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 8096, y: 16192}
+  m_Maximized: 0
+--- !u!114 &2
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
@@ -20,11 +44,114 @@ MonoBehaviour:
     height: 1333
   m_ShowMode: 4
   m_Title: Game
-  m_RootView: {fileID: 2}
+  m_RootView: {fileID: 7}
   m_MinSize: {x: 875, y: 321}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 0
---- !u!114 &2
+--- !u!114 &3
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: ConsoleWindow
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.DockArea
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 653
+    width: 1904
+    height: 327
+  m_MinSize: {x: 50, y: 74}
+  m_MaxSize: {x: 4000, y: 4024}
+  m_ActualView: {fileID: 17}
+  m_Panes:
+  - {fileID: 17}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &4
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.SplitView
+  m_Children:
+  - {fileID: 5}
+  - {fileID: 3}
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1904
+    height: 980
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 8096, y: 16192}
+  vertical: 1
+  controlID: 36782
+  draggingID: 0
+--- !u!114 &5
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: SceneView
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.DockArea
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1904
+    height: 653
+  m_MinSize: {x: 50, y: 78}
+  m_MaxSize: {x: 4000, y: 4028}
+  m_ActualView: {fileID: 18}
+  m_Panes:
+  - {fileID: 18}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &6
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.SplitView
+  m_Children:
+  - {fileID: 4}
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1904
+    height: 980
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 8096, y: 16192}
+  vertical: 0
+  controlID: 20
+  draggingID: 0
+--- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -37,9 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 3}
-  - {fileID: 5}
-  - {fileID: 4}
+  - {fileID: 8}
+  - {fileID: 10}
+  - {fileID: 9}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -52,7 +179,7 @@ MonoBehaviour:
   m_TopViewHeight: 36
   m_UseBottomView: 1
   m_BottomViewHeight: 20
---- !u!114 &3
+--- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,7 +201,7 @@ MonoBehaviour:
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   m_LastLoadedLayoutName: 
---- !u!114 &4
+--- !u!114 &9
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,7 +222,7 @@ MonoBehaviour:
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
---- !u!114 &5
+--- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 6}
+  - {fileID: 11}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -118,9 +245,9 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 222
+  controlID: 37926
   draggingID: 0
---- !u!114 &6
+--- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,8 +260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 7}
-  - {fileID: 11}
+  - {fileID: 12}
+  - {fileID: 16}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -144,9 +271,9 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 223
+  controlID: 37927
   draggingID: 0
---- !u!114 &7
+--- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,9 +286,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 8}
-  - {fileID: 9}
-  - {fileID: 10}
+  - {fileID: 13}
+  - {fileID: 14}
+  - {fileID: 15}
   m_Position:
     serializedVersion: 2
     x: 0
@@ -171,9 +298,9 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 50}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 208
+  controlID: 37928
   draggingID: 0
---- !u!114 &8
+--- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,12 +321,12 @@ MonoBehaviour:
     height: 730
   m_MinSize: {x: 201, y: 226}
   m_MaxSize: {x: 4001, y: 4026}
-  m_ActualView: {fileID: 13}
+  m_ActualView: {fileID: 20}
   m_Panes:
-  - {fileID: 13}
+  - {fileID: 20}
   m_Selected: 0
   m_LastSelected: 0
---- !u!114 &9
+--- !u!114 &14
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,17 +347,17 @@ MonoBehaviour:
     height: 730
   m_MinSize: {x: 202, y: 226}
   m_MaxSize: {x: 4002, y: 4026}
-  m_ActualView: {fileID: 12}
+  m_ActualView: {fileID: 19}
   m_Panes:
-  - {fileID: 12}
-  - {fileID: 14}
-  - {fileID: 15}
-  - {fileID: 16}
-  - {fileID: 17}
-  - {fileID: 18}
+  - {fileID: 19}
+  - {fileID: 21}
+  - {fileID: 22}
+  - {fileID: 23}
+  - {fileID: 24}
+  - {fileID: 25}
   m_Selected: 0
-  m_LastSelected: 0
---- !u!114 &10
+  m_LastSelected: 2
+--- !u!114 &15
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,7 +367,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: DebugTools
+  m_Name: InspectorWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -249,16 +376,16 @@ MonoBehaviour:
     y: 0
     width: 579
     height: 730
-  m_MinSize: {x: 51, y: 76}
+  m_MinSize: {x: 276, y: 76}
   m_MaxSize: {x: 4001, y: 4026}
-  m_ActualView: {fileID: 20}
+  m_ActualView: {fileID: 26}
   m_Panes:
-  - {fileID: 19}
-  - {fileID: 20}
-  - {fileID: 21}
-  m_Selected: 1
-  m_LastSelected: 0
---- !u!114 &11
+  - {fileID: 26}
+  - {fileID: 27}
+  - {fileID: 28}
+  m_Selected: 0
+  m_LastSelected: 1
+--- !u!114 &16
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -279,12 +406,787 @@ MonoBehaviour:
     height: 547
   m_MinSize: {x: 230, y: 276}
   m_MaxSize: {x: 10000, y: 10026}
-  m_ActualView: {fileID: 22}
+  m_ActualView: {fileID: 29}
   m_Panes:
-  - {fileID: 22}
+  - {fileID: 29}
   m_Selected: 0
   m_LastSelected: 0
---- !u!114 &12
+--- !u!114 &17
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.ConsoleWindow
+  m_MinSize: {x: 50, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Console
+    m_Image: {fileID: -4327648978806127646, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+    m_TextWithWhitespace: "Console\u200B"
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 677
+    width: 1904
+    height: 303
+  m_SerializedDataModeController:
+    m_DataMode: 0
+    m_PreferredDataMode: 0
+    m_SupportedDataModes: 
+    isAutomatic: 1
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData: []
+    m_ContainerData: []
+    m_OverlaysVisible: 1
+--- !u!114 &18
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12013, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEditor.dll::UnityEditor.SceneView
+  m_MinSize: {x: 50, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Scene
+    m_Image: {fileID: 2593428753322112591, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+    m_TextWithWhitespace: "Scene\u200B"
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 26
+    width: 1904
+    height: 625
+  m_SerializedDataModeController:
+    m_DataMode: 0
+    m_PreferredDataMode: 0
+    m_SupportedDataModes: 
+    isAutomatic: 1
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData:
+    - dockPosition: 0
+      containerId: overlay-toolbar__top
+      displayed: 1
+      id: Tool Settings
+      index: 1
+      contents: '{"m_Layout":1,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":-161.0,"y":-26.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":3,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: -161, y: -26}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 3
+      layout: 1
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-toolbar__top
+      displayed: 1
+      id: unity-grid-and-snap-toolbar
+      index: 2
+      contents: '{"m_Layout":1,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":-141.0,"y":-221.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":3,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: -141, y: -221}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 3
+      layout: 1
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      displayed: 1
+      id: unity-scene-view-toolbar
+      index: 0
+      contents: '{"m_Layout":1,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":25.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 1
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      displayed: 0
+      id: unity-search-toolbar
+      index: 2
+      contents: '{"m_Layout":1,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":1,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 1
+      layout: 1
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-container--left
+      displayed: 1
+      id: unity-transform-toolbar
+      index: 0
+      contents: '{"m_Layout":2,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":52.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 52}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 2
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-container--left
+      displayed: 1
+      id: unity-component-tools
+      index: 1
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 197}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 2
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-container--right
+      displayed: 1
+      id: Orientation
+      index: 0
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":67.5,"y":86.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 67.5, y: 86}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Light Settings
+      index: 5
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Camera
+      index: 1
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Cloth Constraints
+      index: 6
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Cloth Collisions
+      index: 7
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Navmesh Display
+      index: 4
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Agent Display
+      index: 5
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Obstacle Display
+      index: 6
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Occlusion Culling
+      index: 8
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Physics Debugger
+      index: 9
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Scene Visibility
+      index: 10
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Particles
+      index: 11
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":25.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Tilemap
+      index: 11
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Tilemap Palette Helper
+      index: 12
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Open Tile Palette
+      index: 1
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Tilemap Focus
+      index: 3
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Path
+      index: 12
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 1
+      id: AINavigationOverlay
+      index: 13
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Visual Effect Event Tester
+      index: 14
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Visual Effect
+      index: 15
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Visual Effect Timeline Control
+      index: 16
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Visual Effect Model
+      index: 17
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: APV Overlay
+      index: 14
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/TrailRenderer
+      index: 15
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":48.0,"y":48.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 48}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 1
+      id: UnityEditor.SceneViewCameraOverlay
+      index: 17
+      contents: 
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 48, y: 10}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-toolbar__top
+      displayed: 0
+      id: Brush Attributes
+      index: 0
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-toolbar__top
+      displayed: 1
+      id: unity-scene-view-camera-mode-toolbar
+      index: 1
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":25.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-toolbar__left
+      displayed: 0
+      id: Terrain Tools
+      index: 0
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 0
+      containerId: overlay-toolbar__left
+      displayed: 0
+      id: Brush Masks
+      index: 1
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--left
+      displayed: 0
+      id: Scene View/Lighting Visualization Colors
+      index: 0
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--left
+      displayed: 1
+      id: Overlays/OverlayMenu
+      index: 1
+      contents: '{"m_Layout":1,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":25.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 25}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 1
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Tile Palette Clipboard
+      index: 0
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/PBR Validation Settings
+      index: 2
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Tile Palette Brush Pick
+      index: 4
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: Scene View/Sprite Swap
+      index: 16
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    - dockPosition: 1
+      containerId: overlay-container--right
+      displayed: 0
+      id: SceneView/CamerasOverlay
+      index: 17
+      contents: '{"m_Layout":4,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 4
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    m_ContainerData:
+    - containerId: overlay-toolbar__top
+      scrollOffset: 0
+    - containerId: overlay-toolbar__left
+      scrollOffset: 0
+    - containerId: overlay-container--left
+      scrollOffset: 0
+    - containerId: overlay-container--right
+      scrollOffset: 0
+    - containerId: overlay-toolbar__right
+      scrollOffset: 0
+    - containerId: overlay-toolbar__bottom
+      scrollOffset: 0
+    - containerId: Floating
+      scrollOffset: 0
+    m_OverlaysVisible: 1
+  m_WindowGUID: 4e5cbe81de8475d4b8dd8cf79589005f
+  m_Gizmos: 1
+  m_OverrideSceneCullingMask: 6917529027641081856
+  m_SceneIsLit: 1
+  m_SceneLighting: 1
+  m_2DMode: 1
+  m_isRotationLocked: 0
+  m_PlayAudio: 0
+  m_AudioPlay: 0
+  m_DebugDrawModesUseInteractiveLightBakingData: 0
+  m_Position:
+    m_Target: {x: 154.98886, y: 1216.1033, z: -1.3913394}
+    speed: 2
+    m_Value: {x: 154.98886, y: 1216.1033, z: -1.3913394}
+  m_RenderMode: 0
+  m_CameraMode:
+    drawMode: 0
+    name: Shaded
+    section: Shading Mode
+  m_ValidateTrueMetals: 0
+  m_DoValidateTrueMetals: 0
+  m_SceneViewState:
+    m_AlwaysRefresh: 0
+    showFog: 1
+    showSkybox: 1
+    showFlares: 1
+    showImageEffects: 1
+    showParticleSystems: 1
+    showVisualEffectGraphs: 1
+    m_FxEnabled: 1
+  m_Grid:
+    xGrid:
+      m_Fade:
+        m_Target: 0
+        speed: 2
+        m_Value: 0
+      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
+      m_Pivot: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0}
+    yGrid:
+      m_Fade:
+        m_Target: 0
+        speed: 2
+        m_Value: 0
+      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
+      m_Pivot: {x: 0, y: 0, z: 0}
+      m_Size: {x: 0, y: 0}
+    zGrid:
+      m_Fade:
+        m_Target: 0
+        speed: 2
+        m_Value: 0
+      m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
+      m_Pivot: {x: 0, y: 0, z: 0}
+      m_Size: {x: 1, y: 1}
+    m_ShowGrid: 0
+    m_GridAxis: 1
+    m_gridOpacity: 0.5
+  m_Rotation:
+    m_Target: {x: 0, y: 0, z: 0, w: 1}
+    speed: 2
+    m_Value: {x: 0, y: 0, z: 0, w: 1}
+  m_Size:
+    m_Target: 169.72813
+    speed: 2
+    m_Value: 169.72813
+  m_Ortho:
+    m_Target: 1
+    speed: 2
+    m_Value: 1
+  m_CameraSettings:
+    m_Speed: 1
+    m_SpeedNormalized: 0.5
+    m_SpeedMin: 0.01
+    m_SpeedMax: 2
+    m_EasingEnabled: 1
+    m_EasingDuration: 0.4
+    m_AccelerationEnabled: 1
+    m_FieldOfViewHorizontalOrVertical: 60
+    m_NearClip: 0.03
+    m_FarClip: 10000
+    m_DynamicClip: 1
+    m_OcclusionCulling: 0
+  m_LastSceneViewRotation: {x: -0.08717229, y: 0.89959055, z: -0.21045254, w: -0.3726226}
+  m_LastSceneViewOrtho: 0
+  m_Viewpoint:
+    m_SceneView: {fileID: 18}
+    m_CameraOverscanSettings:
+      m_Opacity: 50
+      m_Scale: 1
+  m_ReplacementShader: {fileID: 0}
+  m_ReplacementString: 
+  m_SceneVisActive: 1
+  m_LastLockedObject: {fileID: 0}
+  m_LastDebugDrawMode:
+    drawMode: 35
+    name: Contributors / Receivers
+    section: Lighting
+  m_ViewIsLockedToObject: 0
+--- !u!114 &19
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -386,7 +1288,7 @@ MonoBehaviour:
   m_XRRenderMode: 0
   m_RenderTexture: {fileID: 0}
   m_showToolbar: 1
---- !u!114 &13
+--- !u!114 &20
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -428,7 +1330,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 02fbffff
+      m_ExpandedIDs: 0224f1ff1024f1ff3024f1ff6437f1ffb237f1ff3251f1ff446ff2ff566ff2ff646ff2ffe4e4f8ff00e5f8ffb4ecf8ffc2ecf8ff22edf8ff30edf8ff0cf4f8ff362dfbff442dfbff5e2dfbff2034fbff1cdcfffff6dcffff44e4ffffb2e8ffffe4f3fffff4ffffff80c1050018d30500c432060032340600047a0600608406007a8b06000c9c060008eb090086f80a00
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -445,7 +1347,7 @@ MonoBehaviour:
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_TrimLeadingAndTrailingWhitespace: 0
-        m_ClientGUIView: {fileID: 8}
+        m_ClientGUIView: {fileID: 0}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -453,7 +1355,7 @@ MonoBehaviour:
       m_IsLocked: 0
     m_CurrentSortingName: TransformSorting
   m_WindowGUID: 4c969a2b90040154d917609493e03593
---- !u!114 &14
+--- !u!114 &21
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -715,7 +1617,7 @@ MonoBehaviour:
   m_CurrentEditor: 0
   m_LayerEditor:
     m_SelectedLayerIndex: 0
---- !u!114 &15
+--- !u!114 &22
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -736,10 +1638,10 @@ MonoBehaviour:
     m_TextWithWhitespace: "Sprite Editor\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 484
-    y: 79
-    width: 1492
-    height: 713
+    x: 489
+    y: 87
+    width: 1482
+    height: 704
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -795,12 +1697,12 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_ShowAlpha: 0
   m_MipLevel: 0
-  m_Zoom: 0.6476133
-  m_ScrollPosition: {x: 0.63000107, y: 30.150011}
+  m_Zoom: 5.9972725
+  m_ScrollPosition: {x: 0, y: 0}
   m_SelectedObject: {fileID: 0}
   m_SelectedSpriteRectGUID: 00000000000000000000000000000000
   m_LastUsedModuleTypeName: UnityEditor.U2D.Sprites.SpriteFrameModule
---- !u!114 &16
+--- !u!114 &23
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -880,7 +1782,7 @@ MonoBehaviour:
       m_OriginalEventType: 11
       m_IsRenamingFilename: 0
       m_TrimLeadingAndTrailingWhitespace: 0
-      m_ClientGUIView: {fileID: 9}
+      m_ClientGUIView: {fileID: 14}
     m_SearchString: 
   m_ControlPickerViewState:
     m_AdvancedDropdownState:
@@ -2414,7 +3316,7 @@ MonoBehaviour:
     m_Image: {fileID: 0}
     m_Tooltip: 
     m_TextWithWhitespace: 
---- !u!114 &17
+--- !u!114 &24
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2436,10 +3338,10 @@ MonoBehaviour:
     m_TextWithWhitespace: "Animation\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 484
-    y: 79
-    width: 1492
-    height: 713
+    x: 489
+    y: 87
+    width: 1482
+    height: 704
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -2453,8 +3355,8 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 233550
---- !u!114 &18
+  m_LastSelectedObjectID: 400744
+--- !u!114 &25
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2490,7 +3392,7 @@ MonoBehaviour:
     m_SaveData: []
     m_ContainerData: []
     m_OverlaysVisible: 1
---- !u!114 &19
+--- !u!114 &26
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2512,8 +3414,8 @@ MonoBehaviour:
     m_TextWithWhitespace: "Inspector\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 1973
-    y: 87
+    x: 1966
+    y: 24
     width: 578
     height: 704
   m_SerializedDataModeController:
@@ -2540,45 +3442,7 @@ MonoBehaviour:
   m_LockTracker:
     m_IsLocked: 0
   m_PreviewWindow: {fileID: 0}
---- !u!114 &20
-MonoBehaviour:
-  m_ObjectHideFlags: 52
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6fe7eb56e1f869d4882448eb6979becf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp-Editor::DebugTools
-  m_MinSize: {x: 50, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_TitleContent:
-    m_Text: DebugTools
-    m_Image: {fileID: 0}
-    m_Tooltip: 
-    m_TextWithWhitespace: "DebugTools\u200B"
-  m_Pos:
-    serializedVersion: 2
-    x: 1966
-    y: 24
-    width: 578
-    height: 704
-  m_SerializedDataModeController:
-    m_DataMode: 0
-    m_PreferredDataMode: 0
-    m_SupportedDataModes: 
-    isAutomatic: 1
-  m_ViewDataDictionary: {fileID: 0}
-  m_OverlayCanvas:
-    m_LastAppliedPresetName: Default
-    m_SaveData: []
-    m_ContainerData: []
-    m_OverlaysVisible: 1
-  gameObjectToGetPath: {fileID: 0}
-  pathToGameObject: 
---- !u!114 &21
+--- !u!114 &27
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2599,10 +3463,75 @@ MonoBehaviour:
     m_TextWithWhitespace: "UnityEditor.Tilemaps.GridPaintPaletteWindow\u200B"
   m_Pos:
     serializedVersion: 2
-    x: 2087
-    y: 73
-    width: 472
-    height: 973
+    x: 1973
+    y: 87
+    width: 578
+    height: 704
+  m_SerializedDataModeController:
+    m_DataMode: 0
+    m_PreferredDataMode: 0
+    m_SupportedDataModes: 
+    isAutomatic: 1
+  m_ViewDataDictionary: {fileID: 0}
+  m_OverlayCanvas:
+    m_LastAppliedPresetName: Default
+    m_SaveData:
+    - dockPosition: 1
+      containerId: overlay-container--left
+      displayed: 1
+      id: Overlays/OverlayMenu
+      index: 0
+      contents: '{"m_Layout":1,"m_Collapsed":false,"m_Folded":false,"m_Floating":false,"m_FloatingSnapOffset":{"x":0.0,"y":0.0},"m_SnapOffsetDelta":{"x":0.0,"y":0.0},"m_FloatingSnapCorner":0,"m_Size":{"x":0.0,"y":0.0},"m_SizeOverridden":false}'
+      floating: 0
+      collapsed: 0
+      snapOffset: {x: 0, y: 0}
+      snapOffsetDelta: {x: 0, y: 0}
+      snapCorner: 0
+      layout: 1
+      size: {x: 0, y: 0}
+      sizeOverridden: 0
+    m_ContainerData:
+    - containerId: overlay-toolbar__top
+      scrollOffset: 0
+    - containerId: overlay-toolbar__left
+      scrollOffset: 0
+    - containerId: overlay-container--left
+      scrollOffset: 0
+    - containerId: overlay-container--right
+      scrollOffset: 0
+    - containerId: overlay-toolbar__right
+      scrollOffset: 0
+    - containerId: overlay-toolbar__bottom
+      scrollOffset: 0
+    - containerId: Floating
+      scrollOffset: 0
+    m_OverlaysVisible: 1
+--- !u!114 &28
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 13401, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEditor.TestRunner.dll::UnityEditor.TestTools.TestRunner.TestRunnerWindow
+  m_MinSize: {x: 50, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Test Runner
+    m_Image: {fileID: 0}
+    m_Tooltip: Test framework for running Edit mode and Play mode tests in Unity.
+      Part of the com.unity.test-framework package.
+    m_TextWithWhitespace: "Test Runner\u200B"
+  m_Pos:
+    serializedVersion: 2
+    x: 1973
+    y: 87
+    width: 578
+    height: 704
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -2614,7 +3543,1166 @@ MonoBehaviour:
     m_SaveData: []
     m_ContainerData: []
     m_OverlaysVisible: 1
---- !u!114 &22
+  m_Spl:
+    ID: 35834
+    splitterInitialOffset: 0
+    currentActiveSplitter: -1
+    realSizes:
+    - 475
+    - 159
+    relativeSizes:
+    - 0.75
+    - 0.25
+    minSizes:
+    - 32
+    - 32
+    maxSizes:
+    - 0
+    - 0
+    lastTotalSize: 634
+    splitSize: 6
+    xOffset: 0
+    m_Version: 1
+    oldRealSizes: 
+    oldMinSizes: 
+    oldMaxSizes: 
+    oldSplitSize: 0
+  m_TestTypeToolbarIndex: 0
+  m_TestListGUIs:
+  - m_Window: {fileID: 28}
+    runProgress:
+      RunGuid: a93ededb-5d82-4648-9e45-156f2c65bfd7
+      ExecutionSettings:
+        m_TargetPlatform: 0
+        m_HasTargetPlatform: 0
+        filter:
+          testMode: 0
+          testNames: []
+          groupNames: []
+          categoryNames: []
+          assemblyNames: []
+        filters:
+        - testMode: 1
+          testNames:
+          - StatCalculationTests.Stat_AddFlatModifier_IncreasesMaximumAndRecalculates
+          - StatCalculationTests.Stat_AddPercentageModifier_ScalesBaseAndFlatModifiers
+          - StatCalculationTests.Stat_RemoveModifier_RestoresPreviousValue
+          groupNames: []
+          categoryNames: []
+          assemblyNames: []
+        runSynchronously: 0
+        playerHeartbeatTimeout: 600
+        orderedTestNames: []
+        ignoreTests: []
+        featureFlags:
+          fileCleanUpCheck: 0
+          requiresSplashScreen: 0
+          strictDomainReload: 0
+          disableNestedEnumeratorBugfix: 0
+        randomOrderSeed: 0
+      HasFinished: 1
+      Progress: 0.9999999
+      CurrentStepName: Unlock Reload Assemblies
+      CurrentStageName: 
+    m_NewResultList:
+    - id: 1000
+      uniqueId: '[3 Last Chances Demo][suite]'
+      name: 3 Last Chances Demo
+      fullName: 3 Last Chances Demo
+      resultStatus: 1
+      duration: 0.0400022
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 
+      parentUniqueId: 
+    - id: 1054
+      uniqueId: '[Assembly-CSharp-Editor][C:/3 Last Chances/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll][suite]'
+      name: Assembly-CSharp-Editor.dll
+      fullName: C:/3 Last Chances/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+      resultStatus: 1
+      duration: 0.0400022
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1000
+      parentUniqueId: '[3 Last Chances Demo][suite]'
+    - id: 1001
+      uniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][AbilityDamageResolutionTests][suite]'
+      name: AbilityDamageResolutionTests
+      fullName: AbilityDamageResolutionTests
+      resultStatus: 1
+      duration: 0.0153276
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1054
+      parentUniqueId: '[Assembly-CSharp-Editor][C:/3 Last Chances/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll][suite]'
+    - id: 1005
+      uniqueId: 'Assembly-CSharp-Editor.dll/AbilityDamageResolutionTests/[Assembly-CSharp-Editor][AbilityDamageResolutionTests.CheckIfDamageTriggerIsValid_OncePerUnit_PreventsMultiHit]'
+      name: CheckIfDamageTriggerIsValid_OncePerUnit_PreventsMultiHit
+      fullName: AbilityDamageResolutionTests.CheckIfDamageTriggerIsValid_OncePerUnit_PreventsMultiHit
+      resultStatus: 1
+      duration: 0.0101025
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][AbilityDamageResolutionTests][suite]'
+    - id: 1006
+      uniqueId: 'Assembly-CSharp-Editor.dll/AbilityDamageResolutionTests/[Assembly-CSharp-Editor][AbilityDamageResolutionTests.CheckIfDamageTriggerIsValid_OncePerUnitFromEachSource_AllowsDistinctSources]'
+      name: CheckIfDamageTriggerIsValid_OncePerUnitFromEachSource_AllowsDistinctSources
+      fullName: AbilityDamageResolutionTests.CheckIfDamageTriggerIsValid_OncePerUnitFromEachSource_AllowsDistinctSources
+      resultStatus: 1
+      duration: 0.0009011
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][AbilityDamageResolutionTests][suite]'
+    - id: 1004
+      uniqueId: 'Assembly-CSharp-Editor.dll/AbilityDamageResolutionTests/[Assembly-CSharp-Editor][AbilityDamageResolutionTests.GetDamageSource_AoECollider_FallsBackToAoESource]'
+      name: GetDamageSource_AoECollider_FallsBackToAoESource
+      fullName: AbilityDamageResolutionTests.GetDamageSource_AoECollider_FallsBackToAoESource
+      resultStatus: 1
+      duration: 0.0035701
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][AbilityDamageResolutionTests][suite]'
+    - id: 1003
+      uniqueId: 'Assembly-CSharp-Editor.dll/AbilityDamageResolutionTests/[Assembly-CSharp-Editor][AbilityDamageResolutionTests.GetDamageSource_NormalizesBoneNamesToDefault]'
+      name: GetDamageSource_NormalizesBoneNamesToDefault
+      fullName: AbilityDamageResolutionTests.GetDamageSource_NormalizesBoneNamesToDefault
+      resultStatus: 1
+      duration: 0.0002832
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][AbilityDamageResolutionTests][suite]'
+    - id: 1002
+      uniqueId: 'Assembly-CSharp-Editor.dll/AbilityDamageResolutionTests/[Assembly-CSharp-Editor][AbilityDamageResolutionTests.GetDamageSource_SingleSourceConfigured_AlwaysReturnsOnlySource]'
+      name: GetDamageSource_SingleSourceConfigured_AlwaysReturnsOnlySource
+      fullName: AbilityDamageResolutionTests.GetDamageSource_SingleSourceConfigured_AlwaysReturnsOnlySource
+      resultStatus: 1
+      duration: 0.0004707
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][AbilityDamageResolutionTests][suite]'
+    - id: 1007
+      uniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+      name: CombatMathTests
+      fullName: CombatMathTests
+      resultStatus: 1
+      duration: 0.0097759
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1054
+      parentUniqueId: '[Assembly-CSharp-Editor][C:/3 Last Chances/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll][suite]'
+    - id: 1015
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.ConvertDegreesToRadians_And_RadiansToDegrees_AreReciprocal]'
+      name: ConvertDegreesToRadians_And_RadiansToDegrees_AreReciprocal
+      fullName: CombatMathTests.ConvertDegreesToRadians_And_RadiansToDegrees_AreReciprocal
+      resultStatus: 1
+      duration: 0.0013909
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1007
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.CrowdControlDuration_HigherControlThanTenacity_IncreasesDuration]'
+      name: CrowdControlDuration_HigherControlThanTenacity_IncreasesDuration
+      fullName: CombatMathTests.CrowdControlDuration_HigherControlThanTenacity_IncreasesDuration
+      resultStatus: 1
+      duration: 0.0001663
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1008
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.DirectionVector_AngleClamping_DoesNotProduceNaN]'
+      name: DirectionVector_AngleClamping_DoesNotProduceNaN
+      fullName: CombatMathTests.DirectionVector_AngleClamping_DoesNotProduceNaN
+      resultStatus: 1
+      duration: 0.0006361
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1001
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1012
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues][suite]'
+      name: ExpectedPower_ReturnsExpectedBaselineValues
+      fullName: CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues
+      resultStatus: 1
+      duration: 0.0012986
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1002
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/ExpectedPower_ReturnsExpectedBaselineValues/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(1,1.25f)]'
+      name: ExpectedPower_ReturnsExpectedBaselineValues(1,1.25f)
+      fullName: CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(1,1.25f)
+      resultStatus: 1
+      duration: 0.0009587
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1006
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues][suite]'
+    - id: 1003
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/ExpectedPower_ReturnsExpectedBaselineValues/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(10,2.2f)]'
+      name: ExpectedPower_ReturnsExpectedBaselineValues(10,2.2f)
+      fullName: CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(10,2.2f)
+      resultStatus: 1
+      duration: 0.0001846
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1006
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues][suite]'
+    - id: 1004
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/ExpectedPower_ReturnsExpectedBaselineValues/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(30,4.2f)]'
+      name: ExpectedPower_ReturnsExpectedBaselineValues(30,4.2f)
+      fullName: CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(30,4.2f)
+      resultStatus: 1
+      duration: 0.0000874
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1006
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues][suite]'
+    - id: 1005
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/ExpectedPower_ReturnsExpectedBaselineValues/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(50,6.0f)]'
+      name: ExpectedPower_ReturnsExpectedBaselineValues(50,6.0f)
+      fullName: CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues(50,6.0f)
+      resultStatus: 1
+      duration: 0.0000679
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1006
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.ExpectedPower_ReturnsExpectedBaselineValues][suite]'
+    - id: 1034
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAggresivenessBasedOnUnitCount_ScalesInversely]'
+      name: GetAggresivenessBasedOnUnitCount_ScalesInversely
+      fullName: CombatMathTests.GetAggresivenessBasedOnUnitCount_ScalesInversely
+      resultStatus: 1
+      duration: 0.0021009
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1023
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+      name: GetAreOppositeDirections_ValidatesCorrectly
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly
+      resultStatus: 1
+      duration: 0.0020695
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1016
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Up","Down",True)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Up","Down",True)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Up","Down",True)
+      resultStatus: 1
+      duration: 0.0015044
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1017
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Down","Up",True)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Down","Up",True)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Down","Up",True)
+      resultStatus: 1
+      duration: 0.0001372
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1018
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Left","Right",True)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Left","Right",True)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Left","Right",True)
+      resultStatus: 1
+      duration: 0.0000999
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1019
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Right","Left",True)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Right","Left",True)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Right","Left",True)
+      resultStatus: 1
+      duration: 0.0000828
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1020
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Up","Left",False)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Up","Left",False)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Up","Left",False)
+      resultStatus: 1
+      duration: 0.000091
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1021
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Down","Right",False)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Down","Right",False)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Down","Right",False)
+      resultStatus: 1
+      duration: 0.0000788
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1022
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetAreOppositeDirections_ValidatesCorrectly/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Up","Up",False)]'
+      name: GetAreOppositeDirections_ValidatesCorrectly("Up","Up",False)
+      fullName: CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly("Up","Up",False)
+      resultStatus: 1
+      duration: 0.0000754
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1023
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetAreOppositeDirections_ValidatesCorrectly][suite]'
+    - id: 1025
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetDirectionVector_FacingRight_TargetBehind_ClampsDirection]'
+      name: GetDirectionVector_FacingRight_TargetBehind_ClampsDirection
+      fullName: CombatMathTests.GetDirectionVector_FacingRight_TargetBehind_ClampsDirection
+      resultStatus: 1
+      duration: 0.000362
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1035
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetExpectedPowerForLevel_ScalesMonotonically]'
+      name: GetExpectedPowerForLevel_ScalesMonotonically
+      fullName: CombatMathTests.GetExpectedPowerForLevel_ScalesMonotonically
+      resultStatus: 1
+      duration: 0.0002486
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1033
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments
+      resultStatus: 1
+      duration: 0.0012358
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1026
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(1,10.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(1,10.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(1,10.0f)
+      resultStatus: 1
+      duration: 0.0007696
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1027
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(2,6.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(2,6.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(2,6.0f)
+      resultStatus: 1
+      duration: 0.0001136
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1028
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(3,2.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(3,2.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(3,2.0f)
+      resultStatus: 1
+      duration: 0.0000875
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1029
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(4,-1.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(4,-1.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(4,-1.0f)
+      resultStatus: 1
+      duration: 0.0000644
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1030
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(5,-3.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(5,-3.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(5,-3.0f)
+      resultStatus: 1
+      duration: 0.0000605
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1031
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(6,-5.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(6,-5.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(6,-5.0f)
+      resultStatus: 1
+      duration: 0.0000765
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1032
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(10,-10.0f)]'
+      name: GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(10,-10.0f)
+      fullName: CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments(10,-10.0f)
+      resultStatus: 1
+      duration: 0.0000637
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1033
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetLevelAdjustmentBasedOnUnitCount_ReturnsAccurateAdjustments][suite]'
+    - id: 1024
+      uniqueId: 'Assembly-CSharp-Editor.dll/CombatMathTests/[Assembly-CSharp-Editor][CombatMathTests.GetPositionGivenDistanceAway_ReturnsAccurateTargetPosition]'
+      name: GetPositionGivenDistanceAway_ReturnsAccurateTargetPosition
+      fullName: CombatMathTests.GetPositionGivenDistanceAway_ReturnsAccurateTargetPosition
+      resultStatus: 1
+      duration: 0.0002672
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1007
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][CombatMathTests][suite]'
+    - id: 1036
+      uniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][StatCalculationTests][suite]'
+      name: StatCalculationTests
+      fullName: StatCalculationTests
+      resultStatus: 1
+      duration: 0.0125896
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1054
+      parentUniqueId: '[Assembly-CSharp-Editor][C:/3 Last Chances/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll][suite]'
+    - id: 1038
+      uniqueId: 'Assembly-CSharp-Editor.dll/StatCalculationTests/[Assembly-CSharp-Editor][StatCalculationTests.Stat_AddFlatModifier_IncreasesMaximumAndRecalculates]'
+      name: Stat_AddFlatModifier_IncreasesMaximumAndRecalculates
+      fullName: StatCalculationTests.Stat_AddFlatModifier_IncreasesMaximumAndRecalculates
+      resultStatus: 1
+      duration: 0.0100093
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1036
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][StatCalculationTests][suite]'
+    - id: 1039
+      uniqueId: 'Assembly-CSharp-Editor.dll/StatCalculationTests/[Assembly-CSharp-Editor][StatCalculationTests.Stat_AddPercentageModifier_ScalesBaseAndFlatModifiers]'
+      name: Stat_AddPercentageModifier_ScalesBaseAndFlatModifiers
+      fullName: StatCalculationTests.Stat_AddPercentageModifier_ScalesBaseAndFlatModifiers
+      resultStatus: 1
+      duration: 0.0006816
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1036
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][StatCalculationTests][suite]'
+    - id: 1041
+      uniqueId: 'Assembly-CSharp-Editor.dll/StatCalculationTests/[Assembly-CSharp-Editor][StatCalculationTests.Stat_Current_ClampedBetweenZeroAndMaximum]'
+      name: Stat_Current_ClampedBetweenZeroAndMaximum
+      fullName: StatCalculationTests.Stat_Current_ClampedBetweenZeroAndMaximum
+      resultStatus: 1
+      duration: 0.0010919
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1036
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][StatCalculationTests][suite]'
+    - id: 1037
+      uniqueId: 'Assembly-CSharp-Editor.dll/StatCalculationTests/[Assembly-CSharp-Editor][StatCalculationTests.Stat_InitialState_MatchesBase]'
+      name: Stat_InitialState_MatchesBase
+      fullName: StatCalculationTests.Stat_InitialState_MatchesBase
+      resultStatus: 1
+      duration: 0.0001747
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1036
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][StatCalculationTests][suite]'
+    - id: 1040
+      uniqueId: 'Assembly-CSharp-Editor.dll/StatCalculationTests/[Assembly-CSharp-Editor][StatCalculationTests.Stat_RemoveModifier_RestoresPreviousValue]'
+      name: Stat_RemoveModifier_RestoresPreviousValue
+      fullName: StatCalculationTests.Stat_RemoveModifier_RestoresPreviousValue
+      resultStatus: 1
+      duration: 0.0006321
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1036
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][StatCalculationTests][suite]'
+    - id: 1042
+      uniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+      name: UtilityFormattingTests
+      fullName: UtilityFormattingTests
+      resultStatus: 1
+      duration: 0.0023091
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1054
+      parentUniqueId: '[Assembly-CSharp-Editor][C:/3 Last Chances/Library/ScriptAssemblies/Assembly-CSharp-Editor.dll][suite]'
+    - id: 1053
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.CalculatePB_AppliesScalingAndMultipliers]'
+      name: CalculatePB_AppliesScalingAndMultipliers
+      fullName: UtilityFormattingTests.CalculatePB_AppliesScalingAndMultipliers
+      resultStatus: 1
+      duration: 0.0005202
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1042
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+    - id: 1051
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedFloat_ForcedDecimals_IncludesTrailingZeroes]'
+      name: GetFormattedFloat_ForcedDecimals_IncludesTrailingZeroes
+      fullName: UtilityFormattingTests.GetFormattedFloat_ForcedDecimals_IncludesTrailingZeroes
+      resultStatus: 1
+      duration: 0.0004258
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1042
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+    - id: 1050
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedFloat_RoundsLargeNumbersToInteger]'
+      name: GetFormattedFloat_RoundsLargeNumbersToInteger
+      fullName: UtilityFormattingTests.GetFormattedFloat_RoundsLargeNumbersToInteger
+      resultStatus: 1
+      duration: 0.0003958
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1042
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+    - id: 1049
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedFloat_RoundsSmallNumbersToOneDecimal]'
+      name: GetFormattedFloat_RoundsSmallNumbersToOneDecimal
+      fullName: UtilityFormattingTests.GetFormattedFloat_RoundsSmallNumbersToOneDecimal
+      resultStatus: 1
+      duration: 0.000143
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1042
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+    - id: 1048
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas][suite]'
+      name: GetFormattedInteger_FormatsWithCommas
+      fullName: UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas
+      resultStatus: 1
+      duration: 0.000655
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 1
+      categories: []
+      parentId: 1042
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+    - id: 1043
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/GetFormattedInteger_FormatsWithCommas/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(0,"0")]'
+      name: GetFormattedInteger_FormatsWithCommas(0,"0")
+      fullName: UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(0,"0")
+      resultStatus: 1
+      duration: 0.0003573
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1048
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas][suite]'
+    - id: 1044
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/GetFormattedInteger_FormatsWithCommas/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(999,"999")]'
+      name: GetFormattedInteger_FormatsWithCommas(999,"999")
+      fullName: UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(999,"999")
+      resultStatus: 1
+      duration: 0.000095
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1048
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas][suite]'
+    - id: 1045
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/GetFormattedInteger_FormatsWithCommas/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(1000,"1,000")]'
+      name: GetFormattedInteger_FormatsWithCommas(1000,"1,000")
+      fullName: UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(1000,"1,000")
+      resultStatus: 1
+      duration: 0.0000715
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1048
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas][suite]'
+    - id: 1046
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/GetFormattedInteger_FormatsWithCommas/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(12345,"12,345")]'
+      name: GetFormattedInteger_FormatsWithCommas(12345,"12,345")
+      fullName: UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(12345,"12,345")
+      resultStatus: 1
+      duration: 0.0000675
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1048
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas][suite]'
+    - id: 1047
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/GetFormattedInteger_FormatsWithCommas/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(1000000,"1,000,000")]'
+      name: GetFormattedInteger_FormatsWithCommas(1000000,"1,000,000")
+      fullName: UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas(1000000,"1,000,000")
+      resultStatus: 1
+      duration: 0.0000637
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1048
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetFormattedInteger_FormatsWithCommas][suite]'
+    - id: 1052
+      uniqueId: 'Assembly-CSharp-Editor.dll/UtilityFormattingTests/[Assembly-CSharp-Editor][UtilityFormattingTests.GetValueBasedOnMinAndMax_InterpolatesAndClamps]'
+      name: GetValueBasedOnMinAndMax_InterpolatesAndClamps
+      fullName: UtilityFormattingTests.GetValueBasedOnMinAndMax_InterpolatesAndClamps
+      resultStatus: 1
+      duration: 0.0001693
+      messages: 
+      output: 
+      stacktrace: 
+      notRunnable: 0
+      ignoredOrSkipped: 0
+      description: 
+      isSuite: 0
+      categories:
+      - Uncategorized
+      parentId: 1042
+      parentUniqueId: 'Assembly-CSharp-Editor.dll/[Assembly-CSharp-Editor][UtilityFormattingTests][suite]'
+    m_ResultText: Stat_RemoveModifier_RestoresPreviousValue (0.001s)
+    m_ResultStacktrace: 
+    m_TestListState:
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: d6ae5119
+      m_LastClickedID: 424783574
+      m_ExpandedIDs: 955e0945eb56c84cffffff7f
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_TrimLeadingAndTrailingWhitespace: 0
+        m_ClientGUIView: {fileID: 0}
+      m_SearchString: 
+    m_TestRunnerUIFilter:
+      PassedHidden: 0
+      FailedHidden: 0
+      NotRunHidden: 0
+      m_SearchString: 
+      selectedCategories: []
+      availableCategories:
+      - Uncategorized
+    m_SelectedOption: 0
+  - m_Window: {fileID: 0}
+    runProgress:
+      RunGuid: a93ededb-5d82-4648-9e45-156f2c65bfd7
+      ExecutionSettings:
+        m_TargetPlatform: 0
+        m_HasTargetPlatform: 0
+        filter:
+          testMode: 0
+          testNames: []
+          groupNames: []
+          categoryNames: []
+          assemblyNames: []
+        filters:
+        - testMode: 1
+          testNames:
+          - StatCalculationTests.Stat_AddFlatModifier_IncreasesMaximumAndRecalculates
+          - StatCalculationTests.Stat_AddPercentageModifier_ScalesBaseAndFlatModifiers
+          - StatCalculationTests.Stat_RemoveModifier_RestoresPreviousValue
+          groupNames: []
+          categoryNames: []
+          assemblyNames: []
+        runSynchronously: 0
+        playerHeartbeatTimeout: 600
+        orderedTestNames: []
+        ignoreTests: []
+        featureFlags:
+          fileCleanUpCheck: 0
+          requiresSplashScreen: 0
+          strictDomainReload: 0
+          disableNestedEnumeratorBugfix: 0
+        randomOrderSeed: 0
+      HasFinished: 1
+      Progress: 0.9999999
+      CurrentStepName: Unlock Reload Assemblies
+      CurrentStageName: 
+    m_NewResultList: []
+    m_ResultText: 
+    m_ResultStacktrace: 
+    m_TestListState:
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_TrimLeadingAndTrailingWhitespace: 0
+        m_ClientGUIView: {fileID: 0}
+      m_SearchString: 
+    m_TestRunnerUIFilter:
+      PassedHidden: 0
+      FailedHidden: 0
+      NotRunHidden: 0
+      m_SearchString: 
+      selectedCategories: []
+      availableCategories: []
+    m_SelectedOption: 0
+  - m_Window: {fileID: 0}
+    runProgress:
+      RunGuid: a93ededb-5d82-4648-9e45-156f2c65bfd7
+      ExecutionSettings:
+        m_TargetPlatform: 0
+        m_HasTargetPlatform: 0
+        filter:
+          testMode: 0
+          testNames: []
+          groupNames: []
+          categoryNames: []
+          assemblyNames: []
+        filters:
+        - testMode: 1
+          testNames:
+          - StatCalculationTests.Stat_AddFlatModifier_IncreasesMaximumAndRecalculates
+          - StatCalculationTests.Stat_AddPercentageModifier_ScalesBaseAndFlatModifiers
+          - StatCalculationTests.Stat_RemoveModifier_RestoresPreviousValue
+          groupNames: []
+          categoryNames: []
+          assemblyNames: []
+        runSynchronously: 0
+        playerHeartbeatTimeout: 600
+        orderedTestNames: []
+        ignoreTests: []
+        featureFlags:
+          fileCleanUpCheck: 0
+          requiresSplashScreen: 0
+          strictDomainReload: 0
+          disableNestedEnumeratorBugfix: 0
+        randomOrderSeed: 0
+      HasFinished: 1
+      Progress: 0.9999999
+      CurrentStepName: Unlock Reload Assemblies
+      CurrentStageName: 
+    m_NewResultList: []
+    m_ResultText: 
+    m_ResultStacktrace: 
+    m_TestListState:
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 
+      m_RenameOverlay:
+        m_UserAcceptedRename: 0
+        m_Name: 
+        m_OriginalName: 
+        m_EditFieldRect:
+          serializedVersion: 2
+          x: 0
+          y: 0
+          width: 0
+          height: 0
+        m_UserData: 0
+        m_IsWaitingForDelay: 0
+        m_IsRenaming: 0
+        m_OriginalEventType: 11
+        m_IsRenamingFilename: 0
+        m_TrimLeadingAndTrailingWhitespace: 0
+        m_ClientGUIView: {fileID: 0}
+      m_SearchString: 
+    m_TestRunnerUIFilter:
+      PassedHidden: 0
+      FailedHidden: 0
+      NotRunHidden: 0
+      m_SearchString: 
+      selectedCategories: []
+      availableCategories: []
+    m_SelectedOption: 0
+--- !u!114 &29
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2662,7 +4750,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/UI
+    - Assets/Scripts/Base Class
     m_Globs: []
     m_ProductIds: 
     m_AnyWithAssetOrigin: 0
@@ -2672,16 +4760,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/UI
+  - Assets/Scripts/Base Class
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\3 Last Chances
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 695}
-    m_SelectedIDs: be300100
-    m_LastClickedID: 78014
-    m_ExpandedIDs: 00000000f02f0100f22f0100f42f0100f62f0100f82f0100fa2f0100fc2f0100fe2f010000300100023001000430010006300100083001000a3001000c300100
+    scrollPos: {x: 0, y: 203}
+    m_SelectedIDs: 4e2c0300
+    m_LastClickedID: 207950
+    m_ExpandedIDs: 000000008e0f0300900f0300920f0300940f0300960f0300980f03009a0f03009c0f03009e0f0300a00f0300a20f0300a40f0300a60f0300a80f0300aa0f0300ac0f0300ae0f0300b00f0300b20f0300
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2698,7 +4786,7 @@ MonoBehaviour:
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 16}
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -2710,7 +4798,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f02f0100f22f0100f42f0100f62f0100f82f0100fa2f0100fc2f0100fe2f010000300100023001000430010006300100083001000a3001000c300100
+    m_ExpandedIDs: 000000008e0f0300900f0300920f0300940f0300960f0300980f03009a0f03009c0f03009e0f0300a00f0300a20f0300a40f0300a60f0300a80f0300aa0f0300ac0f0300ae0f0300b00f0300b20f0300
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2739,7 +4827,7 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
-    m_ExpandedInstanceIDs: c62300007cc0000058aa0100b8ab01003caa0100aaac01003cab010046ab01004aac01008ead0100ae43040036cf0100529a0100789b0100fea00100eaed01006e600600dced0100c0ed0100ea5f0200ea180600309a0100029701005cb50700b45c02002080020028a902006e940200769d0100b8690200aae0ffff729b0100249d0100929c0100589b0100c455f2ffdafd2c00789c0100709602003ca20100c4a5010056d501006acf05002ca7010058ab010096a601007e6a000094b102005c610100ce5a010090610100e2030000
+    m_ExpandedInstanceIDs: c62300007cc0000058aa0100b8ab01003caa0100aaac01003cab010046ab01004aac01008ead0100ae43040036cf0100529a0100789b0100fea00100eaed01006e600600dced0100c0ed0100ea5f0200ea180600309a0100029701005cb50700b45c02002080020028a902006e940200769d0100b8690200aae0ffff729b0100249d0100929c0100589b0100c455f2ffdafd2c00789c0100709602003ca20100c4a5010056d501006acf05002ca7010058ab010096a601007e6a000094b102005c610100ce5a010090610100e2030000f02d0200ac300200ee471200ea4712006a3f0300
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2756,7 +4844,7 @@ MonoBehaviour:
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
-      m_ClientGUIView: {fileID: 0}
+      m_ClientGUIView: {fileID: 16}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -2764,7 +4852,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 1011}
     m_GridSize: 16
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 338

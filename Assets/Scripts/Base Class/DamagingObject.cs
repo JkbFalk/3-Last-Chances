@@ -8,7 +8,24 @@ using System;
 using System.Reflection;
 using Unity.VisualScripting;
 
-public class DamagingObject : TemporaryObject {
+public class DamagingObject : TemporaryObject 
+{
+    [Header("Damage Mapping")]
+    [Tooltip("Matches the DamageSource.ColliderName in code (e.g., 'Default', 'AoE', 'Special'). If left empty, falls back to gameObject.name.")]
+    public string DamageSourceKey = "";
+
+    public string EffectiveColliderName 
+    {
+        get 
+        {
+            if (!string.IsNullOrEmpty(DamageSourceKey))
+            {
+                return DamageSourceKey;
+            }
+            return gameObject.name.Replace("(Clone)", "").Trim();
+        }
+    }
+    
     [HideInInspector]
     public Unit Owner;
     public bool CanBeRiposted = true;

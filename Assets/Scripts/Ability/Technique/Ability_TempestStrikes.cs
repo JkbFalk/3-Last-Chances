@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class Ability_TempestStrikes : Technique
 {
-    public static float EnergyCost = 10;
-    public static float Cooldown = 1;
+    public static float EnergyCost = 1;
     public static AbilityFamily Family = AbilityFamily.Anima;
     private GameObject _vfx;
     private int _slashCounter = 0;
@@ -45,12 +44,12 @@ public class Ability_TempestStrikes : Technique
 
     public static List<string> GetDescriptionValues()
     {
-        return new List<string> { (Player.Instance.CurrentWeaponInjury.Current * InjuryScaling / 100).ToString(), InjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * StaggerScaling / 100).ToString(), StaggerScaling.ToString(), EnergyCost.ToString(), Cooldown.ToString() };
+        return new List<string> { (Player.Instance.CurrentWeaponInjury.Current * InjuryScaling / 100).ToString(), InjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * StaggerScaling / 100).ToString(), StaggerScaling.ToString(), EnergyCost.ToString() };
     }
 
     public static List<string> GetUltimateDescriptionValues()
     {
-        return new List<string> { (Player.Instance.CurrentWeaponInjury.Current * InjuryScaling / 100).ToString(), InjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * StaggerScaling / 100).ToString(), StaggerScaling.ToString(), Cooldown.ToString(), UltimateSpeedIncrease.ToString(), UltimateAnalysisApplied.ToString() };
+        return new List<string> { (Player.Instance.CurrentWeaponInjury.Current * InjuryScaling / 100).ToString(), InjuryScaling.ToString(), (Player.Instance.CurrentWeaponStagger.Current * StaggerScaling / 100).ToString(), StaggerScaling.ToString(), UltimateSpeedIncrease.ToString(), UltimateAnalysisApplied.ToString() };
     }
 
     public static List<string> GetMasteryADescriptionValues()
@@ -119,6 +118,10 @@ public class Ability_TempestStrikes : Technique
             case 5: return new List<int> {1, 2, 1, 2, 3}[UnityEngine.Random.Range(0, 5)];
             default: return 3;
         }
+    }
+
+    public static string GetAbilitySpecificEnergyCostText() {
+        return "+";
     }
 
     public static void OnEquip()

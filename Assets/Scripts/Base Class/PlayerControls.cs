@@ -611,31 +611,20 @@ public class PlayerControls : WorldObject {
 
     }
 
-    public void OnPrepareUltimateButtonPress() {
-        if(Player.Instance.Energy.Current >= Constants.ENERGY_REQUIRED_TO_USE_ULTIMATE && SaveFile.Instance.UltimatesUsedInCurrentCombat < SaveFile.Instance.MaxUltimateUsesPerCombat && !Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_PreparingForUltimate))) {
+    public void OnPrepareUltimateButtonPress() 
+    {
+        bool hasUnlockedFamilies = SaveFile.Instance.UnlockedUltimateFamilies != null && SaveFile.Instance.UnlockedUltimateFamilies.Count > 0;
+        if (!hasUnlockedFamilies) 
+        {
+            return;
+        }
+        if (Player.Instance.UltimateEnergy.IsFull && !Player.Instance.CheckIfAbilityOnCooldown(typeof(Ability_PreparingForUltimate))) 
+        {
             PrepareUltimate();
         }
         else 
         {
-            if(Player.Instance.Energy.Current < Constants.ENERGY_REQUIRED_TO_USE_ULTIMATE) {
-                foreach(Stance.EquippedAbility ability in Player.Instance.CurrentStance.Abilities) {
-                    Image display = ability.AbilityGraphic.transform.Find("Cost").GetComponent<Image>();
-                    if (display.color == Color.red) {
-                        Tuple<Image, int> existingWarning = UIManager.Instance.NotEnoughEnergyWarnings.FirstOrDefault(warning => warning.Item1 == display);
-                        if (existingWarning != null) {
-                            UIManager.Instance.NotEnoughEnergyWarnings.Remove(existingWarning);
-                        }
-                    }
-                    UIManager.Instance.NotEnoughEnergyWarnings.Add(new Tuple<Image, int>(display, 75));
-                    display.color = Color.red;
-                }
-            }
-            if(SaveFile.Instance.UltimatesUsedInCurrentCombat >= SaveFile.Instance.MaxUltimateUsesPerCombat) {
-                foreach(Transform child in UIManager.Objects.UltimateUses.transform) {
-                    child.GetComponent<Image>().color = Color.red;
-                } 
-                UIManager.Instance.NotEnoughUltimateUsesWarningCounter = 75;
-            }
+            Utils.PlaySoundEffect(Player.Instance.AudioSource, "Ability/Ability_Deconstruction_Fail", 0.5f);
         }
     }
 
@@ -668,6 +657,27 @@ public class PlayerControls : WorldObject {
 
     public void OnSpecialAction2ButtonPress()
     {
+        // Get all families that are NOT currently in the unlocked list
+        List<Ability.AbilityFamily> lockedFamilies = Ability.GetAllAbilityFamilies()
+            .Where(family => !SaveFile.Instance.UnlockedUltimateFamilies.Contains(family))
+            .ToList();
+
+        if (lockedFamilies.Count > 0)
+        {
+            // Pick a random family from the remaining locked ones
+            Ability.AbilityFamily randomFamily = lockedFamilies[UnityEngine.Random.Range(0, lockedFamilies.Count)];
+            
+            // Add it to the save file
+            SaveFile.Instance.UnlockedUltimateFamilies.Add(randomFamily);
+
+            // Show a notification so you know which one was unlocked during testing
+            NotificationController.ShowTextNotification("Unlocked Ultimate Family: " + randomFamily.ToString());
+            Utils.PlaySoundEffect(Player.Instance.AudioSource, "UI/ItemPickedUp", 0.8f);
+        }
+        else
+        {
+            NotificationController.ShowTextNotification("All Ultimate Families are already unlocked!");
+        }
     }
 
     public void OnSpecialAction3ButtonPress()

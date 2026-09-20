@@ -246,7 +246,7 @@ public class Stat {
             total_added += calculated_maximum * modifier.Amount / 100;
         }
         Maximum = calculated_maximum + total_added;
-        if (this is Energy == false && (CurrentCanBeLowerThanMaximum == false || Owner.InCombat == false)) {
+        if (this is Energy == false && (CurrentCanBeLowerThanMaximum == false || Owner == null || Owner.InCombat == false)) {
             Current = this is StaggerBar ? 0 : Maximum;
         }
         else

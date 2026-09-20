@@ -110,6 +110,28 @@ public static class CombatMath
         return controlVsTenacity >= 0 ? 1f + (controlVsTenacity / 100f) : 1f / (1f + Math.Abs(controlVsTenacity / 100f));
     }
 
+    public static float GetExpectedPlayerPowerForLevel(int level)
+    {
+        if (level <= 1) return 1.25f;
+        if (level <= 10) return Utils.GetValueBasedOnMinAndMax(level, 1, 10, 1.25f, 2.2f);
+        if (level <= 20) return Utils.GetValueBasedOnMinAndMax(level, 10, 20, 2.2f, 3.1f);
+        if (level <= 30) return Utils.GetValueBasedOnMinAndMax(level, 20, 30, 3.1f, 4.2f);
+        if (level <= 40) return Utils.GetValueBasedOnMinAndMax(level, 30, 40, 4.2f, 5.2f);
+        if (level <= 50) return Utils.GetValueBasedOnMinAndMax(level, 40, 50, 5.2f, 6.5f);
+        return Utils.GetValueBasedOnMinAndMax(level, 50, 100, 6.5f, 10f);
+    }
+
+    public static float GetEnemyHealthScalingForLevel(int level)
+    {
+        if (level <= 1) return 1.2f;
+        if (level <= 10) return Utils.GetValueBasedOnMinAndMax(level, 1, 10, 1.2f, 2.4f);
+        if (level <= 20) return Utils.GetValueBasedOnMinAndMax(level, 10, 20, 2.4f, 4.2f);
+        if (level <= 30) return Utils.GetValueBasedOnMinAndMax(level, 20, 30, 4.2f, 7.0f);
+        if (level <= 40) return Utils.GetValueBasedOnMinAndMax(level, 30, 40, 7.0f, 10.5f);
+        if (level <= 50) return Utils.GetValueBasedOnMinAndMax(level, 40, 50, 10.5f, 15f);
+        return Utils.GetValueBasedOnMinAndMax(level, 50, 100, 15f, 25.0f);
+    }
+
     public static float GetExpectedPowerForLevel(int level)
     {
         if (level < 1) return Utils.GetValueBasedOnMinAndMax(level, -25, 1, 0.3f, Constants.EXPECTED_POWER_AT_LEVEL_1);
@@ -150,5 +172,59 @@ public static class CombatMath
     public static float GetAggresivenessBasedOnUnitCount(int unitCount)
     {
         return 2.5f / unitCount + 0.5f;
+    }
+
+    public static DamageInstance SimulateWeaponHit(Ability ability, Unit target,  Ability.DamageSource damageSource)
+    {
+        if (target == null || target.KnockedOut || ability == null || damageSource == null) 
+            return null;
+
+        Constants.DamageType damageType = (damageSource.DamageType == Constants.DamageType.CurrentWeapon || damageSource.DamageType == Constants.DamageType.None)
+            ? ability.User.CurrentWeaponDamageType
+            : damageSource.DamageType;
+
+        DamagingObject weapon = null;
+        if (ability.User?.SpriteRenderers != null)
+        {
+            string slot = damageType == Constants.DamageType.Light ? "Light Right" :
+                        damageType == Constants.DamageType.Ranged ? "Ranged" : "Heavy";
+            if (ability.User.SpriteRenderers.TryGetValue(slot, out var info))
+            {
+                weapon = info.Weapon;
+            }
+        }
+
+        ability.TurningOnCollisionClearsAffectedEnemyList = false;
+
+        ability.UpdateAffectedEnemyList(target, weapon);
+        if (damageType == Constants.DamageType.Light && ability.User?.SpriteRenderers != null &&
+            ability.User.SpriteRenderers.TryGetValue("Light Left", out var leftInfo) && leftInfo.Weapon != null)
+        {
+            ability.UpdateAffectedEnemyList(target, leftInfo.Weapon);
+        }
+
+        DamageInstance damage = new DamageInstance(target, ability, weapon)
+        {
+            AbilityDamageSource = damageSource,
+            KnockbackInMeters = damageSource.KnockbackInMeters,
+            CustomHitSound = damageSource.CustomHitSound
+        };
+
+        damage.CalculateAndApplyDamage();
+        return damage;
+    }
+
+    public static DamageInstance SimulateWeaponHit(Ability ability,  Unit target, float injury, float stagger = 0f, Constants.DamageType damageType = Constants.DamageType.None)
+    {
+        if (ability == null) return null;
+
+        if (damageType == Constants.DamageType.None)
+        {
+            damageType = ability.ScalesWith != Constants.DamageType.None 
+                ? ability.ScalesWith 
+                : (ability.User != null ? ability.User.CurrentWeaponDamageType : Constants.DamageType.None);
+        }
+
+        return SimulateWeaponHit(ability, target, new Ability.DamageSource(injury, stagger, damageType));
     }
 }

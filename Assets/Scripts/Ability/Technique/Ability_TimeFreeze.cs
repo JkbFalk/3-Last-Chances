@@ -8,7 +8,6 @@ using UnityEngine.Rendering;
 public class Ability_TimeFreeze : Technique
 {
     public static float EnergyCost = 100;
-    public static float Cooldown = 120;
     public static AbilityFamily Family = AbilityFamily.Glacies;
     private bool _shootingBullet = false;
     private Unit _enemyMarked;

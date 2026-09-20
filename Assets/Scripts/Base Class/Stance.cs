@@ -135,13 +135,24 @@ public class Stance {
                 Reload();
             }
             Icon.color = Type == null ? Color.black : Color.white;
-            Icon.sprite = Utils.GetGraphicForAbility(Type != null ? Type.ToString() : null);
-            if (Type?.GetMethod("GetAbilitySpecificEnergyCostText") != null) {
-                CostLabel.text = Type == null ? "" : (string)Type.GetMethod("GetAbilitySpecificEnergyCostText").Invoke(null, null);
+            
+            // Check if we are preparing for an ultimate and load the alternative sprite
+            if (Type != null) {
+                Sprite graphic = null;
+                if (Player.Instance.PreparingForUltimate) {
+                    graphic = Utils.GetGraphicForAbility(Type.ToString() + "_Ultimate");
+                }
+                
+                // Fallback to regular graphic if not preparing ultimate or if the ultimate graphic was not found
+                if (graphic == null) {
+                    graphic = Utils.GetGraphicForAbility(Type.ToString());
+                }
+                
+                Icon.sprite = graphic;
+            } else {
+                Icon.sprite = null;
             }
-            else {
-                CostLabel.text = Type == null ? "" : Utils.GetFormattedFloat(Ability.GetEnergyCost(Type));
-            }
+
             AbilityGraphic.transform.Find("Disabled").gameObject.SetActive(!SaveFile.Instance.UnlockedAbilities.Contains(Type));
             MethodInfo check = Type == null ? null : Type.GetMethod("CheckIfAbilityUsableDependingOnCombat", BindingFlags.Public | BindingFlags.Static);
             if(SaveFile.Instance.UnlockedAbilities.Contains(Type) && check != null)
@@ -151,6 +162,31 @@ public class Stance {
             }
             Energy.MarkAbilitiesWithNotEnoughEnergy();
             StacksCounter.text = Type?.GetField("IsStacksBasedTechnique") == null ? "" : (Player.Instance.PreparingForUltimate ? Player.Instance.CurrentUltimateTechniqueStacks[Type].ToString() : Player.Instance.CurrentTechniqueStacks[Type].ToString());
+            if (CostLabel != null) 
+            {
+                if (Type == null) 
+                {
+                    CostLabel.text = "";
+                }
+                else 
+                {
+                    int costInOrbs = Mathf.Clamp(Mathf.RoundToInt(Ability.GetEnergyCost(Type)), 1, 5);
+                    const string orb = "<sprite name=\"EnergyOrb\">";
+                    // Wraps to 2 lines when cost is 4 (2 on 2) or 5 (2 on 3)
+                    string orbText = costInOrbs switch
+                    {
+                        1 => orb,
+                        2 => $"{orb}{orb}",
+                        3 => $"{orb}{orb}{orb}",
+                        4 => $"{orb}{orb}\n{orb}{orb}",
+                        5 => $"{orb}{orb}\n{orb}{orb}{orb}",
+                        _ => orb
+                    };
+                    MethodInfo specificCostMethod = Type.GetMethod("GetAbilitySpecificEnergyCostText", BindingFlags.Public | BindingFlags.Static);
+                    string extraText = specificCostMethod != null ? (string)specificCostMethod.Invoke(null, null) : "";
+                    CostLabel.text = orbText + extraText;
+                }
+            }
         }
     }
 

@@ -6,8 +6,7 @@ using System.Linq;
 
 public class Ability_Quickdraw : Technique
 {
-    public static float EnergyCost = 50;
-    public static float Cooldown = 50;
+    public static float EnergyCost = 4;
     public static AbilityFamily Family = AbilityFamily.Anima;
     private bool _canFinishAbility = false;
     private bool _buttonWasReleased = false;

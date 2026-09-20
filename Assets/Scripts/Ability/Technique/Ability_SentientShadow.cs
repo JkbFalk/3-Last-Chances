@@ -8,7 +8,6 @@ using UnityEngine.Tilemaps;
 public class Ability_SentientShadow : Technique
 {
     public static float EnergyCost = 15;
-    public static float Cooldown = 10;
     public static AbilityFamily Family = AbilityFamily.Salutis;
     private Projectile _hook;
     private GameObject _tether;

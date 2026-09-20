@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Avatar : Technique
 {
     public static float EnergyCost = 0;
-    public static float Cooldown = 0;
     public static AbilityFamily Family = AbilityFamily.Proprius;
 
     public Ability_Avatar(Unit ability_user) : base(ability_user)

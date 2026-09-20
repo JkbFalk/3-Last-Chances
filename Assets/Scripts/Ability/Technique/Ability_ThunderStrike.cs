@@ -6,7 +6,6 @@ using UnityEngine.VFX;
 public class Ability_Thunderstrike : Technique
 {
     public static float EnergyCost = 50;
-    public static float Cooldown = 10;
     public static AbilityFamily Family = AbilityFamily.Tonitrui;
     private GameObject _masteryBVFX;
     private bool _releasedButton;

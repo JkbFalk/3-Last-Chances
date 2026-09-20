@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Fortify : Technique
 {
     public static float EnergyCost = 1;
-    public static float Cooldown = 2;
     public static AbilityFamily Family = AbilityFamily.Molis;
     private Effect_ChangeStat _armorBuff;
     private Effect_Unstunnable _unstunnableBuff;

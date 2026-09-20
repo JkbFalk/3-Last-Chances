@@ -6,7 +6,7 @@ using UnityEngine;
 public class Ability_ShadowForm : Technique
 {
     public static float EnergyCost = 20;
-    public static float Cooldown = 30;
+    
     public static AbilityFamily Family = AbilityFamily.Salutis;
 
     public Ability_ShadowForm(Unit ability_user) : base(ability_user)

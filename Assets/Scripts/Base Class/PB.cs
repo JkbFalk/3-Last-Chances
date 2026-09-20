@@ -273,9 +273,9 @@ public class PB
     public const float SPECIAL__BONUS_FOR_AFFECTING_3_DIFFERENT_STACKING_EFFECTS = 1.5f; //It is much harder to extract full value from all 3 stacking effects at the same time compared to just 1
 
     //Expected amount of certain stats or effects on average enemy
-    public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_HEALTH = 10; // 125 with Armor
+    public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_HEALTH = 100; // 125 with Armor
     public const float EXPECTED_AMOUNT_OF_REGULAR_ENEMY_STAGGER_BAR = 5; // 62.5 with Armor
-    public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_HEALTH = 100; // 1250 with Armor
+    public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_HEALTH = 1000; // 1250 with Armor
     public const float EXPECTED_AMOUNT_OF_BOSS_ENEMY_STAGGER_BAR = 10; // 1250 with Armor
     public const float EXPECTED_AMOUNT_OF_ENEMY_ARMOR = 40;
     public const float EXPECTED_AMOUNT_OF_PLAYER_ARMOR = 80;

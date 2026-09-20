@@ -485,6 +485,14 @@ public abstract class Ability {
                 return false;
             }
         }
+        if (user is Player && Player.Instance.PreparingForUltimate && ability_type.IsSubclassOf(typeof(Technique)))
+        {
+            Ability.AbilityFamily family = GetFamily(ability_type);
+            if (!SaveFile.Instance.IsUltimateFamilyUnlocked(family))
+            {
+                return false;
+            }
+        }
         if(item != null) {
             MethodInfo method2 = item.GetType().GetMethod("CheckIfSpecialConditionsAreFulfilled");
             if (canPerformTheAbility && method != null)
@@ -547,7 +555,7 @@ public abstract class Ability {
         if (unit_getting_attacked != null && CheckIfDamageTriggerIsValid(unit_getting_attacked, object_hitting)) {
             MostRecentTemporaryObjectThatHitEnemy = object_hitting;
             UpdateAffectedEnemyList(unit_getting_attacked, object_hitting);
-            DamageSource source = GetDamageSource(object_hitting.gameObject.name);
+            DamageSource source = GetDamageSource(object_hitting.EffectiveColliderName, object_hitting);
             if(source == null) {
                 return;
             }
@@ -626,55 +634,88 @@ public abstract class Ability {
         }
     }
 
+    // FILE: Assets/Scripts/Base Class/Ability.cs
+
     public void ChaseCurrentTargetAtGivenDegreeAngle(float max_dash_distance_in_meters, float max_angle, Unit target = null) {
-        if (User is Player && Player.Instance.CurrentTarget == null && Settings.Instance.ControlScheme == "Gamepad")
+        Unit finalTarget = target != null ? target : (User is Player ? Player.Instance.CurrentTarget : User.CurrentTarget);
+        if (User is Player && finalTarget == null)
         {
-            User.PushInTargetDirection(CombatMath.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
+            Vector2 aimVector = User.Actions.GetCurrentAimVector();
+            Vector2 dir = CombatMath.GetDirectionVector(Vector2.zero, aimVector, User.Actions.IsFlipped, max_angle);
+            float dashDistance = max_dash_distance_in_meters;
+
+            if (Settings.Instance.ControlScheme == "Keyboard")
+            {
+                float distanceToPointer = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
+                dashDistance = Mathf.Min(distanceToPointer, max_dash_distance_in_meters);
+            }
+
+            User.Rigidbody2D.linearVelocity = Vector2.zero;
+            User.PushInTargetDirection(dir * dashDistance, this);
             return;
         }
-        else if (User is Player && Player.Instance.CurrentTarget == null)
+        if (finalTarget == null)
         {
-            float distance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
-            User.PushInTargetDirection(CombatMath.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, max_angle) * max_dash_distance_in_meters, this);
-            return;
-        }
-        Unit finalTarget = target == null ? User.CurrentTarget : target;
-        if(finalTarget == null)
-        {
-            Vector2 direction_vector_towards_target = CombatMath.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, max_angle);
-            User.PushInTargetDirection(direction_vector_towards_target * max_dash_distance_in_meters, this);
+            Vector2 dir = CombatMath.GetDirectionVector(User.transform.position, User.transform.position + new Vector3(User.Actions.IsFlipped ? -2f : 2f, 0), User.Actions.IsFlipped, max_angle);
+            User.Rigidbody2D.linearVelocity = Vector2.zero;
+            User.PushInTargetDirection(dir * max_dash_distance_in_meters, this);
         }
         else
         {
-            Vector2 direction_vector_towards_target = CombatMath.GetDirectionVector(User.transform.position, finalTarget.transform.position + new Vector3(User.Actions.IsFlipped ? 0.3f : -0.3f, 0), User.Actions.IsFlipped, max_angle);
-            float distance = Vector2.Distance(User.transform.position, finalTarget.transform.position);
-            User.PushInTargetDirection(direction_vector_towards_target * max_dash_distance_in_meters, this);
+            float stopOffset = 1.0f;
+            float rawDistance = Vector2.Distance(User.transform.position, finalTarget.transform.position);
+            float distanceToTarget = Mathf.Max(0f, rawDistance - stopOffset);
+            float dashDistance = Mathf.Min(distanceToTarget, max_dash_distance_in_meters);
+
+            Vector2 dir = CombatMath.GetDirectionVector(User.transform.position, finalTarget.transform.position, User.Actions.IsFlipped, max_angle);
+            User.Rigidbody2D.linearVelocity = Vector2.zero;
+            User.PushInTargetDirection(dir * dashDistance, this);
         }
     }
 
-    public DamageSource GetDamageSource(string name)
+    public DamageSource GetDamageSource(string name, DamagingObject sourceObject = null)
     {
-        if(DamageSources.Count == 0)
+        if (DamageSources == null || DamageSources.Count == 0)
         {
-            Debug.LogError("Could not find any damage sources on ability " + GetType() + ", but damage source was requested.");
+            Debug.LogError($"[Combat] No damage sources defined on ability {GetType().Name}.");
             return null;
         }
-        else if(DamageSources.Count == 1)
+
+        // 1. Single-source abilities always map directly
+        if (DamageSources.Count == 1)
         {
             return DamageSources[0];
         }
+
+        // 2. Normalize weapon bone names to WeaponCollisionName ("Default")
         if (name == "Heavy Bone" || name == "Light Left Bone" || name == "Light Right Bone" || name == "Ranged Bone")
         {
             name = WeaponCollisionName;
         }
-        DamageSource found_source = DamageSources.FirstOrDefault(item => item.ColliderName == name);
-        if(found_source == null)
-        {
-            Debug.LogError("Could not find any damage source with requested name (" + name + ") for ability " + GetType() + ".");
-        }
-        return found_source;
-    }
 
+        // Clean up unity naming artifacts: "AoE (Clone)" or "AoE_1" -> "AoE"
+        string cleanName = name.Replace("(Clone)", "").Trim();
+
+        // 3. Exact match
+        DamageSource found = DamageSources.FirstOrDefault(s => s.ColliderName.Equals(cleanName, StringComparison.OrdinalIgnoreCase));
+        if (found != null) return found;
+
+        // 4. Semantic Fallback: If hitting with an AreaOfEffect, find any source containing "AoE"
+        if (sourceObject is AreaOfEffect || cleanName.IndexOf("AoE", StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            found = DamageSources.FirstOrDefault(s => s.ColliderName.IndexOf("AoE", StringComparison.OrdinalIgnoreCase) >= 0);
+            if (found != null) return found;
+        }
+
+        // 5. Default Fallback: If not found, look for "Default"
+        found = DamageSources.FirstOrDefault(s => s.ColliderName.Equals("Default", StringComparison.OrdinalIgnoreCase));
+        if (found != null) return found;
+
+        // 6. Graceful Degradation: Never return null and break combat—log a warning and use the primary source
+        Debug.LogWarning($"[Combat] Ability '{GetType().Name}' could not find DamageSource matching '{name}'. Defaulting to primary DamageSource.");
+        return DamageSources[0];
+    }
+    
     public void AddDamageSource(float _health, float _stagger, Constants.DamageType _damage_type, string _colliderName = "Default")
     {
         if(_colliderName == "Default" && DamageSources.FirstOrDefault(item => item.ColliderName == _colliderName) != null)

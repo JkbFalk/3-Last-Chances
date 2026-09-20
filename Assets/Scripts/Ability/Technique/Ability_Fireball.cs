@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Fireball : Technique {
 
     public static float EnergyCost = 40;
-    public static float Cooldown = 30;
     public static AbilityFamily Family = AbilityFamily.Ignis;
     public static float MagicInjuryScalingExplosion = 250;
     public static float MagicBurnScalingExplosion = 60;

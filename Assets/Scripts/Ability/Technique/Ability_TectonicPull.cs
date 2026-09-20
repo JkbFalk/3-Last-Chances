@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_TectonicPull : Technique
 {
     public static float EnergyCost = 40;
-    public static float Cooldown = 60;
     public static AbilityFamily Family = AbilityFamily.Molis;
     private AreaOfEffect _aoe;
     private GameObject _ultimateWall;

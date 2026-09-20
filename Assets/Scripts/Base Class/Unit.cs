@@ -868,6 +868,7 @@ public class Unit : PermanentObject {
             StaggerBar.Current = 0;
             UnitAI.CurrentAIBehavior = Constants.AIBehavior.None;
         }
+        Player.Instance.UltimateEnergy.ConsumeCharge();
         TechniqueCooldowns.Clear();
         ToolCooldown = null;
         EffectCooldowns.Clear();
@@ -1670,6 +1671,59 @@ public class Unit : PermanentObject {
         if (_eliteEnemyIndicator != null)
         {
             Destroy(_eliteEnemyIndicator.transform.parent.gameObject);
+        }
+    }
+
+    [HideInInspector]
+    private readonly HashSet<Collider2D> _ignoredUnitColliders = new HashSet<Collider2D>();
+    public void SetIgnoreUnitCollisions(bool ignore = true)
+    {
+        NavMeshObstacle obstacle = GetComponent<NavMeshObstacle>();
+        if (obstacle != null)
+        {
+            obstacle.enabled = !ignore;
+        }
+
+        Collider2D[] myColliders = GetComponentsInChildren<Collider2D>();
+
+        if (ignore)
+        {
+            _ignoredUnitColliders.Clear();
+
+            foreach (Unit otherUnit in Utils.GetAllUnits(get_only_hostile: false, get_only_alive: true))
+            {
+                if (otherUnit == this) continue;
+
+                foreach (Collider2D otherCol in otherUnit.GetComponentsInChildren<Collider2D>())
+                {
+                    if (otherCol == null || !otherCol.enabled) continue;
+
+                    foreach (Collider2D myCol in myColliders)
+                    {
+                        if (myCol != null && myCol.enabled)
+                        {
+                            Physics2D.IgnoreCollision(myCol, otherCol, true);
+                            _ignoredUnitColliders.Add(otherCol);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (Collider2D otherCol in _ignoredUnitColliders)
+            {
+                if (otherCol == null) continue;
+
+                foreach (Collider2D myCol in myColliders)
+                {
+                    if (myCol != null)
+                    {
+                        Physics2D.IgnoreCollision(myCol, otherCol, false);
+                    }
+                }
+            }
+            _ignoredUnitColliders.Clear();
         }
     }
 

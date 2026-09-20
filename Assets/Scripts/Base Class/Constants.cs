@@ -14,14 +14,14 @@ public static class Constants {
     public const float STAGGER_PERCENTAGE_FROM_COUNTER = 1000;
     public const float DISTANCE_AWAY_FROM_COUNTERING_UNIT = 1.8f;
     public const float STANCE_SWITCH_ROTATE_TIME = 0.5f;
-    public const float ENERGY_FROM_RIPOSTING = 10f;
-    public const float ENERGY_FROM_COUNTERING = 20f;
-    public const float ENERGY_FROM_BASIC_ATTACK = 4f;
-    public const float ENERGY_PER_STAGGER_PERCENTAGE_LOST_FROM_BLOCKING = 1.2f;
-    public const float ENERGY_PER_HEALTH_PERCENTAGE_LOST = 1f;
+    public const float ENERGY_FROM_RIPOSTING = 1.5f;
+    public const float ENERGY_FROM_COUNTERING = 3f;
+    public const float ENERGY_FROM_BASIC_ATTACK = 0.5f;
+    public const float ENERGY_PER_STAGGER_PERCENTAGE_LOST_FROM_BLOCKING = 0.1f;
+    public const float ENERGY_PER_HEALTH_PERCENTAGE_LOST = 0.1f;
     public const float ENERGY_GAIN_MULTIPLIER_VERSUS_BOSSES = 1.0f;
-    public const float ENERGY_FROM_DODGING = 8f;
-    public const float ENERGY_FROM_INFLICTING_STAGGERED = 10f;
+    public const float ENERGY_FROM_DODGING = 1f;
+    public const float ENERGY_FROM_INFLICTING_STAGGERED = 2f;
     public const float DEGREES_PER_RAD = 57.2958f;
     public const int ACTION_QUEUE_DURATION = 40;
     public const float DEFAULT_CROSSFADE_DURATION = 0.1f;
@@ -61,7 +61,7 @@ public static class Constants {
 
     public const float SECONDS_UNTIL_DIALOGUE_CHOICES_BECOME_CLICKABLE = 0.75f;
     public const float MAXIMUM_AMOUNT_OF_SAVE_FILES = 20;
-    public const float FULLY_RESTED_INITIAL_ENERGY = 20;
+    public const float FULLY_RESTED_INITIAL_ENERGY = 2;
     public const int FULLY_RESTED_INITIAL_AMMO = 6;
     public const int MAX_ULTIMATE_USES_POSSIBLE = 7;
     public const int PRONE_TO_KNOCKOUT_AMOUNT_ADDED_BY_GAUNTLET_BA = 40;

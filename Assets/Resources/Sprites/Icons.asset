@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
   m_Name: Icons
   m_EditorClassIdentifier: 
-  hashCode: 83117176
-  material: {fileID: 5049479996509294466}
-  materialHashCode: 0
   m_Version: 1.1.0
   m_FaceInfo:
     m_FaceIndex: 0
@@ -38,6 +35,7 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
+  m_Material: {fileID: 5049479996509294466}
   spriteSheet: {fileID: 2800000, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
@@ -45,1466 +43,1222 @@ MonoBehaviour:
     m_GlyphIndex: 0
     m_Scale: 1
     m_Name: Health
-    m_HashCode: -1510403364
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 1
     m_Scale: 1
     m_Name: Injury
-    m_HashCode: -1557492973
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 2
     m_Scale: 1
     m_Name: HealthRegeneration
-    m_HashCode: 1709411245
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 3
     m_Scale: 1
     m_Name: HeavyInjury
-    m_HashCode: -259141584
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 4
     m_Scale: 1
     m_Name: LightInjury
-    m_HashCode: -1677072659
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 5
     m_Scale: 1
     m_Name: RangedInjury
-    m_HashCode: 852953352
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 6
     m_Scale: 1
     m_Name: MagicInjury
-    m_HashCode: 1817619346
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 7
     m_Scale: 1
     m_Name: WeaponInjury
-    m_HashCode: -467592687
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 8
     m_Scale: 1
     m_Name: TechniqueInjury
-    m_HashCode: 772224943
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 9
     m_Scale: 1
     m_Name: StaggerBar
-    m_HashCode: 1339051456
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 10
     m_Scale: 1
     m_Name: Stagger
-    m_HashCode: 640511697
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 11
     m_Scale: 1
     m_Name: StaggerBarRegeneration
-    m_HashCode: 254735025
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 12
     m_Scale: 1
     m_Name: HeavyStagger
-    m_HashCode: -488493934
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 13
     m_Scale: 1
     m_Name: LightStagger
-    m_HashCode: -4346705
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 14
     m_Scale: 1
     m_Name: RangedStagger
-    m_HashCode: -986739798
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 15
     m_Scale: 1
     m_Name: MagicStagger
-    m_HashCode: 347698928
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 16
     m_Scale: 1
     m_Name: WeaponStagger
-    m_HashCode: 1224645139
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 17
     m_Scale: 1
     m_Name: TechniqueStagger
-    m_HashCode: 1356593069
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 18
     m_Scale: 1
     m_Name: Staggered
-    m_HashCode: 1732533104
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 19
     m_Scale: 1
     m_Name: HealthAndStaggerBar
-    m_HashCode: 1219520983
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 20
     m_Scale: 1
     m_Name: Damage
-    m_HashCode: -1671533397
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 21
     m_Scale: 1
     m_Name: Regeneration
-    m_HashCode: 190858481
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 22
     m_Scale: 1
     m_Name: HeavyDamage
-    m_HashCode: -449009272
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 23
     m_Scale: 1
     m_Name: LightDamage
-    m_HashCode: -1795392491
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 24
     m_Scale: 1
     m_Name: RangedDamage
-    m_HashCode: 1573907056
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 25
     m_Scale: 1
     m_Name: MagicDamage
-    m_HashCode: 1926747754
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 26
     m_Scale: 1
     m_Name: WeaponDamage
-    m_HashCode: -577033175
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 27
     m_Scale: 1
     m_Name: TechniqueDamage
-    m_HashCode: 952901207
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 28
     m_Scale: 1
     m_Name: Heavy
-    m_HashCode: 84381667
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 29
     m_Scale: 1
     m_Name: Light
-    m_HashCode: 88687422
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 30
     m_Scale: 1
     m_Name: Ranged
-    m_HashCode: -971662565
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 31
     m_Scale: 1
     m_Name: Magic
-    m_HashCode: 87932033
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 32
     m_Scale: 1
     m_Name: HeavyAttackSpeed
-    m_HashCode: -2025443636
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 33
     m_Scale: 1
     m_Name: LightAttackSpeed
-    m_HashCode: 106832497
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 34
     m_Scale: 1
     m_Name: RangedAttackSpeed
-    m_HashCode: -454988620
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 35
     m_Scale: 1
     m_Name: MagicAttackSpeed
-    m_HashCode: -236008978
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 36
     m_Scale: 1
     m_Name: BasicAttack
-    m_HashCode: -275588430
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 36
     m_Scale: 1
     m_Name: Weapons
-    m_HashCode: 1858639409
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 37
     m_Scale: 1
     m_Name: Technique
-    m_HashCode: -911823620
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 38
     m_Scale: 1
     m_Name: Energy
-    m_HashCode: -1704718782
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 39
     m_Scale: 1
     m_Name: EnergyGain
-    m_HashCode: 780701155
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 40
     m_Scale: 1
     m_Name: Armor
-    m_HashCode: 74187683
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 41
     m_Scale: 1
     m_Name: Experience
-    m_HashCode: -989729378
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 41
     m_Scale: 1
     m_Name: Level
-    m_HashCode: 88864342
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 42
     m_Scale: 1
     m_Name: Cooldown
-    m_HashCode: -784664419
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 43
     m_Scale: 1
     m_Name: CooldownReduction
-    m_HashCode: 1416667972
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 44
     m_Scale: 1
     m_Name: Control
-    m_HashCode: -2114001209
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 45
     m_Scale: 1
     m_Name: Tenacity
-    m_HashCode: -601025895
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 46
     m_Scale: 1
     m_Name: MovementSpeed
-    m_HashCode: -1971005596
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 47
     m_Scale: 1
     m_Name: AttackSpeed
-    m_HashCode: 635048143
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 48
     m_Scale: 1
     m_Name: Ammo
-    m_HashCode: 2246254
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 49
     m_Scale: 1
     m_Name: Tools
-    m_HashCode: 98812907
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 50
     m_Scale: 1
     m_Name: ToolPower
-    m_HashCode: 371196487
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 51
     m_Scale: 1
     m_Name: Equipment
-    m_HashCode: -1228240854
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 52
     m_Scale: 1
     m_Name: EquipmentPower
-    m_HashCode: 553417781
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 53
     m_Scale: 1
     m_Name: Anima
-    m_HashCode: 74022890
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 54
     m_Scale: 1
     m_Name: Ignis
-    m_HashCode: 83253146
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 55
     m_Scale: 1
     m_Name: Glacies
-    m_HashCode: -1345911210
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 56
     m_Scale: 1
     m_Name: Molis
-    m_HashCode: 87445396
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 57
     m_Scale: 1
     m_Name: Salutis
-    m_HashCode: 1159460325
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 58
     m_Scale: 1
     m_Name: Tonitrui
-    m_HashCode: -635151546
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 59
     m_Scale: 1
     m_Name: Proprius
-    m_HashCode: 1014735840
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 60
     m_Scale: 1
     m_Name: Sharp
-    m_HashCode: 99905176
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 61
     m_Scale: 1
     m_Name: Burn
-    m_HashCode: 2497579
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 62
     m_Scale: 1
     m_Name: Freeze
-    m_HashCode: -1428559477
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 63
     m_Scale: 1
     m_Name: Barrier
-    m_HashCode: -1184180387
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 64
     m_Scale: 1
     m_Name: Bleed
-    m_HashCode: 82184810
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 65
     m_Scale: 1
     m_Name: Supercharge
-    m_HashCode: -1712612741
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 66
     m_Scale: 1
     m_Name: Analysis
-    m_HashCode: 1862676466
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 67
     m_Scale: 1
     m_Name: Invincible
-    m_HashCode: -1790180169
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 68
     m_Scale: 1
     m_Name: Unstunnable
-    m_HashCode: 1237584099
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 69
     m_Scale: 1
     m_Name: Unkillable
-    m_HashCode: 348132883
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 70
     m_Scale: 1
     m_Name: Immovable
-    m_HashCode: 1007913658
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 71
     m_Scale: 1
     m_Name: Stun
-    m_HashCode: 3006076
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 72
     m_Scale: 1
     m_Name: ImmuneToBackstabs
-    m_HashCode: -699769264
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 73
     m_Scale: 1
     m_Name: Slow
-    m_HashCode: 3031207
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 74
     m_Scale: 1
     m_Name: FrozenInPlace
-    m_HashCode: 65489142
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 75
     m_Scale: 1
     m_Name: Chained
-    m_HashCode: -2060606772
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 76
     m_Scale: 1
     m_Name: Prone
-    m_HashCode: 93128774
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 77
     m_Scale: 1
     m_Name: Sleep
-    m_HashCode: 100045359
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 78
     m_Scale: 1
     m_Name: Blackfire
-    m_HashCode: -514335809
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 79
     m_Scale: 1
     m_Name: Poison
-    m_HashCode: -1181156700
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 80
     m_Scale: 1
     m_Name: Detailed
-    m_HashCode: 487055792
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 81
     m_Scale: 1
     m_Name: Loot
-    m_HashCode: 2689944
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 82
     m_Scale: 1
     m_Name: Quest
-    m_HashCode: 92247494
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 83
     m_Scale: 1
     m_Name: Info
-    m_HashCode: 2513358
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 84
     m_Scale: 1
     m_Name: Money
-    m_HashCode: 87447568
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 86
     m_Scale: 1
     m_Name: Backstab
-    m_HashCode: -985174897
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 87
     m_Scale: 1
     m_Name: Dodge
-    m_HashCode: 79851853
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 88
     m_Scale: 1
     m_Name: Riposte
-    m_HashCode: -1713373562
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 89
     m_Scale: 1
     m_Name: Counter
-    m_HashCode: -2085080812
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 90
     m_Scale: 1
     m_Name: Unstoppable
-    m_HashCode: -130234951
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 91
     m_Scale: 1
     m_Name: Effect
-    m_HashCode: -1714194953
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 92
     m_Scale: 1
     m_Name: Debuff
-    m_HashCode: -1676219850
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 93
     m_Scale: 1
     m_Name: Buff
-    m_HashCode: 2497975
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 94
     m_Scale: 1
     m_Name: EffectCooldown
-    m_HashCode: -880770390
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 95
     m_Scale: 1
     m_Name: RegularMaterials
-    m_HashCode: -599441342
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 96
     m_Scale: 1
     m_Name: ExcellentMaterials
-    m_HashCode: -375827108
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 97
     m_Scale: 1
     m_Name: MasterfulMaterials
-    m_HashCode: -1692386405
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 98
     m_Scale: 1
     m_Name: FlawlessMaterials
-    m_HashCode: 2061255917
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 239
-    m_Scale: 1
-    m_Name: UltimateMaterials
-    m_HashCode: -2003320031
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 111
     m_Scale: 1
     m_Name: Empowered
-    m_HashCode: 1420176662
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 112
     m_Scale: 1
     m_Name: Feeble
-    m_HashCode: -1446344819
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 113
     m_Scale: 1
     m_Name: Onslaught
-    m_HashCode: -1741673935
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 99
     m_Scale: 1
     m_Name: Xbox_buttonWest
-    m_HashCode: -1250558543
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 100
     m_Scale: 1
     m_Name: Xbox_buttonSouth
-    m_HashCode: 1686063089
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 101
     m_Scale: 1
     m_Name: Xbox_buttonNorth
-    m_HashCode: 1672621483
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 102
     m_Scale: 1
     m_Name: Xbox_buttonEast
-    m_HashCode: -1251069081
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 103
     m_Scale: 1
     m_Name: Xbox_dpad
-    m_HashCode: 804440963
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 104
     m_Scale: 1
     m_Name: Xbox_dpadleft
-    m_HashCode: 997397464
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 105
     m_Scale: 1
     m_Name: Xbox_dpadup
-    m_HashCode: -137122266
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 106
     m_Scale: 1
     m_Name: Xbox_dpadright
-    m_HashCode: -1438212189
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 107
     m_Scale: 1
     m_Name: Xbox_dpaddown
-    m_HashCode: 997121329
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 108
     m_Scale: 1
     m_Name: Xbox_start
-    m_HashCode: 755441234
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 109
     m_Scale: 1
     m_Name: Xbox_select
-    m_HashCode: -857977670
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 110
     m_Scale: 1
     m_Name: Xbox_leftTrigger
-    m_HashCode: 2109117073
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 114
     m_Scale: 1
     m_Name: Xbox_rightTrigger
-    m_HashCode: 122309546
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 115
     m_Scale: 1
     m_Name: Xbox_leftButton
-    m_HashCode: 1639422591
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 116
     m_Scale: 1
     m_Name: Xbox_rightButton
-    m_HashCode: 996850148
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 117
     m_Scale: 1
     m_Name: Xbox_leftStickup
-    m_HashCode: 1688567114
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 118
     m_Scale: 1
     m_Name: Xbox_leftStickright
-    m_HashCode: -1550548721
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 119
     m_Scale: 1
     m_Name: Xbox_leftStickdown
-    m_HashCode: 602987101
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 120
     m_Scale: 1
     m_Name: Xbox_leftStickleft
-    m_HashCode: 602705652
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 121
     m_Scale: 1
     m_Name: Xbox_leftStickPress
-    m_HashCode: -1588747352
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 122
     m_Scale: 1
     m_Name: Xbox_rightStickup
-    m_HashCode: 846742769
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 123
     m_Scale: 1
     m_Name: Xbox_rightStickright
-    m_HashCode: -444998572
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 124
     m_Scale: 1
     m_Name: Xbox_rightStickdown
-    m_HashCode: -1314768154
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 125
     m_Scale: 1
     m_Name: Xbox_rightStickleft
-    m_HashCode: -1314486705
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 126
     m_Scale: 1
     m_Name: Xbox_rightStickPress
-    m_HashCode: -487433869
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 127
     m_Scale: 1
     m_Name: PS_buttonSouth
-    m_HashCode: 1853870015
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 128
     m_Scale: 1
     m_Name: PS_buttonWest
-    m_HashCode: -984880449
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 129
     m_Scale: 1
     m_Name: PS_buttonNorth
-    m_HashCode: 1831799397
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 130
     m_Scale: 1
     m_Name: PS_buttonEast
-    m_HashCode: -985238807
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 131
     m_Scale: 1
     m_Name: PS_dpad
-    m_HashCode: 1474468493
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 132
     m_Scale: 1
     m_Name: PS_dpadleft
-    m_HashCode: 1705021782
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 133
     m_Scale: 1
     m_Name: PS_dpadup
-    m_HashCode: -621578456
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 134
     m_Scale: 1
     m_Name: PS_dpadright
-    m_HashCode: 470888813
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 135
     m_Scale: 1
     m_Name: PS_dpaddown
-    m_HashCode: 1705298879
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 136
     m_Scale: 1
     m_Name: PS_start
-    m_HashCode: 1405456284
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 137
     m_Scale: 1
     m_Name: PS_select
-    m_HashCode: -882601292
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 138
     m_Scale: 1
     m_Name: PS_leftButton
-    m_HashCode: 359634673
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 139
     m_Scale: 1
     m_Name: PS_rightButton
-    m_HashCode: 573555882
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 140
     m_Scale: 1
     m_Name: PS_leftTrigger
-    m_HashCode: -1869503137
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 141
     m_Scale: 1
     m_Name: PS_rightTrigger
-    m_HashCode: -266369372
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 142
     m_Scale: 1
     m_Name: PS_leftStickup
-    m_HashCode: -1879582332
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 143
     m_Scale: 1
     m_Name: PS_leftStickright
-    m_HashCode: 402239105
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 144
     m_Scale: 1
     m_Name: PS_leftStickdown
-    m_HashCode: 1833935123
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 145
     m_Scale: 1
     m_Name: PS_leftStickleft
-    m_HashCode: 1834207162
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 146
     m_Scale: 1
     m_Name: PS_leftStickPress
-    m_HashCode: 358861862
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 147
     m_Scale: 1
     m_Name: PS_rightStickup
-    m_HashCode: -1694075777
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 148
     m_Scale: 1
     m_Name: PS_rightStickright
-    m_HashCode: 1148694810
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 149
     m_Scale: 1
     m_Name: PS_rightStickdown
-    m_HashCode: 1987715304
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 150
     m_Scale: 1
     m_Name: PS_rightStickleft
-    m_HashCode: 1987434817
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 151
     m_Scale: 1
     m_Name: PS_rightStickPress
-    m_HashCode: 1111708477
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 152
     m_Scale: 1
     m_Name: Keyboard_leftCtrl
-    m_HashCode: 1968963360
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 152
     m_Scale: 1
     m_Name: Keyboard_rightCtrl
-    m_HashCode: 517460283
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 153
     m_Scale: 1
     m_Name: Keyboard_leftMeta
-    m_HashCode: 1968582452
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 153
     m_Scale: 1
     m_Name: Keyboard_rightMeta
-    m_HashCode: 517824303
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 154
     m_Scale: 1
     m_Name: Keyboard_leftAlt
-    m_HashCode: -1762448944
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 154
     m_Scale: 1
     m_Name: Keyboard_rightAlt
-    m_HashCode: -504922773
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 155
     m_Scale: 1
     m_Name: Keyboard_space
-    m_HashCode: -127893962
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 156
     m_Scale: 1
     m_Name: Keyboard_leftArrow
-    m_HashCode: 544102960
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 157
     m_Scale: 1
     m_Name: Keyboard_downArrow
-    m_HashCode: -295442695
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 158
     m_Scale: 1
     m_Name: Keyboard_rightArrow
-    m_HashCode: -106258677
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 159
     m_Scale: 1
     m_Name: Keyboard_leftShift
-    m_HashCode: 569281801
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 159
     m_Scale: 1
     m_Name: Keyboard_rightShift
-    m_HashCode: -121967310
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 160
     m_Scale: 1
     m_Name: Keyboard_z
-    m_HashCode: -2081430648
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 161
     m_Scale: 1
     m_Name: Keyboard_x
-    m_HashCode: -2081430646
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 162
     m_Scale: 1
     m_Name: Keyboard_c
-    m_HashCode: -2081430639
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 163
     m_Scale: 1
     m_Name: Keyboard_v
-    m_HashCode: -2081430652
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 164
     m_Scale: 1
     m_Name: Keyboard_b
-    m_HashCode: -2081430640
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 165
     m_Scale: 1
     m_Name: Keyboard_n
-    m_HashCode: -2081430628
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 166
     m_Scale: 1
     m_Name: Keyboard_m
-    m_HashCode: -2081430625
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 167
     m_Scale: 1
     m_Name: Keyboard_upArrow
-    m_HashCode: 932358030
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 168
     m_Scale: 1
     m_Name: Keyboard_comma
-    m_HashCode: -108832865
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 169
     m_Scale: 1
     m_Name: Keyboard_period
-    m_HashCode: 32098583
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 170
     m_Scale: 1
     m_Name: Keyboard_mouse
-    m_HashCode: -97831597
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 171
     m_Scale: 1
     m_Name: Keyboard_leftButton
-    m_HashCode: 976804351
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 172
     m_Scale: 1
     m_Name: Keyboard_rightButton
-    m_HashCode: 605284708
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 173
     m_Scale: 1
     m_Name: Keyboard_middleButton
-    m_HashCode: 277406409
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 174
     m_Scale: 1
     m_Name: Keyboard_forwardButton
-    m_HashCode: -141399777
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 175
     m_Scale: 1
     m_Name: Keyboard_backButton
-    m_HashCode: -587185009
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 176
     m_Scale: 1
     m_Name: Keyboard_capsLock
-    m_HashCode: -130703656
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 177
     m_Scale: 1
     m_Name: Keyboard_a
-    m_HashCode: -2081430637
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 178
     m_Scale: 1
     m_Name: Keyboard_s
-    m_HashCode: -2081430655
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 179
     m_Scale: 1
     m_Name: Keyboard_d
-    m_HashCode: -2081430634
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 180
     m_Scale: 1
     m_Name: Keyboard_f
-    m_HashCode: -2081430636
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 181
     m_Scale: 1
     m_Name: Keyboard_g
-    m_HashCode: -2081430635
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 182
     m_Scale: 1
     m_Name: Keyboard_h
-    m_HashCode: -2081430630
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 183
     m_Scale: 1
     m_Name: Keyboard_j
-    m_HashCode: -2081430632
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 184
     m_Scale: 1
     m_Name: Keyboard_k
-    m_HashCode: -2081430631
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 185
     m_Scale: 1
     m_Name: Keyboard_l
-    m_HashCode: -2081430626
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 186
     m_Scale: 1
     m_Name: Keyboard_enter
-    m_HashCode: -106785798
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 187
     m_Scale: 1
     m_Name: Keyboard_slash
-    m_HashCode: -128037193
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 188
     m_Scale: 1
     m_Name: Keyboard_tab
-    m_HashCode: 1064753509
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 189
     m_Scale: 1
     m_Name: Keyboard_q
-    m_HashCode: -2081430653
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 190
     m_Scale: 1
     m_Name: Keyboard_w
-    m_HashCode: -2081430651
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 191
     m_Scale: 1
     m_Name: Keyboard_e
-    m_HashCode: -2081430633
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 192
     m_Scale: 1
     m_Name: Keyboard_r
-    m_HashCode: -2081430656
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 193
     m_Scale: 1
     m_Name: Keyboard_t
-    m_HashCode: -2081430650
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 194
     m_Scale: 1
     m_Name: Keyboard_y
-    m_HashCode: -2081430645
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 195
     m_Scale: 1
     m_Name: Keyboard_u
-    m_HashCode: -2081430649
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 196
     m_Scale: 1
     m_Name: Keyboard_i
-    m_HashCode: -2081430629
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 197
     m_Scale: 1
     m_Name: Keyboard_o
-    m_HashCode: -2081430627
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 198
     m_Scale: 1
     m_Name: Keyboard_p
-    m_HashCode: -2081430654
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 199
     m_Scale: 1
     m_Name: Keyboard_leftBracket
-    m_HashCode: 1770480513
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 200
     m_Scale: 1
     m_Name: Keyboard_rightBracket
-    m_HashCode: -1699706950
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 201
     m_Scale: 1
     m_Name: Keyboard_quote
-    m_HashCode: -129944920
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 202
     m_Scale: 1
     m_Name: Keyboard_backquote
-    m_HashCode: -467462557
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 203
     m_Scale: 1
     m_Name: Keyboard_1
-    m_HashCode: -2081430589
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 204
     m_Scale: 1
     m_Name: Keyboard_2
-    m_HashCode: -2081430592
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 205
     m_Scale: 1
     m_Name: Keyboard_3
-    m_HashCode: -2081430591
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 206
     m_Scale: 1
     m_Name: Keyboard_4
-    m_HashCode: -2081430586
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 207
     m_Scale: 1
     m_Name: Keyboard_5
-    m_HashCode: -2081430585
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 208
     m_Scale: 1
     m_Name: Keyboard_6
-    m_HashCode: -2081430588
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 209
     m_Scale: 1
     m_Name: Keyboard_7
-    m_HashCode: -2081430587
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 210
     m_Scale: 1
     m_Name: Keyboard_8
-    m_HashCode: -2081430582
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 211
     m_Scale: 1
     m_Name: Keyboard_9
-    m_HashCode: -2081430581
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 212
     m_Scale: 1
     m_Name: Keyboard_0
-    m_HashCode: -2081430590
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 213
     m_Scale: 1
     m_Name: Keyboard_minus
-    m_HashCode: -97744354
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 214
     m_Scale: 1
     m_Name: Keyboard_equals
-    m_HashCode: 747313133
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 215
     m_Scale: 1
     m_Name: Keyboard_semicolon
-    m_HashCode: -547412671
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 216
     m_Scale: 1
     m_Name: Keyboard_backslash
-    m_HashCode: -470788484
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 217
     m_Scale: 1
     m_Name: Keyboard_backspace
-    m_HashCode: -470070275
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 218
     m_Scale: 1
     m_Name: Keyboard_delete
-    m_HashCode: 805094699
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 219
     m_Scale: 1
     m_Name: Keyboard_end
-    m_HashCode: 1064769885
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 220
     m_Scale: 1
     m_Name: Keyboard_pageDown
-    m_HashCode: -1017173357
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 221
     m_Scale: 1
     m_Name: Keyboard_escape
-    m_HashCode: 749038259
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 222
     m_Scale: 1
     m_Name: Keyboard_f1
-    m_HashCode: 32265765
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 223
     m_Scale: 1
     m_Name: Keyboard_f2
-    m_HashCode: 32265766
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 224
     m_Scale: 1
     m_Name: Keyboard_f3
-    m_HashCode: 32265767
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 225
     m_Scale: 1
     m_Name: Keyboard_f4
-    m_HashCode: 32265760
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 226
     m_Scale: 1
     m_Name: Keyboard_f5
-    m_HashCode: 32265761
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 227
     m_Scale: 1
     m_Name: Keyboard_f6
-    m_HashCode: 32265762
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 228
     m_Scale: 1
     m_Name: Keyboard_f7
-    m_HashCode: 32265763
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 229
     m_Scale: 1
     m_Name: Keyboard_f8
-    m_HashCode: 32265772
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 230
     m_Scale: 1
     m_Name: Keyboard_f9
-    m_HashCode: 32265773
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 231
     m_Scale: 1
     m_Name: Keyboard_f10
-    m_HashCode: 1064770293
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 232
     m_Scale: 1
     m_Name: Keyboard_f11
-    m_HashCode: 1064770292
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 233
     m_Scale: 1
     m_Name: Keyboard_f12
-    m_HashCode: 1064770295
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 234
     m_Scale: 1
     m_Name: Keyboard_insert
-    m_HashCode: 918189221
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 235
     m_Scale: 1
     m_Name: Keyboard_home
-    m_HashCode: 777835613
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 236
     m_Scale: 1
     m_Name: Keyboard_pageUp
-    m_HashCode: 26673924
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 237
     m_Scale: 1
     m_Name: ToolUpgradeMaterials
-    m_HashCode: -20802576
-  m_SpriteGlyphTable:
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 240
+    m_Scale: 1
+    m_Name: EnergyOrb
+  m_GlyphTable:
   - m_Index: 0
     m_Metrics:
       m_Width: 64
@@ -5329,6 +5083,22 @@ MonoBehaviour:
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
+  - m_Index: 240
+    m_Metrics:
+      m_Width: 64
+      m_Height: 64
+      m_HorizontalBearingX: 0
+      m_HorizontalBearingY: 48
+      m_HorizontalAdvance: 72
+    m_GlyphRect:
+      m_X: 256
+      m_Y: 736
+      m_Width: 64
+      m_Height: 64
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
+    sprite: {fileID: -678022169, guid: 11f15caac0f052447ac1ab9010a9219a, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets:
   - {fileID: 0}
@@ -5362,6 +5132,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
+    - _CullMode: 0
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
@@ -5372,3 +5143,4 @@ Material:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

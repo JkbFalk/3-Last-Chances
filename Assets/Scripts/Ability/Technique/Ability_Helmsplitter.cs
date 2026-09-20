@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Helmsplitter : Technique
 {
     public static float EnergyCost = 100;
-    public static float Cooldown = 180;
     public static AbilityFamily Family = AbilityFamily.Molis;
     private static float _maxChargeTime = 6;
     private static float _healthBarrierScaling = 20;

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Ability_ShadowInfusion : Technique
 {
     public static float EnergyCost = 25;
-    public static float Cooldown = 15;
     public static AbilityFamily Family = AbilityFamily.Salutis;
     public static float BaseEffectDuration = 3;
     public static float UltimateEffectDuration = 20;

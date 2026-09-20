@@ -96,6 +96,7 @@ public class Player : Unit
     }
 
     public string CurrentArea;
+    public Stat_UltimateEnergy UltimateEnergy { get; set; }
     public List<Unit> UnitsInRangeForBackstab = new List<Unit>();
     public Dictionary<Type, int> CurrentTechniqueStacks = new() {
         {typeof(Ability_TempestStrikes), 1},
@@ -142,7 +143,6 @@ public class Player : Unit
         set
         {
             _inCombatTimer = value;
-            UIManager.Objects.InCombatFillImage.fillAmount = _inCombatTimer / (float)Constants.DEFAULT_FIXED_FRAMES_UNTIL_EXITING_COMBAT;
         }
     }
 
@@ -417,16 +417,6 @@ public class Player : Unit
             }
         }
         */
-        if (player_is_in_combat)
-        {
-            UIManager.Objects.InCombatMaskImage.color = Color.white;
-            UIManager.Objects.InCombatFillImage.gameObject.SetActive(true);
-        }
-        else
-        {
-            UIManager.Objects.InCombatMaskImage.color = Colors.OutOfCombat;
-            UIManager.Objects.InCombatFillImage.gameObject.SetActive(false);
-        }
     }
 
     public static void RestAtBonfire(InteractableObject obj)
@@ -456,7 +446,7 @@ public class Player : Unit
         Player.Instance.StaggerBar.Current = 0;
         Player.Instance.Energy.Current = Constants.FULLY_RESTED_INITIAL_ENERGY;
         Player.Instance.Ammo = Constants.FULLY_RESTED_INITIAL_AMMO;
-        SaveFile.Instance.UltimatesUsedInCurrentCombat = 0;
+        Player.Instance.UltimateEnergy.ConsumeCharge();
         RemoveAllCooldowns();
         foreach (Type tool in SaveFile.Instance.ToolRemainingAmounts.Keys.ToList())
         {
@@ -603,6 +593,7 @@ public class Player : Unit
         StancePower = new Stat(this, 0);
         ItemPower = new Stat(this, 0);
         ToolPower = new Stat(this, 0);
+        UltimateEnergy = new Stat_UltimateEnergy(this, 30f);
         PassivePowerUpPower = new Stat(this, 0);
         HealthRestorationPower = new Stat(this, 0);
         HealthPotionPower = new Stat(this, 0);

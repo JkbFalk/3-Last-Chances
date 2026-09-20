@@ -8,7 +8,6 @@ using Unity.VisualScripting;
 public class Ability_HeavySlash : Technique
 {
     public static float EnergyCost = 30;
-    public static float Cooldown = 40;
     public static AbilityFamily Family = AbilityFamily.Ignis;
 
     private bool _canFinishAbility = false;

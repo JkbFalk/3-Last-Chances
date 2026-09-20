@@ -95,7 +95,7 @@ public static class Colors {
     public static string AnimaFamily = "#2A7E12";
     public static string GlaciesFamily = "#4982D2";
     public static string MolisFamily = "#D48341";
-    public static string SalutisFamily = "#B9B9B9";
+    public static string SalutisFamily = "#E2E8F0";
     public static string TonitruiFamily = "#CFCD6D";
     public static string PropriusFamily = "#2F197B";
 

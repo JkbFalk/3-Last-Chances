@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_SpearsOfIce : Technique
 {
     public static float EnergyCost = 5;
-    public static float Cooldown = 3;
     public static AbilityFamily Family = AbilityFamily.Glacies;
     public static bool IsStacksBasedTechnique = true;
     public static int MaxStacks

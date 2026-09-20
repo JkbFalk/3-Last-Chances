@@ -257,7 +257,7 @@ public class Settings {
                 GameController.Instance.WaitAndRunMethod(0.01f, RefreshUISize);
             }
             else {
-                foreach(GameObject uiElement in new List<GameObject> {UIManager.Objects.ExperienceBarSlider.gameObject, UIManager.Objects.Effects, UIManager.Objects.ResourceBars, UIManager.Objects.MissionInfo, UIManager.Objects.Notifications, UIManager.Objects.StanceDisplayKeyboard, UIManager.Objects.StanceDisplayGamepad, UIManager.Objects.ChargeBarSlider.gameObject, UIManager.Objects.CustomGaugeSlider.gameObject, UIManager.Objects.InteractIndicatorText.gameObject, UIManager.Objects.Timer, UIManager.Objects.InCombatIndicator}) {
+                foreach(GameObject uiElement in new List<GameObject> {UIManager.Objects.ExperienceBarSlider.gameObject, UIManager.Objects.Effects, UIManager.Objects.ResourceBars, UIManager.Objects.MissionInfo, UIManager.Objects.Notifications, UIManager.Objects.StanceDisplayKeyboard, UIManager.Objects.StanceDisplayGamepad, UIManager.Objects.ChargeBarSlider.gameObject, UIManager.Objects.CustomGaugeSlider.gameObject, UIManager.Objects.InteractIndicatorText.gameObject, UIManager.Objects.Timer}) {
                     uiElement.transform.localScale = new Vector3(_uiSize, _uiSize, _uiSize);
                 }
             }

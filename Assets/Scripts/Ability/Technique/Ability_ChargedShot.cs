@@ -6,7 +6,6 @@ public class Ability_ChargedShot : Technique
 {
 
     public static float EnergyCost = 50;
-    public static float Cooldown = 40;
     public static AbilityFamily Family = AbilityFamily.Glacies;
     private static float _chargeTime = 4;
     private static float _ultimateChargeTime = 8;

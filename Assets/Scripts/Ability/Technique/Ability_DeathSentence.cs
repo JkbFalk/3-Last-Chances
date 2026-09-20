@@ -6,7 +6,6 @@ using UnityEngine.VFX;
 public class Ability_DeathSentence : Technique
 {
     public static float EnergyCost = 75;
-    public static float Cooldown = 90;
     public static AbilityFamily Family = AbilityFamily.Salutis;
     private static float _chargeTime = 5;
     private static float _percentageOfHeavyDamageAsInjuryMinimum = 500;

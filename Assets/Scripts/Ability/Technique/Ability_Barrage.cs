@@ -5,7 +5,6 @@ using UnityEngine;
 public class Ability_Barrage : Technique
 {
     public static float EnergyCost = 10;
-    public static float Cooldown = 15;
     public static AbilityFamily Family = AbilityFamily.Proprius;
     private bool isRightHand = true;
     private int counter = 0;

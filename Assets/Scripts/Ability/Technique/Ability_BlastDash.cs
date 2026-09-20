@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_BlastDash : Technique
 {
     public static float EnergyCost = 25;
-    public static float Cooldown = 20;
     public static AbilityFamily Family = AbilityFamily.Molis;
     private static float _maxChargeTime = 2;
     private static float _maxDashRangeInMeters = 10;

@@ -6,8 +6,7 @@ using UnityEngine;
 
 public class Ability_Deconstruction : Technique
 {
-    public static float EnergyCost = 40;
-    public static float Cooldown = 25;
+    public static float EnergyCost = 5;
     public static AbilityFamily Family = AbilityFamily.Anima;
     public static int MaxStacks = 5;
     public static int UpgradeAMaxStacks = 7;

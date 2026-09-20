@@ -322,6 +322,10 @@ public class DebugController : MonoBehaviour
             Player.Instance.AddEffect(superCDR);
             Player.Instance.AddEffect(superEG);
             Player.Instance.RemoveAllCooldowns();
+            if (Player.Instance.UltimateEnergy != null)
+            {
+                Player.Instance.UltimateEnergy.Current = Player.Instance.UltimateEnergy.Maximum;
+            }
         }
         else
         {

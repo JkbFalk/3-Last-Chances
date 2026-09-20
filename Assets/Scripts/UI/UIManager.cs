@@ -111,7 +111,6 @@ public class UIManager : MonoBehaviour {
     }
 
     public List<Tuple<Image, int>> NotEnoughEnergyWarnings = new List<Tuple<Image, int>>();
-    public int NotEnoughUltimateUsesWarningCounter = 0;
  
     private void FixedUpdate() {
         DecrementNotEnoughEnergyWarningTimers();
@@ -152,14 +151,6 @@ public class UIManager : MonoBehaviour {
             }
         }
         NotEnoughEnergyWarnings = filteredList;
-        if(NotEnoughUltimateUsesWarningCounter == 1) {
-            foreach(Transform child in Objects.UltimateUses.transform) {
-                child.GetComponent<Image>().color = Color.white;
-            } 
-        }
-        if(NotEnoughUltimateUsesWarningCounter > 0) {
-            NotEnoughUltimateUsesWarningCounter--;
-        }
     }
 
     public void ShowGameOverScreen(string label = "GameOverLabelDeath", float black_screen_speed = 2) {
@@ -679,15 +670,11 @@ public class UIManager : MonoBehaviour {
         public static LabelInitializer EscapeMissionButtonLabel => MenuManager.Objects.EscapeMissionButtonLabel;
         public static GameObject Effects => Utils.GetGameObject("UI/Effects");
         public static GameObject ResourceBars => Utils.GetGameObject("UI/Resource Bars");
-        public static GameObject UltimateUses => Utils.GetGameObject("UI/Resource Bars/Ultimate Uses");
         public static GameObject MissionInfo => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info");
         public static GameObject Timer => Utils.GetGameObject("UI/Timer");
         public static TextMeshProUGUI TimerText => (TextMeshProUGUI)Utils.GetComponent("UI/Timer", typeof(TextMeshProUGUI));
         public static Slider ChargeBarSlider => (Slider)Utils.GetComponent("UI/Charge Bar", typeof(Slider));
         public static TextMeshProUGUI ChargeBarAbilityText => (TextMeshProUGUI)Utils.GetComponent("UI/Charge Bar/Ability Name", typeof(TextMeshProUGUI));
-        public static GameObject InCombatIndicator => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/InCombat Indicator");
-        public static Image InCombatMaskImage => (Image)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/InCombat Indicator/Mask", typeof(Image));
-        public static Image InCombatFillImage => (Image)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/InCombat Indicator/Mask/Red Fill", typeof(Image));
         public static Image AmmoDisplayImage => Settings.Instance.ControlScheme == "Keyboard" ? (Image)Utils.GetComponent("UI/Stance Display Keyboard/Ammo Display", typeof(Image)) : (Image)Utils.GetComponent("UI/Stance Display Gamepad/Ammo Display", typeof(Image));
         public static GameObject Stances => Settings.Instance.ControlScheme == "Keyboard" ? Utils.GetGameObject("UI/Stance Display Keyboard/Stances") : Utils.GetGameObject("UI/Stance Display Gamepad/Stances");
         public static GameObject ItemsKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Items");

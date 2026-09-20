@@ -6,7 +6,6 @@ using UnityEngine;
 public class Ability_Flamethrower : Technique
 {
     public static float EnergyCost = 1;
-    public static float Cooldown = 1f;
     public static AbilityFamily Family = AbilityFamily.Ignis;
     private int _cycles = 0;
     private bool _techniqueEnded = false;
