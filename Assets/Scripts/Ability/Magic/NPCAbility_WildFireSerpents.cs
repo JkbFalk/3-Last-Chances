@@ -65,7 +65,7 @@ public class NPCAbility_WildFireSerpents : Ability {
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
-        if(Snakes.Count == 0 || Snakes[0] == null || Snakes[0].gameObject == null || Snakes[0].gameObject.IsDestroyed()) {
+        if(Snakes.Count == 0 || Snakes[0] == null || Snakes[0].gameObject == null || Snakes[0].gameObject== null) {
             return;
         }
         else {
@@ -79,8 +79,8 @@ public class NPCAbility_WildFireSerpents : Ability {
     }
 
     public void AddCollider() {
-        if(Snakes.Count > 0 && Snakes[0] != null && Snakes[0].gameObject != null && !Snakes[0].gameObject.IsDestroyed()) {
-            for(int i = 0; i < Snakes.Count && Snakes[i].gameObject != null && Snakes[i].gameObject.IsDestroyed() == false; i++) {
+        if(Snakes.Count > 0 && Snakes[0] != null && Snakes[0].gameObject != null && !Snakes[0].gameObject== null) {
+            for(int i = 0; i < Snakes.Count && Snakes[i].gameObject != null && Snakes[i].gameObject!= null; i++) {
                 AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FlameTrailCollider");
                 aoe.transform.position = Snakes[i].transform.position;
                 aoe.transform.localScale = new Vector2(0.6f, 0.6f);
@@ -95,7 +95,7 @@ public class NPCAbility_WildFireSerpents : Ability {
     }
 
     public void ChangeToRandomDirection(GameObject snake) {
-        if(snake != null && snake.gameObject != null && !snake.gameObject.IsDestroyed()) {
+        if(snake != null && snake.gameObject != null && !snake.gameObject== null) {
             if (NavMesh.SamplePosition((Vector2)snake.transform.position + UnityEngine.Random.insideUnitCircle * new Vector2(4f, 4f), out NavMeshHit repositionHit, 2f, NavMesh.AllAreas))
             {
                 snake.transform.up = (repositionHit.position - snake.transform.position).normalized;

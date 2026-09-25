@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool; // Required for the built-in API
 
-public class PooledObject : MonoBehaviour {
-    public string PoolKey;
-}
-
-public static class ObjectPool {
-    private static readonly Dictionary<string, Stack<GameObject>> Pools = new Dictionary<string, Stack<GameObject>>();
+public static class ObjectPool 
+{
+    // Map an integer hash (for fast lookups) to the Unity Object Pool
+    private static readonly Dictionary<int, IObjectPool<PooledObject>> Pools = new Dictionary<int, IObjectPool<PooledObject>>();
     private static Transform _root;
 
-    private static Transform Root {
-        get {
-            if (_root == null && GameController.Instance != null) {
+    private static Transform Root 
+    {
+        get 
+        {
+            if (_root == null && GameController.Instance != null) 
+            {
                 GameObject rootObject = new GameObject("ObjectPool");
                 rootObject.transform.SetParent(GameController.Instance.transform, false);
                 _root = rootObject.transform;
@@ -21,89 +23,127 @@ public static class ObjectPool {
         }
     }
 
-    public static GameObject Spawn(string resourcePath, Transform parent) {
-        GameObject instance = null;
-        if (Pools.TryGetValue(resourcePath, out Stack<GameObject> stack)) {
-            while (stack.Count > 0 && instance == null) {
-                GameObject candidate = stack.Pop();
-                if (candidate != null) {
-                    instance = candidate;
+    // Factory method to get or create a pool for a specific prefab path
+    private static IObjectPool<PooledObject> GetOrCreatePool(string resourcePath)
+    {
+        int key = Animator.StringToHash(resourcePath);
+
+        if (Pools.TryGetValue(key, out IObjectPool<PooledObject> existingPool))
+        {
+            return existingPool;
+        }
+
+        // We must declare the variable before using it in the closure so the spawned objects know their pool
+        IObjectPool<PooledObject> newPool = null;
+
+        newPool = new ObjectPool<PooledObject>(
+            createFunc: () => 
+            {
+                // TELEMETRY: If we are creating an object during combat, the pool wasn't warmed enough!
+                if (Player.HasInstance() && Player.Instance.InCombat)
+                {
+                    Debug.LogWarning($"[Pool Warning] Instantiating {resourcePath} mid-combat! Increase pool size.");
                 }
-            }
-        }
-        if (instance == null) {
-            GameObject prefab = ResourceCache.Load<GameObject>(resourcePath);
-            if (prefab == null) {
-                Debug.LogError("ObjectPool could not load prefab: " + resourcePath);
-                return null;
-            }
-            instance = Object.Instantiate(prefab);
-            PooledObject marker = instance.GetComponent<PooledObject>();
-            if (marker == null) {
-                marker = instance.AddComponent<PooledObject>();
-            }
-            marker.PoolKey = resourcePath;
-        }
-        else {
-            TemporaryObject temporary = instance.GetComponent<TemporaryObject>();
-            if (temporary != null) {
-                temporary.ResetForPoolReuse();
-            }
-        }
-        instance.transform.SetParent(parent, false);
-        instance.SetActive(false);
-        return instance;
+
+                GameObject prefab = ResourceCache.Load<GameObject>(resourcePath);
+                if (prefab == null) 
+                {
+                    Debug.LogError($"[ObjectPool] Could not load prefab at {resourcePath}");
+                    return null;
+                }
+
+                GameObject go = Object.Instantiate(prefab, Root);
+                PooledObject po = go.GetComponent<PooledObject>();
+                if (po == null) po = go.AddComponent<PooledObject>();
+                
+                // Assign the pool reference so the object can release itself later
+                po.Pool = newPool;
+                return po;
+            },
+            actionOnGet: (po) => 
+            {
+                // Reset state when pulling from the pool
+                if (po.TempObject != null) 
+                {
+                    po.TempObject.ResetForPoolReuse();
+                }
+            },
+            actionOnRelease: (po) => 
+            {
+                // Deactivate and reparent when returning to the pool
+                po.gameObject.SetActive(false);
+                po.transform.SetParent(Root, false);
+            },
+            actionOnDestroy: (po) => 
+            {
+                // Called if the pool exceeds maxSize or is cleared
+                Object.Destroy(po.gameObject);
+            },
+            collectionCheck: true, // Throws an error if you accidentally release an object twice!
+            defaultCapacity: 10,
+            maxSize: 500 // Prevents infinite memory leaks if a bug spawns thousands of objects
+        );
+
+        Pools[key] = newPool;
+        return newPool;
     }
 
-    public static void Release(GameObject instance) {
-        if (instance == null) {
-            return;
+    public static GameObject Spawn(string resourcePath, Transform parent) 
+    {
+        var pool = GetOrCreatePool(resourcePath);
+        PooledObject instance = pool.Get(); // This automatically calls createFunc and actionOnGet
+        
+        if (instance != null)
+        {
+            instance.transform.SetParent(parent, false);
+            return instance.gameObject;
         }
-        PooledObject marker = instance.GetComponent<PooledObject>();
-        if (marker == null || string.IsNullOrEmpty(marker.PoolKey) || Root == null) {
+        return null;
+    }
+
+    public static void Release(GameObject instance) 
+    {
+        if (instance == null) return;
+
+        PooledObject po = instance.GetComponent<PooledObject>();
+        if (po != null) 
+        {
+            po.Release(); // Use the self-releasing pattern
+        }
+        else 
+        {
             Object.Destroy(instance);
-            return;
         }
-        instance.SetActive(false);
-        instance.transform.SetParent(Root, false);
-        if (!Pools.TryGetValue(marker.PoolKey, out Stack<GameObject> stack)) {
-            stack = new Stack<GameObject>();
-            Pools[marker.PoolKey] = stack;
-        }
-        stack.Push(instance);
     }
 
-    public static IEnumerator Warm(string resourcePath, int count) {
+    // Warming with Unity's built-in pool works by Getting objects, holding them, and Releasing them all at once.
+    public static IEnumerator Warm(string resourcePath, int count) 
+    {
         yield return ResourceCache.LoadAsync<GameObject>(resourcePath);
-        GameObject prefab = ResourceCache.Load<GameObject>(resourcePath);
-        if (prefab == null || Root == null) {
-            yield break;
+        
+        var pool = GetOrCreatePool(resourcePath);
+        List<PooledObject> tempStorage = new List<PooledObject>(count);
+
+        // Get objects to force instantiation
+        for (int i = 0; i < count; i++) 
+        {
+            tempStorage.Add(pool.Get());
+            yield return null; // Spread instantiation across frames so the loading screen doesn't freeze
         }
-        if (!Pools.TryGetValue(resourcePath, out Stack<GameObject> stack)) {
-            stack = new Stack<GameObject>();
-            Pools[resourcePath] = stack;
-        }
-        while (stack.Count < count) {
-            GameObject instance = Object.Instantiate(prefab, Root);
-            instance.SetActive(false);
-            PooledObject marker = instance.GetComponent<PooledObject>();
-            if (marker == null) {
-                marker = instance.AddComponent<PooledObject>();
-            }
-            marker.PoolKey = resourcePath;
-            stack.Push(instance);
-            yield return null;
+
+        // Release them all back into the pool
+        foreach (var obj in tempStorage) 
+        {
+            obj.Release();
         }
     }
 
-    public static void Clear() {
-        foreach (Stack<GameObject> stack in Pools.Values) {
-            while (stack.Count > 0) {
-                GameObject instance = stack.Pop();
-                if (instance != null) {
-                    Object.Destroy(instance);
-                }
-            }
+    public static void Clear() 
+    {
+        // Calling Clear() on Unity's ObjectPool automatically invokes actionOnDestroy for all inactive objects
+        foreach (var pool in Pools.Values) 
+        {
+            pool.Clear();
         }
         Pools.Clear();
     }

@@ -209,7 +209,7 @@ public static class CombatMath
             KnockbackInMeters = damageSource.KnockbackInMeters,
             CustomHitSound = damageSource.CustomHitSound
         };
-
+        ability.ExtraBehaviourOnHit(damage); 
         damage.CalculateAndApplyDamage();
         return damage;
     }

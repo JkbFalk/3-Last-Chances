@@ -57,7 +57,7 @@ public class Ability_SentientShadow : Technique
 
     public override void ActionsToPerformDuringAnotherAbility()
     {
-        if (Player.Instance.Energy.Current < EnergyCost || Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == GetType()) != null || (_hook != null && _hook.gameObject.IsDestroyed() == false))
+        if (Player.Instance.Energy.Current < EnergyCost || Player.Instance.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == GetType()) != null || (_hook != null && _hook.gameObject!= null))
         {
             return;
         }
@@ -129,11 +129,11 @@ public class Ability_SentientShadow : Technique
 
     private void DisableTether()
     {
-        if (_tether != null && _tether.IsDestroyed() == false)
+        if (_tether != null && _tether!= null)
         {
             _tether.GetComponent<ParticleSystem>().Stop();
         }
-        if (_hook != null && _hook.gameObject.IsDestroyed() == false)
+        if (_hook != null && _hook.gameObject!= null)
         {
             _hook.MakeObjectDisappear(0.25f);
             GameController.Instance.WaitAndRunMethod(0.25f, MakeHookDisappear);
@@ -142,7 +142,7 @@ public class Ability_SentientShadow : Technique
 
     private void UpdateHookTether()
     {
-        if (_tether == null || _tether.IsDestroyed() || _hook == null || _hook.gameObject.IsDestroyed())
+        if (_tether == null || _tether== null || _hook == null || _hook.gameObject== null)
         {
             return;
         }
@@ -207,7 +207,7 @@ public class Ability_SentientShadow : Technique
 
     public void MakeHookDisappear()
     {
-        if (_hook != null && _hook.gameObject.IsDestroyed() == false)
+        if (_hook != null && _hook.gameObject!= null)
         {
             MonoBehaviour.Destroy(_hook.gameObject);
             _hook = null;

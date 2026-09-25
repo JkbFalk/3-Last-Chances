@@ -11,6 +11,8 @@ public class TemporaryObject : WorldObject {
 
     public float DeactivateNSecondsAfterStart = 0;
     public float DeactivateTimer = 0;
+    private ParticleSystem[] _cachedParticleSystems;
+    private SetChildActiveAfterNSeconds[] _cachedTimedChildren;
 
     private float _baseDuration = 0;
 
@@ -40,6 +42,8 @@ public class TemporaryObject : WorldObject {
         {
             DeactivateTimer = DeactivateNSecondsAfterStart * 50;
         }
+        _cachedParticleSystems = GetComponentsInChildren<ParticleSystem>(true);
+        _cachedTimedChildren = GetComponentsInChildren<SetChildActiveAfterNSeconds>(true);
     }
 
     public virtual void AdditionalActionsAfterUpdate() {
@@ -62,7 +66,7 @@ public class TemporaryObject : WorldObject {
     }
 
     public void CleanUpObject() {
-        if(IsDestroyed == false && gameObject != null && gameObject.IsDestroyed() == false && gameObject.GetComponent<TemporaryObject>() != null) {
+        if(IsDestroyed == false && gameObject != null && gameObject!= null && gameObject.GetComponent<TemporaryObject>() != null) {
             gameObject.GetComponent<TemporaryObject>().MakeObjectDisappear();
         }
     }
@@ -187,6 +191,22 @@ public class TemporaryObject : WorldObject {
         }
         foreach (SetChildActiveAfterNSeconds timedChild in GetComponentsInChildren<SetChildActiveAfterNSeconds>(true)) {
             timedChild.ResetForReuse();
+        }
+        if (_cachedParticleSystems != null)
+        {
+            foreach (ParticleSystem system in _cachedParticleSystems) 
+            {
+                system.Clear(true);
+                system.Play(true);
+            }
+        }
+
+        if (_cachedTimedChildren != null)
+        {
+            foreach (SetChildActiveAfterNSeconds timedChild in _cachedTimedChildren) 
+            {
+                timedChild.ResetForReuse();
+            }
         }
     }
 

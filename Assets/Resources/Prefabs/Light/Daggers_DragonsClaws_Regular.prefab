@@ -89,6 +89,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -104,6 +105,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2533776384063831009}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -127,7 +129,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0.527401, y: 0.029323578}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -138,7 +141,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 0.8658943, y: 0.31672478}
   m_EdgeRadius: 0
 --- !u!1 &4087589732833256674
@@ -195,6 +197,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -216,6 +223,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 291938915
   m_SortingLayer: 1
   m_SortingOrder: 0
@@ -296,20 +304,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IgnoreSpriteParent: 0
   Grey: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0}
-  GreyBorder1: 0.5
+  GreyBorder1: 1
   GreyBorder2: 1
   Brown: {r: 0.5, g: 0.24292454, b: 0.24292454, a: 0}
-  BrownBorder1: 0.4
-  BrownBorder2: 0.8
+  BrownBorder1: 1
+  BrownBorder2: 1
   Red: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0}
-  RedBorder1: 0.4
-  RedBorder2: 0.8
+  RedBorder1: 1
+  RedBorder2: 1
   Green: {r: 0.254717, g: 0.19344074, b: 0.19344074, a: 0}
-  GreenBorder1: 0.4
-  GreenBorder2: 0.8
+  GreenBorder1: 1
+  GreenBorder2: 1
   Blue: {r: 0.3301887, g: 0.3301887, b: 0.3301887, a: 0}
-  BlueBorder1: 0.4
-  BlueBorder2: 0.8
+  BlueBorder1: 1
+  BlueBorder2: 1
   SpecialSkinColor: {r: 1, g: 1, b: 1, a: 1}
   Skin: {r: 1, g: 0.8745099, b: 0.8745099, a: 1}
   SkinBorder1: 0.4
@@ -377,6 +385,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -392,6 +401,7 @@ BoxCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4588298446142240411}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -415,7 +425,8 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0.527401, y: 0.029323578}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -426,7 +437,6 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 0.8658943, y: 0.31672478}
   m_EdgeRadius: 0
 --- !u!1 &6249023476247012637
@@ -483,6 +493,11 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -504,6 +519,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 291938915
   m_SortingLayer: 1
   m_SortingOrder: 0
@@ -584,20 +600,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IgnoreSpriteParent: 0
   Grey: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0}
-  GreyBorder1: 0.5
+  GreyBorder1: 1
   GreyBorder2: 1
   Brown: {r: 0.5, g: 0.24292454, b: 0.24292454, a: 0}
-  BrownBorder1: 0.4
-  BrownBorder2: 0.8
+  BrownBorder1: 1
+  BrownBorder2: 1
   Red: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 0}
-  RedBorder1: 0.4
-  RedBorder2: 0.8
+  RedBorder1: 1
+  RedBorder2: 1
   Green: {r: 0.254717, g: 0.19344074, b: 0.19344074, a: 0}
-  GreenBorder1: 0.4
-  GreenBorder2: 0.8
+  GreenBorder1: 1
+  GreenBorder2: 1
   Blue: {r: 0.3301887, g: 0.3301887, b: 0.3301887, a: 0}
-  BlueBorder1: 0.4
-  BlueBorder2: 0.8
+  BlueBorder1: 1
+  BlueBorder2: 1
   SpecialSkinColor: {r: 1, g: 1, b: 1, a: 1}
   Skin: {r: 1, g: 0.8745099, b: 0.8745099, a: 1}
   SkinBorder1: 0.4
@@ -5383,6 +5399,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5405,6 +5426,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 291938915
   m_SortingLayer: 1
   m_SortingOrder: 0
@@ -10214,6 +10236,11 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -10236,6 +10263,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 291938915
   m_SortingLayer: 1
   m_SortingOrder: 0

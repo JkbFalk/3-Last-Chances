@@ -52,7 +52,7 @@ public class NPCAbility_PlundererIgnis : Ability {
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(_aoe != null && _aoe.gameObject.IsDestroyed() == false) {
+        if(_aoe != null && _aoe.gameObject!= null) {
             _aoe.DealingDamage = false;
             _aoe.MakeObjectDisappear(1);
         }

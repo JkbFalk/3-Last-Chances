@@ -1787,4 +1787,18 @@ public class Utils {
             }
         }
     }
+
+    
+    public static string GetRomanNumeral(int num)
+    {
+        switch (num)
+        {
+            case 1: return "I";
+            case 2: return "II";
+            case 3: return "III";
+            case 4: return "IV";
+            case 5: return "V";
+            default: return num.ToString();
+        }
+    }
 }

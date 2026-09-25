@@ -80,7 +80,7 @@ public class Stance_BodyOfSteel : Effect_Stance
     {
         if (IsActive && damage.SourceOfDamage.User == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Barrier)))
         {
-            damage.DamageDealtMultiplier += Player.Instance.GetEffect(typeof(Effect_Barrier)).DecayingAmount * DamageMultiplierPer1000Barrier / 1000;
+            damage.DamageDealtMultiplier += Player.Instance.GetEffect(typeof(Effect_Barrier)).Amount * DamageMultiplierPer1000Barrier / 1000;
         }
         if (IsActive && UnlockedUpgrade1 && damage.SourceOfDamage.User == Player.Instance && Player.Instance.Armor.Current > 0)
         {

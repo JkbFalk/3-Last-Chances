@@ -49,7 +49,7 @@ public class Area_IgnisManorOnFire
     }
 
     public static void CreateExplosion() {
-        if(Area.Instance != null && Area.Instance.gameObject.name.Contains("IgnisManorOnFire") && Area.Instance.gameObject.IsDestroyed() == false) {
+        if(Area.Instance != null && Area.Instance.gameObject.name.Contains("IgnisManorOnFire") && Area.Instance.gameObject!= null) {
             List<Transform> validTransforms = PotentialExplosionPositions.Where(transform => Vector2.Distance(transform.position, Player.Instance.transform.position) < 20).ToList();
             if(validTransforms.Count > 0) {
                 Transform pos = validTransforms[UnityEngine.Random.Range(0, validTransforms.Count)];
@@ -419,10 +419,7 @@ public class Area_IgnisManorOnFire
     }
 
     public static void CheckEffectStarted(Effect effect) {
-        if(effect.TargetOfEffect.gameObject.name.Contains("Colten") && effect is Effect_SoftStaggered) {
-            SaveFile.Instance.ChangeIgnisEnergy(50);
-        }
-        else if(effect.TargetOfEffect.gameObject.name.Contains("Colten") && effect is Effect_HardStaggered) {
+        if(effect.TargetOfEffect.gameObject.name.Contains("Colten") && effect is Effect_Staggered) {
             SaveFile.Instance.ChangeIgnisEnergy(100);
         }
     }

@@ -10,16 +10,16 @@ public class Effect_Analysis : Effect
     public Effect_Analysis(float damage_increase, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
-        _initialDecayingAmount = damage_increase;
+        _initialAmount = damage_increase;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackAmount;
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
+    public override void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
-        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
-        StackingEffectIntensityLevel = DecayingAmount < 20 ? 1 : DecayingAmount < 50 ? 2 : 3;
+        UIText = Utils.GetFormattedFloat(Amount, 0);
+        StackingEffectIntensityLevel = Amount < 20 ? 1 : Amount < 50 ? 2 : 3;
     }
 
     public override void OnStart()
@@ -63,7 +63,7 @@ public class Effect_Analysis : Effect
 
     public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage?.SourceOfDamage?.User == TargetOfEffect && ((damage?.SourceOfDamage?.User is Player && damage.SourceOfDamage.Is(Ability.Property.Technique)) || (damage?.SourceOfDamage?.User is not Player && damage.DamageType == Constants.DamageType.Magic))) {
-            damage.DamageDealtPercentageModifier += DecayingAmount;
+            damage.DamageDealtPercentageModifier += Amount;
             base.OnInvokeHitDealt(damage);
         }
     }

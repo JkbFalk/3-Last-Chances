@@ -51,19 +51,19 @@ public class NotificationController : MonoBehaviour
     }
 
     public static void AdjustNotificationWidth(GameObject go) {
-        if(go.IsDestroyed() == false && go.transform.Find("Background/Text").GetComponent<RectTransform>().sizeDelta.x > 1160) {
+        if(go!= null && go.transform.Find("Background/Text").GetComponent<RectTransform>().sizeDelta.x > 1160) {
             go.transform.Find("Background/Text").GetComponent<ContentSizeFitter>().enabled = false;
             go.transform.Find("Background/Text").GetComponent<RectTransform>().sizeDelta = new Vector2(1160, 0);
             Instance.WaitAndRunMethodRealtime(0.01f, AdjustNotificationHeight, go);
         }
-        else if(go.IsDestroyed() == false) {
+        else if(go!= null) {
             go.transform.Find("Background").GetComponent<RectTransform>().sizeDelta = new Vector2(go.transform.Find("Background/Text").GetComponent<RectTransform>().sizeDelta.x + 40, 0);
             Instance.WaitAndRunMethodRealtime(0.01f, AdjustNotificationHeight, go);
         }
     }
 
     public static void AdjustNotificationHeight(GameObject go) {
-        if(go.IsDestroyed()) {
+        if(go== null) {
             return;
         }
         go.GetComponent<RectTransform>().sizeDelta = new Vector2(go.transform.Find("Background/Text").GetComponent<RectTransform>().sizeDelta.x + 40, go.transform.Find("Background/Text").GetComponent<RectTransform>().sizeDelta.y);

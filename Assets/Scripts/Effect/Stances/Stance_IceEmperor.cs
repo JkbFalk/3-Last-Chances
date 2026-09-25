@@ -82,7 +82,7 @@ public class Stance_IceEmperor : Effect_Stance
 
     public Stance_IceEmperor(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
-        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.EffectDecayingAmountChanged, EventManager.EffectStarted, EventManager.EffectEnded };
+        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.EffectAmountChanged, EventManager.EffectStarted, EventManager.EffectEnded };
     }
 
     public override void OnInvokeHitDealt(DamageInstance damage)
@@ -132,7 +132,7 @@ public class Stance_IceEmperor : Effect_Stance
 
     public override void OnInvokeEffectDecayingAmountChanged(Effect effect, float amount_changed)
     {
-        if (IsActive && UnlockedUpgrade3 && effect.TargetOfEffect.IsHostile && effect is Effect_Freeze && (effect.DecayingAmount * (1 / Upgrade3PercentageOfEnemyStaggerBarRequiredAsFreezeToInstaFrozen)) > (effect.TargetOfEffect.StaggerBar.Remaining / 100))
+        if (IsActive && UnlockedUpgrade3 && effect.TargetOfEffect.IsHostile && effect is Effect_Freeze && (effect.Amount * (1 / Upgrade3PercentageOfEnemyStaggerBarRequiredAsFreezeToInstaFrozen)) > (effect.TargetOfEffect.StaggerBar.Remaining / 100))
         {
             new DamageInstance(TargetOfEffect, SourceOfEffect.SourceAbility, null)
             {

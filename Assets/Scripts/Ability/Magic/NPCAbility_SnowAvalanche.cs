@@ -35,14 +35,14 @@ public class NPCAbility_SnowAvalanche : Ability {
     }
     
     public void ResetTargets() {
-        if(_projectile != null && _projectile.gameObject != null && _projectile.gameObject.IsDestroyed() == false) {
+        if(_projectile != null && _projectile.gameObject != null && _projectile.gameObject!= null) {
             ResetPotentialTargets();
         }
     }
 
     public override void CallAbilityEvent2()
     {
-        if (_iceWave != null && _iceWave.IsDestroyed() == false)
+        if (_iceWave != null && _iceWave!= null)
         {
             _iceWave.GetComponent<Projectile>().enabled = true;
             _iceWave.GetComponent<Projectile>().DealingDamage = true;
@@ -50,7 +50,7 @@ public class NPCAbility_SnowAvalanche : Ability {
     }
 
     public void PlayIceWaveAnimation() {
-        if (_iceWave != null && _iceWave.IsDestroyed() == false) {
+        if (_iceWave != null && _iceWave!= null) {
             _iceWave.GetComponent<ParticleSystem>().Play();
         }
     }

@@ -77,6 +77,8 @@ public class DamageInstance {
     public bool CanCauseFlinching = true;
     public float HealthLost { get; set; } = 0;
     public float DamageDealtMultiplier = 1;
+    public float InjuryDealtMultiplier = 1;
+    public float StaggerDealtMultiplier = 1; 
     public float DamageDealtPercentageModifier = 0;
     public float InjuryDealtPercentageModifier = 0;
     public float StaggerDealtPercentageModifier = 0;
@@ -173,8 +175,6 @@ public class DamageInstance {
         if(SourceOfDamage.User.IsHostile) {
             globalDamageModifier = GlobalEnemyDamageModifier;
         }
-        float initialInjury = Injury;
-        float initialStagger = Stagger;
 
         InjuryWasHigherThan0 = Injury > 0;
         StaggerWasHigherThan0 = Stagger > 0;
@@ -185,33 +185,58 @@ public class DamageInstance {
         }
         float armorDamageReduction = 1 / (1 + effectiveArmor / 100);
 
-        Injury += GetCalculatedEffectiveWeaponDamage();
-
-        PreMitigationInjury = (Injury + InjuryDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * globalDamageModifier;
-
-        Injury = PreMitigationInjury * armorDamageReduction;
-
+        Injury += GetCalculatedEffectiveWeaponDamage(true);
         Stagger += GetCalculatedEffectiveWeaponDamage(false);
 
-        PreMitigationStagger = (Stagger + StaggerDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * globalDamageModifier;
+        if (TargetOfDamage is not Player)
+        {
+            float missingHealthPercentage = 1f - (TargetOfDamage.Health.Current / TargetOfDamage.Health.Maximum);
+            StaggerDealtMultiplier *= (1f + missingHealthPercentage);
 
+            if (TargetOfDamage.IsStaggered)
+            {
+                InjuryDealtMultiplier *= 2.0f;
+                
+                float conversionRate = 0.25f;
+                if (SourceOfDamage?.User is Player)
+                {
+                    Effect_Sharp sharpEffect = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
+                    if (sharpEffect != null && sharpEffect.CurrentStacks >= Effect_Sharp.MAX_STACKS)
+                    {
+                        conversionRate = 1.0f;
+                    }
+                }
+
+                float convertedStagger = (Stagger + StaggerDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * StaggerDealtMultiplier * globalDamageModifier;
+                Injury += convertedStagger * conversionRate;
+                
+                // Zero out Stagger so it doesn't process below
+                Stagger = 0f;
+                StaggerDealtFlatModifier = 0f;
+            }
+        }
+
+        PreMitigationInjury = (Injury + InjuryDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * InjuryDealtMultiplier * globalDamageModifier; 
+        Injury = PreMitigationInjury * armorDamageReduction;
+
+        PreMitigationStagger = (Stagger + StaggerDealtFlatModifier + DamageDealtFlatModifier) * DamageDealtMultiplier * StaggerDealtMultiplier * globalDamageModifier; 
         Stagger = PreMitigationStagger * armorDamageReduction;
 
-        string injuryAuditLogString = ((InjuryDealtFlatModifier + DamageDealtFlatModifier) != 0 ? $"({PreMitigationInjury} + {Utils.GetFormattedFloat(InjuryDealtFlatModifier + DamageDealtFlatModifier)}" : $"{PreMitigationInjury}") + ((InjuryDealtPercentageModifier + DamageDealtPercentageModifier) != 0 ? $" * {Utils.GetFormattedFloat(InjuryDealtPercentageModifier + DamageDealtPercentageModifier)}" : "") + (DamageDealtMultiplier != 1 ? $" x{Utils.GetFormattedFloat(DamageDealtMultiplier, 2)}" : "");
-
-        string staggerAuditLogString = ((StaggerDealtFlatModifier + DamageDealtFlatModifier) != 0 ? $"({PreMitigationStagger} + {Utils.GetFormattedFloat(StaggerDealtFlatModifier + DamageDealtFlatModifier)}" : $"{PreMitigationStagger}") + ((StaggerDealtPercentageModifier + DamageDealtPercentageModifier) != 0 ? $" * {Utils.GetFormattedFloat(StaggerDealtPercentageModifier + DamageDealtPercentageModifier)}" : "") + (DamageDealtMultiplier != 1 ? $" x{Utils.GetFormattedFloat(DamageDealtMultiplier, 2)}" : "");
-
-        /*Utils.CreateAuditLog(
-            $"{Utils.GetFormattedFloat(Injury + Stagger)}[D] dealt to {TargetOfDamage} by {SourceOfDamage.User} using {SourceOfDamage.GetType()} ({AbilityDamageSource.DamageType})" +
-
-            $"\n{injuryAuditLogString}[I], {staggerAuditLogString}[S] vs {effectiveArmor}[A]" + (ArmorPenetrationModifier > 0 ? $" vs {ArmorPenetrationModifier}%[PEN]" : "") + $" = {PreMitigationDamage}[D] -> {Utils.GetFormattedFloat(Damage)}[D] ({Utils.GetFormattedFloat((1 - armorDamageReduction) * 100)}% Mitigation)" +
-
-            $"\n({AbilityDamageSource.InjuryScaling}% * {Utils.GetFormattedFloat(SourceOfDamage.User.GetInjuryStatForGivenDamageType(AbilityDamageSource.DamageType).Current)}(Potency * Stat) + {initialInjury + InjuryDealtFlatModifier + DamageDealtFlatModifier}(Flat)) * {InjuryDealtPercentageModifier + DamageDealtPercentageModifier}(Percentage) x{DamageDealtMultiplier}(Multiplier) = {Utils.GetFormattedFloat(Injury)}[I]" +
-
-            $"\n({AbilityDamageSource.StaggerScaling}% * {Utils.GetFormattedFloat(SourceOfDamage.User.GetStaggerStatForGivenDamageType(AbilityDamageSource.DamageType).Current)}(Potency * Stat) + {initialStagger + StaggerDealtFlatModifier + DamageDealtFlatModifier}(Flat)) * {StaggerDealtPercentageModifier + DamageDealtPercentageModifier}(Percentage) x{DamageDealtMultiplier}(Multiplier) = {Utils.GetFormattedFloat(Stagger)}[S]");
-        */
         InjuryWasHigherThan0 = InjuryWasHigherThan0 || Injury > 0;
         StaggerWasHigherThan0 = StaggerWasHigherThan0 || Stagger > 0;
+    }
+
+    private void DecreaseTargetStaggerBar() {
+        float enemyStaggerBarMaximum = TargetOfDamage.StaggerBar.Maximum;
+        StaggerWasHigherThan0 = StaggerWasHigherThan0 || Stagger > 0;
+        
+        if (!TargetOfDamage.IsStaggered && Stagger > 0) {
+            TargetOfDamage.StaggerBar.DealStaggerDamage(this);
+        }
+        
+        if((TargetOfDamage.IsBoss && StaggerDealt > enemyStaggerBarMaximum * 0.4f) || (!TargetOfDamage.IsBoss && StaggerDealt > enemyStaggerBarMaximum * 0.7f)) {
+            Properties.Add(DamageProperty.CriticalStagger);
+        }
     }
 
     public float GetCalculatedEffectiveWeaponDamage(bool is_injury = true) {
@@ -263,20 +288,6 @@ public class DamageInstance {
         HealthLost = currentHealth - TargetOfDamage.Health.Current; 
         if((TargetOfDamage.IsBoss && InjuryDealt > enemyHealthBarMaximum * 0.25f) || (!TargetOfDamage.IsBoss && InjuryDealt > enemyHealthBarMaximum * 0.5f)) {
             Properties.Add(DamageProperty.CriticalInjury);
-        }
-    }
-
-    private void DecreaseTargetStaggerBar() {
-        float enemyStaggerBarMaximum = TargetOfDamage.StaggerBar.Maximum;
-        StaggerWasHigherThan0 = StaggerWasHigherThan0 || Stagger > 0;
-        if (!TargetOfDamage.IsStaggered && Stagger > 0) {
-            TargetOfDamage.StaggerBar.DealStaggerDamage(this);
-        }
-        else if(TargetOfDamage is not Player && TargetOfDamage.IsStaggered) {
-            Injury += Stagger / 2;
-        }
-        if((TargetOfDamage.IsBoss && StaggerDealt > enemyStaggerBarMaximum * 0.4f) || (!TargetOfDamage.IsBoss && StaggerDealt > enemyStaggerBarMaximum * 0.7f)) {
-            Properties.Add(DamageProperty.CriticalStagger);
         }
     }
 
@@ -465,7 +476,7 @@ public class DamageInstance {
         }
         List<Transform> loot = new();
         foreach(Transform child in defeated_unit.transform) {
-            if(defeated_unit.gameObject != null && !defeated_unit.gameObject.IsDestroyed() && child.gameObject.name.Contains("Loot")) {
+            if(defeated_unit.gameObject != null && !defeated_unit.gameObject== null && child.gameObject.name.Contains("Loot")) {
                 loot.Add(child);
             }
         }
@@ -639,7 +650,7 @@ public class DamageInstance {
                 return;
             }
         }
-        if (DecreaseProjectileDurability && DestroyProjectileAfterDamageCalcuation && DamagingObject != null && DamagingObject.gameObject.IsDestroyed() == false) {
+        if (DecreaseProjectileDurability && DestroyProjectileAfterDamageCalcuation && DamagingObject != null && DamagingObject.gameObject!= null) {
             DamagingObject.MakeObjectDisappear(0);
         }
     }

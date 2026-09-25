@@ -8,25 +8,19 @@ using UnityEngine.UI;
 
 public class Ability_WindRush : Technique
 {
-    public static float EnergyCost = 1f;
+    public static float EnergyCost = 2f;
     public static float Cooldown = 0f;
     public static AbilityFamily Family = AbilityFamily.Anima;
 
     public static float InjuryScaling = 300f;
-    public static float StaggerScaling = 300f;
-    public static float BaseSharpGain = 25f;
+    public static int BaseSharpGain = 1;
 
     public static float MasteryAExtraStaggerScaling = 350f;
     public static float MasteryBExtraInjuryScaling = 250f;
-
-    public static float UltimateInjuryScaling = 800f;
-    public static float UltimateStaggerScaling = 800f;
-    public static float UltimateStaggerAoEScalingPerSecond = 100f;
-    public static float UltimateWallDurationInSeconds = 20f;
+    public static float UltimateWallDurationInSeconds = 40f;
 
     public static string REACTION_WINDOW_EFFECT_ID = "WindRush_ReactionWindow";
     public const float REACTION_WINDOW_DURATION = 3.0f;
-
     private const float UPGRADE_B_OVERSHOOT_DISTANCE = 4.5f;
     private const float MAX_DASH_DISTANCE = 20.0f;
 
@@ -41,19 +35,20 @@ public class Ability_WindRush : Technique
     private AreaOfEffect _ultimateAoe;
     private bool _dealingAoEDamage = false;
     private Unit _targetOfDamage = null;
+    private Effect_WindRushUltimateProtection _ultimateProtection;
 
     public Ability_WindRush(Unit ability_user) : base(ability_user)
     {
         NameOfAnimationToAutoPlay = "WindRush_" + User.CurrentWeaponClass;
         AddCustomSound("Start", "Ability/Ability_WindBlast_Use", 0.4f);
         AddCustomSound("WindBlast", "Ability/Ability_WindBlast_Dash", 0.6f);
-
+        
         TurningOnCollisionClearsAffectedEnemyList = false;
 
         _usedReactionBonus = Is(Property.UpgradeA) && User.CheckIfUnderEffectWithGivenId(REACTION_WINDOW_EFFECT_ID);
 
-        float finalInjury = Is(Property.Ultimate) ? UltimateInjuryScaling : InjuryScaling;
-        float finalStagger = Is(Property.Ultimate) ? UltimateStaggerScaling : StaggerScaling;
+        float finalInjury = InjuryScaling;
+        float finalStagger = 0f;
 
         if (Is(Property.UpgradeB) && IsNot(Property.Ultimate))
         {
@@ -82,12 +77,6 @@ public class Ability_WindRush : Technique
                 KnockbackIntoRange = 0.01f
             });
         }
-
-        DamageSources.Add(new DamageSource(0, UltimateStaggerAoEScalingPerSecond / 2f, User.CurrentWeaponDamageType, "AoE")
-        {
-            KnockbackInMeters = 0f,
-            KnockbackIntoRange = 0.01f
-        });
 
         if (Is(Property.UpgradeB))
         {
@@ -143,7 +132,6 @@ public class Ability_WindRush : Technique
             existingWindow.RemainingDuration = REACTION_WINDOW_DURATION;
             return;
         }
-
         Player.Instance.AddEffect(new Effect_WindRushReactionWindow(new(Player.Instance)), REACTION_WINDOW_DURATION);
     }
 
@@ -165,23 +153,56 @@ public class Ability_WindRush : Technique
             _counterTriggered = false;
         }
 
+        // 1. Calculate the exact Dash Direction
+        Vector2 dashDirection;
+        if (_intendedTarget != null)
+        {
+            dashDirection = CombatMath.GetDirectionVector(User.transform.position, _intendedTarget.transform.position, User.Actions.IsFlipped, 60f);
+        }
+        else
+        {
+            dashDirection = CombatMath.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60f);
+        }
+
+        // 2. Spawn and precisely orient the VFX
         GameObject vfx = Utils.CreateVisualEffect(new(this), "WindRush");
         if (vfx != null)
         {
             vfx.GetComponent<AttachObjectToBodyPart>().Initialize(User);
-            vfx.transform.eulerAngles = new Vector3(0, 0, User.Actions.IsFlipped ? -90 : 90);
+            
+            // Revert the automatic X-flip from Utils so the math remains pristine
+            vfx.transform.localScale = new Vector3(Mathf.Abs(vfx.transform.localScale.x), vfx.transform.localScale.y, vfx.transform.localScale.z);
+            
+            // The base sprite inherently points DOWN. 
+            // By setting its 'Up' vector to the negative dash direction, the 'Down' side directly faces the dash vector.
+            vfx.transform.up = -dashDirection;
         }
 
         User.Rigidbody2D.linearVelocity = Vector2.zero;
 
+        // 3. Execute the dash
         if (Is(Property.UpgradeB))
         {
             User.SetIgnoreUnitCollisions(true);
-            PerformUpgradeBDash();
+            PerformUpgradeBDash(dashDirection); // Pass the pre-calculated direction
         }
         else
         {
-            ChaseCurrentTargetAtGivenDegreeAngle(15f, 60f, _intendedTarget);
+            // Replicate ChaseCurrentTarget clamping logic for the standard dash so we use the same vector
+            float dashDistance = 15f;
+            if (_intendedTarget != null)
+            {
+                float stopOffset = User.CurrentWeaponDamageType == Constants.DamageType.Light ? 0.3f : 1.0f;
+                float rawDistance = Vector2.Distance(User.transform.position, _intendedTarget.transform.position);
+                dashDistance = Mathf.Min(Mathf.Max(0f, rawDistance - stopOffset), 15f);
+            }
+            else if (Settings.Instance.ControlScheme == "Keyboard")
+            {
+                float distanceToPointer = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, Player.Instance.transform.position);
+                dashDistance = Mathf.Min(distanceToPointer, 15f);
+            }
+            
+            User.PushInTargetDirection(dashDirection * dashDistance, this);
         }
     }
 
@@ -195,13 +216,11 @@ public class Ability_WindRush : Technique
 
             if (targetToDamage != null && !targetToDamage.KnockedOut)
             {
-                // If the target is currently using a roll-counterable action, execute RollCounter
                 if (IsCounterableByRoll(targetToDamage, out Ability enemyAbility))
                 {
                     TriggerRollCounter(targetToDamage, enemyAbility);
                     return;
                 }
-
                 DamageSource defaultSource = GetDamageSource("Default");
                 CombatMath.SimulateWeaponHit(this, targetToDamage, defaultSource);
             }
@@ -212,7 +231,6 @@ public class Ability_WindRush : Technique
     {
         base.AdditionalActionsOnUpdate();
 
-        // Proactively scan for counterable enemies while dashing through them
         if (Is(Property.UpgradeB) && !_counterTriggered && !AbilityEnded)
         {
             CheckForRollCounterOpportunity();
@@ -221,7 +239,6 @@ public class Ability_WindRush : Technique
 
     private void CheckForRollCounterOpportunity()
     {
-        // 1. Check intended primary target first
         Unit primary = _upgradeBTarget != null ? _upgradeBTarget : _intendedTarget;
         if (primary != null && !primary.KnockedOut && Vector2.Distance(User.transform.position, primary.transform.position) <= 2.5f)
         {
@@ -232,7 +249,6 @@ public class Ability_WindRush : Technique
             }
         }
 
-        // 2. Check any other nearby enemy passed during the dash
         List<Unit> nearbyEnemies = Utils.GetSpecifiedUnits(u =>
             u.IsHostile &&
             !u.KnockedOut &&
@@ -258,7 +274,6 @@ public class Ability_WindRush : Technique
         if (activeAbility == null) return false;
 
         if (activeAbility.Is(Property.CounteredByRoll)) return true;
-
         if (SaveFile.Instance.DifficultyLevel == 0 && activeAbility.Is(Property.Counter)) return true;
 
         return false;
@@ -287,10 +302,21 @@ public class Ability_WindRush : Technique
         }
 
         EventManager.AbilityWasRipostedOrCountered.Invoke(enemyAbility, true);
-
         enemy.AddEffect(new Effect_RollCountered(new SourceOfEffect(User)) { NameOfAnimationToAutoPlay = "RollCountered" + variant }, 4f);
         enemy.Animator.SetFloat("Special Animation Speed", Player.Instance.CurrentWeaponAttackSpeed.Current);
         GameController.Instance.WaitAndRunMethod(1f, Utils.AdjustRemainingCounteredAnimation, enemy);
+
+        User.AddEffect(new Effect_Sharp(2, new SourceOfEffect(this)));
+
+        BlowAwayOtherEnemies(enemy);
+
+        if (Is(Property.Ultimate))
+        {
+            _targetOfDamage = enemy;
+            _ultimateAoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Ultimate");
+            _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(false);
+            GameController.Instance.WaitAndRunMethod(0.2f, ActivateUltimateWall);
+        }
 
         new DamageInstance(enemy, rollCounter, null)
             .SetDamageSource(0, Constants.STAGGER_PERCENTAGE_FROM_COUNTER, User.CurrentWeaponDamageType)
@@ -307,22 +333,17 @@ public class Ability_WindRush : Technique
         }
     }
 
-    private void PerformUpgradeBDash()
+    private void PerformUpgradeBDash(Vector2 dashDirection)
     {
-        Vector2 dashDirection;
         float dashDistance;
 
         if (_intendedTarget != null)
         {
-            Vector2 toTarget = (Vector2)_intendedTarget.transform.position - (Vector2)User.transform.position;
-            float rawDistance = toTarget.magnitude;
-            dashDirection = CombatMath.GetDirectionVector(User.transform.position, _intendedTarget.transform.position, User.Actions.IsFlipped, 60f);
+            float rawDistance = Vector2.Distance(User.transform.position, _intendedTarget.transform.position);
             dashDistance = Mathf.Clamp(rawDistance + UPGRADE_B_OVERSHOOT_DISTANCE, 8f, MAX_DASH_DISTANCE);
         }
         else
         {
-            dashDirection = CombatMath.GetDirectionVector(Vector2.zero, User.Actions.GetCurrentAimVector(), User.Actions.IsFlipped, 60f);
-
             if (Settings.Instance.ControlScheme == "Keyboard")
             {
                 float pointerDistance = Vector2.Distance(GameController.Instance.PlayerControls.CurrentWorldspacePointerPosition, User.transform.position);
@@ -358,7 +379,6 @@ public class Ability_WindRush : Technique
             {
                 hitUnit.Rigidbody2D.linearVelocity = Vector2.zero;
             }
-
             if (!Is(Property.UpgradeB))
             {
                 User.Rigidbody2D.linearVelocity = Vector2.zero;
@@ -373,14 +393,16 @@ public class Ability_WindRush : Technique
             bool wasAttacking = hitUnit.Actions.CurrentActionBeingPerformed == Constants.ActionType.UsingAbility &&
                                 hitUnit.Actions.CurrentAbilityBeingPerformed != null &&
                                 !hitUnit.Actions.CurrentAbilityBeingPerformed.GetType().IsSubclassOf(typeof(AI));
-
-            float sharpAwarded = wasAttacking ? (BaseSharpGain * 3f) : BaseSharpGain;
-            User.AddEffect(new Effect_Sharp(sharpAwarded, new(this)));
+            
+            int sharpStacks = wasAttacking ? 2 : 1;
+            User.AddEffect(new Effect_Sharp(sharpStacks, new SourceOfEffect(this)));
 
             BlowAwayOtherEnemies(hitUnit);
 
             if (Is(Property.Ultimate))
             {
+                AreaOfEffect knockbackAoE = Utils.CreateAreaOfEffect(new(this), "WindRush_Knockback");
+                knockbackAoE.transform.position = hitUnit.transform.position;
                 _ultimateAoe = Utils.CreateAreaOfEffect(new(this), "WindRush_Ultimate");
                 _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(false);
                 GameController.Instance.WaitAndRunMethod(0.2f, ActivateUltimateWall);
@@ -404,6 +426,7 @@ public class Ability_WindRush : Technique
             {
                 pushDir = User.Actions.IsFlipped ? Vector2.left : Vector2.right;
             }
+
             enemy.PushInTargetDirection(pushDir * 15f, this);
             enemy.AddEffect(new Effect_Flinching(new(this)), Constants.DEFAULT_FLINCHING_DURATION);
         }
@@ -412,7 +435,6 @@ public class Ability_WindRush : Technique
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-
         if (Is(Property.UpgradeB))
         {
             User.SetIgnoreUnitCollisions(false);
@@ -426,19 +448,11 @@ public class Ability_WindRush : Technique
         _ultimateAoe.gameObject.transform.parent.gameObject.SetActive(true);
         _ultimateAoe.transform.parent.position = _targetOfDamage.transform.position;
         _dealingAoEDamage = true;
-
+        _ultimateProtection = new Effect_WindRushUltimateProtection(new(this), _targetOfDamage);
+        
+        User.AddEffect(_ultimateProtection, UltimateWallDurationInSeconds);
         EventManager.UnitKnockedOut.AddListener(CheckIfDestroyWall);
-        EventManager.OneSecondElapsedInGame.AddListener(PullTargetIntoCenter);
-
         GameController.Instance.WaitAndRunMethod(UltimateWallDurationInSeconds, TurnOffUltimateWall);
-    }
-
-    public void PullTargetIntoCenter()
-    {
-        if (_targetOfDamage == null || _targetOfDamage.KnockedOut || _ultimateAoe == null) return;
-
-        ResetPotentialTargets();
-        _targetOfDamage.PushIntoPosition(_ultimateAoe.transform.parent.position, this, 1.1f);
     }
 
     public void CheckIfDestroyWall(DamageInstance damage)
@@ -452,9 +466,10 @@ public class Ability_WindRush : Technique
     public void TurnOffUltimateWall()
     {
         _dealingAoEDamage = false;
-        EventManager.OneSecondElapsedInGame.RemoveListener(PullTargetIntoCenter);
+        _ultimateProtection?.EndThisEffect();
+        _ultimateProtection = null;
         EventManager.UnitKnockedOut.RemoveListener(CheckIfDestroyWall);
-
+        
         if (_ultimateAoe != null && !_ultimateAoe.IsDestroyed && _ultimateAoe.gameObject != null)
         {
             MonoBehaviour.Destroy(_ultimateAoe.transform.parent.gameObject);
@@ -467,7 +482,6 @@ public class Ability_WindRush : Technique
         {
             return;
         }
-
         base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
     }
 
@@ -477,6 +491,7 @@ public class Ability_WindRush : Technique
         {
             return base.CheckIfDamageTriggerIsValid(unit_getting_attacked, source_of_hit);
         }
+        
         return !AffectedEnemies.ContainsKey(unit_getting_attacked);
     }
 
@@ -486,10 +501,8 @@ public class Ability_WindRush : Technique
         {
             Utils.GetFormattedFloat(Player.Instance.CurrentWeaponInjury.Current * InjuryScaling / 100f),
             Utils.GetFormattedFloat(InjuryScaling),
-            Utils.GetFormattedFloat(Player.Instance.CurrentWeaponStagger.Current * StaggerScaling / 100f),
-            Utils.GetFormattedFloat(StaggerScaling),
             Utils.GetFormattedFloat(BaseSharpGain),
-            Utils.GetFormattedFloat(BaseSharpGain * 3f)
+            Utils.GetFormattedFloat(BaseSharpGain * 2f)
         };
     }
 
@@ -498,7 +511,8 @@ public class Ability_WindRush : Technique
         return new List<string>
         {
             Utils.GetFormattedFloat(Player.Instance.CurrentWeaponStagger.Current * MasteryAExtraStaggerScaling / 100f),
-            Utils.GetFormattedFloat(MasteryAExtraStaggerScaling)
+            Utils.GetFormattedFloat(MasteryAExtraStaggerScaling),
+            REACTION_WINDOW_DURATION.ToString()
         };
     }
 
@@ -515,12 +529,6 @@ public class Ability_WindRush : Technique
     {
         return new List<string>
         {
-            Utils.GetFormattedFloat(Player.Instance.CurrentWeaponInjury.Current * UltimateInjuryScaling / 100f),
-            Utils.GetFormattedFloat(UltimateInjuryScaling),
-            Utils.GetFormattedFloat(Player.Instance.CurrentWeaponStagger.Current * UltimateStaggerScaling / 100f),
-            Utils.GetFormattedFloat(UltimateStaggerScaling),
-            Utils.GetFormattedFloat(Player.Instance.CurrentWeaponStagger.Current * UltimateStaggerAoEScalingPerSecond / 100f),
-            Utils.GetFormattedFloat(UltimateStaggerAoEScalingPerSecond),
             Utils.GetFormattedFloat(UltimateWallDurationInSeconds)
         };
     }

@@ -13,20 +13,20 @@ public class Effect_Slow : Effect
     public Effect_Slow(float slow_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
-        _initialDecayingAmount = slow_amount;
+        _initialAmount = slow_amount;
         ShowsInUI = true;
         DefaultDecaySpeed = 0.25f;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackAmount;
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
+    public override void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         if (MSSlowEffect == null)
         {
             return;
         }
-        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
-        MSSlowEffect.FlatAmount = -DecayingAmount;
+        UIText = Utils.GetFormattedFloat(Amount, 0);
+        MSSlowEffect.FlatAmount = -Amount;
     }
 
     public override void OnStart()
@@ -37,7 +37,7 @@ public class Effect_Slow : Effect
         };
         TargetOfEffect.AddEffect(MSSlowEffect);
         BaseDuration = 5;
-        ChangeDecayingAmount(DecayingAmount);
+        ChangeAmount(Amount);
     }
 
     public override void OnEnd()

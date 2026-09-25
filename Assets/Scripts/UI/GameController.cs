@@ -872,7 +872,7 @@ public class GameController : WorldObject
             {
                 unit.gameObject.SetActive(SaveFile.Instance.MidMissionInformation.GameObjectPathsToUnits[path].IsActive);
                 unit.transform.position = SaveFile.Instance.MidMissionInformation.GameObjectPathsToUnits[path].Position;
-                if (SaveFile.Instance.MidMissionInformation.GameObjectPathsToUnits[path].IsActive && unit.gameObject.activeSelf && unit.gameObject.IsDestroyed() == false)
+                if (SaveFile.Instance.MidMissionInformation.GameObjectPathsToUnits[path].IsActive && unit.gameObject.activeSelf && unit.gameObject!= null)
                 {
                     if(unit.Animator == null || unit.Animator.enabled == false) {
                         WaitAndRunMethod(0.01f, FinishUnitLoad, unit);
@@ -984,6 +984,10 @@ public class GameController : WorldObject
 
     public void Start()
     {
+        Objects.Initialize(this); 
+        
+        UIManager.Objects.Initialize(); 
+
         MonoBehaviour.DontDestroyOnLoad(gameObject);
         SpeechBeepClips = new();
         foreach (string vowel in new string[] { "FemaleA", "FemaleI", "FemaleU", "FemaleE", "FemaleO", "MaleA", "MaleI", "MaleU", "MaleE", "MaleO", "PlayerA", "PlayerI", "PlayerU", "PlayerE", "PlayerO" })
@@ -994,9 +998,12 @@ public class GameController : WorldObject
         PlayerInput = GetComponent<PlayerInput>();
         PlayerControls = GetComponent<PlayerControls>();
         AudioSource = GetComponent<AudioSource>();
-        GameplayMode = Constants.GameplayMode.OnStartScreen;
+        
+        GameplayMode = Constants.GameplayMode.OnStartScreen; 
+        
         Utils.GetSceneRootObject("Start Screen").Find("Screen/Version").GetComponent<TextMeshProUGUI>().text = "ver " + Application.version;
         AutoSaveSettings = false;
+        
         if (!Settings.Instance.Load())
         {
             Settings.Instance.MasterVolume = 0.5f;
@@ -1161,31 +1168,67 @@ public void ShowConfirmModal(string description, Action function_to_execute_on_c
 
     public static class Objects
     {
-        public static GameObject SaveAndLoadPanel => Utils.GetGameObject("Save or Load");
-        public static GameObject DialogueLinesContainer => Utils.GetGameObject("Dialogue Window/Window/Scroll Rect/Viewport/Lines");
-        public static GameObject DialogueBoxLeft => Utils.GetGameObject("Dialogue Window/Window/Left Portrait");
-        public static GameObject DialogueBoxRight => Utils.GetGameObject("Dialogue Window/Window/Right Portrait");
-        public static TextMeshProUGUI DialogueMoneyDisplayText => (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Money", typeof(TextMeshProUGUI));
-        public static Slider DialogueExperienceBarSlider => (Slider)Utils.GetComponent("Dialogue Window/Level", typeof(Slider));
-        public static TextMeshProUGUI DialogueExperienceBarLeftLevel => (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Level/Left Level", typeof(TextMeshProUGUI));
-        public static TextMeshProUGUI DialogueExperienceBarRightLevel => (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Level/Right Level", typeof(TextMeshProUGUI));
-        public static GameObject DialogueNotifications => Utils.GetGameObject("Dialogue Window/Window/List");
-        public static GameObject DialogueArchive => Utils.GetGameObject("Dialogue Window/Dialogue History/Scroll Rect/Viewport/Content");
-        public static GameObject TransitionScreen => Utils.GetGameObject("Transition Screen");
-        public static CanvasGroup TransitionBlackScreen => (CanvasGroup)Utils.GetComponent("Transition Screen/Black Screen", typeof(CanvasGroup));
-        public static GameObject TransitionLoadingScreen => Utils.GetGameObject("Transition Screen/Loading Screen");
-        public static Slider TransitionLoadProgress => (Slider)Utils.GetComponent("Transition Screen/Loading Screen/Progress", typeof(Slider));
-        public static TextMeshProUGUI TransitionUpperText => (TextMeshProUGUI)Utils.GetComponent("Transition Screen/Upper Text", typeof(TextMeshProUGUI));
-        public static TextMeshProUGUI TransitionLowerText => (TextMeshProUGUI)Utils.GetComponent("Transition Screen/Lower Text", typeof(TextMeshProUGUI));
-        public static GameObject TransitionAreaName => Utils.GetGameObject("Transition Screen/Area Name");
-        public static GameObject Shop => Utils.GetGameObject("Shop");
-        public static GameObject ShopItems => Utils.GetGameObject("Shop/Items/Viewport/Items");
-        public static TextMeshProUGUI ShopMoneyText => (TextMeshProUGUI)Utils.GetComponent("Shop/Money", typeof(TextMeshProUGUI));
-        public static AudioSource Music => (AudioSource)Utils.GetComponent("Music", typeof(AudioSource));
-        public static AudioSource AudioListener => (AudioSource)Utils.GetComponent("Audio Listener", typeof(AudioSource));
-        public static GameObject ConfirmPrompt => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? Utils.GetGameObject("Menu/Confirm Prompt") : Utils.GetGameObject("UI/Pause Screen/Confirm Prompt");
-        public static TextMeshProUGUI ConfirmPromptDescription => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? (TextMeshProUGUI)Utils.GetComponent("Menu/Confirm Prompt/Description", typeof(TextMeshProUGUI)) : (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Description", typeof(TextMeshProUGUI));
-        public static Button ConfirmPromptConfirmButton => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? (Button)Utils.GetComponent("Menu/Confirm Prompt/Confirm Button", typeof(Button)) : (Button)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button", typeof(Button));
-        public static TextMeshProUGUI ConfirmPromptConfirmButtonText => GameController.Instance.GameplayMode == Constants.GameplayMode.InMenu ? (TextMeshProUGUI)Utils.GetComponent("Menu/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI)) : (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI));
+        public static GameObject SaveAndLoadPanel { get; private set; }
+        public static GameObject DialogueLinesContainer { get; private set; }
+        public static GameObject DialogueBoxLeft { get; private set; }
+        public static GameObject DialogueBoxRight { get; private set; }
+        public static TextMeshProUGUI DialogueMoneyDisplayText { get; private set; }
+        public static Slider DialogueExperienceBarSlider { get; private set; }
+        public static TextMeshProUGUI DialogueExperienceBarLeftLevel { get; private set; }
+        public static TextMeshProUGUI DialogueExperienceBarRightLevel { get; private set; }
+        public static GameObject DialogueNotifications { get; private set; }
+        public static GameObject DialogueArchive { get; private set; }
+        public static GameObject TransitionScreen { get; private set; }
+        public static CanvasGroup TransitionBlackScreen { get; private set; }
+        public static GameObject TransitionLoadingScreen { get; private set; }
+        public static Slider TransitionLoadProgress { get; private set; }
+        public static TextMeshProUGUI TransitionUpperText { get; private set; }
+        public static TextMeshProUGUI TransitionLowerText { get; private set; }
+        public static GameObject TransitionAreaName { get; private set; }
+        public static GameObject Shop { get; private set; }
+        public static GameObject ShopItems { get; private set; }
+        public static TextMeshProUGUI ShopMoneyText { get; private set; }
+        public static AudioSource Music { get; private set; }
+        public static AudioSource AudioListener { get; private set; }
+        public static GameObject ConfirmPrompt { get; private set; }
+        public static TextMeshProUGUI ConfirmPromptDescription { get; private set; }
+        public static Button ConfirmPromptConfirmButton { get; private set; }
+        public static TextMeshProUGUI ConfirmPromptConfirmButtonText { get; private set; }
+        private static bool _isInitialized = false;
+
+        public static void Initialize(GameController controller)
+        {
+            if (_isInitialized) return;
+            _isInitialized = true;
+            SaveAndLoadPanel = Utils.GetGameObject("Save or Load");
+            DialogueLinesContainer = Utils.GetGameObject("Dialogue Window/Window/Scroll Rect/Viewport/Lines");
+            DialogueBoxLeft = Utils.GetGameObject("Dialogue Window/Window/Left Portrait");
+            DialogueBoxRight = Utils.GetGameObject("Dialogue Window/Window/Right Portrait");
+            DialogueMoneyDisplayText = (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Money", typeof(TextMeshProUGUI));
+            DialogueExperienceBarSlider = (Slider)Utils.GetComponent("Dialogue Window/Level", typeof(Slider));
+            DialogueExperienceBarLeftLevel = (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Level/Left Level", typeof(TextMeshProUGUI));
+            DialogueExperienceBarRightLevel = (TextMeshProUGUI)Utils.GetComponent("Dialogue Window/Level/Right Level", typeof(TextMeshProUGUI));
+            DialogueNotifications = Utils.GetGameObject("Dialogue Window/Window/List");
+            DialogueArchive = Utils.GetGameObject("Dialogue Window/Dialogue History/Scroll Rect/Viewport/Content");
+            TransitionScreen = Utils.GetGameObject("Transition Screen");
+            TransitionBlackScreen = (CanvasGroup)Utils.GetComponent("Transition Screen/Black Screen", typeof(CanvasGroup));
+            TransitionLoadingScreen = Utils.GetGameObject("Transition Screen/Loading Screen");
+            TransitionLoadProgress = (Slider)Utils.GetComponent("Transition Screen/Loading Screen/Progress", typeof(Slider));
+            TransitionUpperText = (TextMeshProUGUI)Utils.GetComponent("Transition Screen/Upper Text", typeof(TextMeshProUGUI));
+            TransitionLowerText = (TextMeshProUGUI)Utils.GetComponent("Transition Screen/Lower Text", typeof(TextMeshProUGUI));
+            TransitionAreaName = Utils.GetGameObject("Transition Screen/Area Name");
+            Shop = Utils.GetGameObject("Shop");
+            ShopItems = Utils.GetGameObject("Shop/Items/Viewport/Items");
+            ShopMoneyText = (TextMeshProUGUI)Utils.GetComponent("Shop/Money", typeof(TextMeshProUGUI));
+            Music = (AudioSource)Utils.GetComponent("Music", typeof(AudioSource));
+            AudioListener = (AudioSource)Utils.GetComponent("Audio Listener", typeof(AudioSource));
+            
+            ConfirmPrompt = controller.GameplayMode == Constants.GameplayMode.InMenu ? Utils.GetGameObject("Menu/Confirm Prompt") : Utils.GetGameObject("UI/Pause Screen/Confirm Prompt");
+            if(ConfirmPrompt != null) {
+                ConfirmPromptDescription = ConfirmPrompt.transform.Find("Description").GetComponent<TextMeshProUGUI>();
+                ConfirmPromptConfirmButton = ConfirmPrompt.transform.Find("Confirm Button").GetComponent<Button>();
+                ConfirmPromptConfirmButtonText = ConfirmPromptConfirmButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+            }
+        }
     }
 }

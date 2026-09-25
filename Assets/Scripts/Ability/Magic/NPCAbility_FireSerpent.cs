@@ -44,10 +44,10 @@ public class NPCAbility_FireSerpent : Ability {
 
     public override void HandleEnemyHit(Unit unit_getting_attacked, DamagingObject object_hitting, Collider2D collider_being_hit)
     {
-        if(Bullet == null || Bullet.gameObject == null || Bullet.gameObject.IsDestroyed()) {
+        if(Bullet == null || Bullet.gameObject == null || Bullet.gameObject== null) {
             return;
         }
-        else if(Bullet != null && Bullet.IsDestroyed() == false) {
+        else if(Bullet != null && Bullet!= null) {
             base.HandleEnemyHit(unit_getting_attacked, object_hitting, collider_being_hit);
             Bullet.GetComponent<ParticleSystem>().Stop();
             Bullet.GetComponent<TemporaryObject>().MakeObjectDisappear(1);
@@ -60,7 +60,7 @@ public class NPCAbility_FireSerpent : Ability {
     }
 
     public void AddCollider() {
-        if(Bullet != null && Bullet.gameObject != null && !Bullet.gameObject.IsDestroyed()) {
+        if(Bullet != null && Bullet.gameObject != null && !Bullet.gameObject== null) {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FlameTrailCollider");
             aoe.transform.position = Bullet.transform.position;
             GameController.Instance.WaitAndRunMethod(0.1f, AddCollider);

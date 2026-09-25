@@ -106,7 +106,7 @@ public class Ability_Helmsplitter : Technique
         Effect_Barrier barrier = (Effect_Barrier)Player.Instance.GetEffect(typeof(Effect_Barrier));
         if (barrier != null)
         {
-            barrier.ChangeDecayingAmount(damage.Injury + damage.Stagger);
+            barrier.ChangeAmount(damage.Injury + damage.Stagger);
         }
         damage.Injury = 0;
         damage.Stagger = 0;
@@ -177,8 +177,8 @@ public class Ability_Helmsplitter : Technique
             PerformAttack();
             return;
         }
-        float barrierAmount = barrierEffect.DecayingAmount * _barrierPercentageLostPerSecond / 100 / 10;
-        barrierEffect.ChangeDecayingAmount(-barrierAmount);
+        float barrierAmount = barrierEffect.Amount * _barrierPercentageLostPerSecond / 100 / 10;
+        barrierEffect.ChangeAmount(-barrierAmount);
         _barrierConsumed += barrierAmount;
         CameraController.Instance.ShakeScreen(6f, 0.005f, -0.1f * PercentageOfMaxTimePassed * (Is(Property.Ultimate) ? 1.75f : 1));
     }

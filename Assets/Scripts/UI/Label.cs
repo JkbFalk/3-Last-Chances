@@ -40,12 +40,16 @@ public class Label
         _labels = new Dictionary<string, LabelItem>();
         
         // Construct the path to StreamingAssets
-        string filePath = Path.Combine(Application.streamingAssetsPath, "Label.tsv");
+        string filePath = Path.Combine(Application.streamingAssetsPath, "Label.csv");
         string fileContent = "";
-
         if (File.Exists(filePath))
         {
-            fileContent = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
+            // Use FileStream with FileShare.ReadWrite to ignore file locks from programs like Excel
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (StreamReader reader = new StreamReader(fileStream, System.Text.Encoding.UTF8))
+            {
+                fileContent = reader.ReadToEnd();
+            }
         }
         else
         {
@@ -63,15 +67,17 @@ public class Label
 
         for (int i = startIndex; i < lines.Length; i++)
         {
-            string[] columns = lines[i].Split('\t');
-            if (columns.Length >= 4)
+            // CHANGED: Use our new parser and tell it to look for a comma
+            string[] columns = ParseCsvLine(lines[i], ','); 
+            
+            if (columns.Length >= 3)
             {
                 LabelItem item = new LabelItem
                 {
-                    Label = columns[0],
-                    Category = columns[1],
+                    Label = columns[0].Trim(),
+                    Category = columns[1].Trim(),
                     ENG = columns[2].Replace("\\n", "\n"),
-                    PL = columns[3].Replace("\\n", "\n")
+                    PL = columns.Length >= 4 ? columns[3].Replace("\\n", "\n") : ""
                 };
 
                 if (!_labels.ContainsKey(item.Label))
@@ -80,6 +86,46 @@ public class Label
                 }
             }
         }
+    }
+
+    // A robust CSV parser that ignores delimiters hidden inside quotation marks.
+    private static string[] ParseCsvLine(string line, char delimiter = ',')
+    {
+        List<string> result = new List<string>();
+        bool inQuotes = false;
+        System.Text.StringBuilder currentField = new System.Text.StringBuilder();
+
+        for (int i = 0; i < line.Length; i++)
+        {
+            char c = line[i];
+
+            if (c == '\"')
+            {
+                // Handle escaped quotes (Excel saves double quotes as "")
+                if (inQuotes && i + 1 < line.Length && line[i + 1] == '\"')
+                {
+                    currentField.Append('\"');
+                    i++; // Skip the second quote
+                }
+                else
+                {
+                    inQuotes = !inQuotes; // Toggle whether we are safely inside quotes
+                }
+            }
+            else if (c == delimiter && !inQuotes)
+            {
+                // We hit a comma OUTSIDE of quotes. That means the field is done.
+                result.Add(currentField.ToString());
+                currentField.Clear();
+            }
+            else
+            {
+                currentField.Append(c);
+            }
+        }
+        
+        result.Add(currentField.ToString()); // Add the final field
+        return result.ToArray();
     }
 
     public class LabelItem

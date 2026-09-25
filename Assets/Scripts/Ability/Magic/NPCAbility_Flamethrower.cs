@@ -17,7 +17,7 @@ public class NPCAbility_Flamethrower : Ability {
     }
 
     public void ResetTargets() {
-        if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject.IsDestroyed() == false) {
+        if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject!= null) {
             ResetPotentialTargets();
         }
     }
@@ -38,7 +38,7 @@ public class NPCAbility_Flamethrower : Ability {
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(_aoe != null && _aoe.IsDestroyed() == false) {
+        if(_aoe != null && _aoe!= null) {
             _aoe.MakeObjectDisappear();
         }
     }

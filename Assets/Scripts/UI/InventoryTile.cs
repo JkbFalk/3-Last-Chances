@@ -530,7 +530,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         CursorHoveringOver = true;
-        if (Dropdown != null && Dropdown.IsDestroyed() == false)
+        if (Dropdown != null && Dropdown!= null)
         {
             Dropdown.ShowDropdownOverTime();
         }
@@ -539,7 +539,7 @@ public class InventoryTile : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public void OnPointerExit(PointerEventData eventData)
     {
         CursorHoveringOver = false;
-        if (Dropdown != null && Dropdown.IsDestroyed() == false)
+        if (Dropdown != null && Dropdown!= null)
         {
             Dropdown.HideDropdownOverTime();
         }

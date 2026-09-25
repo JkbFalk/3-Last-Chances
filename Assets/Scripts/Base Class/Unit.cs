@@ -207,15 +207,20 @@ public class Unit : PermanentObject {
                     Slider[] sliders = UIManager.Instance.DisplayResourceBarsOnScreen(this);
                     if(sliders != null)
                     {
-                        
                         Health.FollowUpHealthBarSlider = sliders[0];
                         OnScreenBars = sliders[1].transform.parent.gameObject;
                         _eliteEnemyIndicator = sliders[1];
                         Health.HUDSlider = sliders[1];
                         Health.HealthBar = sliders[1].transform.Find("Extra Health Bars").gameObject;
+                        
                         StaggerBar.HUDSlider = sliders[2];
                         StaggerBar.HUDFill = sliders[2].transform.Find("Fill Area/Fill").GetComponent<Image>();
+                        
+                        // CHANGED: Get the Slider component for the Boss UI
+                        StaggerBar.HUDBlockedSlider = sliders[2].transform.Find("Blocked Area")?.GetComponent<Slider>();
+                        
                         StaggerBar.StaggerBars = sliders[2].transform.Find("Extra Stagger Bars").gameObject;
+                        
                         foreach(Effect e in CurrentEffects) {
                             if(e.ShowsInUI) {
                                 e.ShowInUI();
@@ -720,17 +725,15 @@ public class Unit : PermanentObject {
     public List<float> StaggerBars;
 
     private int _currentStaggerBars = 1;
-
     public int CurrentStaggerBars {
         get {
-            return _currentStaggerBars;
+            return 1;
         }
         set {
-            _currentStaggerBars = value > StaggerBars.Count ? StaggerBars.Count : value;
+            _currentStaggerBars = 1;
             if (StaggerBar.StaggerBars != null) {
                 for (int i = StaggerBar.StaggerBars.transform.childCount - 1; i >= 0; i--) {
-                    StaggerBar.StaggerBars.transform.GetChild(i).Find("Active").gameObject.SetActive(i + 1 < _currentStaggerBars);
-                    StaggerBar.StaggerBars.transform.GetChild(i).Find("Broken").gameObject.SetActive(i + 1 >= _currentStaggerBars);
+                    StaggerBar.StaggerBars.transform.GetChild(i).gameObject.SetActive(false);
                 }
             }
         }
@@ -777,7 +780,7 @@ public class Unit : PermanentObject {
     }
 
     public void RepeatDefaultAnimation() {
-        if(Animator.IsDestroyed() == false && !KnockedOut && !InCombat && DefaultAnimation != null && Animator.GetCurrentAnimatorClipInfo(0).Length > 0 && Actions.CurrentActionBeingPerformed != Constants.ActionType.Moving) {
+        if(Animator!= null && !KnockedOut && !InCombat && DefaultAnimation != null && Animator.GetCurrentAnimatorClipInfo(0).Length > 0 && Actions.CurrentActionBeingPerformed != Constants.ActionType.Moving) {
             GameController.Instance.WaitAndRunMethod(Animator.GetCurrentAnimatorClipInfo(0)[0].clip.averageDuration + 1.5f, RepeatDefaultAnimation);
             if(GameController.Instance.GameplayMode != Constants.GameplayMode.InCutscene) {
                 PlayAnimation(DefaultAnimation.name.Replace("Dialogue_", ""));
@@ -1556,6 +1559,12 @@ public class Unit : PermanentObject {
     }
 
     public void AddEffect(Effect effect_to_add, float seconds = 0) {
+        if (this is Player && effect_to_add.SourceOfEffect?.User is Unit effectSource && effectSource.IsHostile) {
+            Effect protection = GetEffectWithGivenId("WindRush_UltimateProtection");
+            if (protection is not Effect_WindRushUltimateProtection windRushProtection || !windRushProtection.AllowsEffectsFrom(effectSource)) {
+                return;
+            }
+        }
         if ((effect_to_add.Type == EffectType.Debuff && CheckIfUnderEffect(typeof(Effect_Invincible))) || (effect_to_add.CanBeNegatedByImmunityToCrowdControl && (effect_to_add.IsHardCrowdControl || effect_to_add.IsSoftCrowdControl) && CheckIfUnderEffect(typeof(Effect_Unstunnable)))) {
             return;
         }

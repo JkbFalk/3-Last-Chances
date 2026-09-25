@@ -79,9 +79,11 @@ public class SandboxArenaController : MonoBehaviour
         }
         SaveFile.Instance.InitializeSaveFile();
         SaveFile.Instance.Level = 75;
+        SaveFile.Instance.UnlockedUltimateFamilies.AddRange(Ability.GetAllAbilityFamilies());
         SaveFile.Instance.GameType = Constants.GameType.Arena;
         SaveFile.Instance.Difficulty = Constants.Difficulty.Regular;
         GameController.Instance.GameplayMode = Constants.GameplayMode.Regular;
+        DebugController.Instance.ToggleSpamMode(1);
         foreach (string unit_name in UnitsToCreate)
         {
             GameObject unit = MonoBehaviour.Instantiate(Resources.Load("Prefabs/Unit/" + unit_name)) as GameObject;

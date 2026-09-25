@@ -54,7 +54,7 @@ public class Tool_VialOfPoison : Item
             child.gameObject.SetActive(true);
         }
         Transform on_hit_vfx = ToolObject.transform.Find("OnHit");
-        if(on_hit_vfx != null && on_hit_vfx.gameObject.IsDestroyed() == false) {
+        if(on_hit_vfx != null && on_hit_vfx.gameObject!= null) {
             GameObject cloned_on_hit_vfx = MonoBehaviour.Instantiate(on_hit_vfx.gameObject);
             cloned_on_hit_vfx.gameObject.SetActive(true);
             cloned_on_hit_vfx.transform.position = ToolObject.transform.position;

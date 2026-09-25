@@ -10,16 +10,15 @@ public class Effect_ProneToKnockout : Effect
     public Effect_ProneToKnockout(float amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
-        _initialDecayingAmount = amount;
+        _initialAmount = amount;
         ShowsInUI = true;
-        DefaultDecaySpeed = 0.1f;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackAmount;
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
+    public override void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
-        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        UIText = Utils.GetFormattedFloat(Amount, 0);
     }
 
     public override void OnStart()

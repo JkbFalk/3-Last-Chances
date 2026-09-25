@@ -37,7 +37,7 @@ public class Effect_BerserkerRage : Effect
 
     public void Activate(Effect e)
     {
-        if(e.TargetOfEffect == TargetOfEffect && e is Effect_HardStaggered) {
+        if(e.TargetOfEffect == TargetOfEffect && e is Effect_Staggered) {
             EndThisEffect();
         }
     }

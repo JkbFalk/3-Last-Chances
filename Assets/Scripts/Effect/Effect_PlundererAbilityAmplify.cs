@@ -30,7 +30,7 @@ public class Effect_PlundererAbilityAmplify : Effect
 
     public override void OnEnd() {
         base.OnEnd();
-        if(_vfx != null && _vfx?.gameObject?.IsDestroyed() == false) {
+        if(_vfx != null) {
             _vfx.GetComponent<TemporaryObject>().MakeObjectDisappear();
         }
     }

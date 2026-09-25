@@ -45,7 +45,7 @@ public class NPCAbility_FlankingSlash : Ability {
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(_projectile != null && _projectile.IsDestroyed() == false) {
+        if(_projectile != null && _projectile!= null) {
             _projectile.MakeObjectDisappear(0);
         }
     }

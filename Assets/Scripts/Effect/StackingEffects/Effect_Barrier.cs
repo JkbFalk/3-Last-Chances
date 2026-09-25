@@ -22,14 +22,15 @@ public class Effect_Barrier : Effect
     public Effect_Barrier(float barrier_amount, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
-        _initialDecayingAmount = barrier_amount;
+        _initialAmount = barrier_amount;
         ShowsInUI = true;
         PathToUIGraphic = "Effect/Barrier";
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
+        DefaultDecaySpeed = 0.05f;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackAmount;
         Listeners.Add(EventManager.AfterHitDamageCalculation);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
+    public override void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
         if (TargetOfEffect is Player && Player.Instance.CurrentStance.StanceEffect is Stance_BodyOfSteel && SaveFile.Instance.ActiveUpgrades.Contains("Stance_BodyOfSteel3") && amount_decayed > 0)
         {
@@ -41,9 +42,9 @@ public class Effect_Barrier : Effect
             Player.Instance.StaggerBar.Current += amount_decayed * Stance_BodyOfSteel.Upgrade3PercentageOfUsedBarrierRestoringHealthAndStaggerBar / 100;
         }
         float healthAndStaggerBarTotal = TargetOfEffect.Health.Maximum + TargetOfEffect.StaggerBar.Maximum;
-        StackingEffectIntensityLevel = DecayingAmount < healthAndStaggerBarTotal * 0.1f ? 1 : DecayingAmount < healthAndStaggerBarTotal * 0.25f ? 2 : 3;
-        BarrierBar.value = DecayingAmount / TargetOfEffect.Health.Maximum;
-        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        StackingEffectIntensityLevel = Amount < healthAndStaggerBarTotal * 0.1f ? 1 : Amount < healthAndStaggerBarTotal * 0.25f ? 2 : 3;
+        BarrierBar.value = Amount / TargetOfEffect.Health.Maximum;
+        UIText = Utils.GetFormattedFloat(Amount, 0);
     }
 
     public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
@@ -52,8 +53,8 @@ public class Effect_Barrier : Effect
             return;
         }
         base.OnInvokeAfterHitDamageCalculation(damage);
-        if(damage.Injury + damage.Stagger > DecayingAmount) {
-            float amount = DecayingAmount;
+        if(damage.Injury + damage.Stagger > Amount) {
+            float amount = Amount;
             if(damage.Injury > amount) {
                 damage.Injury -= amount;
             }
@@ -67,7 +68,7 @@ public class Effect_Barrier : Effect
         }
         else {
             Utils.PlaySoundEffect(TargetOfEffect.AudioSource, "Effect/Effect_Barrier_Hit" + UnityEngine.Random.Range(1, 7), 0.6f);
-            ChangeDecayingAmount(-damage.Injury - damage.Stagger);
+            ChangeAmount(-damage.Injury - damage.Stagger);
             damage.Injury = 0;
             damage.Stagger = 0;
         }

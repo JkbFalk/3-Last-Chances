@@ -39,7 +39,7 @@ public class Effect_GainProjectileSpeedAndDamageWithDistanceTravelled : Effect
     public override void OnFixedUpdate()
     {
         foreach(Projectile proj in _buffedProjectilesAndLastPositions.Keys.ToArray()) {
-            if (proj.IsDestroyed || proj.gameObject.IsDestroyed()) {
+            if (proj.IsDestroyed || proj.gameObject== null) {
                 _buffedProjectilesAndLastPositions.Remove(proj);
                 _buffedProjectilesAndStartPositions.Remove(proj);
             }

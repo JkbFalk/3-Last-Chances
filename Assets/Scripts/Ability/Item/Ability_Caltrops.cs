@@ -54,7 +54,7 @@ public class Ability_Caltrops : Ability
 
     public void DestroyCaltrops() {
         foreach(Projectile p in Caltrops) {
-            if(p != null && p.IsDestroyed() == false) {
+            if(p != null && p!= null) {
                 p.MakeObjectDisappear(0);
             }
         }

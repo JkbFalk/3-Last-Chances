@@ -16,7 +16,7 @@ public class UIManager : MonoBehaviour {
 
     public static UIManager Instance {
         get {
-            if (_instance == null && GameController.Instance.IsDestroyed() == false) {
+            if (_instance == null && GameController.Instance!= null) {
                 _instance = GameController.Instance?.GetComponentInChildren<UIManager>();
             }
             return _instance;
@@ -104,6 +104,7 @@ public class UIManager : MonoBehaviour {
     }
 
     public void Start() {
+        Objects.Initialize();
         DialogueIconLeft = GameController.Instance.transform.Find("Dialogue Window/Window/Left Portrait/Image").GetComponent<Image>();
         DialogueIconRight = GameController.Instance.transform.Find("Dialogue Window/Window/Right Portrait/Image").GetComponent<Image>();
         DialogueSpeakerLeft = GameController.Instance.transform.Find("Dialogue Window/Window/Left Portrait/Title/Text").GetComponent<LabelInitializer>();
@@ -650,74 +651,169 @@ public class UIManager : MonoBehaviour {
 
     public static class Objects
     {
-
-        private static string _extraInfoInPauseScreen = "Pause Screen/Extra Info";
-        private static string _extraInfoInUI = "Extra Info";
-        public static GameObject Notifications => Utils.GetGameObject("UI/Notifications");
-        public static GameObject NotificationList => Utils.GetGameObject("UI/Notifications/List");
-        public static GameObject MoneyDisplay => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Money");
-        public static TextMeshProUGUI MoneyDisplayText => (TextMeshProUGUI)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Money", typeof(TextMeshProUGUI));
-        public static LabelInitializer WeekDisplayLabel => (LabelInitializer)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Week", typeof(LabelInitializer));
-        public static TextMeshProUGUI ExperienceBarLeftText => (TextMeshProUGUI)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Level/Background/Left Level", typeof(TextMeshProUGUI));
-        public static TextMeshProUGUI ExperienceBarRightText => (TextMeshProUGUI)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Level/Background/Right Level", typeof(TextMeshProUGUI));
-        public static Slider ExperienceBarSlider => (Slider)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Level", typeof(Slider));
-        public static HideOrShowOverTime InGameDialogueHideOrShow => (HideOrShowOverTime)Utils.GetComponent("UI/Notifications/In-Game Dialogue", typeof(HideOrShowOverTime));
-        public static TextMeshProUGUI InGameDialogueText => (TextMeshProUGUI)Utils.GetComponent("/UI/Notifications/In-Game Dialogue/Background/Text", typeof(TextMeshProUGUI));
-        public static Image InGameDialoguePortraitImage => (Image)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Image", typeof(Image));
-        public static TextMeshProUGUI InGameDialoguePortraitTitle => (TextMeshProUGUI)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Title/Text", typeof(TextMeshProUGUI));
-        public static GameObject PauseScreen => Utils.GetGameObject("UI/Pause Screen");
-        public static GameObject EscapeMissionButton => MenuManager.Objects.EscapeMissionButton;
-        public static LabelInitializer EscapeMissionButtonLabel => MenuManager.Objects.EscapeMissionButtonLabel;
-        public static GameObject Effects => Utils.GetGameObject("UI/Effects");
-        public static GameObject ResourceBars => Utils.GetGameObject("UI/Resource Bars");
-        public static GameObject MissionInfo => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info");
-        public static GameObject Timer => Utils.GetGameObject("UI/Timer");
-        public static TextMeshProUGUI TimerText => (TextMeshProUGUI)Utils.GetComponent("UI/Timer", typeof(TextMeshProUGUI));
-        public static Slider ChargeBarSlider => (Slider)Utils.GetComponent("UI/Charge Bar", typeof(Slider));
-        public static TextMeshProUGUI ChargeBarAbilityText => (TextMeshProUGUI)Utils.GetComponent("UI/Charge Bar/Ability Name", typeof(TextMeshProUGUI));
-        public static Image AmmoDisplayImage => Settings.Instance.ControlScheme == "Keyboard" ? (Image)Utils.GetComponent("UI/Stance Display Keyboard/Ammo Display", typeof(Image)) : (Image)Utils.GetComponent("UI/Stance Display Gamepad/Ammo Display", typeof(Image));
-        public static GameObject Stances => Settings.Instance.ControlScheme == "Keyboard" ? Utils.GetGameObject("UI/Stance Display Keyboard/Stances") : Utils.GetGameObject("UI/Stance Display Gamepad/Stances");
-        public static GameObject ItemsKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Items");
-        public static GameObject ItemsGamepad => Utils.GetGameObject("UI/Stance Display Gamepad/Items");
-        public static Image GamepadBindingAbilitiesImage => (Image)Utils.GetComponent("UI/Stance Display Gamepad/Binding Abilities", typeof(Image));
-        public static Image GamepadBindingItemsImage => (Image)Utils.GetComponent("UI/Stance Display Gamepad/Binding Gamepad", typeof(Image));
+        public static GameObject Notifications { get; private set; }
+        public static GameObject NotificationList { get; private set; }
+        public static GameObject MoneyDisplay { get; private set; }
+        public static TextMeshProUGUI MoneyDisplayText { get; private set; }
+        public static LabelInitializer WeekDisplayLabel { get; private set; }
+        public static TextMeshProUGUI ExperienceBarLeftText { get; private set; }
+        public static TextMeshProUGUI ExperienceBarRightText { get; private set; }
+        public static Slider ExperienceBarSlider { get; private set; }
+        public static HideOrShowOverTime InGameDialogueHideOrShow { get; private set; }
+        public static TextMeshProUGUI InGameDialogueText { get; private set; }
+        public static Image InGameDialoguePortraitImage { get; private set; }
+        public static TextMeshProUGUI InGameDialoguePortraitTitle { get; private set; }
+        public static GameObject PauseScreen { get; private set; }
+        public static GameObject EscapeMissionButton { get; private set; }
+        public static LabelInitializer EscapeMissionButtonLabel { get; private set; }
+        public static GameObject Effects { get; private set; }
+        public static GameObject ResourceBars { get; private set; }
+        public static GameObject MissionInfo { get; private set; }
+        public static GameObject Timer { get; private set; }
+        public static TextMeshProUGUI TimerText { get; private set; }
+        public static Slider ChargeBarSlider { get; private set; }
+        public static TextMeshProUGUI ChargeBarAbilityText { get; private set; }
+        public static Image AmmoDisplayImage { get; private set; }
+        public static GameObject Stances { get; private set; }
+        public static GameObject ItemsKeyboard { get; private set; }
+        public static GameObject ItemsGamepad { get; private set; }
+        public static Image GamepadBindingAbilitiesImage { get; private set; }
+        public static Image GamepadBindingItemsImage { get; private set; }
         public static GameObject Items => Settings.Instance.ControlScheme == "Keyboard" ? ItemsKeyboard : ItemsGamepad;
-        public static GameObject StanceGaugeContainerKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Stance Gauge");
-        public static GameObject StanceGaugeContainerGamepad => Utils.GetGameObject("UI/Stance Display Gamepad/Stance Gauge");
+        public static GameObject StanceGaugeContainerKeyboard { get; private set; }
+        public static GameObject StanceGaugeContainerGamepad { get; private set; }
         public static GameObject StanceGaugeContainer => Settings.Instance.ControlScheme == "Keyboard" ? StanceGaugeContainerKeyboard : StanceGaugeContainerGamepad;
-        public static GameObject StanceDisplayKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard");
-        public static GameObject StanceDisplayGamepad => Utils.GetGameObject("UI/Stance Display Gamepad");
-        public static GameObject AbilitiesKeyboard => Utils.GetGameObject("UI/Stance Display Keyboard/Abilities");
-        public static GameObject AbilitiesGamepad => Utils.GetGameObject("UI/Stance Display Gamepad/Abilities");
+        public static GameObject StanceDisplayKeyboard { get; private set; }
+        public static GameObject StanceDisplayGamepad { get; private set; }
+        public static GameObject AbilitiesKeyboard { get; private set; }
+        public static GameObject AbilitiesGamepad { get; private set; }
         public static GameObject Abilities => Settings.Instance.ControlScheme == "Keyboard" ? AbilitiesKeyboard : AbilitiesGamepad;
-        public static GameObject EliteEnemyDisplays => Utils.GetGameObject("UI/Elite Enemy Displays");
-        public static GameObject ObjectivesDisplay => Utils.GetGameObject($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Objectives");
-        public static GameObject FPSCounter => Utils.GetGameObject("UI/Resource Bars/FPS Counter");
-        public static GameObject DebugConsole => Utils.GetGameObject("UI/Debug Console");
-        public static TextMeshProUGUI InteractIndicatorText => (TextMeshProUGUI)Utils.GetComponent("UI/Interact Indicator", typeof(TextMeshProUGUI));
-        public static Slider CustomGaugeSlider => (Slider)Utils.GetComponent("UI/Custom Gauge", typeof(Slider));
-        public static TextMeshProUGUI CustomGaugeAmountText => (TextMeshProUGUI)Utils.GetComponent("UI/Custom Gauge/Amount", typeof(TextMeshProUGUI));
-        public static Image CycleDisplayImage => (Image)Utils.GetComponent($"UI/{(Settings.Instance.ShowExtraInfoInUI ? _extraInfoInUI : _extraInfoInPauseScreen)}/Mission Info/Cycle", typeof(Image));
+        public static GameObject EliteEnemyDisplays { get; private set; }
+        public static GameObject ObjectivesDisplay { get; private set; }
+        public static GameObject FPSCounter { get; private set; }
+        public static GameObject DebugConsole { get; private set; }
+        public static TextMeshProUGUI InteractIndicatorText { get; private set; }
+        public static Slider CustomGaugeSlider { get; private set; }
+        public static TextMeshProUGUI CustomGaugeAmountText { get; private set; }
+        public static Image CycleDisplayImage { get; private set; }
+        public static TextMeshProUGUI HealingItemTextKeyboard { get; private set; }
+        public static TextMeshProUGUI HealingItemTextGamepad { get; private set; }
         public static TextMeshProUGUI HealingItemText => Settings.Instance.ControlScheme == "Keyboard" ? HealingItemTextKeyboard : HealingItemTextGamepad;
-        public static TextMeshProUGUI HealingItemTextKeyboard => (TextMeshProUGUI)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Upgrade", typeof(TextMeshProUGUI));
-        public static TextMeshProUGUI HealingItemTextGamepad => (TextMeshProUGUI)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Upgrade", typeof(TextMeshProUGUI));
-        public static LabelInitializer KeyboardAbility1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/1/Binding", typeof(LabelInitializer));
-        public static LabelInitializer KeyboardAbility2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/2/Binding", typeof(LabelInitializer));
-        public static LabelInitializer KeyboardAbility3UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/3/Binding", typeof(LabelInitializer));
-        public static LabelInitializer KeyboardAbility4UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/4/Binding", typeof(LabelInitializer));
-        public static LabelInitializer KeyboardItem1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/1/Binding", typeof(LabelInitializer));
-        public static LabelInitializer KeyboardItem2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/2/Binding", typeof(LabelInitializer));
-        public static LabelInitializer KeyboardItemHealingUIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadAbility1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/1/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadAbility2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/2/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadAbility3UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/3/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadAbility4UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/4/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadItem1UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/1/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadItem2UIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/2/Binding", typeof(LabelInitializer));
-        public static LabelInitializer GamepadItemHealingUIText => (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/Heal/Binding", typeof(LabelInitializer));
-        public static GameObject PauseScreenConfirmPrompt => Utils.GetGameObject("UI/Pause Screen/Confirm Prompt");
-        public static TextMeshProUGUI PauseScreenConfirmPromptDescription => (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Description", typeof(TextMeshProUGUI));
-        public static Button PauseScreenConfirmPromptConfirmButton => (Button)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button", typeof(Button));
-        public static TextMeshProUGUI PauseScreenConfirmPromptConfirmButtonText => (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI));
+        public static LabelInitializer KeyboardAbility1UIText { get; private set; }
+        public static LabelInitializer KeyboardAbility2UIText { get; private set; }
+        public static LabelInitializer KeyboardAbility3UIText { get; private set; }
+        public static LabelInitializer KeyboardAbility4UIText { get; private set; }
+        
+        public static LabelInitializer GamepadAbility1UIText { get; private set; }
+        public static LabelInitializer GamepadAbility2UIText { get; private set; }
+        public static LabelInitializer GamepadAbility3UIText { get; private set; }
+        public static LabelInitializer GamepadAbility4UIText { get; private set; }
+
+        public static LabelInitializer KeyboardItem1UIText { get; private set; }
+        public static LabelInitializer KeyboardItem2UIText { get; private set; }
+        public static LabelInitializer KeyboardItemHealingUIText { get; private set; }
+        
+        public static LabelInitializer GamepadItem1UIText { get; private set; }
+        public static LabelInitializer GamepadItem2UIText { get; private set; }
+        public static LabelInitializer GamepadItemHealingUIText { get; private set; }
+
+        public static GameObject PauseScreenConfirmPrompt { get; private set; }
+        public static TextMeshProUGUI PauseScreenConfirmPromptDescription { get; private set; }
+        public static Button PauseScreenConfirmPromptConfirmButton { get; private set; }
+        public static TextMeshProUGUI PauseScreenConfirmPromptConfirmButtonText { get; private set; }
+
+        private static bool _isInitialized = false;
+
+        public static void Initialize()
+        {
+            if (_isInitialized) return;
+            _isInitialized = true;
+
+            string extraInfo = Settings.Instance.ShowExtraInfoInUI ? "Extra Info" : "Pause Screen/Extra Info";
+            
+            Notifications = Utils.GetGameObject("UI/Notifications");
+            NotificationList = Utils.GetGameObject("UI/Notifications/List");
+            MoneyDisplay = Utils.GetGameObject($"UI/{extraInfo}/Mission Info/Money");
+            MoneyDisplayText = (TextMeshProUGUI)Utils.GetComponent($"UI/{extraInfo}/Mission Info/Money", typeof(TextMeshProUGUI));
+            WeekDisplayLabel = (LabelInitializer)Utils.GetComponent($"UI/{extraInfo}/Mission Info/Week", typeof(LabelInitializer));
+            ExperienceBarLeftText = (TextMeshProUGUI)Utils.GetComponent($"UI/{extraInfo}/Level/Background/Left Level", typeof(TextMeshProUGUI));
+            ExperienceBarRightText = (TextMeshProUGUI)Utils.GetComponent($"UI/{extraInfo}/Level/Background/Right Level", typeof(TextMeshProUGUI));
+            ExperienceBarSlider = (Slider)Utils.GetComponent($"UI/{extraInfo}/Level", typeof(Slider));
+            InGameDialogueHideOrShow = (HideOrShowOverTime)Utils.GetComponent("UI/Notifications/In-Game Dialogue", typeof(HideOrShowOverTime));
+            InGameDialogueText = (TextMeshProUGUI)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Background/Text", typeof(TextMeshProUGUI));
+            InGameDialoguePortraitImage = (Image)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Image", typeof(Image));
+            InGameDialoguePortraitTitle = (TextMeshProUGUI)Utils.GetComponent("UI/Notifications/In-Game Dialogue/Portrait and Title/Portrait/Title/Text", typeof(TextMeshProUGUI));
+            PauseScreen = Utils.GetGameObject("UI/Pause Screen");
+            EscapeMissionButton = MenuManager.Objects.EscapeMissionButton; 
+            EscapeMissionButtonLabel = MenuManager.Objects.EscapeMissionButtonLabel;
+            Effects = Utils.GetGameObject("UI/Effects");
+            ResourceBars = Utils.GetGameObject("UI/Resource Bars");
+            MissionInfo = Utils.GetGameObject($"UI/{extraInfo}/Mission Info");
+            Timer = Utils.GetGameObject("UI/Timer");
+            TimerText = (TextMeshProUGUI)Utils.GetComponent("UI/Timer", typeof(TextMeshProUGUI));
+            ChargeBarSlider = (Slider)Utils.GetComponent("UI/Charge Bar", typeof(Slider));
+            ChargeBarAbilityText = (TextMeshProUGUI)Utils.GetComponent("UI/Charge Bar/Ability Name", typeof(TextMeshProUGUI));
+            
+            StanceDisplayKeyboard = Utils.GetGameObject("UI/Stance Display Keyboard");
+            StanceDisplayGamepad = Utils.GetGameObject("UI/Stance Display Gamepad");
+            
+            AmmoDisplayImage = Settings.Instance.ControlScheme == "Keyboard" 
+                ? StanceDisplayKeyboard.transform.Find("Ammo Display").GetComponent<Image>() 
+                : StanceDisplayGamepad.transform.Find("Ammo Display").GetComponent<Image>();
+
+            Stances = Settings.Instance.ControlScheme == "Keyboard" 
+                ? StanceDisplayKeyboard.transform.Find("Stances").gameObject 
+                : StanceDisplayGamepad.transform.Find("Stances").gameObject;
+
+            ItemsKeyboard = StanceDisplayKeyboard.transform.Find("Items").gameObject;
+            ItemsGamepad = StanceDisplayGamepad.transform.Find("Items").gameObject;
+            
+            GamepadBindingAbilitiesImage = (Image)Utils.GetComponent("UI/Stance Display Gamepad/Binding Abilities", typeof(Image));
+            GamepadBindingItemsImage = (Image)Utils.GetComponent("UI/Stance Display Gamepad/Binding Gamepad", typeof(Image));
+            
+            StanceGaugeContainerKeyboard = StanceDisplayKeyboard.transform.Find("Stance Gauge").gameObject;
+            StanceGaugeContainerGamepad = StanceDisplayGamepad.transform.Find("Stance Gauge").gameObject;
+
+            AbilitiesKeyboard = StanceDisplayKeyboard.transform.Find("Abilities").gameObject;
+            AbilitiesGamepad = StanceDisplayGamepad.transform.Find("Abilities").gameObject;
+
+            EliteEnemyDisplays = Utils.GetGameObject("UI/Elite Enemy Displays");
+            ObjectivesDisplay = Utils.GetGameObject($"UI/{extraInfo}/Mission Info/Objectives");
+            FPSCounter = Utils.GetGameObject("UI/Resource Bars/FPS Counter");
+            DebugConsole = Utils.GetGameObject("UI/Debug Console");
+            InteractIndicatorText = (TextMeshProUGUI)Utils.GetComponent("UI/Interact Indicator", typeof(TextMeshProUGUI));
+            CustomGaugeSlider = (Slider)Utils.GetComponent("UI/Custom Gauge", typeof(Slider));
+            CustomGaugeAmountText = (TextMeshProUGUI)Utils.GetComponent("UI/Custom Gauge/Amount", typeof(TextMeshProUGUI));
+            CycleDisplayImage = (Image)Utils.GetComponent($"UI/{extraInfo}/Mission Info/Cycle", typeof(Image));
+
+            HealingItemTextKeyboard = (TextMeshProUGUI)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Upgrade", typeof(TextMeshProUGUI));
+            HealingItemTextGamepad = (TextMeshProUGUI)Utils.GetComponent("UI/Stance Display Gamepad/Items/Heal/Upgrade", typeof(TextMeshProUGUI));
+
+            KeyboardAbility1UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/1/Binding", typeof(LabelInitializer));
+            KeyboardAbility2UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/2/Binding", typeof(LabelInitializer));
+            KeyboardAbility3UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/3/Binding", typeof(LabelInitializer));
+            KeyboardAbility4UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Abilities/4/Binding", typeof(LabelInitializer));
+
+            GamepadAbility1UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/1/Binding", typeof(LabelInitializer));
+            GamepadAbility2UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/2/Binding", typeof(LabelInitializer));
+            GamepadAbility3UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/3/Binding", typeof(LabelInitializer));
+            GamepadAbility4UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Abilities/4/Binding", typeof(LabelInitializer));
+
+            KeyboardItem1UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/1/Binding", typeof(LabelInitializer));
+            KeyboardItem2UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/2/Binding", typeof(LabelInitializer));
+            KeyboardItemHealingUIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Keyboard/Items/Heal/Binding", typeof(LabelInitializer));
+
+            GamepadItem1UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/1/Binding", typeof(LabelInitializer));
+            GamepadItem2UIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/2/Binding", typeof(LabelInitializer));
+            GamepadItemHealingUIText = (LabelInitializer)Utils.GetComponent("UI/Stance Display Gamepad/Items/Heal/Binding", typeof(LabelInitializer));
+
+            PauseScreenConfirmPrompt = Utils.GetGameObject("UI/Pause Screen/Confirm Prompt");
+            if (PauseScreenConfirmPrompt != null)
+            {
+                PauseScreenConfirmPromptDescription = (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Description", typeof(TextMeshProUGUI));
+                PauseScreenConfirmPromptConfirmButton = (Button)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button", typeof(Button));
+                PauseScreenConfirmPromptConfirmButtonText = (TextMeshProUGUI)Utils.GetComponent("UI/Pause Screen/Confirm Prompt/Confirm Button/Text", typeof(TextMeshProUGUI));
+            }
+        }
     }
 }

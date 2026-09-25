@@ -26,24 +26,33 @@ public class Stat {
     public float MaximumValue = 1000000;
 
     public bool ShouldInvoke = true;
+    public Slider HUDBlockedSlider; 
+
     public float Current {
         get => _current;
         set {
             PreviousCurrentAmount = _current;
             _current = (value > Maximum ? Maximum : (value < 0 ? 0 : value));
+            
             if(_current != Maximum && CurrentCanBeLowerThanMaximum == false)
             {
                 _current = Maximum;
             }
+            
             if(PreviousCurrentAmount != _current || this is AttackSpeed) {
                 AdditionalStatSpecificActionsAfterCurrentValueChanged();
                 if(ShouldInvoke) {
                     EventManager.UnitStatCurrentAmountChanged.Invoke(this, _current - PreviousCurrentAmount);
                 }
             }
+            
+            // Scale main slider relative to Base if debuffed
             if (HUDSlider != null) {
-                HUDSlider.value = _current / Maximum;
+                float visualMax = Maximum < Base ? Base : Maximum;
+                if (visualMax <= 0) visualMax = 1f; 
+                HUDSlider.value = _current / visualMax;
             }
+
             if (AmountDisplay != null) {
                 AmountDisplay.text = ((int)_current).ToString();
             }
@@ -53,6 +62,41 @@ public class Stat {
             ShouldInvoke = true;
         }
     }
+
+    public void RecalculateMaximumAmount(System.Object source) {
+        float calculated_maximum = Base;
+        foreach (StatModifier modifier in BaseModifiers)
+        {
+            calculated_maximum += modifier.Amount;
+        }
+        
+        float total_added = 0;
+        foreach (StatModifier modifier in PercentageModifiers) {
+            total_added += calculated_maximum * modifier.Amount / 100;
+        }
+        
+        Maximum = calculated_maximum + total_added;
+        
+        if (this is Energy == false && (CurrentCanBeLowerThanMaximum == false || Owner == null || Owner.InCombat == false)) {
+            Current = this is StaggerBar ? 0 : Maximum;
+        }
+        else
+        {
+            Current = Current; 
+        }
+        
+        float visualMax = Maximum < Base ? Base : Maximum;
+        if (visualMax <= 0) visualMax = 1f;
+        
+        // CHANGED: Update the Slider value instead of Image fillAmount
+        if (HUDBlockedSlider != null) {
+            HUDBlockedSlider.value = Mathf.Clamp01(1f - (Maximum / visualMax));
+        }
+
+        RecalculateRegeneration();
+        AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount();
+    }
+
     
     public void ChangeCurrentValueWithoutInvoking(float amount) {
         ShouldInvoke = false;
@@ -233,28 +277,6 @@ public class Stat {
             sum += Maximum * (modifier.Amount / 100);
         }
         Regeneration = sum;
-    }
-
-    public void RecalculateMaximumAmount(System.Object source) {
-        float calculated_maximum = Base;
-        foreach (StatModifier modifier in BaseModifiers)
-        {
-            calculated_maximum += modifier.Amount;
-        }
-        float total_added = 0;
-        foreach (StatModifier modifier in PercentageModifiers) {
-            total_added += calculated_maximum * modifier.Amount / 100;
-        }
-        Maximum = calculated_maximum + total_added;
-        if (this is Energy == false && (CurrentCanBeLowerThanMaximum == false || Owner == null || Owner.InCombat == false)) {
-            Current = this is StaggerBar ? 0 : Maximum;
-        }
-        else
-        {
-            Current = Current;
-        }
-        RecalculateRegeneration();
-        AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount();
     }
 
     public virtual void AdditionalStatSpecificActionsAfterRecalculatingMaximumAmount() {

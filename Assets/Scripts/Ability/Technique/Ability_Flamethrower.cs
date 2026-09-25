@@ -98,11 +98,11 @@ public class Ability_Flamethrower : Technique
     {
         base.OnAbilityEnd();
         _techniqueEnded = true;
-        if (_aoe != null && _aoe.IsDestroyed() == false)
+        if (_aoe != null && _aoe!= null)
         {
             _aoe.MakeObjectDisappear();
         }
-        if (_ultimateVFX != null && _ultimateVFX.IsDestroyed() == false)
+        if (_ultimateVFX != null && _ultimateVFX!= null)
         {
             MonoBehaviour.Destroy(_ultimateVFX);
         }
@@ -126,8 +126,8 @@ public class Ability_Flamethrower : Technique
                 _ultimateHitATarget = true;
                 Effect_Burn appliedBurn = (Effect_Burn)damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
                 if(appliedBurn != null) {
-                    appliedBurn.ChangeDecayingAmount(appliedBurn.DecayingAmount * Player.Instance.CurrentUltimateTechniqueStacks[typeof(Ability_Flamethrower)] / 100 + appliedBurn.DecayingAmount * Player.Instance.Energy.Current / 100);
-                    UltimateEnemiesAndBurn.Add(damage.TargetOfDamage, appliedBurn.DecayingAmount);
+                    appliedBurn.ChangeAmount(appliedBurn.Amount * Player.Instance.CurrentUltimateTechniqueStacks[typeof(Ability_Flamethrower)] / 100 + appliedBurn.Amount * Player.Instance.Energy.Current / 100);
+                    UltimateEnemiesAndBurn.Add(damage.TargetOfDamage, appliedBurn.Amount);
                     appliedBurn.EndThisEffect();
                     GameObject vfx = Utils.CreateVisualEffect(new(this), "Flamethrower_Ultimate_Marker", damage.TargetOfDamage.transform.position.x, damage.TargetOfDamage.transform.position.y);
                     vfx.GetComponent<AttachObjectToBodyPart>().Initialize(damage.TargetOfDamage);

@@ -91,7 +91,7 @@ public class Stance_HeatOfBattle : Effect_Stance
             foreach (Unit enemy in Utils.GetSpecifiedUnits(unit => unit.IsHostile && Vector2.Distance(unit.transform.position, Player.Instance.transform.position) < 3))
             {
                 enemy.AddEffect(new Effect_Burn(Player.Instance.MagicStagger.Current * BurnScalingAppliedToEnemiesIn3mRange / 100 / 10, new(Player.Instance)));
-                burnTotal += enemy.GetEffect(typeof(Effect_Burn)).DecayingAmount;
+                burnTotal += enemy.GetEffect(typeof(Effect_Burn)).Amount;
             }
             Player.Instance.CurrentStanceGauge.transform.Find("BurnAmount").GetComponent<TextMeshProUGUI>().text = Utils.GetFormattedFloat(burnTotal, 0);
         }
@@ -106,13 +106,13 @@ public class Stance_HeatOfBattle : Effect_Stance
         }
         if (IsActive && UnlockedUpgrade1 && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Burn)) && damage.TargetOfDamage.IsHostile)
         {
-            damage.DamageDealtPercentageModifier += damage.TargetOfDamage.GetEffect(typeof(Effect_Burn)).DecayingAmount * Upgrade1DamageIncreaseBasedOnBurnAmount / 100;
+            damage.DamageDealtPercentageModifier += damage.TargetOfDamage.GetEffect(typeof(Effect_Burn)).Amount * Upgrade1DamageIncreaseBasedOnBurnAmount / 100;
         }
         if (IsActive && UnlockedUpgrade2 && damage.TargetOfDamage == Player.Instance)
         {
             foreach (Unit enemy in Utils.GetSpecifiedUnits(unit => unit.IsHostile && unit.CheckIfUnderEffect(typeof(Effect_Burn)) && Vector2.Distance(unit.transform.position, Player.Instance.transform.position) < 3))
             {
-                damage.ArmorModifier += enemy.GetEffect(typeof(Effect_Burn)).DecayingAmount * Upgrade2ArmorGainedBasedOnBurnOfEnemiesIn3mRange / 100;
+                damage.ArmorModifier += enemy.GetEffect(typeof(Effect_Burn)).Amount * Upgrade2ArmorGainedBasedOnBurnOfEnemiesIn3mRange / 100;
             }
         }
         base.OnInvokeHitDealt(damage);

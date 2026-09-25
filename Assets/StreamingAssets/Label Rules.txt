@@ -1,0 +1,62 @@
+1. Short vs Detailed
+Short Descriptions should tell the player what the button does conceptually and strategically. Remove scaling formulas, decimal points, and minor conditions.
+Detailed Descriptions should tell the player exactly how the game calculates the outcome. This is for the theorycrafters.
+
+
+2. Rule for Numbers:
+Short: Only show final outcomes and durations. (e.g., "Deals 200[D]" "[Stuns] for 2 sec.")
+Detailed: Show the final outcome followed by the (Math) in parentheses. (e.g., "Deals 200[D] ({0}%[WD]).")
+
+3. Rule for Icons & Naming:
+Short: Use the Icon (e.g., [I], [S], [H], [A]).
+Detailed: Use the Icon + Full Name (e.g., [I]Injury, [S]Stagger, [H]Health, [A]Armor).
+
+4. Standardization of Verbs
+
+Deal: Used only for direct damage (Injury, Stagger, Magic Damage).
+Correct: "Deal 50[I]." / Incorrect: "Inflict 50[I]."
+Apply: Used only for stacking effects or debuffs.
+Correct: "Apply 50[Burn]." / Incorrect: "Deal 50[Burn]."
+Grant / Gain: Used for positive effects on the player or allies.
+Correct: "Gain 20[A]." / Incorrect: "Receive 20[A]."
+Restore: Used for recovering resources that have caps (Health, Energy, Stagger Bar, Ammo).
+Correct: "Restore 20[H]." / Incorrect: "Heal 20[H]."
+Inflict: Used only for Hard/Soft Crowd Control.
+Correct: "Inflict [Stun] for 2 sec." / Incorrect: "Apply [Stun] for 2 sec."
+
+6. Syntax Formatting & Color Coding
+
+Resources & Stats: Always prefixed by their icon and colored appropriately.
+<color=#E20101>[I]Injury</color>, <color=#5700FF>[S]Stagger</color>, <color=#4350FF>[E]Energy</color>
+Status Effects (Buffs/Debuffs): Always bolded and prefixed by their icon.
+[Burn]Burn, [Sharp]Sharp, [Onslaught]Onslaught.
+Crowd Control / Mechanical States: Always bracketed and bolded. No icons unless specifically needed.
+[Stunned], [Flinching], [Stealth], [Invincible].
+Actions / Triggers: Capitalized to show they interact with game mechanics.
+"When you Dodge...", "Upon a successful Riposte...", "Your Basic Attacks..."
+
+7. Hierarchy of Information
+
+A detailed tooltip should always follow the same structural flow so players know where to look for specific information.
+Header Info: Tags, Costs, Cooldowns.
+The Trigger/Action: How is the ability used?
+The Primary Effect: What happens immediately?
+The Secondary Effect / Conditionals: What happens if conditions are met?
+Template:
+[Ability Tags] (Cost).
+[The Action], dealing [Primary Effect].
+If [Condition], then [Secondary Effect].
+Example: Ability_WindRush_Ultimate
+Following the Hierarchy:
+[Charge-Time Technique] ({0} sec).
+Dash toward your target, dealing {0}[I]Injury ({1}% [HI]) and {2}[S]Stagger ({3}% [HS]).
+Creates a wind barrier that pushes away secondary enemies. The primary target is trapped in the center and takes {4}[S]Stagger ({5}% [HS]) per second. Lasts {6} seconds.
+
+8. Upgrade/Ultimate Formatting
+When writing descriptions for Upgrades (Mastery A, Mastery B, Ultimate), do not repeat what the base ability does. Only state what changes or what is added.
+Rule of Thumb: Treat Upgrades as "Patch Notes" for the ability.
+Use bullet points or distinct paragraph breaks for separate mechanical additions.
+Example: Ability_Fireball_MasteryA
+Standard:
+Increases explosion radius by 50%.
+Now inflicts [Stun] ({0} - {1} sec, based on distance from center).

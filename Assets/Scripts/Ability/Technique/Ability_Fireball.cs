@@ -110,7 +110,7 @@ public class Ability_Fireball : Technique {
 
     public void Explode() {
         for(int i = 0; i < _fireBalls.Count; i++) {
-            if(_fireBalls[i] != null && _fireBalls[i].gameObject != null && _fireBalls[i].gameObject.IsDestroyed() == false) {
+            if(_fireBalls[i] != null && _fireBalls[i].gameObject != null && _fireBalls[i].gameObject!= null) {
                 AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion" + (Is(Property.UpgradeA) ? "_MasteryA" : ""));
                 PlayCustomSound("Explosion", 0.6f, aoe.transform.parent.GetComponent<AudioSource>());
                 aoe.transform.parent.position = _fireBalls[i].transform.position;
@@ -120,7 +120,7 @@ public class Ability_Fireball : Technique {
     } 
 
     public void AdjustFireballAngle(int index) {
-        if(_counter < 10 && _fireBalls[index] != null && _fireBalls[index].gameObject != null && _fireBalls[index].gameObject.IsDestroyed() == false) {
+        if(_counter < 10 && _fireBalls[index] != null && _fireBalls[index].gameObject != null && _fireBalls[index].gameObject!= null) {
             if(index == 0) {
                 _counter++;
             }

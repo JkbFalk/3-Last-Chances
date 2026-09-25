@@ -12,7 +12,7 @@ public class DestroyGameObjectAfterGivenTime : MonoBehaviour {
         _counter += Time.deltaTime;
         if(_counter >= DestroyAfterSeconds)
         {
-            if(GetComponent<TemporaryObject>() != null && DestroyTime > 0 && gameObject.IsDestroyed() == false) {
+            if(GetComponent<TemporaryObject>() != null && DestroyTime > 0 && gameObject!= null) {
                 GetComponent<TemporaryObject>().MakeObjectDisappear(DestroyTime);
             }
             else {

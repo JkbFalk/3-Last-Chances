@@ -119,46 +119,76 @@ public static class AbilityTypeRegistry
         { Ability.AbilityFamily.Tonitrui, typeof(NPCAbility_PlundererTonitrui) },
     };
 
+    private static Dictionary<Type, AbilityMetadata> _metadataCache;
     private static Dictionary<string, Type> _typesByName;
 
     private static void EnsureInitialized()
     {
-        if (_typesByName != null)
-        {
-            return;
-        }
+        if (_typesByName != null) return;
 
         _typesByName = new Dictionary<string, Type>(StringComparer.Ordinal);
+        _metadataCache = new Dictionary<Type, AbilityMetadata>();
+
         foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
             string assemblyName = assembly.GetName().Name;
-            if (assemblyName != "Assembly-CSharp" && assemblyName != "Assembly-CSharp-firstpass")
-            {
-                continue;
-            }
+            if (assemblyName != "Assembly-CSharp" && assemblyName != "Assembly-CSharp-firstpass") continue;
 
             Type[] types;
-            try
-            {
-                types = assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException ex)
-            {
-                types = Array.FindAll(ex.Types, type => type != null);
-            }
+            try { types = assembly.GetTypes(); }
+            catch (ReflectionTypeLoadException ex) { types = Array.FindAll(ex.Types, type => type != null); }
 
             foreach (Type type in types)
             {
-                if (type == null || type.IsAbstract || type.IsInterface)
-                {
-                    continue;
-                }
+                if (type == null || type.IsAbstract || type.IsInterface) continue;
+
                 if (typeof(Ability).IsAssignableFrom(type) || typeof(Effect).IsAssignableFrom(type) || typeof(Item).IsAssignableFrom(type))
                 {
                     _typesByName[type.Name] = type;
                 }
+
+                // Cache Ability Metadata to avoid Reflection during combat
+                if (typeof(Ability).IsAssignableFrom(type))
+                {
+                    var meta = new AbilityMetadata();
+                    
+                    // Fields
+                    var energyField = type.GetField("EnergyCost", BindingFlags.Public | BindingFlags.Static);
+                    meta.EnergyCost = energyField != null ? (float)energyField.GetValue(null) : 0f;
+
+                    var cdField = type.GetField("Cooldown", BindingFlags.Public | BindingFlags.Static);
+                    meta.Cooldown = cdField != null ? (float)cdField.GetValue(null) : 0f;
+
+                    var famField = type.GetField("Family", BindingFlags.Public | BindingFlags.Static);
+                    meta.Family = famField != null ? (Ability.AbilityFamily)famField.GetValue(null) : Ability.AbilityFamily.None;
+
+                    var ammoField = type.GetField("AmmoRequiredToUseAbility", BindingFlags.Public | BindingFlags.Static);
+                    meta.AmmoRequired = ammoField != null ? (int)ammoField.GetValue(null) : 0;
+
+                    // Methods (Cached as Delegates for fast execution)
+                    var specCondMethod = type.GetMethod("CheckIfSpecialConditionsAreFulfilled", BindingFlags.Public | BindingFlags.Static);
+                    if (specCondMethod != null) {
+                        meta.CheckSpecialConditions = (Func<Unit, bool>)Delegate.CreateDelegate(typeof(Func<Unit, bool>), specCondMethod);
+                    }
+
+                    var usableCombatMethod = type.GetMethod("CheckIfAbilityUsableDependingOnCombat", BindingFlags.Public | BindingFlags.Static);
+                    if (usableCombatMethod != null) {
+                        meta.CheckUsableInCombat = (Func<bool, bool>)Delegate.CreateDelegate(typeof(Func<bool, bool>), usableCombatMethod);
+                    }
+
+                    _metadataCache[type] = meta;
+                }
             }
         }
+    }
+
+    public static AbilityMetadata GetMetadata(Type abilityType)
+    {
+        EnsureInitialized();
+        if (abilityType != null && _metadataCache.TryGetValue(abilityType, out var meta)) {
+            return meta;
+        }
+        return null;
     }
 
     public static Type GetByName(string typeName)
@@ -290,5 +320,15 @@ public static class AbilityTypeRegistry
         }
         Debug.LogError("No " + kind + " registered for weapon class " + weaponClass + ".");
         return null;
+    }
+
+    public class AbilityMetadata
+    {
+        public float EnergyCost;
+        public float Cooldown;
+        public Ability.AbilityFamily Family;
+        public int AmmoRequired;
+        public Func<Unit, bool> CheckSpecialConditions;
+        public Func<bool, bool> CheckUsableInCombat;
     }
 }

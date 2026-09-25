@@ -130,7 +130,7 @@ public class Ability_TimeFreeze : Technique
             EventManager.AfterHitDamageCalculation.RemoveListener(ConvertInjuryIntoStagger);
             Player.Instance.Animator.SetFloat("Technique Speed", 1);
         }
-        if (_vfx != null && _vfx.IsDestroyed() == false)
+        if (_vfx != null && _vfx!= null)
         {
             MonoBehaviour.Destroy(_vfx);
         }

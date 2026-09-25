@@ -336,7 +336,7 @@ public class Settings {
             _soundVolume = value;
             if(Area.ComponentInstance != null && Area.ComponentInstance.AudioSourceOriginalVolumes != null) {
                 foreach(AudioSource audioSource in Area.ComponentInstance.AudioSourceOriginalVolumes.Keys) {
-                    if(audioSource != null && audioSource.gameObject != null && audioSource.gameObject.IsDestroyed() == false) {
+                    if(audioSource != null && audioSource.gameObject != null && audioSource.gameObject!= null) {
                         audioSource.volume = Area.ComponentInstance.AudioSourceOriginalVolumes[audioSource] * _soundVolume;
                     }
                 }

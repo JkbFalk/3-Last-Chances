@@ -48,7 +48,7 @@ public class DialogueLineItem : MonoBehaviour, IPointerDownHandler, IPointerEnte
     }
 
     public void UnlockChoiceClick() {
-        if(gameObject.IsDestroyed() == false) {
+        if(gameObject!= null) {
             GetComponent<Button>().enabled = true;
             _canClick = true;
         }

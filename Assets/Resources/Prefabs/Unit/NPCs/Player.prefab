@@ -5307,7 +5307,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142848459053681159}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0.0018490436, w: 0.99999833}
+  m_LocalRotation: {x: 0, y: -0, z: -0.9301113, w: 0.3672778}
   m_LocalPosition: {x: 0.2557367, y: -0.0009483546, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5755,17 +5755,17 @@ MonoBehaviour:
   GreyBorder1: 4
   GreyBorder2: 4
   Brown: {r: 0.2264151, g: 0.035938907, b: 0, a: 0}
-  BrownBorder1: 0.4
-  BrownBorder2: 0.8
+  BrownBorder1: 1
+  BrownBorder2: 1
   Red: {r: 0.3490566, g: 0, b: 0, a: 0}
-  RedBorder1: 0.4
-  RedBorder2: 0.8
+  RedBorder1: 1
+  RedBorder2: 1
   Green: {r: 0.3207547, g: 0, b: 0, a: 0}
-  GreenBorder1: 0.4
-  GreenBorder2: 0.8
+  GreenBorder1: 1
+  GreenBorder2: 1
   Blue: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
-  BlueBorder1: 0.4
-  BlueBorder2: 0.8
+  BlueBorder1: 1
+  BlueBorder2: 1
   SpecialSkinColor: {r: 1, g: 1, b: 1, a: 1}
   Skin: {r: 1, g: 0.8745099, b: 0.8745099, a: 1}
   SkinBorder1: 0.4
@@ -7086,6 +7086,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -7716,6 +7717,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -7934,17 +7936,17 @@ MonoBehaviour:
   GreyBorder1: 4
   GreyBorder2: 4
   Brown: {r: 0.2264151, g: 0.035938907, b: 0, a: 0}
-  BrownBorder1: 0.4
-  BrownBorder2: 0.8
+  BrownBorder1: 1
+  BrownBorder2: 1
   Red: {r: 0.3490566, g: 0, b: 0, a: 0}
-  RedBorder1: 0.4
-  RedBorder2: 0.8
+  RedBorder1: 1
+  RedBorder2: 1
   Green: {r: 0.0919599, g: 0.08290317, b: 0.254717, a: 0}
-  GreenBorder1: 0.4
-  GreenBorder2: 0.8
+  GreenBorder1: 1
+  GreenBorder2: 1
   Blue: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 0}
-  BlueBorder1: 0.4
-  BlueBorder2: 0.8
+  BlueBorder1: 1
+  BlueBorder2: 1
   SpecialSkinColor: {r: 1, g: 1, b: 1, a: 1}
   Skin: {r: 1, g: 0.8745099, b: 0.8745099, a: 1}
   SkinBorder1: 0.4
@@ -8024,6 +8026,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -8289,6 +8292,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -8533,6 +8537,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -8564,7 +8569,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5899765739160316619}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.29452834, w: 0.9556428}
+  m_LocalRotation: {x: 0, y: 0, z: 0.90633136, w: 0.4225679}
   m_LocalPosition: {x: 0.32670718, y: -0.0016297102, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14141,7 +14146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7281989657844811564}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.37316376, w: 0.9277655}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7259861, w: 0.68770945}
   m_LocalPosition: {x: 0.33253556, y: -0.00026232004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -14540,6 +14545,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 1
   DealingDamage: 1
@@ -20986,7 +20992,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8968454433894395050}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.5177106, w: 0.85555583}
+  m_LocalRotation: {x: 0, y: 0, z: 0.0012026572, w: 0.99999934}
   m_LocalPosition: {x: 0.25190747, y: 0.0006058812, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

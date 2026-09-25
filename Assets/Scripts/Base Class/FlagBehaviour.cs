@@ -25,7 +25,7 @@ public class FlagBehaviour : MonoBehaviour
     public int FlagPriority = 0;
 
     public void PerformFlagBehaviour() {
-        if(transform.root.IsDestroyed() || (OnlyWorkInCycle != 0 && SaveFile.Instance.Cycle != OnlyWorkInCycle ) || SaveFile.Instance.Week <= StartsOnWeek || SaveFile.Instance.Week >= StopsOnWeek) {
+        if(transform.root== null || (OnlyWorkInCycle != 0 && SaveFile.Instance.Cycle != OnlyWorkInCycle ) || SaveFile.Instance.Week <= StartsOnWeek || SaveFile.Instance.Week >= StopsOnWeek) {
             return;
         }
         bool hasFlag = SaveFile.Instance.Flags.Contains(Utils.GetFormattedFlag(FlagId));
@@ -42,10 +42,10 @@ public class FlagBehaviour : MonoBehaviour
             }
             MonoBehaviour.Destroy(gameObject);
         }
-        else if(gameObject.IsDestroyed() == false && ((ActiveWhenHasFlag && hasFlag ) || (ActiveWhenNoFlag && !hasFlag))){
+        else if(gameObject!= null && ((ActiveWhenHasFlag && hasFlag ) || (ActiveWhenNoFlag && !hasFlag))){
             gameObject.SetActive(true);
         }
-        else if(gameObject.IsDestroyed() == false && ((InactiveWhenHasFlag && hasFlag ) || (InactiveWhenNoFlag && !hasFlag))){
+        else if(gameObject!= null && ((InactiveWhenHasFlag && hasFlag ) || (InactiveWhenNoFlag && !hasFlag))){
             gameObject.SetActive(false);
         }
     }

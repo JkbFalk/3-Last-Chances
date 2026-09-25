@@ -56,7 +56,7 @@ public class Projectile : DamagingObject {
             return;
         }
         DisappearsAfterNHits--;
-        if(DisappearsAfterNHits <= 0 && gameObject.IsDestroyed() == false && OnlyDestroyOnTargetHit == false) {
+        if(DisappearsAfterNHits <= 0 && gameObject!= null && OnlyDestroyOnTargetHit == false) {
             MakeObjectDisappear(0);
         }
     }

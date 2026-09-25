@@ -20,15 +20,15 @@ public class Ability_Roll : Ability_Dodge {
     {
         Effect burn = User.GetEffect(typeof(Effect_Burn));
         if(burn != null) {
-            burn.ChangeDecayingAmount(-burn.DecayingAmount / 3);
+            burn.ChangeAmount(-burn.Amount / 3);
         }
         Effect freeze = User.GetEffect(typeof(Effect_Freeze));
         if(freeze != null) {
-            freeze.ChangeDecayingAmount(-freeze.DecayingAmount / 5);
+            freeze.ChangeAmount(-freeze.Amount / 5);
         }
         Effect Bleed = User.GetEffect(typeof(Effect_Bleed));
         if(Bleed != null) {
-            Bleed.ChangeDecayingAmount(Bleed.DecayingAmount / 10);
+            Bleed.ChangeAmount(Bleed.Amount / 10);
         }
         if (Direction == Vector2.right || Direction == Vector2.left) {
             Player.Instance.AddEffect(new Effect_RollForward(new(this)), UntargetabilityDurationInSeconds * (Player.Instance.CheckIfUnderEffectWithGivenId("IncreaseInvincibilityTimeOfDodge") ? Player.Instance.GetEffectWithGivenId("IncreaseInvincibilityTimeOfDodge").PercentageAmount : 1));

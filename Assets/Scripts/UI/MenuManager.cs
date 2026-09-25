@@ -357,13 +357,16 @@ public class MenuManager : MonoBehaviour {
 
     public void AddItemToGrid(Item item)
     {
-        GameObject item_tile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_InventoryTile")) as GameObject;
         Transform itemGroup = Objects.InventoryItems.transform.Find(item.Type.ToString() + "/Items");
-        item_tile.name = itemGroup.childCount.ToString();
+        GameObject item_tile = MonoBehaviour.Instantiate(Resources.Load("Prefabs/UI/UI_InventoryTile"), itemGroup, false) as GameObject;
+        
+        item_tile.name = (itemGroup.childCount - 1).ToString();
+        
         InventoryTile tile = item_tile.GetComponent<InventoryTile>();
         SetRegularImage(item_tile.transform.Find("Image").gameObject, item);
         tile.Item = item;
         tile.InitializeOptions();
+        
         if(item.GetType() == typeof(Quest_UpgradeMaterials) || item.GetType() == typeof(Quest_ToolMaterials)) {
             tile.AmountDisplay.text = item.Amount.ToString();
         }
@@ -371,7 +374,7 @@ public class MenuManager : MonoBehaviour {
         {
             tile.AmountDisplay.text = item.Amount.ToString() + "/" + SaveFile.Instance.ToolMaxAmounts[item.GetType()];
         }
-        item_tile.transform.SetParent(itemGroup);
+        
         item.TileInInventory = tile;
         item_tile.transform.localScale = new Vector3(1, 1, 1);
     }

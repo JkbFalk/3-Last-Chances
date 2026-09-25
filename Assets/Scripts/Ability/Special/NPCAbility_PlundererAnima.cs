@@ -41,7 +41,7 @@ public class NPCAbility_PlundererAnima : Ability {
             _aoe.transform.localPosition = new Vector2( 1.25f + 0.115f * _counter, 0);
             GameController.Instance.WaitAndRunMethod(0.02f, AdjustSize);
         }
-        else if(_aoe != null && _aoe.gameObject.IsDestroyed() == false){
+        else if(_aoe != null && _aoe.gameObject!= null){
             _aoe.DealingDamage = false;
             _aoe.transform.parent.GetComponent<TemporaryObject>().MakeObjectDisappear(0.1f);
         }

@@ -62,7 +62,7 @@ public class Stance_AnatomyExpert : Effect_Stance
 
     public Stance_AnatomyExpert(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
-        Listeners = new List<UnityEventBase> { EventManager.AfterHitDamageCalculation, EventManager.StanceSwitched, EventManager.EffectDecayingAmountChanged, EventManager.HitDealt };
+        Listeners = new List<UnityEventBase> { EventManager.AfterHitDamageCalculation, EventManager.StanceSwitched, EventManager.EffectAmountChanged, EventManager.HitDealt };
     }
 
     public override void OnInvokeAfterHitDamageCalculation(DamageInstance damage)
@@ -108,7 +108,7 @@ public class Stance_AnatomyExpert : Effect_Stance
     public override void OnInvokeHitDealt(DamageInstance damage)
     {
         base.OnInvokeHitDealt(damage);
-        if (UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && (IsActive || Player.Instance.CheckIfUnderEffectWithGivenId("Stance_AnatomyExpert_PersistingMultiplier")) && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Bleed)) && damage.TargetOfDamage.GetEffect(typeof(Effect_Bleed)).DecayingAmount * 15 > damage.TargetOfDamage.Health.Current)
+        if (UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && (IsActive || Player.Instance.CheckIfUnderEffectWithGivenId("Stance_AnatomyExpert_PersistingMultiplier")) && damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_Bleed)) && damage.TargetOfDamage.GetEffect(typeof(Effect_Bleed)).Amount * 15 > damage.TargetOfDamage.Health.Current)
         {
             damage.DamageDealtMultiplier += Upgrade3DamageMultiplierToEnemiesWhoseBleedIsEnoughToFinishThemOff;
         }

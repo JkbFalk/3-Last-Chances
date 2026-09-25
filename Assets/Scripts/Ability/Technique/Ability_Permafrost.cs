@@ -103,7 +103,7 @@ public class Ability_Permafrost : Technique
             Player.Instance.Health.Current += Player.Instance.Health.Missing * _upgradeBHealPercentPerSecond / 100 / 10;
         }
         float lowestDistance = 999;
-        foreach (AreaOfEffect aoe in _aoes.Where(a => a != null && a.IsDestroyed() == false))
+        foreach (AreaOfEffect aoe in _aoes.Where(a => a != null && a!= null))
         {
             float distance = Vector2.Distance(aoe.transform.position, new Vector2(User.transform.position.x, User.transform.position.y - 0.5f));
             lowestDistance = distance < lowestDistance ? distance : lowestDistance;

@@ -10,16 +10,15 @@ public class Effect_Empowered : Effect
     public Effect_Empowered(float damage_increase, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Buff;
-        _initialDecayingAmount = damage_increase;
+        _initialAmount = damage_increase;
         ShowsInUI = true;
         BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AllowDuplicate;
         Listeners.Add(EventManager.HitDealt);
-        DefaultDecaySpeed = 0;
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
+    public override void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
-        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        UIText = Utils.GetFormattedFloat(Amount, 0);
     }
 
     public override void OnStart()
@@ -63,8 +62,8 @@ public class Effect_Empowered : Effect
 
     public override void OnInvokeHitDealt(DamageInstance damage) {
         if(damage?.SourceOfDamage?.User == TargetOfEffect) {
-            damage.InjuryDealtPercentageModifier += DecayingAmount;
-            damage.StaggerDealtPercentageModifier += DecayingAmount;
+            damage.InjuryDealtPercentageModifier += Amount;
+            damage.StaggerDealtPercentageModifier += Amount;
             base.OnInvokeHitDealt(damage);
         }
     }

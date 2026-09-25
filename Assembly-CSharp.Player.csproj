@@ -292,6 +292,7 @@
     <Compile Include="Assets\Scripts\Ability\Magic\NPCAbility_SnowAvalanche.cs" />
     <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\2D\Polygon\Polygon2DListCollider2D.cs" />
     <Compile Include="Assets\Scripts\Ability\Ripostes And Counters\Gauntlets_Riposte.cs" />
+    <Compile Include="Assets\Scripts\Base Class\PooledObject.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Camera\LightmapMaterials.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_GainDamageAndArmorForEachDebuff.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Rendering\Buffers\LightMainBuffer2D.cs" />
@@ -334,7 +335,6 @@
     <Compile Include="Assets\Scripts\Ability\Light\NPCAbility_TwinBladesWindBlade.cs" />
     <Compile Include="Assets\Scripts\Item\Quest\Quest_HalfStiletto.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
-    <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_HardStaggered.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Scripts\Mission\Mission_CombatTraining.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Unbreakable.cs" />
@@ -369,6 +369,7 @@
     <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\VirtualSpriteRenderer.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Components\LightTilemap2D\Types\Hexagon.cs" />
     <Compile Include="Assets\Scripts\Ability\Heavy\NPCAbility_JumpSlashDown.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_TempestStrikesAutoCounter.cs" />
     <Compile Include="Assets\Scripts\Stat\MovementSpeed.cs" />
     <Compile Include="Assets\Scripts\Ability\BasicAttack\BA_Gauntlets_L2.cs" />
     <Compile Include="Assets\Scripts\Effect\Effect_BlazingShadowWatchesYourBack.cs" />
@@ -770,6 +771,7 @@
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_DeathSentence.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Rendering\Day\Sorting\SortDepth.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Event Handling\LightCollider.cs" />
+    <Compile Include="Assets\Scripts\Effect\Effect_WindRushUltimateProtection.cs" />
     <Compile Include="Assets\Scripts\Area\Area_IgnisManorOnFire.cs" />
     <Compile Include="Assets\Scripts\Item\Helmet\Helmet_Mercenary.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Rendering\Lightmap\NoSort.cs" />
@@ -1025,7 +1027,6 @@
     <Compile Include="Assets\Scripts\Item\Daggers\Daggers_FracturedCleavers.cs" />
     <Compile Include="Assets\Scripts\Ability\Technique\Ability_Fireball.cs" />
     <Compile Include="Assets\Scripts\Base Class\NotificationController.cs" />
-    <Compile Include="Assets\Scripts\Effect\CrowdControl\Effect_SoftStaggered.cs" />
     <Compile Include="Assets\Scripts\Item\Cannon\Cannon_Convergence.cs" />
     <Compile Include="Assets\FunkyCode\SmartUtilities2D\Scripts\Utilities\2D\Polygon\Polygon2DCollider2D.cs" />
     <Compile Include="Assets\FunkyCode\SmartLighting2D\Scripts\Rendering\Light\Mask\Mesh.cs" />
@@ -1119,6 +1120,7 @@
     <None Include="Assets\Resources\Sprites\Stance\GradientReveal.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\Universal Sound FX\#Game Genre References\Platform.txt" />
+    <None Include="Assets\StreamingAssets\Label Rules.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Ultimate Game Music Collection\_README.txt" />
     <None Include="Assets\FunkyCode\SmartLighting2D\Resources\Shaders\Internal\LightShadow\SoftDistance.shader" />

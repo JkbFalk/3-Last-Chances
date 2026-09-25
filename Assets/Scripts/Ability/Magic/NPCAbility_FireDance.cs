@@ -58,7 +58,7 @@ public class NPCAbility_FireDance : Ability {
 
     public override void CallAbilityEvent2()
     {
-        if(Missile != null && Missile.IsDestroyed() == false) {
+        if(Missile != null && Missile!= null) {
             Missile.MakeObjectDisappear();
         }
     }

@@ -47,11 +47,11 @@ public class Effect_Inflame : Effect {
 
     public override void OnEnd() {
         base.OnEnd();
-        if (_vfx != null && _vfx.gameObject.IsDestroyed() == false) {
+        if (_vfx != null && _vfx.gameObject!= null) {
             _vfx.GetComponent<ParticleSystem>().Stop();
             _vfx.GetComponent<TemporaryObject>().MakeObjectDisappear();
         }
-        if (_vfx2 != null && _vfx2.gameObject.IsDestroyed() == false) {
+        if (_vfx2 != null && _vfx2.gameObject!= null) {
             _vfx2.GetComponent<ParticleSystem>().Stop();
             _vfx2.GetComponent<TemporaryObject>().MakeObjectDisappear();
         }

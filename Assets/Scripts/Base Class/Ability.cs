@@ -12,47 +12,87 @@ using UnityEngine.UI;
 public abstract class Ability {
 
     public static float GetEnergyCost(Type ability_type) {
-        if(Player.Instance.PreparingForUltimate) {
-            return Constants.ENERGY_REQUIRED_TO_USE_ULTIMATE;
-        }
-        float cost = 0;
-        MethodInfo getEnergyMethod = ability_type.GetMethod("GetEnergyCost", BindingFlags.Public | BindingFlags.Static);
-        if(getEnergyMethod != null) {
-            cost = (float)getEnergyMethod.Invoke(null, new object[] {});
-        }
-        else {
-            FieldInfo field = ability_type.GetField("EnergyCost", BindingFlags.Public | BindingFlags.Static);
-            if(field == null) {
-                return 0;
-            }
-            cost = (float)field.GetValue(null);
-        }
-        if(Player.Instance.CurrentStance.StanceEffectType == typeof(Stance_PowerWithoutLimit) && Player.Instance.CurrentStance.StanceEffect.UnlockedUpgrade2 && ability_type.GetField("IsVariableEnergyTechnique", BindingFlags.Public | BindingFlags.Static) != null) {
+        if(Player.Instance.PreparingForUltimate) return Constants.ENERGY_REQUIRED_TO_USE_ULTIMATE;
+        
+        float cost = AbilityTypeRegistry.GetMetadata(ability_type)?.EnergyCost ?? 0f;
+
+        if(Player.Instance.CurrentStance.StanceEffectType == typeof(Stance_PowerWithoutLimit) && 
+        Player.Instance.CurrentStance.StanceEffect.UnlockedUpgrade2 && 
+        ability_type.GetField("IsVariableEnergyTechnique", BindingFlags.Public | BindingFlags.Static) != null) {
             cost *= 2;
         }
         return cost;
     }
 
-    public static float GetCooldown(Type ability_type) {
-        FieldInfo field = ability_type.GetField("Cooldown", BindingFlags.Public | BindingFlags.Static);
-        if(field == null) {
-            return 0;
-        }
-        return (float)field.GetValue(null);
-    }
+    public static float GetCooldown(Type ability_type) => AbilityTypeRegistry.GetMetadata(ability_type)?.Cooldown ?? 0f;
+    public static AbilityFamily GetFamily(Type ability_type) => AbilityTypeRegistry.GetMetadata(ability_type)?.Family ?? AbilityFamily.None;
+    public static int GetAmmoRequiredToUseAbility(Type ability_type) => AbilityTypeRegistry.GetMetadata(ability_type)?.AmmoRequired ?? 0;
 
-    public static AbilityFamily GetFamily(Type ability_type) {
-        FieldInfo field = ability_type.GetField("Family", BindingFlags.Public | BindingFlags.Static);
-        if(field == null) {
-            return AbilityFamily.None;
+    public static bool CheckIfCanPerformAbility(Unit user, Type ability_type, Item item = null) 
+    {
+        if (user == null || user.Actions == null || ability_type == null || 
+        (ability_type.IsSubclassOf(typeof(Technique)) && !SaveFile.Instance.UnlockedAbilities.Contains(ability_type)))
+        {
+            return false;
         }
-        return (AbilityFamily)field.GetValue(null);
+
+        bool canPerformTheAbility = Utils.CheckIfUnitCanPerformActions(user) 
+            || (user.Actions.CurrentAbilityBeingPerformed != null && 
+                ((ability_type.IsSubclassOf(typeof(BasicAttack)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.BasicAttack))
+                || (ability_type.IsSubclassOf(typeof(Technique)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.EnergyAbility)) 
+                || (ability_type.IsSubclassOf(typeof(Ability_StanceSwitch)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.StanceSwitch))
+                || (ability_type.IsSubclassOf(typeof(Ability_Block)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.Block))
+                || (ability_type.IsSubclassOf(typeof(Ability_Dodge)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.Dodge))));
+
+        bool enoughResource = CheckIfEnoughResourceToUseAbility(user, ability_type);
+        
+        if (canPerformTheAbility && !enoughResource && item == null && user is Player) {
+            UIManager.Instance.DisplayNotEnoughEnergyWarningForGivenAbilityType(ability_type);
+        }
+
+        var meta = AbilityTypeRegistry.GetMetadata(ability_type);
+
+        if (canPerformTheAbility && meta != null && meta.AmmoRequired > 0 && Player.Instance.Ammo < meta.AmmoRequired && user is Player) {
+            UIManager.Instance.DisplayNotEnoughAmmoWarning();
+            enoughResource = false;
+        }
+
+        if (canPerformTheAbility && meta?.CheckSpecialConditions != null && !meta.CheckSpecialConditions.Invoke(user)) {
+            return false;
+        }
+
+        if (user is Player && Player.Instance.PreparingForUltimate && ability_type.IsSubclassOf(typeof(Technique))) {
+            if (!SaveFile.Instance.IsUltimateFamilyUnlocked(meta != null ? meta.Family : AbilityFamily.None)) return false;
+        }
+
+        if (item != null) {
+            MethodInfo itemMethod = item.GetType().GetMethod("CheckIfSpecialConditionsAreFulfilled");
+            if (canPerformTheAbility && itemMethod != null && !(bool)itemMethod.Invoke(null, new object[] { user })) {
+                return false;
+            }
+        }
+
+        if (canPerformTheAbility && meta?.CheckUsableInCombat != null && !meta.CheckUsableInCombat.Invoke(user.InCombat)) {
+            return false;
+        }
+
+        bool onCooldown = item != null ? user.ToolCooldown != null : user.TechniqueCooldowns.Any(cd => cd.Type == ability_type);
+        
+        if (item == null && ability_type.GetField("IsStacksBasedTechnique") != null) {
+            if ((!Player.Instance.PreparingForUltimate && Player.Instance.CurrentTechniqueStacks.GetValueOrDefault(ability_type, 0) > 0) || 
+                (Player.Instance.PreparingForUltimate && Player.Instance.CurrentUltimateTechniqueStacks.GetValueOrDefault(ability_type, 0) > 0)) {
+                onCooldown = false;
+            }
+        }
+
+        return canPerformTheAbility && enoughResource && !onCooldown;
     }
 
     public enum AbilityInterruptType { Damage, Dodge, BasicAttack, Block, EnergyAbility, StanceSwitch}
     public enum Property { BasicAttack, StrongBasicAttack, Technique, Riposte, Counter, Backstab, Ultimate, UpgradeA, UpgradeB, Unstoppable, Charged, AlreadyGeneratedEnergy, ImmuneToFlinch, CounteredByBackstep, CounteredByBlock, CounteredByRiposte, CounteredByRoll, CountersBackstep, CountersBlock, CountersRiposte, CountersRoll, IgnoresImmunityToHits};
     public List<Property> Properties = new List<Property>();    
     public bool AbilityEnded = false;
+    public int RequiredParriesForRiposte = 1;
     public List<Effect> TriggeredEffects = new List<Effect>();
     public bool TriggeredEffectWithId(string effect_id)
     {
@@ -166,12 +206,6 @@ public abstract class Ability {
     public void EndThisAbility()
     {
         User.Actions.EndCurrentAbility();
-    }
-
-    public static int GetAmmoRequiredToUseAbility(Type ability_type)
-    {
-        FieldInfo field = ability_type.GetField("AmmoRequiredToUseAbility", BindingFlags.Public | BindingFlags.Static);
-        return field == null ? 0 : (int)field.GetValue(null);
     }
 
     public Boolean CheckIfUnitWasDamagedByObject(Unit unit_to_check, DamagingObject damaging_object)
@@ -364,7 +398,7 @@ public abstract class Ability {
         }
         foreach (TemporaryObject item in ObjectsToDestroyOnceAbilityEnds)
         {
-            if(item != null && item.gameObject.IsDestroyed() == false) {
+            if(item != null && item.gameObject!= null) {
                 item.MakeObjectDisappear();
             }
         }
@@ -451,82 +485,6 @@ public abstract class Ability {
         }
         User = ability_user;
         Target = User.CurrentTarget;
-    }
-
-    public static bool CheckIfCanPerformAbility(Unit user, Type ability_type, Item item = null) {
-        if (user == null || user.Actions == null || ability_type == null || (ability_type.IsSubclassOf(typeof(Technique)) && SaveFile.Instance.UnlockedAbilities.Contains(ability_type) == false))
-        {
-            return false;
-        }
-        bool canPerformTheAbility = 
-        Utils.CheckIfUnitCanPerformActions(user) 
-        || (user.Actions.CurrentAbilityBeingPerformed != null && ability_type.IsSubclassOf(typeof(BasicAttack)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(Ability.AbilityInterruptType.BasicAttack))
-        || (user.Actions.CurrentAbilityBeingPerformed != null && ability_type.IsSubclassOf(typeof(Technique)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.EnergyAbility)) 
-        || (user.Actions.CurrentAbilityBeingPerformed != null && ability_type.IsSubclassOf(typeof(Ability_StanceSwitch)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.StanceSwitch))
-        || (user.Actions.CurrentAbilityBeingPerformed != null && ability_type.IsSubclassOf(typeof(Ability_Block)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.Block))
-        || (user.Actions.CurrentAbilityBeingPerformed != null && ability_type.IsSubclassOf(typeof(Ability_Dodge)) && user.Actions.CurrentAbilityBeingPerformed.CanAlwaysBeInterruptedBy.Contains(AbilityInterruptType.Dodge));
-
-        bool enoughResource = CheckIfEnoughResourceToUseAbility(user, ability_type);
-        if (canPerformTheAbility && !enoughResource && item == null && user is Player)
-        {
-            UIManager.Instance.DisplayNotEnoughEnergyWarningForGivenAbilityType(ability_type);
-        }
-        if (canPerformTheAbility && GetAmmoRequiredToUseAbility(ability_type) > 0 && Player.Instance.Ammo < GetAmmoRequiredToUseAbility(ability_type) && user is Player)
-        {
-            UIManager.Instance.DisplayNotEnoughAmmoWarning();
-            enoughResource = false;
-        }
-        MethodInfo method = ability_type.GetMethod("CheckIfSpecialConditionsAreFulfilled");
-        if (canPerformTheAbility && method != null)
-        {
-            bool can_perform_ability = (bool)method.Invoke(null, new object[] { user });
-            if (can_perform_ability == false)
-            {
-                return false;
-            }
-        }
-        if (user is Player && Player.Instance.PreparingForUltimate && ability_type.IsSubclassOf(typeof(Technique)))
-        {
-            Ability.AbilityFamily family = GetFamily(ability_type);
-            if (!SaveFile.Instance.IsUltimateFamilyUnlocked(family))
-            {
-                return false;
-            }
-        }
-        if(item != null) {
-            MethodInfo method2 = item.GetType().GetMethod("CheckIfSpecialConditionsAreFulfilled");
-            if (canPerformTheAbility && method != null)
-            {
-                bool can_perform_ability = (bool)method.Invoke(null, new object[] { user });
-                if (can_perform_ability == false)
-                {
-                    return false;
-                }
-            }
-        }
-        MethodInfo method3 = ability_type.GetMethod("CheckIfAbilityUsableDependingOnCombat");
-        if (canPerformTheAbility && method3 != null)
-        {
-            bool can_perform_ability = (bool)method3.Invoke(null, new object[] { user.InCombat });
-            if (can_perform_ability == false)
-            {
-                return false;
-            }
-        }
-        bool onCooldown;
-        if (item != null)
-        {
-            onCooldown = user.ToolCooldown != null;
-        }
-        else
-        {
-            onCooldown = user.TechniqueCooldowns.FirstOrDefault(cooldown => cooldown.Type == ability_type) != null;
-            bool isStacksBased = ability_type.GetField("IsStacksBasedTechnique") != null;
-            if(isStacksBased && ((Player.Instance.PreparingForUltimate == false && Player.Instance.CurrentTechniqueStacks[ability_type] > 0) || (Player.Instance.PreparingForUltimate && Player.Instance.CurrentUltimateTechniqueStacks[ability_type] > 0))) {
-                onCooldown = false;
-            }
-        }
-        return canPerformTheAbility && enoughResource && !onCooldown;
     }
 
     public void OnUpdate()
@@ -662,11 +620,10 @@ public abstract class Ability {
         }
         else
         {
-            float stopOffset = 1.0f;
+            float stopOffset = User.CurrentWeaponDamageType == Constants.DamageType.Light ? 0.3f : 1.0f;
             float rawDistance = Vector2.Distance(User.transform.position, finalTarget.transform.position);
             float distanceToTarget = Mathf.Max(0f, rawDistance - stopOffset);
             float dashDistance = Mathf.Min(distanceToTarget, max_dash_distance_in_meters);
-
             Vector2 dir = CombatMath.GetDirectionVector(User.transform.position, finalTarget.transform.position, User.Actions.IsFlipped, max_angle);
             User.Rigidbody2D.linearVelocity = Vector2.zero;
             User.PushInTargetDirection(dir * dashDistance, this);

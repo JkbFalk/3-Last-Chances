@@ -12,7 +12,7 @@ public class Effect_Enfeebled : Effect {
         Listeners.Add(EventManager.HitDealt);
         UIText = "-" + increase_amount.ToString() + "%";
         BaseDuration = 30;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackAmount;
     }
 
     public override void OnInvokeHitDealt(DamageInstance damage) {

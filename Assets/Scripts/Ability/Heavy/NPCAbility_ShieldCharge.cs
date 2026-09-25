@@ -24,7 +24,7 @@ public class NPCAbility_ShieldCharge : Ability {
     public override void CallAbilityEvent2()
     {
         Transform aoe = User.SpriteRenderers["Lower Body"].Bone.Find("AreaOfEffect_ChargeAoE");
-        if(aoe != null && aoe.gameObject.IsDestroyed() == false) {
+        if(aoe != null && aoe.gameObject!= null) {
             aoe.GetComponent<TemporaryObject>().MakeObjectDisappear();
         }
     }

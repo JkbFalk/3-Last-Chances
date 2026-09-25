@@ -18,7 +18,7 @@ public class NPCAbility_FlameWall : Ability {
     }
 
     public void ResetTargets() {
-        if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject.IsDestroyed() == false) {
+        if(_aoe != null && _aoe.gameObject != null && _aoe.gameObject!= null) {
             ResetPotentialTargets();
         }
     }

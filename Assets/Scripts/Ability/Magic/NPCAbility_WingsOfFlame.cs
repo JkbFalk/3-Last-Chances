@@ -48,10 +48,10 @@ public class NPCAbility_WingsOfFlame : Ability {
 
     public override void CallAbilityEvent3()
     {
-        if(Wing1 != null && Wing1.gameObject.IsDestroyed() == false) {
+        if(Wing1 != null && Wing1.gameObject!= null) {
             Wing1.MakeObjectDisappear();
         }
-        if(Wing2 != null && Wing2.gameObject.IsDestroyed() == false) {
+        if(Wing2 != null && Wing2.gameObject!= null) {
             Wing2.MakeObjectDisappear();
         }
         

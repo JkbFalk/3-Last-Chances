@@ -49,7 +49,7 @@ public class DamagingObject : TemporaryObject
         {
             HandleDestructibleHit(other);
         }
-        else if (other != null && other.IsDestroyed() == false && other.GetComponent<Projectile>() != null && other.GetComponent<Projectile>().SourceAbility?.User != Owner && Owner != null && Owner.Actions.CurrentAbilityBeingPerformed != null && Owner.Actions.CurrentAbilityBeingPerformed.Is(Property.BasicAttack) && other.GetComponent<Projectile>().DealingDamage && other.GetComponent<Projectile>().CanBeRiposted && ((BasicAttack)Owner.Actions.CurrentAbilityBeingPerformed).DealingDamage) {
+        else if (other != null && other!= null && other.GetComponent<Projectile>() != null && other.GetComponent<Projectile>().SourceAbility?.User != Owner && Owner != null && Owner.Actions.CurrentAbilityBeingPerformed != null && Owner.Actions.CurrentAbilityBeingPerformed.Is(Property.BasicAttack) && other.GetComponent<Projectile>().DealingDamage && other.GetComponent<Projectile>().CanBeRiposted && ((BasicAttack)Owner.Actions.CurrentAbilityBeingPerformed).DealingDamage) {
             Projectile projectile = other.GetComponent<Projectile>();
             Type riposteType = AbilityTypeRegistry.GetRiposte(Owner.CurrentWeaponClass);
             if (riposteType == null)

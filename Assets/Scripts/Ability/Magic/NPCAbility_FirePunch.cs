@@ -36,7 +36,7 @@ public class NPCAbility_FirePunch : Ability {
 
     public override void CallAbilityEvent4()
     {
-        if(_aoe != null && _aoe.gameObject != null && _aoe.IsDestroyed() == false) {
+        if(_aoe != null && _aoe.gameObject != null && _aoe!= null) {
             _aoe.DealingDamage = false;
             _aoe.MakeObjectDisappear(0.5f);
         }

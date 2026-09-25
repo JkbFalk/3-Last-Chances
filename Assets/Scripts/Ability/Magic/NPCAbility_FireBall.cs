@@ -44,7 +44,7 @@ public class NPCAbility_Fireball : Ability {
     }
 
     public void Explode() {
-        if(_fireBall != null && _fireBall.gameObject != null && _fireBall.gameObject.IsDestroyed() == false) {
+        if(_fireBall != null && _fireBall.gameObject != null && _fireBall.gameObject!= null) {
             AreaOfEffect aoe = Utils.CreateAreaOfEffect(new(this), "FireballExplosion");
             PlayCustomSound("Explosion", 0.6f, aoe.transform.parent.GetComponent<AudioSource>());
             aoe.transform.parent.position = _fireBall.transform.position;
@@ -53,7 +53,7 @@ public class NPCAbility_Fireball : Ability {
     } 
 
     public void AdjustFireballAngle() {
-        if(_counter < 100 && _fireBall != null && _fireBall.gameObject != null && _fireBall.gameObject.IsDestroyed() == false) {
+        if(_counter < 100 && _fireBall != null && _fireBall.gameObject != null && _fireBall.gameObject!= null) {
             _counter++;
             _fireBall.transform.up = (_intendedDestination + new Vector3(0, _distance - _distance * _counter / 50) - _fireBall.transform.position).normalized;
             GameController.Instance.WaitAndRunMethod(0.01f, AdjustFireballAngle);

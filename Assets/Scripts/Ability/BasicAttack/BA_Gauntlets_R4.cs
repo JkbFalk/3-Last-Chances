@@ -41,7 +41,7 @@ public class BA_Gauntlets_R4 : BasicAttack {
         base.ExtraBehaviourOnHit(damage);
         if(damage.TargetOfDamage.CheckIfUnderEffect(typeof(Effect_ProneToKnockout))) {
             Effect_ProneToKnockout prone = (Effect_ProneToKnockout)damage.TargetOfDamage.GetEffect(typeof(Effect_ProneToKnockout));
-            damage.AbilityDamageSource = new DamageSource(prone.DecayingAmount, 40 + prone.DecayingAmount, Constants.DamageType.Light);
+            damage.AbilityDamageSource = new DamageSource(prone.Amount, 40 + prone.Amount, Constants.DamageType.Light);
         }
     }
 }

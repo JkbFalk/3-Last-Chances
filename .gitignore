@@ -1,15 +1,50 @@
-Library/
-Packages/
-JF Core Systems Test/
-Temp/
-Demo/
-obj/
-New Unity Project/
-Assets/AllIn1VfxToolkit/
-Assets/Honeti/
-Assets/TextMesh Pro/
-Logs/shadercompiler-UnityShaderCompiler.exe0.log
-Logs/AssetImportWorker0.log
+# ===============
+# Unity Core
+# ===============
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/MemoryCaptures/
+
+# ===============
+# IDE / OS Files
+# ===============
+.vs/
+.idea/
+.vscode/
+ExportedObj/
+.consulo/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# OS Generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===============
+# FMOD Specific
+# ===============
 # Never ignore DLLs in the FMOD subfolder.
 !/[Aa]ssets/Plugins/FMOD/**/lib/*
 
@@ -24,6 +59,12 @@ Logs/AssetImportWorker0.log
 /[Aa]ssets/StreamingAssets/**/*.bank
 /[Aa]ssets/StreamingAssets/**/*.bank.meta
 
-# If the source bank files are kept outside of the StreamingAssets folder then these can be ignored.
 # Log files can be ignored.
 fmod_editor.log
+
+# ===============
+# User Specific Junk (From your old file)
+# ===============
+/JF Core Systems Test/
+/Demo/
+/New Unity Project/

@@ -15,7 +15,7 @@ public class Effect_IncreaseStatBasedOnStackingEffectLevel : Effect
         IncreasedStat = stat_to_increase;
         PercentageAmount = percentage_amount;
         Type = EffectType.Buff;
-        Listeners.AddRange(new List<UnityEngine.Events.UnityEventBase> {EventManager.EffectStarted, EventManager.EffectDecayingAmountChanged, EventManager.EffectEnded});
+        Listeners.AddRange(new List<UnityEngine.Events.UnityEventBase> {EventManager.EffectStarted, EventManager.EffectAmountChanged, EventManager.EffectEnded});
     }
 
     public override void OnInvokeEffectStarted(Effect effect_started)
@@ -41,11 +41,11 @@ public class Effect_IncreaseStatBasedOnStackingEffectLevel : Effect
         }
         if(effect.EffectEnded == false && _buff != null && _buff.EffectEnded == false && (IncreaseBasedOnEffectLevel == false || effect.StackingEffectIntensityLevel != _lastCheckedIntensityLevel)) {
             _lastCheckedIntensityLevel = effect.StackingEffectIntensityLevel;
-            _buff.PercentageAmount = !IncreaseBasedOnEffectLevel ? effect.DecayingAmount * PercentageAmount : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.2f :_lastCheckedIntensityLevel == 2 ? PercentageAmount * 0.5f : _lastCheckedIntensityLevel == 3 ? PercentageAmount : 0);
+            _buff.PercentageAmount = !IncreaseBasedOnEffectLevel ? effect.Amount * PercentageAmount : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.2f :_lastCheckedIntensityLevel == 2 ? PercentageAmount * 0.5f : _lastCheckedIntensityLevel == 3 ? PercentageAmount : 0);
         }
         else if(effect.EffectEnded == false && _buff == null) {
             _buff = new Effect_ChangeStat(IncreasedStat, SourceOfEffect) {
-                PercentageAmount = !IncreaseBasedOnEffectLevel ? effect.DecayingAmount * PercentageAmount : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.2f :_lastCheckedIntensityLevel == 2 ? PercentageAmount * 0.5f : _lastCheckedIntensityLevel == 3 ? PercentageAmount : 0),
+                PercentageAmount = !IncreaseBasedOnEffectLevel ? effect.Amount * PercentageAmount : (_lastCheckedIntensityLevel == 1 ? PercentageAmount * 0.2f :_lastCheckedIntensityLevel == 2 ? PercentageAmount * 0.5f : _lastCheckedIntensityLevel == 3 ? PercentageAmount : 0),
                 IsRemovable = false,
             };
             TargetOfEffect.AddEffect(_buff);

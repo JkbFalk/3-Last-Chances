@@ -84,11 +84,11 @@ public class Stance_MindOverMatter : Effect_Stance
     {
         if (IsActive && damage.SourceOfDamage.User == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis)) && (damage.SourceOfDamage.Is(Ability.Property.BasicAttack) || damage.SourceOfDamage.Is(Ability.Property.Riposte) || damage.SourceOfDamage.Is(Ability.Property.Counter)))
         {
-            damage.DamageDealtMultiplier += Player.Instance.GetEffect(typeof(Effect_Analysis)).DecayingAmount * ExtraDamageMultiplierPer100Analysis / 100;
+            damage.DamageDealtMultiplier += Player.Instance.GetEffect(typeof(Effect_Analysis)).Amount * ExtraDamageMultiplierPer100Analysis / 100;
         }
         if (IsActive && UnlockedUpgrade3 && damage.SourceOfDamage.User == Player.Instance && Upgrade3CurrentlyEmpoweredFamily != Ability.AbilityFamily.None && damage.SourceOfDamage.Is(Ability.Property.Technique) && Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis)))
         {
-            damage.DamageDealtPercentageModifier += Upgrade3AnalysisExtraEffectivnessForTechniquesFromRandomlySelectedFamily * Player.Instance.GetEffect(typeof(Effect_Analysis)).DecayingAmount;
+            damage.DamageDealtPercentageModifier += Upgrade3AnalysisExtraEffectivnessForTechniquesFromRandomlySelectedFamily * Player.Instance.GetEffect(typeof(Effect_Analysis)).Amount;
             Upgrade3EmpoweredFamilies.Add(Upgrade3CurrentlyEmpoweredFamily);
             if (Upgrade3EmpoweredFamilies.Count == 7)
             {

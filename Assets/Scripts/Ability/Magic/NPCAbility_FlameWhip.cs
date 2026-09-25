@@ -35,7 +35,7 @@ public class NPCAbility_FlameWhip : Ability {
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(Chain != null && Chain.gameObject.IsDestroyed() == false) {
+        if(Chain != null && Chain.gameObject!= null) {
             Chain.GetComponentInChildren<AreaOfEffect>().DealingDamage = false;
             Chain.GetComponent<TemporaryObject>().MakeObjectDisappear(1);
         }

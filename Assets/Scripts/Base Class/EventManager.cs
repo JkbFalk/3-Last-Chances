@@ -42,7 +42,7 @@ public class EventManager {
     /// First param: already existing effect, Second param: newly created effect
     /// </summary>
     public static UnityEvent<Effect, Effect> EffectEmpowered = new UnityEvent<Effect, Effect>();
-    public static UnityEvent<Effect, float> EffectDecayingAmountChanged = new UnityEvent<Effect, float>();
+    public static UnityEvent<Effect, float> EffectAmountChanged = new UnityEvent<Effect, float>();
     public static UnityEvent<Effect> EffectActivated = new UnityEvent<Effect>();
     public static UnityEvent<Effect> EffectEnded = new UnityEvent<Effect>();
     public static UnityEvent<Cooldown> AboutToAddCooldown = new UnityEvent<Cooldown>();

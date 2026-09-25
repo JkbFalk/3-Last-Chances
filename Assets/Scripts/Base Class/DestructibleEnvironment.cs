@@ -46,7 +46,7 @@ public class DestructibleEnvironment : MonoBehaviour
         Utils.CreateAuditLog("Destroying Destructible: " + gameObject.name);
         List<Transform> loot = new();
         foreach(Transform child in transform) {
-            if(gameObject != null && !gameObject.IsDestroyed() && child.gameObject.name.Contains("Loot")) {
+            if(gameObject != null && gameObject != null && child.gameObject.name.Contains("Loot")) {
                 loot.Add(child);
             }
         }
@@ -57,7 +57,7 @@ public class DestructibleEnvironment : MonoBehaviour
             item.position = new Vector3(transform.position.x + UnityEngine.Random.Range(0f, 0f), transform.position.y + UnityEngine.Random.Range(0f, 0f));
         }
         Transform onDestroy = Utils.GetOnDestroyObject(transform);
-        if(gameObject != null && !gameObject.IsDestroyed() && onDestroy != null) {
+        if(gameObject != null && gameObject != null && onDestroy != null) {
             onDestroy.gameObject.SetActive(true);
             onDestroy.SetParent(transform.parent);
             onDestroy.gameObject.name = onDestroy.gameObject.name + " (" + gameObject.name + ")";

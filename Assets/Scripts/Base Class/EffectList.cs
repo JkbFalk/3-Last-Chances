@@ -542,7 +542,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Sharp sharp = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
-                        damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.PercentageAmount / 100;
+                        damage.DamageDealtPercentageModifier += sharp.Amount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -599,7 +599,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Sharp sharp = (Effect_Sharp)Player.Instance.GetEffect(typeof(Effect_Sharp));
-                        damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.PercentageAmount / 100;
+                        damage.DamageDealtPercentageModifier += sharp.Amount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -831,7 +831,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Burn burn = (Effect_Burn)damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
-                        damage.StaggerDealtFlatModifier += burn.DecayingAmount * effect.PercentageAmount / 100;
+                        damage.StaggerDealtFlatModifier += burn.Amount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -1698,7 +1698,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Bleed Bleed = (Effect_Bleed)damage.TargetOfDamage.GetEffect(typeof(Effect_Bleed));
-                        damage.InjuryDealtFlatModifier += Bleed.DecayingAmount * effect.PercentageAmount / 100;
+                        damage.InjuryDealtFlatModifier += Bleed.Amount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -1745,15 +1745,15 @@ public class EffectList
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         if(Player.Instance.CheckIfUnderEffect(typeof(Effect_Onslaught))) {
                             Effect_Onslaught onslaught = (Effect_Onslaught)damage.TargetOfDamage.GetEffect(typeof(Effect_Onslaught));
-                            damage.DamageDealtPercentageModifier += onslaught.DecayingAmount * effect.CustomParameters[0] / 100;
+                            damage.DamageDealtPercentageModifier += onslaught.Amount * effect.CustomParameters[0] / 100;
                         }
                         if(Player.Instance.CheckIfUnderEffect(typeof(Effect_Sharp))) {
                             Effect_Sharp sharp = (Effect_Sharp)damage.TargetOfDamage.GetEffect(typeof(Effect_Sharp));
-                            damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.CustomParameters[1] / 100;
+                            damage.DamageDealtPercentageModifier += sharp.Amount * effect.CustomParameters[1] / 100;
                         }
                         if(Player.Instance.CheckIfUnderEffect(typeof(Effect_Analysis))) {
                             Effect_Analysis analysis = (Effect_Analysis)damage.TargetOfDamage.GetEffect(typeof(Effect_Analysis));
-                            damage.DamageDealtPercentageModifier += analysis.DecayingAmount * effect.CustomParameters[2] / 100;
+                            damage.DamageDealtPercentageModifier += analysis.Amount * effect.CustomParameters[2] / 100;
                         }
                     })
                 }
@@ -2110,7 +2110,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Analysis analysis = (Effect_Analysis)Player.Instance.GetEffect(typeof(Effect_Analysis));
-                        damage.DamageDealtPercentageModifier += analysis.DecayingAmount * effect.DamagePercentageModifier / 100;
+                        damage.DamageDealtPercentageModifier += analysis.Amount * effect.DamagePercentageModifier / 100;
                     })
                 }
             };
@@ -2729,7 +2729,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Chained playersChained = (Effect_Chained)Player.Instance.GetEffect(typeof(Effect_Chained));
-                        damage.TargetOfDamage.AddEffect(new Effect_Chained(playersChained.DecayingAmount * effect.PercentageAmount / 100, effect.SourceOfEffect));
+                        damage.TargetOfDamage.AddEffect(new Effect_Chained(playersChained.Amount * effect.PercentageAmount / 100, effect.SourceOfEffect));
                     })
                 }
             };
@@ -2797,12 +2797,12 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Chained playersChained = (Effect_Chained)Player.Instance.GetEffect(typeof(Effect_Chained));
-                        Player.Instance.Health.Current += effect.PercentageAmount * playersChained.DecayingAmount * 0.15f;
+                        Player.Instance.Health.Current += effect.PercentageAmount * playersChained.Amount * 0.15f;
                         Effect e2 = Player.Instance.GetEffect(new Func<Effect, bool> (effect => effect.Id == "ConvertedChainedGeneratesBarrier"));
                         if(e2 != null) {
-                            Player.Instance.AddEffect(new Effect_Barrier(e2.PercentageAmount * playersChained.DecayingAmount * 0.15f, effect.SourceOfEffect));
+                            Player.Instance.AddEffect(new Effect_Barrier(e2.PercentageAmount * playersChained.Amount * 0.15f, effect.SourceOfEffect));
                         }
-                        playersChained.ChangeDecayingAmount(-playersChained.DecayingAmount * 0.15f);
+                        playersChained.ChangeAmount(-playersChained.Amount * 0.15f);
                     })
                 }
             };
@@ -2838,7 +2838,7 @@ public class EffectList
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect_Burn playersBurn = (Effect_Burn)Player.Instance.GetEffect(typeof(Effect_Burn));
-                        damage.DamageDealtPercentageModifier += playersBurn.DecayingAmount * effect.PercentageAmount / 100;
+                        damage.DamageDealtPercentageModifier += playersBurn.Amount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -2857,7 +2857,7 @@ public class EffectList
                     ActionOnAbilityUsed = new Action<Ability, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
                         Player.Instance.AddCooldown(new Cooldown(effect.GetType(), effect.CustomParameters[0], Player.Instance, "CleanseBurnOnWeaponSwitch" + special_id));
                         Effect_Burn playersBurn = (Effect_Burn)Player.Instance.GetEffect(typeof(Effect_Burn));
-                        playersBurn.ChangeDecayingAmount(-effect.FlatAmount);
+                        playersBurn.ChangeAmount(-effect.FlatAmount);
                     })
                 }
             };
@@ -3743,10 +3743,10 @@ public class EffectList
                     FlatAmount = calculatedPB,
                     DescriptionParameters = new List<String> {Utils.GetFormattedFloat(calculatedPB), Utils.GetFormattedFloat(Constants.DEFAULT_HARD_STAGGERED_DURATION * 2)},
                     ConditionCheckOnDamageDealt = new Func<DamageInstance, Effect_CustomizableDamageChange, bool>((damage, effect) =>
-                        damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.IsStaggered && damage.TargetOfDamage.GetEffect(typeof(Effect_HardStaggered)).ElapsedDuration < Constants.DEFAULT_HARD_STAGGERED_DURATION * 2
+                        damage.SourceOfDamage.User == Player.Instance && damage.TargetOfDamage.IsStaggered && damage.TargetOfDamage.GetEffect(typeof(Effect_Staggered)).ElapsedDuration < Constants.DEFAULT_HARD_STAGGERED_DURATION * 2
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        Effect staggered = damage.TargetOfDamage.GetEffect(typeof(Effect_HardStaggered));
+                        Effect staggered = damage.TargetOfDamage.GetEffect(typeof(Effect_Staggered));
                         if (staggered != null)
                         {
                             staggered.ProlongDuration(effect.FlatAmount);
@@ -4081,10 +4081,10 @@ public class EffectList
                     FlatAmount = calculatedPB,
                     DescriptionParameters = new List<string> {Utils.GetFormattedFloat(calculatedPB), "30"},
                     ConditionCheckForEffectStarted = new Func<Effect, bool>((effect) =>
-                        effect.GetType().IsSubclassOf(typeof(Effect_HardStaggered)) && effect.TargetOfEffect == Player.Instance && !Player.Instance.CheckIfEffectWithGivenIdIsOnCooldown("CancelPlayerStaggeredPerCooldown" + special_id)
+                        effect.GetType().IsSubclassOf(typeof(Effect_Staggered)) && effect.TargetOfEffect == Player.Instance && !Player.Instance.CheckIfEffectWithGivenIdIsOnCooldown("CancelPlayerStaggeredPerCooldown" + special_id)
                     ),
                     ActionOnEffectStarted = new Action<Effect, Effect_CustomizableEffectOnEvent> ((effect_started, effect) =>  {
-                        Player.Instance.GetEffect(typeof(Effect_HardStaggered)).EndThisEffect();
+                        Player.Instance.GetEffect(typeof(Effect_Staggered)).EndThisEffect();
                         Player.Instance.StaggerBar.Current = Player.Instance.StaggerBar.Maximum - effect.FlatAmount;
                         Player.Instance.AddCooldown(typeof(Effect), 30, "CancelPlayerStaggeredPerCooldown" + special_id);
                     })
@@ -4174,7 +4174,7 @@ public class EffectList
                         damage.TargetOfDamage == Player.Instance && Player.Instance.CheckIfUnderEffect(typeof(Effect_Barrier))
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        damage.DamageDealtPercentageModifier = Player.Instance.GetEffect(typeof(Effect_Barrier)).DecayingAmount * effect.PercentageAmount / 100;
+                        damage.DamageDealtPercentageModifier = Player.Instance.GetEffect(typeof(Effect_Barrier)).Amount * effect.PercentageAmount / 100;
                     })
                 }
             };
@@ -5137,11 +5137,11 @@ public class EffectList
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect sharp = Player.Instance.GetEffect(typeof(Effect_Sharp));
                         if(sharp != null) {
-                            damage.DamageDealtPercentageModifier += sharp.DecayingAmount * effect.PercentageAmount;
+                            damage.DamageDealtPercentageModifier += sharp.Amount * effect.PercentageAmount;
                         }
                         Effect analysis = Player.Instance.GetEffect(typeof(Effect_Analysis));
                         if(analysis != null) {
-                            damage.DamageDealtPercentageModifier += analysis.DecayingAmount * effect.PercentageAmount;
+                            damage.DamageDealtPercentageModifier += analysis.Amount * effect.PercentageAmount;
                         }
                     })
                 }
@@ -5423,7 +5423,7 @@ public class EffectList
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect analysis = Player.Instance.GetEffect(typeof(Effect_Analysis));
                         if(analysis != null) {
-                            damage.DamageDealtPercentageModifier += analysis.DecayingAmount * effect.PercentageAmount;
+                            damage.DamageDealtPercentageModifier += analysis.Amount * effect.PercentageAmount;
                         }
                     })
                 }
@@ -5477,7 +5477,7 @@ public class EffectList
                         damage.SourceOfDamage.User == Player.Instance
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        int count = Player.Instance.CurrentEffects.Where(e => e.Type == Effect.EffectType.Buff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackDecayingAmount).Count() + damage.TargetOfDamage.CurrentEffects.Where(e => e.Type == Effect.EffectType.Debuff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackDecayingAmount).Count();
+                        int count = Player.Instance.CurrentEffects.Where(e => e.Type == Effect.EffectType.Buff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackAmount).Count() + damage.TargetOfDamage.CurrentEffects.Where(e => e.Type == Effect.EffectType.Debuff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackAmount).Count();
                         damage.DamageDealtPercentageModifier += count * effect.PercentageAmount;
                     })
                 }
@@ -5551,7 +5551,7 @@ public class EffectList
                         damage.TargetOfDamage == Player.Instance
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        int count = damage.TargetOfDamage.CurrentEffects.Where(e => e.Type == Effect.EffectType.Debuff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackDecayingAmount).Count();
+                        int count = damage.TargetOfDamage.CurrentEffects.Where(e => e.Type == Effect.EffectType.Debuff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackAmount).Count();
                         damage.ArmorModifier += count * effect.PercentageAmount;
                     })
                 }
@@ -5568,7 +5568,7 @@ public class EffectList
                         damage.TargetOfDamage == Player.Instance
                     ),
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
-                        int count = Player.Instance.CurrentEffects.Where(e => e.Type == Effect.EffectType.Buff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackDecayingAmount).Count();
+                        int count = Player.Instance.CurrentEffects.Where(e => e.Type == Effect.EffectType.Buff && e.BehaviourWhenDuplicateEffect == Effect.BehaviourWhenDuplicateEffectEnum.StackAmount).Count();
                         damage.ArmorModifier += count * effect.PercentageAmount;
                     })
                 }
@@ -5640,8 +5640,8 @@ public class EffectList
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect burn = damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
                         Effect freeze = damage.TargetOfDamage.GetEffect(typeof(Effect_Freeze));
-                        float burnAmount = burn == null ? 0 : burn.DecayingAmount;
-                        float freezeAmount = freeze == null ? 0 : freeze.DecayingAmount;
+                        float burnAmount = burn == null ? 0 : burn.Amount;
+                        float freezeAmount = freeze == null ? 0 : freeze.Amount;
                         if(burnAmount > 0 && burnAmount > freezeAmount) {
                             damage.TargetOfDamage.AddEffect(new Effect_Freeze(burnAmount, effect.SourceOfEffect));
                             burn.EndThisEffect();
@@ -5670,8 +5670,8 @@ public class EffectList
                     Action = new Action<DamageInstance, Effect_CustomizableDamageChange> ((damage, effect) =>  {
                         Effect burn = damage.TargetOfDamage.GetEffect(typeof(Effect_Burn));
                         Effect freeze = damage.TargetOfDamage.GetEffect(typeof(Effect_Freeze));
-                        float burnAmount = burn == null ? 0 : burn.DecayingAmount;
-                        float freezeAmount = freeze == null ? 0 : freeze.DecayingAmount;
+                        float burnAmount = burn == null ? 0 : burn.Amount;
+                        float freezeAmount = freeze == null ? 0 : freeze.Amount;
                         if(burnAmount > freezeAmount) {
                             damage.TargetOfDamage.AddEffect(new Effect_Freeze(effect.CustomParameters[1], effect.SourceOfEffect));
                         }

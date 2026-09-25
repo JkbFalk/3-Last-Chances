@@ -50,8 +50,8 @@ public class Area_IgnisVolcano
 
     public static List<Transform> PotentialExplosionPositions = new();
     public static void CreateExplosion() {
-        if(Area.Instance != null && Area.Instance.gameObject.name.Contains("IgnisVolcano") && Area.Instance.gameObject.IsDestroyed() == false) {
-            List<Transform> validTransforms = PotentialExplosionPositions.Where(transform => transform.IsDestroyed() == false && Vector2.Distance(transform.position, Player.Instance.transform.position) < 20).ToList();
+        if(Area.Instance != null && Area.Instance.gameObject.name.Contains("IgnisVolcano") && Area.Instance.gameObject!= null) {
+            List<Transform> validTransforms = PotentialExplosionPositions.Where(transform => transform!= null && Vector2.Distance(transform.position, Player.Instance.transform.position) < 20).ToList();
             if(validTransforms.Count > 0) {
                 Transform pos = validTransforms[UnityEngine.Random.Range(0, validTransforms.Count)];
                 Utils.CreateVisualEffect(new("Environment"), "IgnisManorOnFireRockEruption", pos.position.x, pos.position.y);

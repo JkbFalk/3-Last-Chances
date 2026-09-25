@@ -13,6 +13,7 @@ using System.Reflection;
 public class Effect
 {
     public bool RemainsActiveInOtherStances = false;
+    public bool PersistsBetweenPhaseChanges = false; 
     public bool IsRemovable { get; set; } = true;
     public enum EffectType { Buff, Debuff, Neutral };
     protected float _flatAmount = 0;
@@ -43,7 +44,7 @@ public class Effect
 
     public float PowerBudget = 0;
 
-    public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, ExtendDuration, StackDecayingAmount, EndShorterDuplicateWithSameId, EndExistingEffect };
+    public enum BehaviourWhenDuplicateEffectEnum { AllowDuplicate, ExtendDuration, StackAmount, EndShorterDuplicateWithSameId, EndExistingEffect };
     public BehaviourWhenDuplicateEffectEnum BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.AllowDuplicate;
 
     public List<string> DescriptionParameters = new List<string>();
@@ -158,51 +159,69 @@ public class Effect
     }
     public float ElapsedDuration { get; set; } = 0;
     public float RemainingDuration { get; set; } = 0;
-    protected float _initialDecayingAmount = 0;
-    private float _decayingAmount = 0;
-    public float DecayingAmount
+    public bool UsesStacks = false;
+    public int MaxStacks = 0;
+    
+    protected int _currentStacks = 0;
+    public virtual int CurrentStacks
     {
-        get => _decayingAmount;
+        get => _currentStacks;
+        set
+        {
+            int oldStacks = _currentStacks;
+            _currentStacks = MaxStacks > 0 ? Mathf.Clamp(value, 0, MaxStacks) : Mathf.Max(0, value);
+            if (oldStacks != _currentStacks)
+            {
+                ExtraBehaviourOnStacksChanged(oldStacks, _currentStacks);
+            }
+        }
+    }
+    public virtual void ExtraBehaviourOnStacksChanged(int oldStacks, int newStacks) { }
+    protected float _initialAmount = 0;
+    private float _amount = 0;
+    public float Amount
+    {
+        get => _amount;
         protected set
         {
-            float oldValue = _decayingAmount;
-            _decayingAmount = value;
+            float oldValue = _amount;
+            _amount = value;
             if (oldValue != value)
             {
-                EventManager.EffectDecayingAmountChanged.Invoke(this, _decayingAmount - oldValue);
+                EventManager.EffectAmountChanged.Invoke(this, _amount - oldValue);
             }
         }
     }
     public float DefaultDecaySpeed = Constants.DEFAULT_STACKING_EFFECT_DECAY_PER_SECOND;
-    public float MaxDecayingAmount = 0;
-    public virtual void ChangeDecayingAmount(float amount_changed, bool include_effect_power = true)
+    public float MaxAmount = 0;
+    public virtual void ChangeAmount(float amount_changed, bool include_effect_power = true)
     {
         float calculatedAmountAdded = amount_changed * (include_effect_power ? EffectPowerModifier : 1);
-        float prevAmount = DecayingAmount;
-        DecayingAmount = MaxDecayingAmount == 0 ? (DecayingAmount + calculatedAmountAdded) : (DecayingAmount + calculatedAmountAdded) > MaxDecayingAmount ? MaxDecayingAmount : (DecayingAmount + calculatedAmountAdded);
-        ExtraBehaviourOnDecayingAmountChange(0, DecayingAmount - prevAmount);
+        float prevAmount = Amount;
+        Amount = MaxAmount == 0 ? (Amount + calculatedAmountAdded) : (Amount + calculatedAmountAdded) > MaxAmount ? MaxAmount : (Amount + calculatedAmountAdded);
+        ExtraBehaviourOnAmountChange(0, Amount - prevAmount);
     }
-    public virtual void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0) { }
+    public virtual void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0) { }
 
     public virtual void ActivateEffectAmountDecay()
     {
-        if (EffectEnded)
+        if (EffectEnded || UsesStacks)
         {
             return;
         }
-        if (this is Effect_Barrier && TargetOfEffect is Player && Player.Instance.CurrentStance.StanceEffect is Stance_BodyOfSteel && SaveFile.Instance.ActiveUpgrades.Contains("Stance_BodyOfSteel2") && DecayingAmount < (Stance_BodyOfSteel.Upgrade2PercentageOfCombinedMaximumHealthAndStaggerBarConvertedToNonDecayingBarrierMinimum * (Player.Instance.Health.Maximum + Player.Instance.StaggerBar.Maximum) / 100))
+        if (this is Effect_Barrier && TargetOfEffect is Player && Player.Instance.CurrentStance.StanceEffect is Stance_BodyOfSteel && SaveFile.Instance.ActiveUpgrades.Contains("Stance_BodyOfSteel2") && Amount < (Stance_BodyOfSteel.Upgrade2PercentageOfCombinedMaximumHealthAndStaggerBarConvertedToNonDecayingBarrierMinimum * (Player.Instance.Health.Maximum + Player.Instance.StaggerBar.Maximum) / 100))
         {
             return;
         }
-        if (DecayingAmount > -1 && DecayingAmount < 1)
+        if (Amount > -1 && Amount < 1)
         {
             EndThisEffect();
         }
         else
         {
-            float decayedAmount = EffectDecaySpeedModifier >= 0 ? (DecayingAmount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5) : (DecayingAmount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5);
-            DecayingAmount -= decayedAmount;
-            ExtraBehaviourOnDecayingAmountChange(decayedAmount);
+            float amount = EffectDecaySpeedModifier >= 0 ? (Amount * DefaultDecaySpeed / (1 + EffectDecaySpeedModifier) / 5) : (Amount * DefaultDecaySpeed / (1 / Math.Abs(EffectDecaySpeedModifier)) / 5);
+            Amount -= amount;
+            ExtraBehaviourOnAmountChange(amount);
         }
     }
 
@@ -297,9 +316,9 @@ public class Effect
 
     public virtual bool CheckIfEffectAlreadyAppliedAndHandleBehaviour()
     {
-        if (_initialDecayingAmount != 0)
+        if (_initialAmount != 0)
         {
-            ChangeDecayingAmount(_initialDecayingAmount);
+            ChangeAmount(_initialAmount);
         }
         Effect existingEffect = TargetOfEffect.CurrentEffects.FirstOrDefault(effect => effect.GetType() == GetType() && effect != this);
         if (existingEffect != null)
@@ -309,9 +328,13 @@ public class Effect
                 existingEffect.EndThisEffect();
                 return false;
             }
-            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.StackDecayingAmount)
+            else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.StackAmount)
             {
-                existingEffect.ChangeDecayingAmount(DecayingAmount, false);
+                if (UsesStacks) {
+                    existingEffect.CurrentStacks += this.CurrentStacks;
+                } else {
+                    existingEffect.ChangeAmount(Amount, false);
+                }
                 existingEffect.RemainingDuration = existingEffect.BaseDuration;
             }
             else if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.ExtendDuration)
@@ -344,7 +367,7 @@ public class Effect
     
     public void ShowInUI()
     {
-        if (TargetOfEffect == null || (TileInUI != null && !TileInUI.IsDestroyed()))
+        if (TargetOfEffect == null || (TileInUI != null && !TileInUI== null))
         {
             return;
         }
@@ -405,7 +428,7 @@ public class Effect
             ShowInUI();
         }
         AddListeners();
-        if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.StackDecayingAmount)
+        if (BehaviourWhenDuplicateEffect == BehaviourWhenDuplicateEffectEnum.StackAmount)
         {
             _effectModifiers = GetEffectModifiers();
             EventManager.OneTenthSecondElapsedInGame.AddListener(ActivateEffectAmountDecay);
@@ -587,9 +610,9 @@ public class Effect
         {
             EventManager.EffectEmpowered.AddListener(OnInvokeEffectEmpowered);
         }
-        if (Listeners.Contains(EventManager.EffectDecayingAmountChanged))
+        if (Listeners.Contains(EventManager.EffectAmountChanged))
         {
-            EventManager.EffectDecayingAmountChanged.AddListener(OnInvokeEffectDecayingAmountChanged);
+            EventManager.EffectAmountChanged.AddListener(OnInvokeEffectDecayingAmountChanged);
         }
         if (Listeners.Contains(EventManager.EffectEnded))
         {
@@ -707,9 +730,9 @@ public class Effect
         {
             EventManager.EffectEmpowered.RemoveListener(OnInvokeEffectEmpowered);
         }
-        if (Listeners.Contains(EventManager.EffectDecayingAmountChanged))
+        if (Listeners.Contains(EventManager.EffectAmountChanged))
         {
-            EventManager.EffectDecayingAmountChanged.RemoveListener(OnInvokeEffectDecayingAmountChanged);
+            EventManager.EffectAmountChanged.RemoveListener(OnInvokeEffectDecayingAmountChanged);
         }
         if (Listeners.Contains(EventManager.EffectEnded))
         {
@@ -861,7 +884,7 @@ public class Effect
 
     public virtual void OnInvokeEffectDecayingAmountChanged(Effect effect, float amount_changed)
     {
-        EventManager.EffectDecayingAmountChanged.Invoke(this, amount_changed);
+        EventManager.EffectAmountChanged.Invoke(this, amount_changed);
         effect.SourceOfEffect.SourceAbility.TriggeredEffects.Add(this);
     }
 

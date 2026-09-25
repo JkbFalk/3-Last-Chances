@@ -293,7 +293,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 1.25
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -346,7 +346,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -612,7 +612,7 @@ ParticleSystem:
     gravitySource: 0
     maxNumParticles: 1000
     customEmitterVelocity: {x: 0, y: 0, z: 0}
-    size3D: 0
+    size3D: 1
     rotation3D: 0
     gravityModifier:
       serializedVersion: 2
@@ -986,7 +986,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 50
+        scalar: 150
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -1432,7 +1432,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
   UVModule:
     serializedVersion: 2
-    enabled: 0
+    enabled: 1
     mode: 0
     timeMode: 0
     fps: 30
@@ -1543,7 +1543,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     speedRange: {x: 0, y: 1}
-    tilesX: 1
+    tilesX: 10
     tilesY: 1
     animationType: 0
     rowIndex: 0
@@ -2036,8 +2036,8 @@ ParticleSystem:
     radial:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 23
-      minScalar: 17
+      scalar: 40
+      minScalar: 35
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -4838,10 +4838,15 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 19e20fbee432a424e9c4bf26360bd5d9, type: 2}
+  - {fileID: 2100000, guid: 4222ae9f0e5e86e41a40142155a485b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4859,6 +4864,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 291938915
   m_SortingLayer: 1
   m_SortingOrder: 0
@@ -4934,8 +4940,8 @@ MonoBehaviour:
   maxLifetime: 0.5
   minSpeed: 0
   maxSpeed: 0
-  minSize: 2
-  maxSize: 2
+  minSize: 1.25
+  maxSize: 1.25
   startColor:
     m_Mode: 0
     m_GradientMin:
@@ -4998,11 +5004,11 @@ MonoBehaviour:
       m_ColorSpace: -1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    m_ColorMin: {r: 0.0007846961, g: 6.7e-43, b: -3.408019e+28, a: 8.2738e-41}
+    m_ColorMin: {r: -1.2878593e+21, g: 4.5915e-41, b: -0.00000000866531, a: 3.35e-43}
     m_ColorMax: {r: 0.8040489, g: 1, b: 0.7971698, a: 1}
   isBurst: 1
-  minNumberOfParticles: 50
-  maxNumberOfParticles: 50
+  minNumberOfParticles: 150
+  maxNumberOfParticles: 150
   currEmissionShape: 2
   colorLifetime: 2
   sizeLifetime: 2
@@ -5029,6 +5035,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4817541764821327886}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -5052,10 +5059,10 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 10
 --- !u!114 &8480469786007325590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5099,6 +5106,7 @@ MonoBehaviour:
   WeaponSpriteRenderer: {fileID: 0}
   IsDestroyed: 0
   ParticleSystemRenderers: []
+  DamageSourceKey: 
   Owner: {fileID: 0}
   CanBeRiposted: 0
   DealingDamage: 0

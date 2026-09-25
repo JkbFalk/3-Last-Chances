@@ -51,7 +51,7 @@ public class NPCAbility_LeoWindmill : Ability {
     }
 
     public void FadeOutWindmill(int alpha) {
-        if(alpha == 0 && _aoe != null && _aoe.IsDestroyed() == false) {
+        if(alpha == 0 && _aoe != null && _aoe!= null) {
             _aoe.GetComponentInParent<IKManager2D>().GetComponent<TemporaryObject>().MakeObjectDisappear();
         }
         else {
@@ -64,7 +64,7 @@ public class NPCAbility_LeoWindmill : Ability {
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(_aoe != null && _aoe.gameObject.IsDestroyed() == false) {
+        if(_aoe != null && _aoe.gameObject!= null) {
             _aoe.MakeObjectDisappear();
         }
     }

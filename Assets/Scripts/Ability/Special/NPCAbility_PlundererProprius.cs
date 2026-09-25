@@ -40,7 +40,7 @@ public class NPCAbility_PlundererProprius : Ability {
     public override void OnAbilityEnd()
     {
         base.OnAbilityEnd();
-        if(_aoe != null && !_aoe.IsDestroyed()) {
+        if(_aoe != null && !_aoe== null) {
             _aoe.MakeObjectDisappear();
         }
     }

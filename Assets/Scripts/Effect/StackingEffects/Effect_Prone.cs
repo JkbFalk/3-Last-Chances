@@ -10,15 +10,15 @@ public class Effect_Prone : Effect
     public Effect_Prone(float damage_increase, SourceOfEffect source_of_effect) : base(source_of_effect)
     {
         Type = EffectType.Debuff;
-        _initialDecayingAmount = damage_increase;
+        _initialAmount = damage_increase;
         ShowsInUI = true;
-        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackDecayingAmount;
+        BehaviourWhenDuplicateEffect = BehaviourWhenDuplicateEffectEnum.StackAmount;
         Listeners.Add(EventManager.HitDealt);
     }
 
-    public override void ExtraBehaviourOnDecayingAmountChange(float amount_decayed = 0, float amount_changed = 0)
+    public override void ExtraBehaviourOnAmountChange(float amount_decayed = 0, float amount_changed = 0)
     {
-        UIText = Utils.GetFormattedFloat(DecayingAmount, 0);
+        UIText = Utils.GetFormattedFloat(Amount, 0);
     }
 
     public override void OnStart()
@@ -63,11 +63,11 @@ public class Effect_Prone : Effect
     public override void OnInvokeHitDealt(DamageInstance damage) {
         if (damage?.TargetOfDamage == TargetOfEffect && damage.SourceOfDamage.User == Player.Instance && Player.Instance.CurrentStance.StanceEffect is Stance_CombatBlacksmith && SaveFile.Instance.ActiveUpgrades.Contains("Stance_CombatBlacksmith1"))
         {
-            damage.DamageDealtPercentageModifier += damage.Is(DamageInstance.DamageProperty.Tool) ? (DecayingAmount * Stance_CombatBlacksmith.Upgrade1ProneEffectivnessForTools / 100) : 0;
+            damage.DamageDealtPercentageModifier += damage.Is(DamageInstance.DamageProperty.Tool) ? (Amount * Stance_CombatBlacksmith.Upgrade1ProneEffectivnessForTools / 100) : 0;
         }
         else if (damage?.TargetOfDamage == TargetOfEffect)
         {
-            damage.DamageDealtPercentageModifier += DecayingAmount;
+            damage.DamageDealtPercentageModifier += Amount;
             base.OnInvokeHitDealt(damage);
         }
     }

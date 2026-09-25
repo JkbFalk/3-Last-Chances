@@ -80,7 +80,7 @@ public class Ability_HeavySlash : Technique
 
     public override void OnAbilityEnd() {
         base.OnAbilityEnd();
-        if(Is(Property.Ultimate) && _ultimateAoE != null && _ultimateAoE.IsDestroyed() == false) {
+        if(Is(Property.Ultimate) && _ultimateAoE != null && _ultimateAoE!= null) {
             _ultimateAoE.MakeObjectDisappear();
         }
         StopCountingTime();
@@ -181,14 +181,14 @@ public class Ability_HeavySlash : Technique
     }
 
     public void AdvanceFireWave() {
-        if(_ultimateFireWave != null && _ultimateFireWave.transform.parent.IsDestroyed() == false) {
+        if(_ultimateFireWave != null && _ultimateFireWave.transform.parent!= null) {
             ParticleSystem.ShapeModule shape = _ultimateFireWave.transform.parent.GetComponent<ParticleSystem>().shape;
             shape.radius += 0.1f;
         }
     }
 
     public void ScaleAoE() {
-        if(_ultimateAoE.IsDestroyed() == false) {
+        if(_ultimateAoE!= null) {
             CameraController.Instance.ShakeScreen(0.1f, 0.01f + 0.04f * (0.33f + PercentageOfMaxTimePassed / 100 * 0.66f));
             ParticleSystem.ShapeModule shape = _ultimateAoE.GetComponent<ParticleSystem>().shape;
             shape.scale = new Vector2(4 + 8 * (0.33f + PercentageOfMaxTimePassed / 100 * 0.66f), 0.5f + 1.0f * (0.33f + PercentageOfMaxTimePassed / 100 * 0.66f));
@@ -204,7 +204,7 @@ public class Ability_HeavySlash : Technique
             _ultimateAoE.GetComponent<BoxCollider2D>().size = new Vector3(2f, 2 + 10 * (0.33f + PercentageOfMaxTimePassed / 100 * 0.66f));
             GameController.Instance.WaitAndRunMethod(0.1f / User.HeavyAttackSpeed.Current, ScaleAoE);
         }
-        else if(_ultimateAoE.IsDestroyed() == false) {
+        else if(_ultimateAoE!= null) {
             FinishChargingUltimate();
         }
     }

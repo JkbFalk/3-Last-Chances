@@ -43,7 +43,7 @@ public class NPCAbility_LeoEncroachingFlame : Ability {
             aoe.transform.localScale = new Vector3(1 - 0.01f * _counter, 1 - 0.01f * _counter);
             GameController.Instance.WaitAndRunMethod(0.02f / User.MagicAttackSpeed.Current, DecreaseRadius);
         }
-        else if(aoe != null && aoe.gameObject.IsDestroyed() == false) {
+        else if(aoe != null && aoe.gameObject!= null) {
             aoe.transform.parent.GetComponent<TemporaryObject>().MakeObjectDisappear(0.1f);
         }
     }

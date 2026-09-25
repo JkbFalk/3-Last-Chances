@@ -82,7 +82,7 @@ public class Stance_ElectroCharged : Effect_Stance
 
     public Stance_ElectroCharged(SourceOfEffect source_of_effect) : base(source_of_effect)
     {
-        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.DamageDealt, EventManager.DamageWasDodged, EventManager.EffectDecayingAmountChanged, EventManager.OneTenthSecondElapsedInGame, EventManager.AfterHitDamageCalculation, EventManager.StanceSwitched };
+        Listeners = new List<UnityEventBase> { EventManager.HitDealt, EventManager.DamageDealt, EventManager.DamageWasDodged, EventManager.EffectAmountChanged, EventManager.OneTenthSecondElapsedInGame, EventManager.AfterHitDamageCalculation, EventManager.StanceSwitched };
     }
 
     public override void OnInvokeHitDealt(DamageInstance damage)
@@ -150,7 +150,7 @@ public class Stance_ElectroCharged : Effect_Stance
             Player.Instance.AddEffect(new Effect_Supercharge(metersTravelled * Upgrade2SuperchargeGainedPer1MTravelled / 100, new(this)));
         }
         if (IsActive && UnlockedUpgrade2 && Player.Instance.PlayerSavedPosition != Player.Instance.transform.position) {
-            Upgrade2MovementSpeedBuff.FlatAmount = Player.Instance.CheckIfUnderEffect(typeof(Effect_Supercharge)) ? Player.Instance.GetEffect(typeof(Effect_Supercharge)).DecayingAmount * Upgrade2ConversionEffectivnessOfSuperchargeIntoMovementSpeed / 100 : 0;
+            Upgrade2MovementSpeedBuff.FlatAmount = Player.Instance.CheckIfUnderEffect(typeof(Effect_Supercharge)) ? Player.Instance.GetEffect(typeof(Effect_Supercharge)).Amount * Upgrade2ConversionEffectivnessOfSuperchargeIntoMovementSpeed / 100 : 0;
         }
         base.OnInvokeOneTenthSecondElapsedInGame();
     }
@@ -161,7 +161,7 @@ public class Stance_ElectroCharged : Effect_Stance
         {
             Upgrade2MovementSpeedBuff = new Effect_ChangeStat(Player.Instance.MovementSpeed, new(this))
             {
-                FlatAmount = Player.Instance.CheckIfUnderEffect(typeof(Effect_Supercharge)) ? Player.Instance.GetEffect(typeof(Effect_Supercharge)).DecayingAmount * Upgrade2ConversionEffectivnessOfSuperchargeIntoMovementSpeed / 100 : 0
+                FlatAmount = Player.Instance.CheckIfUnderEffect(typeof(Effect_Supercharge)) ? Player.Instance.GetEffect(typeof(Effect_Supercharge)).Amount * Upgrade2ConversionEffectivnessOfSuperchargeIntoMovementSpeed / 100 : 0
             };
             Player.Instance.AddEffect(Upgrade2MovementSpeedBuff);
         }
@@ -176,7 +176,7 @@ public class Stance_ElectroCharged : Effect_Stance
     {
         if (IsActive && UnlockedUpgrade3 && damage.TargetOfDamage == Player.Instance && !Player.Instance.CheckIfEffectWithGivenIdIsOnCooldown("Stance_ElectroCharged_RetaliationThunderbolt") && damage.Injury > Player.Instance.Health.Maximum * 0.2f && Player.Instance.CheckIfUnderEffect(typeof(Effect_Supercharge)))
         {
-            float amountReduced = damage.Injury * Player.Instance.GetEffect(typeof(Effect_Supercharge)).DecayingAmount * Upgrade3PercentageOfSuperchargeAsInjuryReduction / 100;
+            float amountReduced = damage.Injury * Player.Instance.GetEffect(typeof(Effect_Supercharge)).Amount * Upgrade3PercentageOfSuperchargeAsInjuryReduction / 100;
             damage.Injury -= amountReduced;
             new DamageInstance(damage.SourceOfDamage.User, new Ability_DamagingEffect(Player.Instance), null)
             {

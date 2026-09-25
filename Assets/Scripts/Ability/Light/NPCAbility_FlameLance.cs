@@ -43,7 +43,7 @@ public class NPCAbility_FlameLance : Ability {
             }
             _counter++;
             foreach(AreaOfEffect aoe in new List<AreaOfEffect> {_aoe, _aoe2}) {
-                if(aoe.IsDestroyed() == false) {
+                if(aoe!= null) {
                     ParticleSystem.ShapeModule shape = aoe.GetComponent<ParticleSystem>().shape;
                     shape.scale = new Vector3(1 + 0.25f * _counter, 0.2f);
                     shape.position = new Vector3(0, 0.075f * _counter);

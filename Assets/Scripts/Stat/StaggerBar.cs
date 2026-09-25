@@ -19,14 +19,23 @@ public class StaggerBar : Stat {
         {
             HUDSlider = UIManager.Objects.ResourceBars.transform.Find("Stagger Bar Container/Stagger Bar").GetComponent<Slider>();
             HUDFill = HUDSlider.transform.Find("Fill Area/Fill").GetComponent<Image>();
+            
+            // CHANGED: Get the Slider component
+            HUDBlockedSlider = HUDSlider.transform.Find("Blocked Area")?.GetComponent<Slider>();
+            
             MenuStatDisplay = MenuManager.Objects.CharacterStatList.transform.Find("StaggerBar/Value").GetComponent<TextMeshProUGUI>();
         }
         else if (Owner.IsBoss == false)
         {
             HUDSlider = Owner.transform.Find("World Space Canvas/Stagger Bar").GetComponent<Slider>();
             HUDFill = HUDSlider.transform.Find("Fill Area/Fill").GetComponent<Image>();
+            
+            // CHANGED: Get the Slider component
+            HUDBlockedSlider = HUDSlider.transform.Find("Blocked Area")?.GetComponent<Slider>();
+            
             StaggerBars = Owner.transform.Find("World Space Canvas/Stagger Bar/Extra Stagger Bars").gameObject;
         }
+        
         Base = stat_owner != null && stat_owner.ScaleStatsWithLevel ? base_amount * CombatMath.GetExpectedPowerForLevel(stat_owner.Level) : base_amount;
         Maximum = Base;
         CannotBeLowerThan1 = true;
@@ -43,26 +52,23 @@ public class StaggerBar : Stat {
         else {
             damage.StaggerDealt = damage.Stagger;
         }
+
         Current += damage.StaggerDealt;
+
         if(Current + damage.Stagger > Maximum && damage.Properties.Contains(DamageInstance.DamageProperty.CannotStagger)) {
             Current = Maximum - 0.1f;
             return;
         }
+
         if (Current >= Maximum && Owner is Player) {
             Owner.AddEffect(new Effect_PlayerStaggered(new(damage.SourceOfDamage)), Constants.DEFAULT_PLAYER_STAGGERED_DURATION);
         }
         else if (Current >= Maximum) {
             Owner.IsStaggered = true;
-            damage.Injury += (damage.Stagger - damage.StaggerDealt) / 2;
-            if (Owner.CurrentStaggerBars == 1) {
-
-                Owner.AddEffect(new Effect_HardStaggered(new(damage.SourceOfDamage)), Constants.DEFAULT_HARD_STAGGERED_DURATION);
-            }
-            else {
-                Owner.CurrentStaggerBars--;
-                Owner.StaggerBar.Maximum = Owner.StaggerBars[Owner.StaggerBars.Count - Owner.CurrentStaggerBars]* (Owner.IsHostile ? DamageInstance.GlobalEnemySurvivabilityModifier : 1);
-                Owner.AddEffect(new Effect_SoftStaggered(new(damage.SourceOfDamage)), Constants.DEFAULT_SOFT_STAGGERED_DURATION);
-            }
+            
+            // Only 1 Stagger bar now! Apply the main effect directly.
+            Owner.AddEffect(new Effect_Staggered(new(damage.SourceOfDamage)));
+            
             if(Owner.IsHostile) {
                 Player.Instance.Energy.GenerateEnergy(Constants.EnergyGainSource.InflictedStaggered, Owner.IsBoss);
             }
