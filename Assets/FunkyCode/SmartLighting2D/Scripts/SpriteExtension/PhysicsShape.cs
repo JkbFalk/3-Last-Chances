@@ -29,14 +29,14 @@ namespace FunkyCode.SpriteExtension
 		{
 			polygons = new List<Polygon2>();
 
-			int count = sprite.GetPhysicsShapeCount();
+			int count = sprite.GetPhysicsOutlineCount();
 
 			List<Vector2> points;
 			Polygon2 newPolygon;
 
 			for(int i = 0; i < count; i++) {
 				points = new List<Vector2>();
-				sprite.GetPhysicsShape(i, points);
+				sprite.GetPhysicsOutline(i, points);
 				
 				newPolygon = new Polygon2(points.ToArray());
 				newPolygon.Normalize();

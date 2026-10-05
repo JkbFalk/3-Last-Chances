@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ES3Internal;
@@ -6,7 +5,6 @@ using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using System.Reflection;
 using System;
 using System.Linq;
 #endif
@@ -63,7 +61,7 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
             var sceneWasOpen = loadedScenePaths.Contains(buildSettingsScene.path);
             var scene = EditorSceneManager.OpenScene(buildSettingsScene.path, OpenSceneMode.Additive);
 
-            var mgr = ES3ReferenceMgr.GetManagerFromScene(scene);
+            var mgr = ES3ReferenceMgr.GetManagerFromScene(scene, false);
 
             if (mgr != null)
             {
@@ -71,7 +69,7 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
                 {
                     ((ES3ReferenceMgr)mgr).RefreshDependencies();
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     ES3Debug.LogError($"Couldn't update references for scene {scene.name} as the following exception occurred:\n\n" + e);
                 }
@@ -85,7 +83,7 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
                 // Temporarily disable refreshing on save so that it doesn't refresh again.
                 var updateReferencesOnSave = ES3Settings.defaultSettingsScriptableObject.updateReferencesWhenSceneIsSaved;
                 ES3Settings.defaultSettingsScriptableObject.updateReferencesWhenSceneIsSaved = false;
-                
+
                 EditorSceneManager.SaveScene(scene);
                 EditorSceneManager.CloseScene(scene, true);
 
@@ -100,7 +98,7 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public void Optimize()
     {
-        var dependencies = EditorUtility.CollectDependencies(this.gameObject.scene.GetRootGameObjects());
+        var dependencies = EditorUtility.CollectDependencies(this.gameObject.scene.GetRootGameObjects().Where(go => go != this.gameObject).ToArray());
         var notDependenciesOfScene = new HashSet<UnityEngine.Object>();
 
         foreach (var kvp in idRef)
@@ -138,8 +136,14 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
 
         foreach (var obj in objs)
         {
-            if (obj == null || obj.name == "Easy Save 3 Manager")
+            if (obj == null || obj == this || obj.name == "Easy Save 3 Manager")
                 continue;
+
+            // Only add dependencies from GameObjects with ES3Referencable if the setting is enabled.
+            if (ES3Settings.defaultSettingsScriptableObject.onlyAddReferencesFromObjectsWithES3Referenceable)
+                if (obj is GameObject go)
+                    if (go.GetComponent<ES3Referenceable>() == null)
+                        continue;
 
             foreach (var dependency in EditorUtility.CollectDependencies(new UnityEngine.Object[] { obj }))
             {
@@ -149,9 +153,15 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
                     return;
                 }
 
+                // Exclude all Texture2Ds which are packed into a SpriteAtlas from this manager.
+                /*if (dependency is SpriteAtlas)
+                    foreach (var atlasDependency in EditorUtility.CollectDependencies(new UnityEngine.Object[] { dependency }))
+                        if (atlasDependency is Texture2D)
+                            ExcludeObject(atlasDependency);*/
+
                 Add(dependency);
 
-                if (obj is ES3Prefab prefab)
+                if (dependency is ES3Prefab prefab)
                     AddPrefabToManager(prefab);
             }
         }
@@ -176,7 +186,7 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
             var path = AssetDatabase.GUIDToAssetPath(guid);
             var obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
 
-            if(obj != null)
+            if (obj != null)
                 AddDependencies(obj);
         }
     }
@@ -240,14 +250,18 @@ public class ES3ReferenceMgr : ES3ReferenceMgrBase
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     private void AddPrefabToManager(ES3Prefab es3Prefab)
     {
-            try
+        try
+        {
+            if (es3Prefab != null && EditorUtility.IsPersistent(es3Prefab))
             {
-                if (es3Prefab != null && EditorUtility.IsPersistent(es3Prefab))
-                    if(AddPrefab(es3Prefab))
-                        Undo.RecordObject(this, "Update Easy Save 3 Reference List");
-                es3Prefab.GeneratePrefabReferences();
+                if (AddPrefab(es3Prefab))
+                {
+                    es3Prefab.GeneratePrefabReferences();
+                    Undo.RecordObject(this, "Update Easy Save 3 Reference List");
+                }
             }
-            catch { }
+        }
+        catch { }
     }
 #endif
 }

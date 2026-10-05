@@ -12,7 +12,6 @@ public class Quest {
     public enum QuestStatus { NotStarted, InProgress, Completed };
     
     public QuestStatus Status = QuestStatus.NotStarted;
-    [SerializeField]
     public QuestObjective CurrentObjective {
         get {
             return Objectives.FirstOrDefault(obj => obj.Status == QuestObjective.ObjectiveStatus.Current);

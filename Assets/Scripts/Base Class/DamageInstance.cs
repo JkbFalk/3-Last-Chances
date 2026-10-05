@@ -6,7 +6,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.UI.CanvasScaler;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class DamageInstance {
     public static float GlobalEnemyDamageModifier {

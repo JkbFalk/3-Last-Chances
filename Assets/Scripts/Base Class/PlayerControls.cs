@@ -12,7 +12,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.Experimental.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
-using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.U2D.IK;

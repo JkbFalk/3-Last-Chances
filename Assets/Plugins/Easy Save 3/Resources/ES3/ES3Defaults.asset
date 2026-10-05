@@ -24,6 +24,11 @@ MonoBehaviour:
     bufferSize: 2048
     saveChildren: 1
     postprocessRawCachedData: 0
+    storeCacheAtEndOfEveryFrame: 1
+    storeCacheOnApplicationQuit: 1
+    storeCacheOnApplicationPause: 1
+    autoCacheDefaultFile: 1
+    autoCacheFileOnLoad: 1
     typeChecking: 1
     safeReflection: 1
     memberReferenceMode: 0
@@ -36,14 +41,12 @@ MonoBehaviour:
     - AllIn1VfxTexDemoAssembly
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
-    - FMODUnity
-    - FMODUnityResonance
     - MissingUnityEvents
-    - NavMeshComponents
     - NavMeshPlus
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
+  onlyAddReferencesFromObjectsWithES3Referenceable: 0
   addAllPrefabsToManager: 1
   collectDependenciesDepth: 4
   collectDependenciesTimeout: 10

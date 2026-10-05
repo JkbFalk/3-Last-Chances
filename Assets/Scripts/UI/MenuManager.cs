@@ -15,7 +15,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.U2D.Animation;
 using UnityEngine.UI;
